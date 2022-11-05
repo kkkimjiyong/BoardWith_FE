@@ -12,7 +12,29 @@
 ### 와이어프레임 
 ![title](https://user-images.githubusercontent.com/113953473/200090161-2c26b55d-dbe7-497f-803f-2f816bf65372.png)   
 
-
+### 폴더구조
+📦src
+ ┣ 📂Components
+ ┃ ┗ 📜dd
+ ┣ 📂hooks
+ ┃ ┗ 📜dd
+ ┣ 📂Pages
+ ┃ ┗ 📜dd
+ ┣ 📂redux
+ ┃ ┣ 📂config
+ ┃ ┃ ┗ 📜configstore.js
+ ┃ ┗ 📂modules
+ ┣ 📂shared
+ ┃ ┗ 📜Router.js
+ ┣ 📂style
+ ┃ ┣ 📜dd
+ ┃ ┣ 📜Header.js
+ ┃ ┗ 📜Layout.js
+ ┣ 📂tools
+ ┃ ┗ 📜dd
+ ┣ 📜App.js
+ ┣ 📜index.js
+ ┗ 📜instance.js
 
   
 
