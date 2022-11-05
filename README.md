@@ -13,28 +13,42 @@
 ![title](https://user-images.githubusercontent.com/113953473/200090161-2c26b55d-dbe7-497f-803f-2f816bf65372.png)   
 
 ### 폴더구조
-📦src
- ┣ 📂Components
- ┃ ┗ 📜dd
- ┣ 📂hooks
- ┃ ┗ 📜dd
- ┣ 📂Pages
- ┃ ┗ 📜dd
- ┣ 📂redux
- ┃ ┣ 📂config
- ┃ ┃ ┗ 📜configstore.js
- ┃ ┗ 📂modules
- ┣ 📂shared
- ┃ ┗ 📜Router.js
- ┣ 📂style
- ┃ ┣ 📜dd
- ┃ ┣ 📜Header.js
- ┃ ┗ 📜Layout.js
- ┣ 📂tools
- ┃ ┗ 📜dd
- ┣ 📜App.js
- ┣ 📜index.js
- ┗ 📜instance.js
+
+```
+뽀득뽀득
+└─ bbodeeo
+   ├─ package.json
+   ├─ public
+   │  ├─ favicon.ico
+   │  ├─ index.html
+   │  ├─ logo192.png
+   │  ├─ logo512.png
+   │  ├─ manifest.json
+   │  └─ robots.txt
+   ├─ README.md
+   ├─ src
+   │  ├─ App.js
+   │  ├─ Components
+   │  │  └─ dd
+   │  ├─ index.js
+   │  ├─ instance.js
+   │  ├─ Pages
+   │  │  └─ dd
+   │  ├─ redux
+   │  │  ├─ config
+   │  │  │  └─ configstore.js
+   │  │  └─ modules
+   │  ├─ shared
+   │  │  └─ Router.js
+   │  ├─ style
+   │  │  ├─ dd
+   │  │  ├─ Header.js
+   │  │  └─ Layout.js
+   │  └─ tools
+   │     └─ dd
+   └─ yarn.lock
+
+```
 
   
 
