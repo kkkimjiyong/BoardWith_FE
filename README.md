@@ -12,41 +12,61 @@
 ### 와이어프레임 
 ![title](https://user-images.githubusercontent.com/113953473/200090161-2c26b55d-dbe7-497f-803f-2f816bf65372.png)   
 
+### 라이브러리 
+---
+회원가입 React-Hook-Form + yup 사용
+
 ### 폴더구조
 ---
 ```
-뽀득뽀득
-└─ bbodeeo
-   ├─ package.json
-   ├─ public
-   │  ├─ favicon.ico
-   │  ├─ index.html
-   │  ├─ logo192.png
-   │  ├─ logo512.png
-   │  ├─ manifest.json
-   │  └─ robots.txt
-   ├─ README.md
-   ├─ src
-   │  ├─ App.js
-   │  ├─ Components
-   │  │  └─ dd
-   │  ├─ index.js
-   │  ├─ instance.js
-   │  ├─ Pages
-   │  │  └─ dd
-   │  ├─ redux
-   │  │  ├─ config
-   │  │  │  └─ configstore.js
-   │  │  └─ modules
-   │  ├─ shared
-   │  │  └─ Router.js
-   │  ├─ style
-   │  │  ├─ dd
-   │  │  ├─ Header.js
-   │  │  └─ Layout.js
-   │  └─ tools
-   │     └─ dd
-   └─ yarn.lock
+├─ .github
+│  ├─ PULL_REQUEST_TEMPLATE.md
+│  └─ vi ISSUE_TEMPLATE.md
+├─ .gitignore
+├─ package.json
+├─ public
+│  ├─ favicon.ico
+│  ├─ index.html
+│  ├─ logo192.png
+│  ├─ logo512.png
+│  ├─ manifest.json
+│  └─ robots.txt
+├─ README.md
+├─ src
+│  ├─ App.js
+│  ├─ Components
+│  │  ├─ dd
+│  │  ├─ Login
+│  │  │  ├─ KaKaoLogin.js
+│  │  │  └─ Login.js
+│  │  ├─ MyPage
+│  │  │  └─ MyPage.js
+│  │  └─ SignUp
+│  │     └─ SignUp.js
+│  ├─ hooks
+│  │  ├─ CookieHook.js
+│  │  ├─ dd
+│  │  └─ UseInput.js
+│  ├─ index.js
+│  ├─ instance.js
+│  ├─ Pages
+│  │  ├─ dd
+│  │  ├─ LoginPage.js
+│  │  ├─ Mypage.js
+│  │  └─ SignUpPage.js
+│  ├─ redux
+│  │  ├─ config
+│  │  │  └─ configstore.js
+│  │  └─ modules
+│  ├─ shared
+│  │  └─ Router.js
+│  ├─ style
+│  │  ├─ dd
+│  │  ├─ Header.js
+│  │  └─ Layout.js
+│  └─ tools
+│     └─ dd
+└─ yarn.lock
 
 ```
 
