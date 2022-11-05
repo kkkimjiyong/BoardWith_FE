@@ -14,7 +14,7 @@
 
 ### 라이브러리 
 ---
-회원가입 React-Hook-Form + yup 사용
+- 회원가입 React-Hook-Form + yup 사용
 
 ### 폴더구조
 ---
