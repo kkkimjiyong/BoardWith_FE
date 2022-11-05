@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/UseInput";
 import { loginApi } from "../../instance";
+import { useCookies } from "react-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,13 +12,19 @@ const Login = () => {
     id: "",
     password: "",
   };
-
+  const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
   const [login, setLogin, onChangehandler] = useInput(initialState);
+
+  const REST_API_KEY = "52825ae71c4b6cef839a32553fcc6890";
+  const REDIRECT_URI = "http://localhost:3000/signup/oauth";
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const postLogin = async (payload) => {
     try {
-      const data = await loginApi.postLogin(payload);
+      const { data } = await loginApi.postLogin(payload);
       console.log(data);
+      setCookie("accessToken", data.accessToken, { path: "/" });
+      setCookie("refresh_token", data.refresh_token, { path: "/" });
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +52,21 @@ const Login = () => {
       <BtnSet>
         <LoginBtn onClick={() => onSubmitHandler()}>로그인</LoginBtn>
         <LoginBtn onClick={() => navigate("/signup")}>회원가입</LoginBtn>
-      </BtnSet>
+      </BtnSet>{" "}
+      <a href={KAKAO_AUTH_URL}>
+        <img
+          // onClick={() => SetLoading(false)}
+          style={{
+            width: "200px",
+
+            cursor: "pointer",
+            marginTop: "20px",
+          }}
+          src="https://i.ibb.co/r2DPcWy/kakao-login-medium-narrow.png"
+          alt="kakao-login-medium-narrow"
+          border="0"
+        />
+      </a>
     </LoginCtn>
   );
 };
