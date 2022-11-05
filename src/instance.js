@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://www.iceflower.shop/swagger/",
+  baseURL: "https://www.iceflower.shop/",
 });
 
 export const signUpApi = {

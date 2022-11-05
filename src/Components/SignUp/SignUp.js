@@ -15,8 +15,8 @@ const SignUp = () => {
     id: yup
       .string()
       .required("아이디를 입력해주세요")
-      .min(2, "최소 2자 이상 가능합니다")
-      .max(8, "최대 8자 까지만 가능합니다"),
+      .min(9, "최소 9자 이상 가능합니다")
+      .max(15, "최대 15자 까지만 가능합니다"),
     password: yup
       .string()
       .required("영문, 숫자포함 8자리를 입력해주세요.")
@@ -30,7 +30,7 @@ const SignUp = () => {
       .string()
       .oneOf([yup.ref("password")], "비밀번호가 다릅니다.")
       .required("영문, 숫자포함 8자리를 입력해주세요."),
-    nickName: yup
+    nickname: yup
       .string()
       .required("닉네임을 입력해주세요")
       .min(2, "최소 2자 이상 가능합니다")
@@ -48,6 +48,7 @@ const SignUp = () => {
     }
   };
 
+  //submit 핸들러
   const onSubmit = (data) => {
     reset();
     console.log(data);
@@ -90,9 +91,9 @@ const SignUp = () => {
       </SignUpBox>
       <SignUpBox>
         <label>닉네임</label>
-        <SignUpInput {...register("nickName")} />
-        {errors.nickName && (
-          <small role="alert">{errors.nickName.message}</small>
+        <SignUpInput {...register("nickname")} />
+        {errors.nickname && (
+          <small role="alert">{errors.nickname.message}</small>
         )}
       </SignUpBox>
       <SignUpBox>
