@@ -12,7 +12,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({
-    id: yup
+    userId: yup
       .string()
       .required("아이디를 입력해주세요")
       .min(9, "최소 9자 이상 가능합니다")
@@ -30,7 +30,7 @@ const SignUp = () => {
       .string()
       .oneOf([yup.ref("password")], "비밀번호가 다릅니다.")
       .required("영문, 숫자포함 8자리를 입력해주세요."),
-    nickname: yup
+    nickName: yup
       .string()
       .required("닉네임을 입력해주세요")
       .min(2, "최소 2자 이상 가능합니다")
@@ -85,15 +85,15 @@ const SignUp = () => {
   return (
     <SignUpCtn onSubmit={handleSubmit(onSubmit)}>
       <SignUpBox>
-        <label htmlFor="id">아이디</label>
-        <SignUpInput {...register("id")} />
-        {errors.id && <small role="alert">{errors.id.message}</small>}
+        <label htmlFor="userId">아이디</label>
+        <SignUpInput {...register("userId")} />
+        {errors.userId && <small role="alert">{errors.userId.message}</small>}
       </SignUpBox>
       <SignUpBox>
         <label>닉네임</label>
-        <SignUpInput {...register("nickname")} />
-        {errors.nickname && (
-          <small role="alert">{errors.nickname.message}</small>
+        <SignUpInput {...register("nickName")} />
+        {errors.nickName && (
+          <small role="alert">{errors.nickName.message}</small>
         )}
       </SignUpBox>
       <SignUpBox>

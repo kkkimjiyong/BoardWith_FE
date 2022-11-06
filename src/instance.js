@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "./hooks/CookieHook";
 
 const instance = axios.create({
   baseURL: "https://www.iceflower.shop/",
@@ -13,5 +14,17 @@ export const loginApi = {
 };
 
 export const userApi = {
-  getUser: () => instance.post("/users"),
+  getUser: () =>
+    instance.get("/users", {
+      headers: {
+        Authorization: `${getCookie("accessToken")}`,
+      },
+    }),
+
+  editUser: (EditUser) =>
+    instance.put("/users", EditUser, {
+      headers: {
+        Authorization: `${getCookie("accessToken")}`,
+      },
+    }),
 };
