@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/UseInput";
 import { loginApi } from "../../instance";
-import { useCookies } from "react-cookie";
+import { setCookie } from "../../hooks/CookieHook";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ const Login = () => {
     id: "",
     password: "",
   };
-  const [cookies, setCookie, removeCookie] = useCookies(["Token"]);
   const [login, setLogin, onChangehandler] = useInput(initialState);
 
   const REST_API_KEY = "52825ae71c4b6cef839a32553fcc6890";
@@ -38,8 +37,8 @@ const Login = () => {
   return (
     <LoginCtn>
       <LoginInput
-        value={login.id}
-        name="id"
+        value={login.userId}
+        name="userId"
         onChange={onChangehandler}
         placeholder="아이디"
       />
