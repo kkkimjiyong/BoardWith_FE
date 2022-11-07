@@ -3,11 +3,16 @@ import { userApi } from "../../instance";
 import styled from "styled-components";
 import useInput from "../../hooks/UseInput";
 import { getCookie, setCookie } from "../../hooks/CookieHook";
+import { Map, MapMarker } from "react-kakao-maps-sdk";
+import { getDistance } from "geolib";
 
 const MyPage = () => {
   // const [user, Setuser] = useState({});
   const [isEdit, SetisEdit] = useState(0);
   const [user, Setuser, onChange] = useInput();
+  const [Myaddress, SetMyaddress] = useState();
+  const [placeAdress, SetplaceAdress] = useState();
+  const { kakao } = window;
 
   const onSubmitHandler = () => {
     const userPassword = prompt("수정하시려면 비밀번호를 입력해주세요!");
@@ -21,7 +26,6 @@ const MyPage = () => {
       console.log(user);
     }
   };
-
   const getUser = async () => {
     try {
       const { data } = await userApi.getUser();
@@ -47,10 +51,6 @@ const MyPage = () => {
     }
   };
 
-  console.log(user);
-  useEffect(() => {
-    getUser();
-  }, []);
   return (
     <UserWrap>
       {user?.nickName}님의 마이페이지
@@ -131,7 +131,7 @@ const MyPage = () => {
             isEdit === 6 ? onSubmitHandler(6) : SetisEdit(6);
           }}
         />
-      </UserCtn>
+      </UserCtn>{" "}
     </UserWrap>
   );
 };
