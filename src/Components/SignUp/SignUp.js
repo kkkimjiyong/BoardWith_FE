@@ -15,7 +15,7 @@ const SignUp = () => {
     userId: yup
       .string()
       .required("아이디를 입력해주세요")
-      .min(9, "최소 9자 이상 가능합니다")
+      .min(4, "최소 4자 이상 가능합니다")
       .max(15, "최대 15자 까지만 가능합니다"),
     password: yup
       .string()
