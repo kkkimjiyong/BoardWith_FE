@@ -13,7 +13,19 @@ export const loginApi = {
 };
 
 export const userApi = {
-  getUser: () => instance.post("/users"),
+  getUser: () =>
+    instance.get("/users", {
+      headers: {
+        Authorization: `${getCookie("accessToken")}`,
+      },
+    }),
+
+  editUser: (EditUser) =>
+    instance.put("/users", EditUser, {
+      headers: {
+        Authorization: `${getCookie("accessToken")}`,
+      },
+    }),
 };
 
 export const postsApi = {

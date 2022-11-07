@@ -15,8 +15,8 @@ const SignUp = () => {
     userId: yup
       .string()
       .required("아이디를 입력해주세요")
-      .min(9, "최소 9자 이상 가능합니다")
-      .max(15, "최대 12자 까지만 가능합니다"),
+      .min(4, "최소 4자 이상 가능합니다")
+      .max(15, "최대 15자 까지만 가능합니다"),
     password: yup
       .string()
       .required("영문, 숫자포함 8자리를 입력해주세요.")
@@ -48,6 +48,7 @@ const SignUp = () => {
     }
   };
 
+  //submit 핸들러
   const onSubmit = (data) => {
     reset();
     console.log(data);
@@ -84,7 +85,7 @@ const SignUp = () => {
   return (
     <SignUpCtn onSubmit={handleSubmit(onSubmit)}>
       <SignUpBox>
-        <label htmlFor="id">아이디</label>
+        <label htmlFor="userId">아이디</label>
         <SignUpInput {...register("userId")} />
         {errors.userId && <small role="alert">{errors.userId.message}</small>}
       </SignUpBox>
