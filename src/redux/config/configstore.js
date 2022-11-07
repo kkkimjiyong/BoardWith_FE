@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-// 내가 만든 리듀서를 넣어준다
+import detail from "../modules/DetailSlice";
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    detail: detail,
+  },
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
-  //   devTools: process.env.NODE_ENV !== "production",
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export default store;
