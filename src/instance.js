@@ -28,7 +28,6 @@ export const userApi = {
     }),
 };
 
-
 export const postApi = {
   // postDetail: () => instance.post(`/posts`),
   // getDetail: () => instance.get(`/posts`),
@@ -42,7 +41,8 @@ export const commentsApi = {
   postComments: () => instance.post(`/comments/{posetid}`),
   editComments: () => instance.put(`/comments/{commentid}`),
   delComments: () => instance.delete(`/comments/{commentid}`),
-  
+};
+
 export const postsApi = {
   getPosts: () => {
     return instance.get("/posts");

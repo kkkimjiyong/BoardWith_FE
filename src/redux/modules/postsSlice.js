@@ -3,7 +3,7 @@ import { postsApi } from "../../instance";
 
 const initialState = {
   data: [],
-
+  distance: [],
   isLoading: false,
   error: null,
   post: {},
@@ -61,7 +61,11 @@ export const acyncDeletePosts = createAsyncThunk(
 const PostsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    addDistance: (state, action) => {
+      state.distance.push(action.payload);
+    },
+  },
   extraReducers: {
     //게시글 불러오기
     [acyncGetPosts.pending]: (state) => {
@@ -106,4 +110,5 @@ const PostsSlice = createSlice({
   },
 });
 
+export const { addDistance } = PostsSlice.actions;
 export default PostsSlice.reducer;
