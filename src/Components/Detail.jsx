@@ -16,12 +16,27 @@ const Detail = () => {
   // const initialState = {
   //   comment: "",
   // };
+
+  const postInitialState = {
+    title: "",
+    content: "",
+    location: "",
+    cafe: "",
+    date: "",
+    time: "",
+    map: "",
+    partyMember: "",
+  };
+
   // const [comment, setComment] = useState(initialState);
+  const [postContent, setPostContent] = useState(postInitialState);
 
   // // const { isLoading, error, comments } = useSelector((state) => state.comments);
 
   useEffect(() => {
     dispatch(__getDetail());
+    console.log(dispatch);
+    //setPostContent(dispatch);
   }, [dispatch]);
 
   // if (isLoading) {
@@ -49,6 +64,7 @@ const Detail = () => {
             <h3>인원: </h3>
             <h3>참여자: </h3>
           </div>
+          <button>참가하기</button>
           <button>수정하기</button>
         </StContainer>
       </Layout>
@@ -98,7 +114,7 @@ const Detail = () => {
 export default Detail;
 
 const StContainer = styled.div`
-  padding: 8px 0px;
+  padding: 8px;
   border: 1px solid;
   border-radius: 16px;
   background-color: white;

@@ -7,6 +7,7 @@ const Header = () => {
 
 const HeaderCtn = styled.div`
   width: 100%;
+  height: 70px;
   background-color: aliceblue;
 `;
 
