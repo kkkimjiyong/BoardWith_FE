@@ -3,6 +3,9 @@ import { getCookie } from "./hooks/CookieHook";
 
 const instance = axios.create({
   baseURL: "https://www.iceflower.shop/",
+  headers: {
+    Authorization: `${getCookie("accessToken")}`,
+  },
 });
 
 export const signUpApi = {
@@ -31,15 +34,17 @@ export const userApi = {
 
 export const postApi = {
   // postDetail: () => instance.post(`/posts`),
-  // getDetail: () => instance.get(`/posts`),
-  getDetailId: () => instance.get(`/posts/{postid}`),
-  editDetail: () => instance.post(`/posts/{postid}`),
-  delDetail: () => instance.post(`/posts/{postid}`),
+  getDetail: (payload) => instance.get(`/posts`),
+  //getDetailId: (payload) => instance.get(`/posts/${payload}`),
+  getDetailId: (payload) => instance.get(`/posts/6368b2a8934c7da20c1758f2`),
+  editDetail: (payload) => instance.put(`/posts/6368b2a8934c7da20c1758f2`),
+  //editDetail: (payload) => instance.post(`/posts/{postid}`),
+  delDetail: (payload) => instance.post(`/posts/{postid}`),
 };
 
 export const commentsApi = {
-  getComments: () => instance.get(`/comments/{postid}`),
-  postComments: () => instance.post(`/comments/{posetid}`),
-  editComments: () => instance.put(`/comments/{commentid}`),
-  delComments: () => instance.delete(`/comments/{commentid}`),
+  getComments: (payload) => instance.get(`/comments/{postid}`),
+  postComments: (payload) => instance.post(`/comments/{posetid}`),
+  editComments: (payload) => instance.put(`/comments/{commentid}`),
+  delComments: (payload) => instance.delete(`/comments/{commentid}`),
 };

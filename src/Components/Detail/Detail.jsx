@@ -2,41 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "../style/Layout";
-import Comments from "./Comment";
-// import { __getComments } from "../redux/modules/CommentsSlice";
+import Layout from "../../style/Layout";
+import Comments from "./Comment"; // import { __getComments } from "../redux/modules/CommentsSlice";
 // import { __postComments } from "../redux/modules/CommentsSlice";
-import { __getDetail } from "../redux/modules/DetailSlice";
+import { __getDetailId } from "../../redux/modules/DetailSlice";
 
 const Detail = () => {
-  // const { id } = useParams();
+  //const { postid } = useParams();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  //console.log("포스트아이디", postid.postid);
 
   // const initialState = {
   //   comment: "",
   // };
 
-  const postInitialState = {
-    title: "",
-    content: "",
-    location: "",
-    cafe: "",
-    date: "",
-    time: "",
-    map: "",
-    partyMember: "",
-  };
-
   // const [comment, setComment] = useState(initialState);
-  const [postContent, setPostContent] = useState(postInitialState);
+  const { detail } = useSelector((state) => state.detail);
 
-  // // const { isLoading, error, comments } = useSelector((state) => state.comments);
+  console.log("Selector", detail?.data?.userId);
+  //console.log("Selector 아이디", detail.data.userId);
 
   useEffect(() => {
-    dispatch(__getDetail());
-    console.log(dispatch);
-    //setPostContent(dispatch);
+    dispatch(__getDetailId());
   }, [dispatch]);
 
   // if (isLoading) {
@@ -56,13 +44,13 @@ const Detail = () => {
     <>
       <Layout>
         <StContainer>
-          <h1>불금 달리실분!</h1>
+          <h1>{detail?.data?.title}</h1>
           <div>
-            <h3>파티장: </h3>
-            <h3>장소: </h3>
-            <h3>날짜: </h3>
-            <h3>인원: </h3>
-            <h3>참여자: </h3>
+            <h3>파티장: {detail?.data?.userId}</h3>
+            <h3>장소: {detail?.data?.location}</h3>
+            <h3>날짜: {detail?.data?.date}</h3>
+            <h3>인원: {detail?.data?.partyMember}</h3>
+            <h3>참여자: {detail?.data?.userId}</h3>
           </div>
           <button>참가하기</button>
           <button>수정하기</button>
