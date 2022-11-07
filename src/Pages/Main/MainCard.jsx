@@ -1,23 +1,23 @@
 import styled from "styled-components";
 
-const MainCard = () => {
+const MainCard = ({ item }) => {
   return (
-    <Card>
+    <Card key={item._id}>
       <div>
-        <CardTitle>title</CardTitle>
+        <CardTitle>{item.title}</CardTitle>
         <div>
-          장소 <span>건대입구역 1번 출구</span>
+          장소 <span>{item.map}</span>
         </div>
         <div>
-          날짜 <span>22년 11월 4일</span>
+          날짜 <span>{item.date}</span>
         </div>
         <div>
-          인원 <span>4인</span>
+          인원 <span>{item.partyMember}</span>
           <span>인원표시</span>
         </div>
         <div>
           {" "}
-          <span>모여서 같이 게임해요</span>
+          <span>{item.content}</span>
         </div>
       </div>
     </Card>
@@ -30,6 +30,8 @@ const Card = styled.div`
   background-color: #a66cff;
   padding: 20px;
   border-radius: 10px;
+  width: 200px;
+  height: 200px;
 `;
 
 const CardTitle = styled.h3``;
