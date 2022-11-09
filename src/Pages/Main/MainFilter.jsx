@@ -1,12 +1,18 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Calender from "../../tools/datePicker";
-import { useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/esm/locale";
+import $ from "jquery";
 
 const MainFilter = () => {
   const [open, setOpen] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+
+  console.log(startDate, endDate);
   const [filtered, setFiltered] = useState({
-    date: "",
+    date: {},
     time: "",
     location: "",
   });
@@ -31,28 +37,32 @@ const MainFilter = () => {
             }}
           > */}
           <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
-          {/* <InputBox> */}
-          {/* <ContentInput
-            // id="date"
-            // className="dateInput"
-            // value={filtered.comment}
-            // type="date"
-            // name="날짜"
-            // placeholder="날짜"
-            // onChange={(e) => {
-            //   const { value } = e.target;
-            //   setFiltered({
-            //     ...filtered,
-            //     date: value,
-            //   });
-            // }}
-          /> */}
-          <Calender
-            setFiltered={setFiltered}
-            filtered={filtered}
-            value={filtered.date}
+
+          <DatePicker
+            selected={startDate}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            onChange={(date) => setStartDate(date)}
           />
-          {/* </InputBox> */}
+          <DatePicker
+            selected={endDate}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            onChange={(date) => {
+              $(function () {
+                $("#to").datepicker({ dateFormat: "yy-mm-dd" }); // yyyy-mm-dd 형식으로 date타입 포멧
+              });
+
+              setEndDate(date);
+              setFiltered({
+                ...filtered,
+                date: { startDate: startDate, endDate: endDate },
+              });
+            }}
+            minDate={startDate}
+          />
 
           <ContentInput
             value={filtered.filtered}

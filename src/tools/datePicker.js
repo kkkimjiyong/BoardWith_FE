@@ -12,8 +12,10 @@ const Calender = ({ filtered, setFiltered, register }) => {
       selected={date}
       onChange={(date) => {
         setDate(date);
-        setFiltered({ ...filtered, date: date });
-        // {...register("date")}
+
+        if (setFiltered) {
+          setFiltered({ ...filtered, date: date });
+        }
       }}
       minDate={new Date()}
       placeholderText="오늘 이후의 날짜를 선택하세요"

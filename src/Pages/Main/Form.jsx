@@ -7,10 +7,12 @@ import useInput from "../../hooks/UseInput";
 import { acyncCreatePosts } from "../../redux/modules/postsSlice";
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
-import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Calender from "../../tools/datePicker";
+import { Controller, useForm } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
 
 function Form() {
   const navigate = useNavigate();
@@ -32,6 +34,7 @@ function Form() {
   };
   //useForm 설정
   const {
+    control,
     register,
     setValue,
     handleSubmit,
@@ -87,6 +90,21 @@ function Form() {
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
+              <Controller
+                control={control}
+                name="date"
+                render={({ field }) => (
+                  <DatePicker
+                    locale={ko}
+                    dateFormat="yyyy/MM/dd"
+                    placeholderText="Select date"
+                    onChange={(date) => {
+                      field.onChange(date);
+                    }}
+                    selected={field.value}
+                  />
+                )}
+              />
               <Calender register={register} {...register("date")} />
             </FlexBox>
             <FlexBox>
