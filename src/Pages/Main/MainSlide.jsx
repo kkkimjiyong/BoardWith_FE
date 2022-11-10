@@ -12,6 +12,7 @@ import axios from "axios";
 const MainSlide = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const [Posts, SetPosts] = useState();
   const [Myaddress, SetMyaddress] = useState();
   const options = {
@@ -44,7 +45,10 @@ const MainSlide = () => {
 
   useEffect(() => {
     dispatch(acyncGetPosts());
+    // if (!Myaddress) alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
     // getPosts();
+    //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
+    setTimeout(() => setLoading(false), 5000);
     SetPosts([
       {
         title: "보드게임 괴고수 모집합니다",
@@ -122,21 +126,36 @@ const MainSlide = () => {
 
   return (
     <>
-      {Posts?.length < 6 ? (
-        <Container>
-          {Posts?.map((item, index) => {
-            return (
-              <MainCard
-                key={item._id}
-                item={item}
-                Myaddress={Myaddress}
-              ></MainCard>
-            );
-          })}
-        </Container>
-      ) : (
-        <Carousel />
-      )}
+      <>
+        {loading ? (
+          <div>로딩중</div>
+        ) : (
+          <>
+            {Posts?.length < 6 ? (
+              <Container>
+                {Posts?.map((item, index) => {
+                  return (
+                    <MainCard
+                      key={item._id}
+                      item={item}
+                      Myaddress={Myaddress}
+                    ></MainCard>
+                  );
+                })}
+              </Container>
+            ) : (
+              <Carousel />
+            )}
+            <button
+              onClick={() => {
+                SetPosts(neardata);
+              }}
+            >
+              가까운순으로
+            </button>
+          </>
+        )}
+      </>
     </>
   );
 };

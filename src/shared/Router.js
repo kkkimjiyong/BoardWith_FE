@@ -9,6 +9,7 @@ import Form from "../Pages/Main/Form";
 import KaKaoLogin from "../Components/Login/KaKaoLogin";
 import DetailPage from "../Pages/DetailPage";
 import PracPage from "../Pages/PracPage";
+import ChatPage from "../Pages/ChatPage";
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/detail" element={<DetailPage />} />
         <Route path="/form" element={<Form />} />
+        <Route path="/chat" element={<ChatPage />} />
         <Route path="/practice" element={<PracPage />} />
       </Routes>
     </BrowserRouter>

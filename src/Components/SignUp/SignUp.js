@@ -1,15 +1,25 @@
 import React from "react";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import ReactDaumPost from "react-daumpost-hook";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi } from "../../instance.js";
+import { useState } from "react";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const Age = [
+    "20대 초반",
+    "20대 중반",
+    "20대 후반",
+    "30대 초반",
+    "30대 중반",
+    "30대 후반",
+  ];
+
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({
     userId: yup
@@ -48,27 +58,32 @@ const SignUp = () => {
     }
   };
 
-  //submit 핸들러
-  const onSubmit = (data) => {
-    reset();
-    console.log(data);
-    navigate("/login");
-    postSignUp(data);
-  };
-
   //useForm 설정
   const {
     register,
+    control,
     setValue,
+    getValues,
+    watch,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
+    defaultValues: { birth: "5" },
     resolver: yupResolver(formSchema),
   });
 
+  const birthvalue = watch("birth");
   const ref = useRef(null);
+
+  //submit 핸들러
+  const onSubmit = (data) => {
+    reset();
+    console.log({ ...data, birth: Age[birthvalue] });
+    navigate("/login");
+    postSignUp(data);
+  };
 
   const postConfig = {
     ref: ref, //팝업창으로 사용시 해당 파라메터를 없애면 된다.
@@ -79,85 +94,192 @@ const SignUp = () => {
       ref.current.style.display = "none";
     },
   };
-
   const postCode = ReactDaumPost(postConfig);
 
+  const [tagItem, setTagItem] = useState("");
+  const [tagList, setTagList] = useState([]);
+
+  const onKeyPress = (e) => {
+    console.log(e);
+    if (e.target.value.length !== 0 && e.charCode === 35) {
+      submitTagItem();
+      console.log("enter");
+    }
+  };
+
+  const submitTagItem = () => {
+    console.log(tagItem);
+
+    let updatedTagList = [...tagList];
+    updatedTagList.push(tagItem);
+    setTagList(updatedTagList);
+    setTagItem("");
+    console.log(updatedTagList);
+  };
+
+  const deleteTagItem = (e) => {
+    console.log(tagList);
+    console.log(e.target.parentElement.firstChild.innerText);
+    const deleteTagItem = e.target.parentElement.firstChild.innerText;
+    const filteredTagList = tagList.filter(
+      (tagItem) => tagItem !== deleteTagItem
+    );
+    setTagList(filteredTagList);
+  };
+
   return (
-    <SignUpCtn onSubmit={handleSubmit(onSubmit)}>
-      <SignUpBox>
-        <label htmlFor="userId">아이디</label>
-        <SignUpInput {...register("userId")} />
-        {errors.userId && <small role="alert">{errors.userId.message}</small>}
-      </SignUpBox>
-      <SignUpBox>
-        <label>닉네임</label>
-        <SignUpInput {...register("nickName")} />
-        {errors.nickName && (
-          <small role="alert">{errors.nickName.message}</small>
-        )}
-      </SignUpBox>
-      <SignUpBox>
-        <label htmlFor="password">비밀번호</label>
-        <SignUpInput id="password" type="password" {...register("password")} />
-        {errors.password && (
-          <small role="alert">{errors.password.message}</small>
-        )}
-      </SignUpBox>
-      <SignUpBox>
-        <label htmlFor="confirm">비밀번호확인</label>
-        <SignUpInput id="confirm" type="password" {...register("confirm")} />
-        {errors.confirm && <small role="alert">{errors.confirm.message}</small>}
-      </SignUpBox>
-      <SignUpBox>
-        주소입력
-        <SignUpInput type="text" onClick={postCode} {...register("address")} />
-      </SignUpBox>
-      <DaumPostBox ref={ref}></DaumPostBox>
-      <SignUpBox>
-        선호지역
-        <SignUpInput type="text" {...register("myPlace")} />
-        {errors.myPlace && <small role="alert">{errors.myPlace.message}</small>}
-      </SignUpBox>
-      <SignUpBox>
-        <label htmlFor="birth">생년월일</label>
-        <SignUpInput id="birth" type="date" {...register("birth")} />
-        {errors.birth && <small role="alert">{errors.birth.message}</small>}
-      </SignUpBox>
-      <SignUpBox>
-        성별
-        <select
-          type="gender"
-          defaultValue="female"
-          {...register("gender", { required: true, minLength: 2 })}
-        >
-          <option value="female">남자</option>
-          <option value="male">여자</option>
-        </select>
-      </SignUpBox>
-      <SignUpBox>
+    <>
+      <SignUpCtn onSubmit={handleSubmit(onSubmit)}>
+        <SignUpBox>
+          <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
+          {errors.userId && <small role="alert">{errors.userId.message}</small>}
+        </SignUpBox>{" "}
+        <SignUpBox>
+          <SignUpInput placeholder="닉네임" {...register("nickName")} />
+          {errors.nickName && (
+            <small role="alert">{errors.nickName.message}</small>
+          )}
+        </SignUpBox>
+        <SignUpBox>
+          <SignUpInput
+            placeholder="비밀번호"
+            id="password"
+            type="password"
+            {...register("password")}
+          />
+          {errors.password && (
+            <small role="alert">{errors.password.message}</small>
+          )}
+        </SignUpBox>
+        <SignUpBox>
+          <SignUpInput
+            placeholder="비밀번호확인"
+            id="confirm"
+            type="password"
+            {...register("confirm")}
+          />
+          {errors.confirm && (
+            <small role="alert">{errors.confirm.message}</small>
+          )}
+        </SignUpBox>
+        <SignUpBox>
+          <SignUpInput
+            placeholder="클릭하여, 주소입력"
+            type="text"
+            onClick={postCode}
+            {...register("address")}
+          />
+        </SignUpBox>
+        <DaumPostBox ref={ref}></DaumPostBox>
+        {/* <SignUpBox>
+          선호지역
+          <SignUpInput type="text" {...register("myPlace")} />
+          {errors.myPlace && (
+            <small role="alert">{errors.myPlace.message}</small>
+          )}
+        </SignUpBox> */}
+        {/* 범위슬라이더로 나이범위 정하기 */}
+        <SignUpBox className="BirthGender">
+          <Controller
+            control={control}
+            name="birth"
+            format="YYYY-MM-DD"
+            render={({ field: { onChange } }) => (
+              <>
+                <InputRange
+                  id="range"
+                  oninput="output"
+                  type="range"
+                  min="0"
+                  max="5"
+                  list="tickmarks"
+                  onChange={(e) => onChange(e.target.value)}
+                ></InputRange>
+                {/* 유저가 현재 선택하고 있는 값을 보여줌 */}
+                <output htmlFor="range" id="output">
+                  {Age[birthvalue]}
+                </output>
+                {/* value가 위치하는 곳에 눈금을 표시해주는 곳  */}
+                <datalist id="tickmarks">
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                  <option value="4" />
+                  <option value="5" />
+                </datalist>
+              </>
+            )}
+          />{" "}
+          {/* 일단 이렇게 나이랑 성별 붙여만 놓자. */}
+          <select
+            type="gender"
+            defaultValue="female"
+            {...register("gender", { required: true, minLength: 2 })}
+          >
+            <option value="female">남자</option>
+            <option value="male">여자</option>
+          </select>
+        </SignUpBox>
+        {/* <SignUpBox>
         좋아하는 게임
         <SignUpInput type="text" {...register("likeGame")} />
-      </SignUpBox>
-      <button>회원가입</button>
-    </SignUpCtn>
+      </SignUpBox> */}{" "}
+        {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
+        <WholeBox>
+          <TagBox>
+            {tagList.map((tagItem, index) => {
+              return (
+                <TagItem key={index}>
+                  <Text>{tagItem}</Text>
+                  <TagButton onClick={deleteTagItem}>X</TagButton>
+                </TagItem>
+              );
+            })}
+            <TagInput
+              type="text"
+              placeholder="#을 이용하여, 태그를 써주세요"
+              tabIndex={2}
+              onChange={(e) => setTagItem(e.target.value)}
+              value={tagItem}
+              onKeyPress={onKeyPress}
+            />
+          </TagBox>
+        </WholeBox>
+        <SignUpBtn>회원가입</SignUpBtn>
+      </SignUpCtn>{" "}
+    </>
   );
 };
 
 const SignUpCtn = styled.form`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
   margin-top: 60px;
 `;
 
 const SignUpBox = styled.div`
+  width: 70%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
+  margin-bottom: 10px;
+  &.BirthGender {
+    flex-direction: row;
+  }
+`;
+
+const InputRange = styled.input`
+  width: 90%;
 `;
 
 const SignUpInput = styled.input`
-  width: 200px;
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
   height: 50px;
   border: 3px solid #9747ff;
   border-radius: 10px;
@@ -170,6 +292,80 @@ const DaumPostBox = styled.div`
   top: 450px;
   left: 940px;
   width: 400px;
+`;
+
+const SignUpBtn = styled.button`
+  width: 80%;
+  height: 3em;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 3px 3px 0px gray;
+  cursor: pointer;
+  background-color: #bc8aff;
+  margin: 0 auto;
+  :hover {
+    background-color: #8c37ff;
+  }
+`;
+
+const WholeBox = styled.div`
+  margin: 0 auto;
+  width: 75%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+const TagBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 50px;
+  margin: 10px;
+  padding: 0 10px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+
+  &:focus-within {
+    border-color: #8c37ff;
+  }
+`;
+
+const TagItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  background-color: tomato;
+  border-radius: 5px;
+  color: white;
+  font-size: 13px;
+`;
+
+const Text = styled.span``;
+
+const TagButton = styled.button`
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  background-color: white;
+  border-radius: 50%;
+  color: tomato;
+  cursor: pointer; */
+`;
+
+const TagInput = styled.input`
+  display: inline-flex;
+  min-width: 150px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: text;
 `;
 
 export default SignUp;
