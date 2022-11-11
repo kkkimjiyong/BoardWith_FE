@@ -6,21 +6,25 @@ import { addDistance } from "../../redux/modules/postsSlice";
 
 const MainCard = ({ item, Myaddress }) => {
   const dispatch = useDispatch();
+
+  console.log(Myaddress);
   useEffect(() => {
     //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
     //부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
-    dispatch(
-      addDistance({
-        ...item,
-        distance: getDistance(
-          { latitude: item.location.y, longitude: item.location.x },
-          {
-            latitude: Myaddress.latitude,
-            longitude: Myaddress.longitude,
-          }
-        ),
-      })
-    );
+    if (Myaddress) {
+      dispatch(
+        addDistance({
+          ...item,
+          distance: getDistance(
+            { latitude: item.location.y, longitude: item.location.x },
+            {
+              latitude: Myaddress.latitude,
+              longitude: Myaddress.longitude,
+            }
+          ),
+        })
+      );
+    }
   }, []);
   console.log(item);
 
@@ -32,7 +36,7 @@ const MainCard = ({ item, Myaddress }) => {
           장소 <span>{item.map}</span>
         </div>
         <div>
-          날짜 <span>{item.date}</span>
+          날짜 <span>{item.time[0]}</span>
         </div>
         <div>
           인원 <span>{item.partyMember}</span>
