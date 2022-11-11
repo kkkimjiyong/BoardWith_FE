@@ -11,26 +11,27 @@ import {
 } from "../../redux/modules/DetailPostsSlice";
 import { __getComments } from "../../redux/modules/CommentsSlice";
 import CommentList from "./CommentList";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPenToSquare,
-  faPaperPlane,
-} from "@fortawesome/free-regular-svg-icons";
 
 const Detail = () => {
   const { postid } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   //console.log("포스트아이디", postid);
+
   const initialState = {
     comment: "",
   };
+
   const [comment, setComment] = useState(initialState);
   const { detail } = useSelector((state) => state.detail);
+
   //console.log("Selector", detail?.data?.userId);
+  //console.log("Selector 아이디", detail.data.userId);
+
   useEffect(() => {
     dispatch(__getPostslById(postid));
   }, [dispatch]);
+
   const onDeleteHandler = (postid) => {
     const result = window.confirm("정말로 삭제하시겠습니까?");
     if (result) {
@@ -39,6 +40,7 @@ const Detail = () => {
       return;
     }
   };
+
   const onCommentHandler = () => {
     dispatch(__postComments());
     setComment(initialState);
@@ -48,51 +50,27 @@ const Detail = () => {
     <>
       <Layout>
         <StContainer>
-          <StHost>
-            <h3>{detail?.data?.userId}</h3>
-            <div>
-              <FontAwesomeIcon
-                style={{
-                  color: "black",
-                }}
-                size="2x"
-                icon={faPenToSquare}
-              />
-              <div />
-              <FontAwesomeIcon
-                style={{
-                  color: "black",
-                }}
-                size="2x"
-                icon={faPaperPlane}
-              />
-            </div>
-          </StHost>
+          <h1>{detail?.data?.title}</h1>
           <div>
-            <h3>{detail?.data?.title}</h3>
-          </div>
-
-          <div>
-            <h4>내용: {detail?.data?.content}</h4>
-            <h4>장소: {detail?.data?.location}</h4>
-            <div>
-              <h4>날짜: {detail?.data?.date}</h4>
-              <h4>시간: {detail?.data?.time}</h4>
-            </div>
-
-            <h4>인원: {detail?.data?.partyMember}명</h4>
+            <h3>내용: {detail?.data?.content}</h3>
+            <h3>파티장: {detail?.data?.userId}</h3>
+            <h3>장소: {detail?.data?.location}</h3>
+            <h3>날짜: {detail?.data?.date}</h3>
+            <h3>시간: {detail?.data?.time}</h3>
+            <h3>인원: {detail?.data?.partyMember}</h3>
+            <h3>참여자: {detail?.data?.userId}</h3>
           </div>
           <button>참가하기</button>
-          {/* <button
+          <button
             onClick={() => {
               navigate("/postsedit");
             }}
           >
             수정하기
-          </button> */}
-          {/* <button onClick={() => onDeleteHandler(detail?.data?._id)}>
+          </button>
+          <button onClick={() => onDeleteHandler(detail?.data?._id)}>
             삭제
-          </button> */}
+          </button>
         </StContainer>
       </Layout>
       <CommentList />
@@ -103,22 +81,9 @@ const Detail = () => {
 export default Detail;
 
 const StContainer = styled.div`
-  padding: 15px;
+  padding: 8px;
   border: 1px solid;
   border-radius: 16px;
   background-color: white;
   margin: 10px;
-`;
-
-const StHost = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  > div {
-    display: flex;
-    align-items: center;
-    > div {
-      width: 10px;
-    }
-  }
 `;
