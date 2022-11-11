@@ -16,7 +16,7 @@ const Router = () => {
         <Route path="/login" element={<LoginPage />} />
         {/* <Route path="/login/oauth" element={<KaKaoLogin />} /> */}
         <Route path="/mypage" element={<Mypage />} />
-        <Route path="/posts:postid" element={<DetailPage />} />
+        <Route path="/posts/:postid" element={<DetailPage />} />
       </Routes>
     </BrowserRouter>
   );

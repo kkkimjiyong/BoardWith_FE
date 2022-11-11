@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postApi } from "../../instance";
 
 //게시글 id로 받아오기
-export const __getDetailId = createAsyncThunk(
-  "GET_DETAIL",
+export const __getPostslById = createAsyncThunk(
+  "GET_POSTS_BY_ID",
   async (payload, thunkApi) => {
     //console.log("페이로드", payload);
     try {
       const { data } = await postApi.getDetailId(payload);
-      console.log("데이터", data);
+      //console.log("데이터", data);
       return thunkApi.fulfillWithValue(data);
     } catch (error) {
       console.log("에러", error);
@@ -16,22 +16,10 @@ export const __getDetailId = createAsyncThunk(
     }
   }
 );
-//게시글 수정
-export const __editDetail = createAsyncThunk(
-  "EDIT_DETAIL",
-  async (payload, thunkApi) => {
-    //console.log(payload);
-    try {
-      const data = await postApi.editDetail(payload);
-      return thunkApi.fulfillWithValue(data);
-    } catch (error) {
-      return thunkApi.rejectWithValue(error);
-    }
-  }
-);
+
 //게시글 삭제
-export const __delDetail = createAsyncThunk(
-  "EDIT_DETAIL",
+export const __delPosts = createAsyncThunk(
+  "DELETE_POSTS",
   async (payload, thunkApi) => {
     //console.log(payload);
     try {
@@ -56,38 +44,27 @@ const detailSlice = createSlice({
   reducers: {},
   extraReducers: {
     //게시글 id로 받아오기
-    [__getDetailId.pending]: (state) => {
+    [__getPostslById.pending]: (state) => {
       state.isLoading = true;
     },
-    [__getDetailId.fulfilled]: (state, action) => {
+    [__getPostslById.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.detail = action.payload;
     },
-    [__getDetailId.rejected]: (state, action) => {
+    [__getPostslById.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
-    //게시글 수정
-    [__editDetail.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [__editDetail.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.detail = action.payload;
-    },
-    [__editDetail.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+
     //게시글 삭제
-    [__delDetail.pending]: (state) => {
+    [__delPosts.pending]: (state) => {
       state.isLoading = true;
     },
-    [__delDetail.fulfilled]: (state, action) => {
+    [__delPosts.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.detail = action.payload;
     },
-    [__delDetail.rejected]: (state, action) => {
+    [__delPosts.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },

@@ -1,55 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-// import {
-//   __deleteComment,
-//   __getComments,
-//   __updateComment,
-// } from "../redux/modules/CommentsSlice";
+import {
+  __deleteComment,
+  __editComment,
+} from "../../redux/modules/CommentsSlice";
 
 const Comments = ({ comment }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
-  const [input, setInput] = useState("");
 
-  useEffect(() => {
-    // dispatch(__getComments());
-  }, [dispatch]);
+  //const { commentId } = comments._id;
+  const commentId = comment._id;
+  const commentsID = "636cf5f010493b7d10c84ffd";
+  //console.log(commentId);
+  //console.log(comments._id);
+  //console.log("코멘트", comments);
 
-  const fnDeleteCommentHandler = (commentId) => {
-    // const result = window.confirm("정말로 삭제하시겠습니까?");
-    // if (result) {
-    //   dispatch(__deleteComment(commentId));
-    // } else {
-    //   return;
-    // }
+  const initialState = {
+    comment: "",
+  };
+  const [comments, setComments] = useState(initialState);
+  console.log(comments);
+
+  const onEditHandler = () => {
+    dispatch(__editComment({ comments, commentsID }));
+    setEdit(false);
   };
 
-  const onClickChangeHandler = (commentId) => {
-    // dispatch(__updateComment({ commentId, input }));
-    // setEdit(false);
+  const onDelCommentHandler = () => {
+    const result = window.confirm("정말로 삭제하시겠습니까?");
+    if (result) {
+      console.log("comments", comment._id);
+      dispatch(__deleteComment(comment._id));
+    } else {
+      return;
+    }
   };
 
   return (
     <CommentBox key={comment.id}>
-      <CommentAuthor>{comment.commentAuthor}</CommentAuthor>
       {!isEdit ? (
         <>
-          <CommentBody>{comment.commentBody}</CommentBody>
+          <CommentBody>{comment?.userId}</CommentBody>
+          <CommentBody>{comment?.comment}</CommentBody>
           <button onClick={() => setEdit(true)}>수정</button>
         </>
       ) : (
         <>
           <StText
-            value={input}
+            placeholder="수정할 댓글내용을 입력하세요"
+            value={comments.comment}
             onChange={(e) => {
-              setInput(e.target.value);
+              setComments(e.target.value);
             }}
           ></StText>
-          <button onClick={() => onClickChangeHandler(comment.id)}>저장</button>
+          <button onClick={() => onEditHandler(comment.id)}>저장</button>
         </>
       )}
-      <button onClick={() => fnDeleteCommentHandler(comment.id)}>삭제</button>
+      <button onClick={() => onDelCommentHandler(comment.id)}>삭제</button>
     </CommentBox>
   );
 };
@@ -59,18 +68,12 @@ export default Comments;
 const CommentBox = styled.div`
   margin: 20px 0px 0px 50px;
   display: flex;
-  border: 5px solid cadetblue;
+  border: 1px solid salmon;
   border-radius: 10px;
   padding: 5px;
-  height: 90px;
+  height: 40px;
 `;
-const CommentAuthor = styled.div`
-  width: 100px;
-  font-size: 20px;
-  margin-right: 30px;
-  display: flex;
-  justify-content: center;
-`;
+
 const CommentBody = styled.div`
   font-size: 20px;
   width: 700px;
@@ -79,7 +82,8 @@ const CommentBody = styled.div`
 
 const StText = styled.textarea`
   height: 30px;
-  width: 700px;
+  width: 1000px;
   background-color: transparent;
-  border: 1px solid transparent;
+  border-bottom: 1px solid;
+  border-color: transparent transparent black transparent;
 `;

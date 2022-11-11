@@ -33,18 +33,23 @@ export const userApi = {
 };
 
 export const postApi = {
-  // postDetail: () => instance.post(`/posts`),
   getDetail: (payload) => instance.get(`/posts`),
-  //getDetailId: (payload) => instance.get(`/posts/${payload}`),
-  getDetailId: (payload) => instance.get(`/posts/6368b2a8934c7da20c1758f2`),
-  editDetail: (payload) => instance.put(`/posts/6368b2a8934c7da20c1758f2`),
-  //editDetail: (payload) => instance.post(`/posts/{postid}`),
-  delDetail: (payload) => instance.post(`/posts/{postid}`),
+  getDetailId: (payload) => instance.get(`/posts/${payload}`),
+  editDetail: (payload) => instance.post(`/posts/${payload}`),
+  delDetail: (payload) => instance.post(`/posts/${payload}`),
 };
 
 export const commentsApi = {
-  getComments: (payload) => instance.get(`/comments/{postid}`),
-  postComments: (payload) => instance.post(`/comments/{posetid}`),
-  editComments: (payload) => instance.put(`/comments/{commentid}`),
-  delComments: (payload) => instance.delete(`/comments/{commentid}`),
+  getComments: (payload) => instance.get(`/comments/${payload}`),
+  postComments: (payload) =>
+    instance.post(`/comments/${payload.postid}`, payload.comment),
+  // editComments: (payload) =>
+  //   instance.put(`/comments/${payload.commentId}`, payload.input),
+  //636c8a58b1f01ee67b65daa9
+  //
+  editComments: (payload) =>
+    // https://www.iceflower.shop/comments/636cf5f010493b7d10c84ffd
+    instance.put(`/comments/${payload.commentsID}`, payload.input),
+  //instance.put(`/comments/636cf5f010493b7d10c84ffd`, payload.input),
+  delComments: (payload) => instance.delete(`/comments/${payload}`),
 };
