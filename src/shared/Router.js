@@ -22,10 +22,10 @@ const Router = () => {
         {/* <Route path="/login/oauth" element={<KaKaoLogin />} /> */}
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/editpage" element={<Editpage />} />
-        <Route path="/detail" element={<DetailPage />} />
         <Route path="/form" element={<Form />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/practice" element={<PracPage />} />
+        <Route path="/posts/:postid" element={<DetailPage />} />
       </Routes>
     </BrowserRouter>
   );

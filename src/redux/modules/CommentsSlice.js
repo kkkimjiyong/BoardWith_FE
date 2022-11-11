@@ -7,26 +7,33 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-
+//댓글가져오기
 export const __getComments = createAsyncThunk(
   "GET_COMMENTS",
   async (payload, thunkAPI) => {
     try {
       const { data } = await commentsApi.getComments(payload);
-      return thunkAPI.fulfillWithValue(data.data);
+      return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-
+//댓글달기
 export const __postComments = createAsyncThunk(
   "POST_COMMENTS",
   async (payload, thunkAPI) => {
+    //console.log("페이로드", payload);
     try {
-      await commentsApi.postComments(payload);
-      return thunkAPI.fulfillWithValue(payload);
+      const data = await commentsApi.postComments(payload);
+      //console.log("페이로드", payload);
+      //console.log("페이로드", payload.comment);
+      //console.log("data", data.data.createComment);
+      return thunkAPI.fulfillWithValue(data.data.createComment);
     } catch (error) {
+      if (error.response.status === 412) {
+        alert("댓글 내용을 입력해주세요😌");
+      }
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -37,25 +44,30 @@ export const __deleteComment = createAsyncThunk(
   "DEL_COMMENTS",
   async (payload, thunkAPI) => {
     try {
-      await commentsApi.delComments(payload);
+      //console.log("payload", payload);
+      const data = await commentsApi.delComments(payload);
+      //console.log("data", data);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-
+//수정
 export const __editComment = createAsyncThunk(
   "EDIT_COMMENTS",
   async (payload, thunkAPI) => {
+    const data = await commentsApi.editComments(payload);
+    console.log(data);
+    return thunkAPI.fulfillWithValue(payload);
     try {
-      axios.patch(`${process.env.REACT_APP_COMMENTS}/${payload.commentId}`, {
-        commentBody: payload.input,
-      });
-
+      console.log("payload", payload);
+      const data = await commentsApi.editComments(payload);
+      console.log("data", data);
       return thunkAPI.fulfillWithValue(payload);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+    } catch (error) {
+      console.log("edit에러1", error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -71,21 +83,29 @@ export const CommentsSlice = createSlice({
     [__getComments.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.comments = action.payload;
+      //console.log("state1", state.comments);
+      //console.log("state2", state.comments.comments);
     },
     [__getComments.pending]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      console.log("get에러", state.error);
     },
     [__postComments.pending]: (state) => {
       state.isLoading = true;
     },
     [__postComments.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.comments = [...state.comments, action.payload];
+      // console.log("action.payload", action.payload);
+      // console.log("state", state);
+      // console.log("state.comments", state.comments.comments);
+      state.comments.comments = [...state.comments.comments, action.payload];
+      //state.comments = action.payload;
     },
     [__postComments.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      console.log("post에러", state.error);
     },
 
     //댓글 삭제
@@ -94,15 +114,16 @@ export const CommentsSlice = createSlice({
     },
     [__deleteComment.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log(state.comments);
-      const tpayloadet = state.comments.filter(
-        (comment) => comment.id === action.payload
+      //console.log(state.comments);
+      const payloadelete = state.comments.comments.filter(
+        (comment) => comment._id === action.payload
       );
-      state.comments.splice(tpayloadet, 1);
+      state.comments.comments.splice(payloadelete, 1);
     },
     [__deleteComment.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      console.log("delete에러", state.error);
     },
 
     // 댓글 수정
@@ -110,18 +131,23 @@ export const CommentsSlice = createSlice({
       state.isLoading = true;
     },
     [__editComment.fulfilled]: (state, action) => {
-      console.log(action.payload);
+      console.log("하이하이");
+      console.log("리듀서", action.payload);
       state.isLoading = false;
-      const commentList = state.comments.map((comment) =>
-        comment.id === action.payload.commentId
-          ? { ...comment, commentBody: action.payload.input }
-          : comment
-      );
-      state.comments = commentList;
+      state.comments = action.payload;
+      // console.log("state", state);
+      // console.log("state.comments", state.comments.comments);
+      // const commentList = state.comments.comments.map((comment) =>
+      //   comment._id === action.payload.commentId
+      //     ? { ...comment, commentBody: action.payload.input }
+      //     : comment
+      // );
+      // state.comments.comments = commentList;
     },
     [__editComment.pending]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      console.log("edit에러", state.error);
     },
   },
 });

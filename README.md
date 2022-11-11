@@ -9,13 +9,29 @@
 구성인원: FE 3명/ BE3 명
 
 ---
+```mermaid
+gantt
+    title A Gantt Diagram
+    dateFormat  YYYY-MM-DD
+    Detail Section
+   참가버튼 눌러서 댓글창 띄우기 css 스타일 구현 :a1, 2022-11-07, 1d
+    파티정보 가져오기 기능   :after a1  , 2022-11-08, 1d
+    지도로 모임 위치 보여주기 (카카오맵 api)   :   2022-11-16, 2d
+```
 ### 와이어프레임 
 ![title](https://user-images.githubusercontent.com/113953473/200090161-2c26b55d-dbe7-497f-803f-2f816bf65372.png)   
 
 ### 라이브러리 
 ---
 - 회원가입 React-Hook-Form + yup 사용
+- 카카오map Api 
+---
+### 추가기능
+- **가장 가까운 거리로 매칭해주는 서비스** (geolocation 과 geocoder, geolib의 getdistance를 통해 좌표값끼리 거리를 직접 계산)
+- **무한슬라이드구현** (useInview 훅과 react-intersection-observer 라이브러리 사용)
+- **실시간 채팅구현** (socket.io 라이브러리 사용)
 
+---
 ### 폴더구조
 ---
 ```
@@ -73,9 +89,4 @@
   
 
 ---
-### 추가기능
 
-- **무한슬라이드구현** (useInview 훅과 react-intersection-observer 라이브러리 사용)
-- **실시간 채팅구현** (socket.io 라이브러리 사용)
-
----
