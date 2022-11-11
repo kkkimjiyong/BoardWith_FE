@@ -17,9 +17,6 @@ gantt
     [Deatil] 참가버튼 눌러서 댓글창 띄우기 css 스타일 구현 :a1, 2022-11-07, 1d
     [Deatil]  파티정보 가져오기 기능   :after a1  , 2022-11-08, 1d
       [Deatil]  지도로 모임 위치 보여주기 (카카오맵 api)   :   2022-11-16, 2d
-    section Another
-    Task in sec      :2014-01-12  , 12d
-    another task      : 24d
 ```
 ### 와이어프레임 
 ![title](https://user-images.githubusercontent.com/113953473/200090161-2c26b55d-dbe7-497f-803f-2f816bf65372.png)   
