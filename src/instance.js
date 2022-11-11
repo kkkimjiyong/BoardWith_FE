@@ -2,6 +2,9 @@ import axios from "axios";
 import { getCookie } from "./hooks/CookieHook";
 const instance = axios.create({
   baseURL: "https://www.iceflower.shop/",
+  headers: {
+    Authorization: `${getCookie("accessToken")}`,
+  },
 });
 
 export const signUpApi = {
@@ -29,18 +32,25 @@ export const userApi = {
 };
 
 export const postApi = {
-  // postDetail: () => instance.post(`/posts`),
-  // getDetail: () => instance.get(`/posts`),
-  getDetailId: () => instance.get(`/posts/{postid}`),
-  editDetail: () => instance.post(`/posts/{postid}`),
-  delDetail: () => instance.post(`/posts/{postid}`),
+  getDetail: (payload) => instance.get(`/posts`),
+  getDetailId: (payload) => instance.get(`/posts/${payload}`),
+  editDetail: (payload) => instance.post(`/posts/${payload}`),
+  delDetail: (payload) => instance.post(`/posts/${payload}`),
 };
 
 export const commentsApi = {
-  getComments: () => instance.get(`/comments/{postid}`),
-  postComments: () => instance.post(`/comments/{posetid}`),
-  editComments: () => instance.put(`/comments/{commentid}`),
-  delComments: () => instance.delete(`/comments/{commentid}`),
+  getComments: (payload) => instance.get(`/comments/${payload}`),
+  postComments: (payload) =>
+    instance.post(`/comments/${payload.postid}`, payload.comment),
+  // editComments: (payload) =>
+  //   instance.put(`/comments/${payload.commentId}`, payload.input),
+  //636c8a58b1f01ee67b65daa9
+  //
+  editComments: (payload) =>
+    // https://www.iceflower.shop/comments/636cf5f010493b7d10c84ffd
+    instance.put(`/comments/${payload.commentsID}`, payload.input),
+  //instance.put(`/comments/636cf5f010493b7d10c84ffd`, payload.input),
+  delComments: (payload) => instance.delete(`/comments/${payload}`),
 };
 export const postsApi = {
   getPosts: () => {
