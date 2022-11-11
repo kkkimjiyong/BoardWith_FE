@@ -6,7 +6,7 @@ import { addDistance } from "../../redux/modules/postsSlice";
 
 const MainCard = ({ item, Myaddress }) => {
   const dispatch = useDispatch();
-
+  console.log(item);
   console.log(Myaddress);
   useEffect(() => {
     //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.

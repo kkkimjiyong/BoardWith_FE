@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Controller } from "react-hook-form";
 import { Datepicker, Page, setOptions } from "@mobiscroll/react";
-
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 const { kakao } = window;
 function Form() {
   const navigate = useNavigate();
