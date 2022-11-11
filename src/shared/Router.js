@@ -10,6 +10,7 @@ import KaKaoLogin from "../Components/Login/KaKaoLogin";
 import DetailPage from "../Pages/DetailPage";
 import PracPage from "../Pages/PracPage";
 import ChatPage from "../Pages/ChatPage";
+import Editpage from "../Pages/Editpage";
 
 const Router = () => {
   return (
@@ -20,6 +21,7 @@ const Router = () => {
         <Route path="/login" element={<LoginPage />} />
         {/* <Route path="/login/oauth" element={<KaKaoLogin />} /> */}
         <Route path="/mypage" element={<Mypage />} />
+        <Route path="/editpage" element={<Editpage />} />
         <Route path="/detail" element={<DetailPage />} />
         <Route path="/form" element={<Form />} />
         <Route path="/chat" element={<ChatPage />} />
