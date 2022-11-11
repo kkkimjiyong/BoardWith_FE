@@ -9,7 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const initialState = {
-    id: "",
+    userId: "",
     password: "",
   };
   const [login, setLogin, onChangehandler] = useInput(initialState);

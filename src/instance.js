@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getCookie } from "./hooks/CookieHook";
-
 const instance = axios.create({
   baseURL: "https://www.iceflower.shop/",
   headers: {
@@ -52,4 +51,32 @@ export const commentsApi = {
     instance.put(`/comments/${payload.commentsID}`, payload.input),
   //instance.put(`/comments/636cf5f010493b7d10c84ffd`, payload.input),
   delComments: (payload) => instance.delete(`/comments/${payload}`),
+};
+
+export const postsApi = {
+  getPosts: () => {
+    return instance.get("/posts");
+  },
+  creatPost: (inputs) => {
+    return instance.post(`/posts`, inputs, {
+      headers: {
+        Authorization: `${getCookie("accessToken")}`,
+      },
+    });
+  },
+  deletePost: (params) =>
+    instance.delete(
+      `/posts/${params}`
+      // {
+      //   headers: { Authorization: `Bearer ${token}` },
+      // }
+    ),
+  updatePost: (payload) =>
+    instance.patch(
+      `/posts/${payload.postId}`,
+      payload.post
+      //  {
+      //   headers: { Authorization: `Bearer ${token}` },
+      // }
+    ),
 };
