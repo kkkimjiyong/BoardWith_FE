@@ -46,9 +46,8 @@ function Form() {
       ...data,
       location: location,
       map: data.cafe.split(" ")[1],
-      time: data.time.value,
+      time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
     });
-
     console.log("time", data.time.value);
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
@@ -57,7 +56,7 @@ function Form() {
         ...data,
         location: location,
         map: data.cafe.split(" ")[1],
-        time: data.time.value,
+        time:[data.time.value[0].getTime(), data.time.value[1].getTime()],
       })
     );
   };
@@ -112,20 +111,8 @@ function Form() {
               <InputBox {...register("title")} />
             </FlexBox>
             <FlexBox>
-              <LabelBox>내용</LabelBox>
-              <InputBox {...register("content")} />
-            </FlexBox>
-            {/* <FlexBox>
-              <LabelBox>지역</LabelBox>
-              <InputBox {...register("location")} />
-            </FlexBox>
-            <FlexBox>
-              <LabelBox>카페</LabelBox>
-              <InputBox {...register("cafe")} />
-            </FlexBox> */}
-            <FlexBox>
               <LabelBox>날짜</LabelBox>
-              <input type="date" {...register("date")} />
+
               <Controller
                 control={control}
                 name="time"
@@ -155,45 +142,10 @@ function Form() {
               />
             </FlexBox>
             <FlexBox>
-              <LabelBox>시간</LabelBox>
-              <InputBox {...register("time")} />
-            </FlexBox>{" "}
-            <FlexBox>
               <LabelBox>지도</LabelBox>
               <InputBox onClick={postCode} {...register("cafe")} />
               <DaumPostBox ref={ref}></DaumPostBox>
             </FlexBox>{" "}
-            {/* <FlexBox>
-              <LabelBox>인원</LabelBox>
-              <InputBox {...register("partyMember")} />
-            </FlexBox> */}{" "}
-            <Controller
-              control={control}
-              name="time"
-              format="YYYY-MM-DD"
-              render={({ field: { onChange } }) => (
-                <Datepicker
-                  select="range"
-                  controls={["date", "time"]}
-                  onChange={(value) => {
-                    onChange(value);
-                  }}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="partyMember"
-              format="YYYY-MM-DD"
-              render={({ field: { onChange } }) => (
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  onChange={(e) => onChange(e.target.value)}
-                ></input>
-              )}
-            />
           </Inputbox>{" "}
           <Buttonbox>
             <Button
