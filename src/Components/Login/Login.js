@@ -36,6 +36,7 @@ const Login = () => {
 
   return (
     <LoginCtn>
+      <LoginTitle>로그인</LoginTitle>
       <LoginInput
         value={login.userId}
         name="userId"
@@ -52,20 +53,7 @@ const Login = () => {
         <LoginBtn onClick={() => onSubmitHandler()}>로그인</LoginBtn>
         <LoginBtn onClick={() => navigate("/signup")}>회원가입</LoginBtn>
       </BtnSet>{" "}
-      <a href={KAKAO_AUTH_URL}>
-        <img
-          // onClick={() => SetLoading(false)}
-          style={{
-            width: "200px",
-
-            cursor: "pointer",
-            marginTop: "20px",
-          }}
-          src="https://i.ibb.co/r2DPcWy/kakao-login-medium-narrow.png"
-          alt="kakao-login-medium-narrow"
-          border="0"
-        />
-      </a>
+      <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
     </LoginCtn>
   );
 };
@@ -75,30 +63,60 @@ const LoginCtn = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
-  gap: 50px;
-`;
-
-const LoginInput = styled.input`
-  width: 300px;
-  height: 60px;
-  border: 3px solid #9747ff;
+  padding: 50px 20px;
+  margin: 150px 20px;
+  gap: 20px;
+  border: 2px solid #9747ff;
   border-radius: 10px;
 `;
 
-const BtnSet = styled.div`
+const LoginTitle = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+`;
+
+const LoginInput = styled.input`
+  width: 87%;
+  height: 40px;
+  border: 3px solid #9747ff;
+  border-radius: 10px;
+  padding-left: 30px;
+`;
+
+const BtnSet = styled.div`
+  width: 97%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: row;
   gap: 30px;
 `;
 
 const LoginBtn = styled.div`
-  width: 100px;
-  height: 50px;
+  font-size: 14px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   cursor: pointer;
   border-radius: 10px;
   color: white;
   background-color: #9747ff;
+`;
+
+const KaKaoLogin = styled.div`
+  padding-left: 10px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #fee500;
+  background-image: url("https://i.ibb.co/B2GHVc4/kakao-login-large-wide.png");
+  width: 95%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 export default Login;
