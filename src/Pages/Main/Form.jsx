@@ -12,7 +12,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Controller } from "react-hook-form";
-import { Datepicker, Page, setOptions } from "@mobiscroll/react";
+import { Datepicker, setOptions } from "@mobiscroll/react";
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import axios from "axios";
 
 const { kakao } = window;
 function Form() {
@@ -38,26 +40,37 @@ function Form() {
     //   location: JSON.stringify(location),
     //   map: data.cafe.split(" ")[1],
     // });
+    const aaa = data.time.value;
+
     console.log("submit", {
       ...data,
       location: location,
       map: data.cafe.split(" ")[1],
-      time: data.time.value,
+      time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
     });
 
     console.log("time", data.time.value);
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
-    dispatch(
-      acyncCreatePosts({
-        ...data,
-        location: location,
-        map: data.cafe.split(" ")[1],
-        time: data.time.value,
-      })
-    );
+    creatPost({
+      ...data,
+      location: location,
+      map: data.cafe.split(" ")[1],
+      time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
+    });
   };
   //useForm 설정
+
+  const creatPost = async (payload) => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/posts",
+        payload
+      );
+      console.log(payload);
+      console.log(data);
+    } catch (error) {}
+  };
 
   const {
     register,
