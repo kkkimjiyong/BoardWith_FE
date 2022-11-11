@@ -10,7 +10,9 @@ import ReactDaumPost from "react-daumpost-hook";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Calender from "../../tools/datePicker";
+
+import { Controller } from "react-hook-form";
+import { Datepicker, Page, setOptions } from "@mobiscroll/react";
 
 const { kakao } = window;
 function Form() {
@@ -31,12 +33,19 @@ function Form() {
   });
 
   const onSubmit = (data) => {
-    console.log({
+    // console.log({
+    //   ...data,
+    //   location: JSON.stringify(location),
+    //   map: data.cafe.split(" ")[1],
+    // });
+    console.log("submit", {
       ...data,
-      location: JSON.stringify(location),
+      location: location,
       map: data.cafe.split(" ")[1],
+      time: data.time.value,
     });
 
+    console.log("time", data.time.value);
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
     dispatch(
@@ -44,6 +53,7 @@ function Form() {
         ...data,
         location: location,
         map: data.cafe.split(" ")[1],
+        time: data.time.value,
       })
     );
   };
@@ -52,17 +62,19 @@ function Form() {
   const {
     register,
     watch,
+    control,
     setValue,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    mode: "onChange",
-    resolver: yupResolver(formSchema),
+    mode: "onChanges",
+    defaultValues: { partyMember: "10" },
+    // resolver: yupResolver(formSchema),
   });
 
   console.log(location);
-
+  console.log(errors);
   //사용자가 검색한 값을 좌표값으로 넘겨준다.
   var callback = function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
@@ -86,14 +98,11 @@ function Form() {
 
   const postCode = ReactDaumPost(postConfig);
   console.log(watch());
-  // const [calenderDate, setCalenderDate] = useState("");
 
-  // const parentFunction = (x) => {
-  //   setCalenderDate(x);
-  // };
-  // useEffect(() => {
-  //   setFiltered({ ...filtered, date: calenderDate });
-  // }, [calenderDate]);
+  setOptions({
+    theme: "ios",
+    themeVariant: "light",
+  });
 
   return (
     <>
@@ -104,35 +113,46 @@ function Form() {
               <LabelBox>제목</LabelBox>
               <InputBox {...register("title")} />
             </FlexBox>
-            <FlexBox>
-              <LabelBox>내용</LabelBox>
-              <InputBox {...register("content")} />
-            </FlexBox>
             {/* <FlexBox>
-              <LabelBox>지역</LabelBox>
-              <InputBox {...register("location")} />
-            </FlexBox>
-            <FlexBox>
-              <LabelBox>카페</LabelBox>
-              <InputBox {...register("cafe")} />
-            </FlexBox> */}
-            {/* <FlexBox>
-              <LabelBox>날짜</LabelBox>
-              <Calender register={register} {...register("date")} />
-            </FlexBox> */}
-            <FlexBox>
               <LabelBox>시간</LabelBox>
               <InputBox {...register("time")} />
-            </FlexBox>
+            </FlexBox> */}
             <FlexBox>
               <LabelBox>지도</LabelBox>
               <InputBox onClick={postCode} {...register("cafe")} />
               <DaumPostBox ref={ref}></DaumPostBox>
             </FlexBox>{" "}
-            <FlexBox>
+            {/* <FlexBox>
               <LabelBox>인원</LabelBox>
               <InputBox {...register("partyMember")} />
-            </FlexBox>
+            </FlexBox> */}{" "}
+            <Controller
+              control={control}
+              name="time"
+              format="YYYY-MM-DD"
+              render={({ field: { onChange } }) => (
+                <Datepicker
+                  select="range"
+                  controls={["date", "time"]}
+                  onChange={(value) => {
+                    onChange(value);
+                  }}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="partyMember"
+              format="YYYY-MM-DD"
+              render={({ field: { onChange } }) => (
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  onChange={(e) => onChange(e.target.value)}
+                ></input>
+              )}
+            />
           </Inputbox>{" "}
           <Buttonbox>
             <Button
