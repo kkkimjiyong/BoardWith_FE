@@ -1,10 +1,35 @@
+import { useEffect } from "react";
 import styled from "styled-components";
+import { getDistance } from "geolib";
+import { useDispatch } from "react-redux";
+import { addDistance } from "../../redux/modules/postsSlice";
 import { memo } from "react";
-const Item = ({ number }) => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+const Item = ({ number, item, Myaddress }) => {
+  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
+  //   //부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
+  //   dispatch(
+  //     addDistance({
+  //       ...item,
+  //       distance: getDistance(
+  //         { latitude: item.location?.y, longitude: item.location?.x },
+  //         {
+  //           latitude: Myaddress.latitude,
+  //           longitude: Myaddress.longitude,
+  //         }
+  //       ),
+  //     })
+  //   );
+  // }, []);
+  console.log(item);
+
   const ItemWrap = styled.div`
     .ItemWrap {
-      width: 350px;
-      height: 370px;
+      max-width: 600px;
+      width: 100%;
+      height: 200px;
       display: flex;
       flex-direction: column;
       background-color: #ffffff;
@@ -46,25 +71,17 @@ const Item = ({ number }) => {
   return (
     <ItemWrap>
       <div className="ItemWrap">
-        <div className="ItemWrap-Top ">{number}</div>
+        <div className="ItemWrap-Top ">{item?.title}</div>
+        <i class="fa-regular fa-bookmark"></i>
+        <FontAwesomeIcon icon="fa-regular fa-bookmark" />
         <div className="ItemWrap-Body">
-          <div className="ItemWrap-Body-Title " />
-          <div className="ItemWrap-Body-Title " />
-          <div className="ItemWrap-Body-Title " />
+          <div className="ItemWrap-Body-Title ">{item?.map}</div>
+          <div className="ItemWrap-Body-Title ">{item?.time}</div>
+          <div className="ItemWrap-Body-Title ">{item?.partyMember}</div>
         </div>
       </div>
     </ItemWrap>
   );
 };
 
-export default memo(Item);
-
-const Card = styled.div`
-  background-color: #a66cff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 200px;
-  height: 200px;
-`;
-
-const CardTitle = styled.h3``;
+export default Item;

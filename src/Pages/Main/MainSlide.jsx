@@ -2,75 +2,128 @@ import styled from "styled-components";
 import MainCard from "./MainCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { acyncGetPosts } from "../../redux/modules/postsSlice";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState } from "react";
 import Item from "../Main/MainCard";
+import axios, { Axios } from "axios";
+import MainFilter from "./MainFilter";
 
 const MainSlide = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [Posts, SetPosts] = useState();
+  const [Myaddress, SetMyaddress] = useState();
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
+
+  //내 위치를 불러오는 것에 성공했을 때 , 실행되는 함수
+  function success(position) {
+    //현재 위치를 state값으로
+    SetMyaddress({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
+    });
+  }
+  //불러오지 못했을 때 실행되는 함수.
+  function error(err) {
+    console.warn("ERROR(" + err.code + "): " + err.message);
+  }
+
+  const getPosts = async () => {
+    try {
+      const { data } = await axios.get("https://www.iceflower.shop/posts");
+      SetPosts(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     dispatch(acyncGetPosts());
+    // getPosts();
+    SetPosts([
+      {
+        title: "보드게임 괴고수 모집합니다",
+        content: "3232131",
+        location: { x: "127.034757121285", y: "37.4849665053325" },
+        cafe: "서울 강남구 강남대로 238",
+        date: "Thu Nov 10 2022 00:00:00 GMT+0900 (한국 표준시)",
+        time: "새벽3시",
+        map: "강남구",
+        partyMember: 4,
+      },
+      {
+        title: "보드게임 괴고수 모집합니다",
+        content: "321dssds",
+        location: { x: "128.034757121285", y: "37.4849665053325" },
+        cafe: "서울 강남구 강남대로 238",
+        date: "Thu Nov 10 2022 00:00:00 GMT+0900 (한국 표준시)",
+        time: "새벽3시",
+        map: "강남구",
+        partyMember: 4,
+      },
+      {
+        title: "보드게임 괴고수 모집합니다",
+        content: "32saaa1",
+        location: { x: "127.054757121285", y: "37.4849665053325" },
+        cafe: "서울 강남구 강남대로 238",
+        date: "Thu Nov 10 2022 00:00:00 GMT+0900 (한국 표준시)",
+        time: "새벽3시",
+        map: "강남구",
+        partyMember: 4,
+      },
+    ]);
+    //내 위치를 좌표값으로 알려주는 카카오 MAP API
+    navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
 
-  const cardData = useSelector((state) => state.posts.data);
-  console.log(cardData);
+  // console.log(Posts);
+  // console.log(Myaddress);
 
-  // window.addEventListener("scroll", function () {
-  //   return console.log("scroll!");
-  // });
-  // const Carousel = () => {
-  //   // 옵션
-  //   const settings = {
-  //     dots: false,
-  //     infinite: true,
-  //     speed: 500,
-  //     slidesToShow: 2,
-  //     slidesToScroll: 1,
-  //     centerMode: true,
-  //     rows: 3,
-  //     nextArrow: <div>넘기기</div>,
-  //   };
+  //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
+  const newcardData = useSelector((state) => state.posts.distance);
+  //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
+  const new2 = [...newcardData];
 
-  //   return (
-  //     <div className="carousel">
-  //       <Slider {...settings}>
-  //         {cardData?.map((item) => {
-  //           return <MainCard key={item._id} item={item}></MainCard>;
-  //         })}
-  //       </Slider>
-  //     </div>
-  //   );
-  // };
+  //이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
+  const neardata = new2.sort((a, b) => a.distance - b.distance);
+  // console.log(newcardData);
+  // console.log(neardata);
+
+  // const items = useSelector((state) => state.posts.data);
+  // console.log(items);
+
   const [items, setItems] = useState([]); // 추가된 부분
+  console.log("items", items);
   const [target, setTarget] = useState(null);
   const targetStyle = { width: "100%", height: "200px" };
-  const page = 1;
+  let page = 0;
 
-  const fetchData = async () => {
-    const response = await fetch(`https://www.iceflower.shop/${page}`);
-    const data = await response.json();
-    setItems((prev) => prev.concat(data.results));
-    page++;
+  const getData = async () => {
+    const response = await axios.get(
+      `https://www.iceflower.shop/posts/?skip=${page}`
+    );
+    console.log(response.data.data);
+    // const data = await response.json();
+    setItems((prev) => prev.concat(response.data.data));
+    page += 5;
   };
 
-  // 추가된 부분
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
+    console.log("h!");
     let observer;
     if (target) {
       const onIntersect = async ([entry], observer) => {
         if (entry.isIntersecting) {
           observer.unobserve(entry.target);
-          await fetchData();
+          await getData();
+          console.log("Hi!");
           observer.observe(entry.target);
         }
       };
@@ -79,40 +132,21 @@ const MainSlide = () => {
     }
     return () => observer && observer.disconnect();
   }, [target]);
+  //필터 만들 부분~!
+  useEffect(() => {
+    setItems(items);
+  }, [items]);
 
   return (
     <div>
-      {items.map((item, idx) => {
-        <div>
-          <div>{item.title}</div>
-        </div>;
+      {items?.map((items, idx) => {
+        return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
       })}
-      <div ref={setTarget} style={targetStyle}>
-        This is Target.
-      </div>
+      <div ref={setTarget}>This is Target.</div>
+      <MainFilter items={items} setItems={setItems} getData={getData} />
     </div>
   );
 };
-// return (
-// <>
-{
-  /* {cardData?.length > 6 ? ( */
-}
-{
-  /* <Container>
-        {cardData?.map((item) => {
-          return <MainCard key={item._id} item={item}></MainCard>;
-        })}
-      </Container> */
-}
-{
-  /* // ) : (
-      //   <Carousel />
-      // )} */
-}
-// </>
-// );
-// }
 
 export default MainSlide;
 

@@ -1,24 +1,87 @@
 import styled from "styled-components";
 import { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { getDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import $ from "jquery";
+import { Datepicker, setOptions } from "@mobiscroll/react";
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import Select from "react-select";
 
-const MainFilter = () => {
+const MainFilter = ({ items, setItems, getData }) => {
+
   const [open, setOpen] = useState();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-
-  console.log(startDate, endDate);
-  const [filtered, setFiltered] = useState({
-    date: {},
-    time: "",
-    location: "",
-  });
+  const [filtered, setFiltered] = useState({});
   console.log("filtered", filtered);
-  const filterSumitHandler = () => {};
 
+  const onDateChange = (e) => {
+    setFiltered({
+      ...filtered,
+      time: e.value,
+    });
+  };
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setFiltered({
+      ...filtered,
+      [name]: value,
+    });
+  };
+
+  setOptions({
+    theme: "ios",
+    themeVariant: "light",
+  });
+
+  const seoulGu = [
+    { value: "강남구", label: "강남구" },
+    { value: "강동구", label: "강동구" },
+    { value: "강북구", label: "강북구" },
+    { value: "강서구", label: "강서구" },
+    { value: "관악구", label: "관악구" },
+    { value: "광진구", label: "광진구" },
+    { value: "구로구", label: "구로구" },
+    { value: "금천구", label: "금천구" },
+    { value: "노원구", label: "노원구" },
+    { value: "도봉구", label: "도봉구" },
+    { value: "동대문구", label: "동대문구" },
+    { value: "동작구", label: "동작구" },
+    { value: "마포구", label: "마포구" },
+    { value: "서대문구", label: "서대문구" },
+    { value: "서초구", label: "서초구" },
+    { value: "성동구", label: "성동구" },
+    { value: "성북구", label: "성북구" },
+    { value: "송파구", label: "송파구" },
+    { value: "양천구", label: "양천구" },
+    { value: "영등포구", label: "영등포구" },
+    { value: "용산구", label: "용산구" },
+    { value: "은평구", label: "은평구" },
+    { value: "종로구", label: "종로구" },
+    { value: "중구", label: "중구" },
+    { value: "중랑구", label: "중랑구" },
+  ];
+
+//필터 만들 부분
+  const baseData = {
+    data : {
+        normal : items,
+        time : items.filter((data)=> data.time === filtered.time),
+        partyMember : items.filter((data)=> data.partyMember === filtered.partyMember),
+        map : items.filter((data)=> data.map === filtered.map),
+    }
+  }
+  const onFilterHandler = () => {
+    
+    if(filtered?.time){
+        setItems(baseData['data']['time']);
+        console.log(baseData);
+    } else if (filtered?.partyMember){
+        setItems(baseData['data']['partyMember']);
+        console.log(baseData);
+    } else if (filtered?.map) {
+        setItems(baseData['data']['map']);
+        console.log(baseData);
+    }
+  };
   return (
     <Wrap open={open}>
       <div
@@ -38,59 +101,32 @@ const MainFilter = () => {
           > */}
           <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
 
-          <DatePicker
-            selected={startDate}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            onChange={(date) => setStartDate(date)}
-          />
-          <DatePicker
-            selected={endDate}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            onChange={(date) => {
-              $(function () {
-                $("#to").datepicker({ dateFormat: "yy-mm-dd" }); // yyyy-mm-dd 형식으로 date타입 포멧
-              });
-
-              setEndDate(date);
-              setFiltered({
-                ...filtered,
-                date: { startDate: startDate, endDate: endDate },
-              });
-            }}
-            minDate={startDate}
+          <Datepicker
+            name="time"
+            select="range"
+            controls={["date", "time"]}
+            onChange={onDateChange}
           />
 
-          <ContentInput
-            value={filtered.filtered}
-            type="text"
-            name="시간"
-            placeholder="시간"
-            onChange={(e) => {
-              const { value } = e.target;
-              setFiltered({
-                ...filtered,
-                time: value,
-              });
-            }}
-          />
-          <ContentInput
-            value={filtered.filtered}
-            type="text"
-            name="장소"
-            placeholder="장소"
-            onChange={(e) => {
-              const { value } = e.target;
-              setFiltered({
-                ...filtered,
-                lacation: value,
-              });
-            }}
-          />
-          <ContentButton>추가하기</ContentButton>
+          <input
+            name="partyMember"
+            type="range"
+            min="1"
+            max="10"
+            onChange={onChange}
+          ></input>
+
+          <select
+            name="map"
+            size={3}
+            onChange={onChange}
+            defaultValue={seoulGu[0]}
+          >
+            {seoulGu.map((location) => {
+              return <option value={location.value}>{location.label}</option>;
+            })}
+          </select>
+          <ContentButton onClick={onFilterHandler}>추가하기</ContentButton>
           {/* </ContentForm> */}
         </Contentbox>
       </div>
@@ -153,7 +189,8 @@ const ContentInput = styled.input`
   }
 `;
 
-const ContentButton = styled.div`
+const ContentButton = styled.button`
+  background-color: gray;
   width: 200px;
   height: 26px;
   border: none;

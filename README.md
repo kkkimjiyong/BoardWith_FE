@@ -15,7 +15,14 @@
 ### 라이브러리 
 ---
 - 회원가입 React-Hook-Form + yup 사용
+- 카카오map Api 
+---
+### 추가기능
+- **가장 가까운 거리로 매칭해주는 서비스** (geolocation 과 geocoder, geolib의 getdistance를 통해 좌표값끼리 거리를 직접 계산)
+- **무한슬라이드구현** (useInview 훅과 react-intersection-observer 라이브러리 사용)
+- **실시간 채팅구현** (socket.io 라이브러리 사용)
 
+---
 ### 폴더구조
 ---
 ```
@@ -73,9 +80,4 @@
   
 
 ---
-### 추가기능
 
-- **무한슬라이드구현** (useInview 훅과 react-intersection-observer 라이브러리 사용)
-- **실시간 채팅구현** (socket.io 라이브러리 사용)
-
----

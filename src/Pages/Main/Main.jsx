@@ -7,7 +7,6 @@ const Main = () => {
   return (
     <Layout>
       <MainSlide></MainSlide>
-      <MainFilter />
     </Layout>
   );
 };
