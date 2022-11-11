@@ -9,15 +9,7 @@
 구성인원: FE 3명/ BE3 명
 
 ---
-```mermaid
-gantt
-    title A Gantt Diagram
-    dateFormat  YYYY-MM-DD
-    Detail Section
-   참가버튼 눌러서 댓글창 띄우기 css 스타일 구현 :a1, 2022-11-07, 1d
-    파티정보 가져오기 기능   :after a1  , 2022-11-08, 1d
-    지도로 모임 위치 보여주기 (카카오맵 api)   :   2022-11-16, 2d
-```
+
 ### 와이어프레임 
 ![title](https://user-images.githubusercontent.com/113953473/200090161-2c26b55d-dbe7-497f-803f-2f816bf65372.png)   
 
