@@ -12,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
 import { Datepicker, setOptions } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import axios from "axios";
 
 const { kakao } = window;
 function Form() {
@@ -42,6 +43,8 @@ function Form() {
     //   location: JSON.stringify(location),
     //   map: data.cafe.split(" ")[1],
     // });
+    const aaa = data.time.value;
+
     console.log("submit", {
       ...data,
       location: location,
@@ -51,16 +54,25 @@ function Form() {
     console.log("time", data.time.value);
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
-    dispatch(
-      acyncCreatePosts({
-        ...data,
-        location: location,
-        map: data.cafe.split(" ")[1],
-        time:[data.time.value[0].getTime(), data.time.value[1].getTime()],
-      })
-    );
+    creatPost({
+      ...data,
+      location: location,
+      map: data.cafe.split(" ")[1],
+      time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
+    });
   };
   //useForm 설정
+
+  const creatPost = async (payload) => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/posts",
+        payload
+      );
+      console.log(payload);
+      console.log(data);
+    } catch (error) {}
+  };
 
   const {
     control,
@@ -102,7 +114,7 @@ function Form() {
   console.log(watch());
 
   return (
-    <>
+    <Layout>
       <Wrap>
         <Formbox onSubmit={handleSubmit(onSubmit)}>
           <Inputbox>
@@ -127,6 +139,9 @@ function Form() {
                   />
                 )}
               />
+            </FlexBox>{" "}
+            <FlexBox>
+              <LabelBox>인원</LabelBox>
               <Controller
                 control={control}
                 name="partyMember"
@@ -166,29 +181,30 @@ function Form() {
           </Buttonbox>
         </Formbox>
       </Wrap>
-    </>
+    </Layout>
   );
 }
 export default Form;
 
 const Wrap = styled.div`
-  width: 640px;
+  width: 100%;
   margin: 30px auto;
-  border: 2px solid black;
   border-radius: 15px;
-  background-color: wheat;
+  background-color: gray;
 `;
 
 const Formbox = styled.form`
+  width: 100%;
   padding: 20px;
   background: transparent;
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
 `;
 
 const LabelBox = styled.label`
   margin-bottom: 10px;
-  font-weight: bold;
+  font-weight: 800;
   font-size: larger;
 `;
 
@@ -197,7 +213,7 @@ const Inputbox = styled.div`
   background: transparent;
   border-radius: 10px;
   display: flex;
-  width: 80%;
+  width: 90%;
   flex-direction: column;
 `;
 
@@ -216,16 +232,24 @@ const InputBox = styled.input`
 `;
 
 const Buttonbox = styled.div`
-  display: flex;
+  width: 90%;
+  display: inline-flex;
 `;
 const Button = styled.button`
+  width: 20%;
   display: flex;
+
+  justify-content: center;
   margin: 0 auto;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
 `;
 
 const DaumPostBox = styled.div`
   position: absolute;
   box-shadow: 0px 3px 3px 0px gray;
+
   top: 450px;
   left: 940px;
   width: 400px;

@@ -8,7 +8,6 @@ import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import Select from "react-select";
 
 const MainFilter = ({ items, setItems, getData }) => {
-
   const [open, setOpen] = useState();
   const [filtered, setFiltered] = useState({});
   console.log("filtered", filtered);
@@ -60,28 +59,31 @@ const MainFilter = ({ items, setItems, getData }) => {
     { value: "중랑구", label: "중랑구" },
   ];
 
-//필터 만들 부분
+  //필터 만들 부분
   const baseData = {
-    data : {
-        normal : items,
-        time : items.filter((data)=> data.time === filtered.time),
-        partyMember : items.filter((data)=> data.partyMember === filtered.partyMember),
-        map : items.filter((data)=> data.map === filtered.map),
-    }
-  }
+    data: {
+      normal: items,
+      time: items.filter((data) => data.time === filtered.time),
+      partyMember: items.filter(
+        (data) => data.partyMember === filtered.partyMember
+      ),
+      map: items.filter((data) => data.map === filtered.map),
+    },
+  };
   const onFilterHandler = () => {
-    
-    if(filtered?.time){
-        setItems(baseData['data']['time']);
-        console.log(baseData);
-    } else if (filtered?.partyMember){
-        setItems(baseData['data']['partyMember']);
-        console.log(baseData);
+    if (filtered?.time) {
+      setItems(baseData["data"]["time"]);
+      console.log(baseData);
+    } else if (filtered?.partyMember) {
+      setItems(baseData["data"]["partyMember"]);
+      console.log(baseData);
     } else if (filtered?.map) {
-        setItems(baseData['data']['map']);
-        console.log(baseData);
+      setItems(baseData["data"]["map"]);
+      console.log(baseData);
     }
   };
+
+  const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   return (
     <Wrap open={open}>
       <div
@@ -100,25 +102,46 @@ const MainFilter = ({ items, setItems, getData }) => {
             }}
           > */}
           <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
-
+          <ContentLabel>날짜 및 시간</ContentLabel>
           <Datepicker
             name="time"
             select="range"
             controls={["date", "time"]}
             onChange={onDateChange}
           />
-
+          <ContentLabel>인원</ContentLabel>
+          <form>
+            <output htmlFor="range" id="output">
+            {Member}
+          </output>
           <input
             name="partyMember"
             type="range"
             min="1"
             max="10"
             onChange={onChange}
+            list="tickmarks"
           ></input>
+          <datalist id="tickmarks">
+            <option value="0" label="1" />
+            <option value="1" />
+            <option value="2" />
+            <option value="3" />
+            <option value="4" />
+            <option value="5" />
+            <option value="6" />
+            <option value="7" />
+            <option value="8" />
+            <option value="9" />
+            <option value="10" />
+          </datalist>
+          </form>
+          
+          <ContentLabel>위치</ContentLabel>
 
           <select
             name="map"
-            size={3}
+            size={1}
             onChange={onChange}
             defaultValue={seoulGu[0]}
           >
@@ -126,7 +149,7 @@ const MainFilter = ({ items, setItems, getData }) => {
               return <option value={location.value}>{location.label}</option>;
             })}
           </select>
-          <ContentButton onClick={onFilterHandler}>추가하기</ContentButton>
+          <ContentButton onClick={onFilterHandler}>선택하기</ContentButton>
           {/* </ContentForm> */}
         </Contentbox>
       </div>
@@ -142,19 +165,22 @@ const Wrap = styled.div`
   max-width: 640px;
   margin: 0 auto;
   padding: 10px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "300px" : "30px")};
+  height: ${({ open }) => (open ? "450px" : "30px")};
   position: fixed;
   bottom: 0;
-  left: 26%;
+  left: 30%;
   transition: height 400ms ease-in-out;
   .innerDiv {
     position: absolute;
-    width: 100%;
-    height: 30px;
+    width: 30%;
+    left: 35%;
+    height: 10px;
     border-radius: 40px;
-    background-color: red;
+    background-color: black;
     line-height: 30px;
     color: black;
     text-align: center;
@@ -166,13 +192,13 @@ const Contentbox = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
-  margin-top: 70px;
+  margin-top: 40px;
 `;
 
-// const ContentForm = styled.div`
-//   margin-top: 70px;
-//   justify-content: space-evenly;
-// `;
+const ContentForm = styled.form`
+  margin-top: 70px;
+  justify-content: space-evenly;
+`;
 
 const InputBox = styled.div`
   display: flex;
@@ -203,4 +229,7 @@ const ContentButton = styled.button`
 
 const SlideLabel = styled.div`
   // height: 200px;
+`;
+const ContentLabel = styled.label`
+  font-weight: 800;
 `;

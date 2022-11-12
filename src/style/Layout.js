@@ -30,7 +30,6 @@ const Wrap = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: gray;
   width: 100%;
   max-width: 640px;
   box-sizing: border-box;

@@ -27,57 +27,86 @@ const Item = ({ number, item, Myaddress }) => {
 
   const ItemWrap = styled.div`
     .ItemWrap {
-      max-width: 600px;
       width: 100%;
-      height: 200px;
+      height: 100%;
       display: flex;
+      justify-content: center;
+      padding: 4% 4%;
       flex-direction: column;
-      background-color: #ffffff;
-      margin: 1rem;
+      background-color: gray;
       box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
       border-radius: 6px;
+      margin-bottom: 2%;
     }
 
     .ItemWrap-Top {
       display: flex;
-      width: 350px;
-      height: 170px;
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
-      background-color: #e2e5e7;
-      color: #566270;
-      font-size: 2.25rem;
-      justify-content: center;
+      /* background-color: #e2e5e7; */
+      color: black;
+      font-size: 1.5rem;
       text-align: center;
+      align-items: center;
+      margin-bottom: 2%;
+    }
+    .ItemWrap-Body-SpaceBetween {
+      display: flex;
+      justify-content: space-between;
+    }
+    .ItemWrap-Body-Flex {
+      display: flex;
       align-items: center;
     }
 
     .ItemWrap-Body {
-      height: 200px;
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      padding: 10px;
+      text-align: left;
+      margin-top: 3%;
     }
 
     .ItemWrap-Body-Title {
-      width: 300px;
-      height: 36px;
-      margin: 16px;
       border-radius: 4px;
+      margin-left: 2%;
+      position: relative;
+      /* background-color: #e2e5e7; */
+    }
+    .ItemWrap-Body-Wanted {
+      display: flex;
+      border-radius: 130px;
       background-color: #e2e5e7;
+      white-space: nowrap;
+      width: 7%;
+      position: absolute;
+      justify-content: center;
+      padding: 0.5%;
+      left: 62%;
     }
   `;
 
   return (
     <ItemWrap>
       <div className="ItemWrap">
-        <div className="ItemWrap-Top ">{item?.title}</div>
-        <i class="fa-regular fa-bookmark"></i>
-        <FontAwesomeIcon icon="fa-regular fa-bookmark" />
+        <div className="ItemWrap-Body-SpaceBetween">
+          <div className="ItemWrap-Top ">{item?.title}</div>
+          <i class="fa-regular fa-bookmark fa-2x"></i>
+        </div>
         <div className="ItemWrap-Body">
-          <div className="ItemWrap-Body-Title ">{item?.map}</div>
-          <div className="ItemWrap-Body-Title ">{item?.time}</div>
-          <div className="ItemWrap-Body-Title ">{item?.partyMember}</div>
+          <div>
+            <div className="ItemWrap-Body-Flex">
+              <i class="fa-solid fa-location-dot  fa-2x"></i>
+              <div className="ItemWrap-Body-Title ">{item?.cafe}</div>
+            </div>
+
+            <div className="ItemWrap-Body-Flex">
+              <i class="fa-regular fa-calendar  fa-2x"></i>
+              <div className="ItemWrap-Body-Title ">{item?.time?.[0]}</div>
+              <div className="ItemWrap-Body-Wanted ">
+                모집중({item?.partyMember})
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </ItemWrap>
