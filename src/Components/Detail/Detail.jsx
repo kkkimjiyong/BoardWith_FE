@@ -16,6 +16,8 @@ import {
   faPenToSquare,
   faPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
+import { faLocationDot, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faSquare } from "@fortawesome/free-regular-svg-icons";
 
 const Detail = () => {
   const { postid } = useParams();
@@ -27,7 +29,7 @@ const Detail = () => {
   };
   const [comment, setComment] = useState(initialState);
   const { detail } = useSelector((state) => state.detail);
-  //console.log("Selector", detail?.data?.userId);
+  console.log("Selector", detail?.data);
   useEffect(() => {
     dispatch(__getPostslById(postid));
   }, [dispatch]);
@@ -44,69 +46,129 @@ const Detail = () => {
     setComment(initialState);
   };
 
+  const OnJoinHandler = () => {};
   return (
-    <>
-      <Layout>
-        <StContainer>
-          <StHost>
-            <h3>{detail?.data?.userId}</h3>
+    <Wrapper>
+      <Wrap>
+        <Layout>
+          <StContainer>
+            <StHost>
+              <div>
+                <FontAwesomeIcon
+                  style={{
+                    color: "white",
+                  }}
+                  size="3x"
+                  icon={faSquare}
+                />
+                <Stgap />
+                <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
+              </div>
+              <StContentWrap>
+                <FontAwesomeIcon
+                  style={{
+                    color: "black",
+                  }}
+                  size="2x"
+                  icon={faPenToSquare}
+                />
+                <Stgap />
+                <FontAwesomeIcon
+                  style={{
+                    color: "black",
+                  }}
+                  size="2x"
+                  icon={faPaperPlane}
+                />
+              </StContentWrap>
+            </StHost>
             <div>
+              <h2>{detail?.data?.title}</h2> {/* 제목 */}
+            </div>
+            <StContentWrap>
               <FontAwesomeIcon
                 style={{
                   color: "black",
                 }}
-                size="2x"
-                icon={faPenToSquare}
+                size="1x"
+                icon={faLocationDot}
               />
               <div />
+              <h4>{detail?.data?.cafe}</h4> {/* 장소 */}
+            </StContentWrap>
+            <StContentWrap>
               <FontAwesomeIcon
                 style={{
                   color: "black",
                 }}
-                size="2x"
-                icon={faPaperPlane}
+                size="1x"
+                icon={faCalendar}
               />
-            </div>
-          </StHost>
-          <div>
-            <h3>{detail?.data?.title}</h3>
-          </div>
+              <div />
+              <h4>{detail?.data?.time[0]}</h4> {/* 날짜 */}
+            </StContentWrap>
+            <StContentWrap>
+              <FontAwesomeIcon
+                style={{
+                  color: "black",
+                }}
+                size="1x"
+                icon={faUserGroup}
+              />
+              <div />
+              <h4>{detail?.data?.partyMember}명</h4> {/* 인원 */}
+            </StContentWrap>
 
-          <div>
-            <h4>내용: {detail?.data?.content}</h4>
-            <h4>장소: {detail?.data?.location}</h4>
-            <div>
-              <h4>날짜: {detail?.data?.date}</h4>
-              <h4>시간: {detail?.data?.time}</h4>
-            </div>
-
-            <h4>인원: {detail?.data?.partyMember}명</h4>
-          </div>
-          <button>참가하기</button>
-          {/* <button
+            <Stbutton onClick={OnJoinHandler}>참가하기</Stbutton>
+            {/* <button
             onClick={() => {
               navigate("/postsedit");
             }}
           >
             수정하기
           </button> */}
-          {/* <button onClick={() => onDeleteHandler(detail?.data?._id)}>
+            {/* <button onClick={() => onDeleteHandler(detail?.data?._id)}>
             삭제
           </button> */}
-        </StContainer>
-      </Layout>
-      <CommentList />
-    </>
+
+            <StMap>지도가 들어갑니다</StMap>
+          </StContainer>
+        </Layout>
+        {/* <CommentList /> */}
+      </Wrap>
+    </Wrapper>
   );
 };
 
 export default Detail;
 
+const Wrapper = styled.div`
+  position: fixed;
+  z-index: 40;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0 5%;
+`;
+
+const Wrap = styled.div`
+  width: 95%;
+  position: fixed;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  padding: 24px 24px 40px;
+  background-color: var(--white);
+  z-index: 42;
+  display: block;
+`;
+
 const StContainer = styled.div`
-  padding: 15px;
-  border: 1px solid;
+  padding: 5% 8%;
+  border: none;
   border-radius: 16px;
-  background-color: white;
+  background-color: #d7d7d7;
   margin: 10px;
 `;
 
@@ -121,4 +183,40 @@ const StHost = styled.div`
       width: 10px;
     }
   }
+`;
+
+const StContentWrap = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  height: 40px;
+  > div {
+    width: 2%;
+  }
+`;
+
+const Stbutton = styled.button`
+  width: 100%;
+  height: 45px;
+  border-radius: 15px;
+  margin: 5% 0 5% 0;
+  border: none;
+  background-color: white;
+  font-size: large;
+  font-weight: bold;
+`;
+
+const StMap = styled.div`
+  width: 100%;
+  height: 150px;
+  border-radius: 15px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+`;
+
+const Stgap = styled.div`
+  width: 10px;
 `;
