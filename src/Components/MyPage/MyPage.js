@@ -36,80 +36,84 @@ const MyPage = () => {
     getUser();
   }, []);
 
-  return (
-    <Wrapper>
-      <ProfileCtn>
-        {" "}
-        <EditBox onClick={() => navigate("/editpage")}>
-          <EditBtn>편집</EditBtn>
-        </EditBox>
-        <ProfileBox />
-        <ProfileName>
+  if (getCookie("accessToken")) {
+    return (
+      <Wrapper>
+        <ProfileCtn>
           {" "}
-          <div>{user?.nickName}</div>{" "}
-          <GenderImg
-            src={user?.gender === "female" ? female : male}
-            alt="React"
-          />
-        </ProfileName>
-        <div>
-          {user?.birth}/{user?.gender}/{user?.address?.split(" ")[0]}&nbsp;
-          {user?.address?.split(" ")[1]}
-        </div>
-      </ProfileCtn>
-      <LikeGameCtn>
-        <LikeGameTitle>선호게임</LikeGameTitle>
-        <LikeGameBox>
-          {}
-          <LikeGame>#달무티</LikeGame>
-          <LikeGame>#달무티</LikeGame>
-          <LikeGame>#달무티</LikeGame>
-        </LikeGameBox>
+          <EditBox onClick={() => navigate("/editpage")}>
+            <EditBtn>편집</EditBtn>
+          </EditBox>
+          <ProfileBox />
+          <ProfileName>
+            {" "}
+            <div>{user?.nickName}</div>{" "}
+            <GenderImg
+              src={user?.gender === "female" ? female : male}
+              alt="React"
+            />
+          </ProfileName>
+          <div>
+            {user?.birth}/{user?.gender}/{user?.address?.split(" ")[0]}&nbsp;
+            {user?.address?.split(" ")[1]}
+          </div>
+        </ProfileCtn>
+        <LikeGameCtn>
+          <LikeGameTitle>선호게임</LikeGameTitle>
+          <LikeGameBox>
+            {}
+            <LikeGame>#달무티</LikeGame>
+            <LikeGame>#달무티</LikeGame>
+            <LikeGame>#달무티</LikeGame>
+          </LikeGameBox>
 
-        {/* 맵돌려야지~ */}
-      </LikeGameCtn>
-      <MyPartyCtn>
-        <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
-          내가 속한 모임
-          <Arrow />
-        </MyPartyTitle>
-        {/* 맵돌려야지~ */}
-        {isOpen && (
-          <MyPartyBox>
-            {" "}
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-          </MyPartyBox>
-        )}
+          {/* 맵돌려야지~ */}
+        </LikeGameCtn>
+        <MyPartyCtn>
+          <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
+            내가 속한 모임
+            <Arrow />
+          </MyPartyTitle>
+          {/* 맵돌려야지~ */}
+          {isOpen && (
+            <MyPartyBox>
+              {" "}
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+            </MyPartyBox>
+          )}
 
-        <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
-          참여 신청 중인 모임
-          <Arrow />
-        </MyPartyTitle>
-        {isOpen1 && (
-          <MyPartyBox>
-            {" "}
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-          </MyPartyBox>
-        )}
-        <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
-          참여 확정 모임
-          <Arrow />
-        </MyPartyTitle>
-        {isOpen2 && (
-          <MyPartyBox>
-            {" "}
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-          </MyPartyBox>
-        )}
-      </MyPartyCtn>
-    </Wrapper>
-  );
+          <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
+            참여 신청 중인 모임
+            <Arrow />
+          </MyPartyTitle>
+          {isOpen1 && (
+            <MyPartyBox>
+              {" "}
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+            </MyPartyBox>
+          )}
+          <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
+            참여 확정 모임
+            <Arrow />
+          </MyPartyTitle>
+          {isOpen2 && (
+            <MyPartyBox>
+              {" "}
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+            </MyPartyBox>
+          )}
+        </MyPartyCtn>
+      </Wrapper>
+    );
+  } else {
+    return <div>로그인이 필요합니다!</div>;
+  }
 };
 
 const Wrapper = styled.div`

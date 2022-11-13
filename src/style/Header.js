@@ -6,6 +6,8 @@ const Header = () => {
 };
 
 const HeaderCtn = styled.div`
+  position: fixed;
+  bottom: 0px;
   width: 100%;
   height: 70px;
   background-color: #9747ff;

@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import useInput from "../../hooks/UseInput";
 import { io } from "socket.io-client";
 
 const ChatRoom = () => {
-  //   const socket = io("소켓주소");
+  const socket = io("http://localhost:3001");
   const [message, setMessage, onChange] = useInput();
 
   const onSubmitHandler = (e) => {
-    // socket.emit("chatting" , message)
+    socket.emit("message", message);
     e.preventDefault();
     console.log(message);
   };
+
+  useEffect(() => {
+    // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
+    socket.on("roomUsers", (msg) => {
+      console.log(msg);
+    });
+
+    socket.on("message", (message) => {
+      console.log(message);
+    });
+  }, []);
   return (
     <ChatCtn onSubmit={onSubmitHandler}>
       <ChatInputBox>
