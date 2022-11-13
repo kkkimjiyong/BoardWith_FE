@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/UseInput";
@@ -7,7 +7,7 @@ import { setCookie } from "../../hooks/CookieHook";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const [error, setError] = useState();
   const initialState = {
     userId: "",
     password: "",
@@ -25,13 +25,20 @@ const Login = () => {
       setCookie("accessToken", data.accessToken, { path: "/" });
       setCookie("refresh_token", data.refresh_token, { path: "/" });
     } catch (error) {
-      console.log(error);
+      setError(error.response.data.message);
+      console.log(error.response.data.message);
     }
   };
 
   const onSubmitHandler = (e) => {
+    console.log(error);
     postLogin(login);
-    setLogin(initialState);
+    if (error) {
+      alert(error);
+      setLogin(initialState);
+    } else {
+      navigate("/");
+    }
   };
 
   return (
@@ -44,6 +51,7 @@ const Login = () => {
         placeholder="아이디"
       />
       <LoginInput
+        type="password"
         value={login.password}
         name="password"
         onChange={onChangehandler}
@@ -86,7 +94,7 @@ const LoginInput = styled.input`
 `;
 
 const BtnSet = styled.div`
-  width: 97%;
+  width: 87%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -113,7 +121,7 @@ const KaKaoLogin = styled.div`
   border-radius: 10px;
   background-color: #fee500;
   background-image: url("https://i.ibb.co/B2GHVc4/kakao-login-large-wide.png");
-  width: 95%;
+  width: 87%;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

@@ -79,10 +79,11 @@ const SignUp = () => {
 
   //submit 핸들러
   const onSubmit = (data) => {
+    console.log(data);
     reset();
-    console.log({ ...data, birth: Age[birthvalue] });
+    console.log({ ...data, birth: Age[birthvalue], likeGame: tagList });
     navigate("/login");
-    postSignUp(data);
+    postSignUp({ ...data, birth: Age[birthvalue] });
   };
 
   const postConfig = {
@@ -101,7 +102,7 @@ const SignUp = () => {
 
   const onKeyPress = (e) => {
     console.log(e);
-    if (e.target.value.length !== 0 && e.charCode === 35) {
+    if (e.target.value.length !== 0 && e.charCode === 32) {
       submitTagItem();
       console.log("enter");
     }
@@ -109,9 +110,8 @@ const SignUp = () => {
 
   const submitTagItem = () => {
     console.log(tagItem);
-
     let updatedTagList = [...tagList];
-    updatedTagList.push(tagItem);
+    updatedTagList.push(`#${tagItem.trim()}`);
     setTagList(updatedTagList);
     setTagItem("");
     console.log(updatedTagList);
@@ -257,7 +257,7 @@ const SignUpWrap = styled.form`
   gap: 30px;
 `;
 
-const SignUpCtn = styled.form`
+const SignUpCtn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -272,8 +272,8 @@ const SignUpBox = styled.div`
   align-items: center;
   margin-bottom: 10px;
   &.BirthGender {
+    width: 62%;
     flex-direction: row;
-    gap: 30px;
     justify-content: space-between;
     font-size: 14px;
     font-weight: 600;
@@ -311,10 +311,8 @@ const SignUpInput = styled.input`
 `;
 
 const DaumPostBox = styled.div`
-  position: absolute;
+  position: relative;
   box-shadow: 0px 3px 3px 0px gray;
-  top: 450px;
-  left: 940px;
   width: 400px;
 `;
 
@@ -334,8 +332,7 @@ const SignUpBtn = styled.button`
 `;
 
 const WholeBox = styled.div`
-  margin: 0 auto;
-  width: 77%;
+  width: 67%;
   display: flex;
   align-items: center;
   gap: 20px;
