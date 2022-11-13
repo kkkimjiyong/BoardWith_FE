@@ -24,7 +24,9 @@ export const acyncGetPosts = createAsyncThunk(
 export const acyncCreatePosts = createAsyncThunk(
   "posts/createPosts",
   async (inputs, thunkAPI) => {
+    console.log("inputs1", inputs);
     try {
+      console.log("inputs2", inputs);
       const data = await postsApi.creatPost(inputs);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (error) {
