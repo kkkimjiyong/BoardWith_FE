@@ -7,7 +7,9 @@ import { acyncGetPosts } from "../../redux/modules/postsSlice";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import axios from "axios";
+import Item from "../Main/MainCard";
+import axios, { Axios } from "axios";
+import MainFilter from "./MainFilter";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -89,83 +91,86 @@ const MainSlide = () => {
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
 
-  console.log(Posts);
-  console.log(Myaddress);
+  // console.log(Posts);
+  // console.log(Myaddress);
 
   //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
   const newcardData = useSelector((state) => state.posts.distance);
   //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
   const new2 = [...newcardData];
 
+  // //이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
+  // const neardata = new2.sort((a, b) => a.distance - b.distance);
+  // console.log(newcardData);
+  // console.log(neardata);
+  //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
+  // const newcardData = useSelector((state) => state.posts.distance);
+  //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
+  // const new2 = [...newcardData];
+
   //이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
-  const neardata = new2.sort((a, b) => a.distance - b.distance);
-  console.log(newcardData);
-  console.log(neardata);
+  // const neardata = new2.sort((a, b) => a.distance - b.distance);
+  // console.log(newcardData);
+  // console.log(neardata);
 
-  const cardData = useSelector((state) => state.posts.data);
-  console.log(cardData);
+  // const items = useSelector((state) => state.posts.data);
+  // console.log(items);
 
-  const Carousel = () => {
-    // 옵션
-    const settings = {
-      dots: false,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 2,
-      slidesToScroll: 1,
-      centerMode: true,
-      rows: 3,
-      nextArrow: <div>넘기기</div>,
-    };
+  const [items, setItems] = useState([]); // 추가된 부분
+  console.log("items", items);
+  const [target, setTarget] = useState(null);
+  const targetStyle = { width: "100%", height: "200px" };
+  let page = 0;
 
-    return (
-      <div className="carousel">
-        <Slider {...settings}>
-          {Posts?.map((item) => {
-            return <MainCard key={item._id} item={item}></MainCard>;
-          })}
-        </Slider>
-      </div>
+  const getData = async () => {
+    const response = await axios.get(
+      `https://www.spartaseosu.shop/posts/?skip=${page}`
     );
+    console.log(response.data.data);
+    // const data = await response.json();
+    setItems((prev) => prev.concat(response.data.data));
+    page += 5;
   };
 
-  return (
-    <>
-      <>
-        {loading ? (
-          <div>로딩중</div>
-        ) : (
-          <>
-            {Posts?.length < 6 ? (
-              <Container>
-                {Posts?.map((item, index) => {
-                  return (
-                    <MainCard
-                      key={item._id}
-                      item={item}
-                      Myaddress={Myaddress}
-                    ></MainCard>
-                  );
-                })}
-              </Container>
-            ) : (
-              <Carousel />
-            )}
+  useEffect(() => {
+    console.log("h!");
+    let observer;
+    if (target) {
+      const onIntersect = async ([entry], observer) => {
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          await getData();
+          console.log("Hi!");
+          observer.observe(entry.target);
+        }
+      };
+      observer = new IntersectionObserver(onIntersect, { threshold: 1 }); // 추가된 부분
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
+  //필터 만들 부분~!
+  useEffect(() => {
+    setItems(items);
+  }, [items]);
 
-            <button
-              onClick={() => {
-                SetPosts(neardata);
-              }}
-            >
-              가까운순으로
-            </button>
-            {neardata?.map((item) => {
-              return <div>{item.title}</div>;
-            })}
-          </>
-        )}
-      </>
-    </>
+  return (
+
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        textAlign: "center",
+      }}
+    >
+      {items?.map((items, idx) => {
+        return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+      })}
+      <div ref={setTarget}>This is Target.</div>
+      <MainFilter items={items} setItems={setItems} getData={getData} />
+    </div>
+
   );
 };
 
@@ -186,4 +191,35 @@ const Container = styled.div`
   width: 100%;
   max-width: 540px;
   height: 660px;
+`;
+const AppWrap = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+
+  .Target-Element {
+    width: 100vw;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  }
+`;
+const GlobalStyle = styled.div`
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  body {
+    background-color: #f2f5f7;
+  }
 `;

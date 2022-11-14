@@ -1598,7 +1598,7 @@
 
 "@mobiscroll/react@https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.19.2.tgz":
   version "5.19.2"
-  resolved "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.19.2.tgz#d73c7bc5a589f6dfec62c0de3d1864e34f52a41c"
+  resolved "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-5.19.2.tgz#6803791dc802929bd6ea79bd057d8ffed50fc687"
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
@@ -6565,6 +6565,18 @@ mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.6"
 
+moment-timezone@^0.5.39:
+  version "0.5.39"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.39.tgz#342625a3b98810f04c8f4ea917e448d3525e600b"
+  integrity sha512-hoB6suq4ISDj7BDgctiOy6zljBsdYT0++0ZzZm9rtxIvJhIbQ3nmbgSWe7dNFGurl6/7b1OUkHlmN9JWgXVz7w==
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0":
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -7808,10 +7820,10 @@ react-fast-compare@^3.0.1:
   resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.0.tgz"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
 
-react-hook-form@^7.39.1:
-  version "7.39.1"
-  resolved "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.39.1.tgz"
-  integrity sha512-MiF9PCILN5KulhSGbnjohMiTOrB47GerDTichMNP0y2cPUu1GTRFqbunOxCE9N1499YTLMV/ne4gFzqCp1rxrQ==
+react-hook-form@^7.39.3:
+  version "7.39.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.39.3.tgz#d5e66dae44187606992ba01f26460cca2565ea58"
+  integrity sha512-H/vwk1vBf+TiXuyW6+hWz+zCujiDO6NqHlN5sPE/a+NGKKGK95XTM65DZz3NmEgs2M20Wka+g4uv4VD367wDBA==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
