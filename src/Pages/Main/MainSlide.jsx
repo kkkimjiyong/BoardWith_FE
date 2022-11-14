@@ -54,7 +54,7 @@ const MainSlide = () => {
     // if (!Myaddress) alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
     getPosts();
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
-    setTimeout(() => setLoading(false), 2000);
+    setTimeout(() => setLoading(false), 1500);
     // SetPosts([
     //   {
     //     title: "보드게임 괴고수 모집합니다",
@@ -155,6 +155,7 @@ const MainSlide = () => {
   }, [items]);
 
   return (
+
     <div
       style={{
         display: "flex",
@@ -169,6 +170,7 @@ const MainSlide = () => {
       <div ref={setTarget}>This is Target.</div>
       <MainFilter items={items} setItems={setItems} getData={getData} />
     </div>
+
   );
 };
 
