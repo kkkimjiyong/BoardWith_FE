@@ -5,7 +5,13 @@ import { useDispatch } from "react-redux";
 import { addDistance } from "../../redux/modules/postsSlice";
 import { memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment-timezone";
+import "moment/locale/ko";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router-dom";
 const Item = ({ number, item, Myaddress }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   // useEffect(() => {
   //   //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
@@ -23,7 +29,22 @@ const Item = ({ number, item, Myaddress }) => {
   //     })
   //   );
   // }, []);
+
   console.log(item);
+  //요일시간 표기
+  const moment = require("moment-timezone");
+  const startDate = item?.time?.[0];
+  const endDate = item?.time?.[1];
+  const getStartTime = (startDate) => {
+    var m = moment(startDate).tz("Asia/Seoul").lang("ko");
+    return m.format("MM.DD (ddd) HH:mm");
+  };
+  const getEndTime = (endDate) => {
+    var m = moment(endDate).tz("Asia/Seoul");
+    return m.format("HH:mm");
+  };
+  const realStartTime = getStartTime(startDate);
+  const realEndTime = getEndTime(endDate);
 
   const ItemWrap = styled.div`
     .ItemWrap {
@@ -57,6 +78,7 @@ const Item = ({ number, item, Myaddress }) => {
     .ItemWrap-Body-Flex {
       display: flex;
       align-items: center;
+      margin-top: 2%;
     }
 
     .ItemWrap-Body {
@@ -77,31 +99,52 @@ const Item = ({ number, item, Myaddress }) => {
       border-radius: 130px;
       background-color: #e2e5e7;
       white-space: nowrap;
-      width: 7%;
+      width: 10%;
       position: absolute;
       justify-content: center;
       padding: 0.5%;
-      left: 62%;
+      left: 72%;
     }
   `;
 
   return (
-    <ItemWrap>
+    <ItemWrap onClick={() => navigate(`/posts/${item._id}`)}>
       <div className="ItemWrap">
         <div className="ItemWrap-Body-SpaceBetween">
           <div className="ItemWrap-Top ">{item?.title}</div>
-          <i class="fa-regular fa-bookmark fa-2x"></i>
+          <FontAwesomeIcon
+            style={{
+              color: "black",
+            }}
+            size="2x"
+            icon={faBookmark}
+          />{" "}
         </div>
         <div className="ItemWrap-Body">
           <div>
             <div className="ItemWrap-Body-Flex">
-              <i class="fa-solid fa-location-dot  fa-2x"></i>
+              <FontAwesomeIcon
+                style={{
+                  color: "black",
+                }}
+                size="2x"
+                icon={faCalendar}
+              />{" "}
               <div className="ItemWrap-Body-Title ">{item?.cafe}</div>
             </div>
 
             <div className="ItemWrap-Body-Flex">
-              <i class="fa-regular fa-calendar  fa-2x"></i>
-              <div className="ItemWrap-Body-Title ">{item?.time?.[0]}</div>
+              <FontAwesomeIcon
+                style={{
+                  color: "black",
+                }}
+                size="2x"
+                icon={faLocationDot}
+              />{" "}
+              <div className="ItemWrap-Body-Title ">
+                {realStartTime + " ~ " + realEndTime}
+                {/* {new Date(startDate)} */}
+              </div>
               <div className="ItemWrap-Body-Wanted ">
                 모집중({item?.partyMember})
               </div>
