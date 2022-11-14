@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { Datepicker, setOptions } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
-import Select from "react-select";
 
 const MainFilter = ({ items, setItems, getData }) => {
   const [open, setOpen] = useState();

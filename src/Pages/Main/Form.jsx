@@ -12,8 +12,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import { Controller } from "react-hook-form";
 import { Datepicker, setOptions } from "@mobiscroll/react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import axios from "axios";
+import { getCookie } from "../../hooks/CookieHook";
+import { useForm } from "react-hook-form";
 
 const { kakao } = window;
 function Form() {
@@ -71,8 +72,13 @@ function Form() {
   const creatPost = async (payload) => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/posts",
-        payload
+        "https://www.spartaseosu.shop/posts",
+        payload,
+        {
+          headers: {
+            Authorization: `${getCookie("accessToken")}`,
+          },
+        }
       );
       console.log(payload);
       console.log(data);
