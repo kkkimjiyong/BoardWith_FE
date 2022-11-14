@@ -134,7 +134,7 @@ const Detail = () => {
             <StMap>지도가 들어갑니다</StMap>
           </StContainer>
         </Layout>
-        {/* <CommentList /> */}
+        <CommentList />
       </Wrap>
     </Wrapper>
   );

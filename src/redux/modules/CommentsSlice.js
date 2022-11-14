@@ -57,9 +57,6 @@ export const __deleteComment = createAsyncThunk(
 export const __editComment = createAsyncThunk(
   "EDIT_COMMENTS",
   async (payload, thunkAPI) => {
-    const data = await commentsApi.editComments(payload);
-    console.log(data);
-    return thunkAPI.fulfillWithValue(payload);
     try {
       console.log("payload", payload);
       const data = await commentsApi.editComments(payload);
@@ -131,7 +128,6 @@ export const CommentsSlice = createSlice({
       state.isLoading = true;
     },
     [__editComment.fulfilled]: (state, action) => {
-      console.log("하이하이");
       console.log("리듀서", action.payload);
       state.isLoading = false;
       state.comments = action.payload;
