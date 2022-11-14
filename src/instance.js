@@ -52,7 +52,6 @@ export const commentsApi = {
   //instance.put(`/comments/636cf5f010493b7d10c84ffd`, payload.input),
   delComments: (payload) => instance.delete(`/comments/${payload}`),
 };
-
 export const postsApi = {
   getPosts: () => {
     return instance.get("/posts");

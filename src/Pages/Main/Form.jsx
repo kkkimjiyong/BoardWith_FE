@@ -7,7 +7,6 @@ import useInput from "../../hooks/UseInput";
 import { acyncCreatePosts } from "../../redux/modules/postsSlice";
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
-import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
@@ -38,6 +37,11 @@ function Form() {
     partyMember: yup.number(),
   });
 
+  setOptions({
+    theme: "ios",
+    themeVariant: "light",
+  });
+
   const onSubmit = (data) => {
     // console.log({
     //   ...data,
@@ -52,7 +56,6 @@ function Form() {
       map: data.cafe.split(" ")[1],
       time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
     });
-
     console.log("time", data.time.value);
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
@@ -77,17 +80,16 @@ function Form() {
   };
 
   const {
+    control,
     register,
     watch,
-    control,
     setValue,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    mode: "onChanges",
+    mode: "onChange",
     defaultValues: { partyMember: "10" },
-    // resolver: yupResolver(formSchema),
   });
 
   console.log(location);
@@ -116,13 +118,8 @@ function Form() {
   const postCode = ReactDaumPost(postConfig);
   console.log(watch());
 
-  setOptions({
-    theme: "ios",
-    themeVariant: "light",
-  });
-
   return (
-    <>
+    <Layout>
       <Wrap>
         <Formbox onSubmit={handleSubmit(onSubmit)}>
           <Inputbox>
@@ -130,46 +127,45 @@ function Form() {
               <LabelBox>제목</LabelBox>
               <InputBox {...register("title")} />
             </FlexBox>
-            {/* <FlexBox>
-              <LabelBox>시간</LabelBox>
-              <InputBox {...register("time")} />
-            </FlexBox> */}
+            <FlexBox>
+              <LabelBox>날짜</LabelBox>
+
+              <Controller
+                control={control}
+                name="time"
+                format="YYYY-MM-DD"
+                render={({ field: { onChange } }) => (
+                  <Datepicker
+                    select="range"
+                    controls={["date", "time"]}
+                    onChange={(value) => {
+                      onChange(value);
+                    }}
+                  />
+                )}
+              />
+            </FlexBox>{" "}
+            <FlexBox>
+              <LabelBox>인원</LabelBox>
+              <Controller
+                control={control}
+                name="partyMember"
+                format="YYYY-MM-DD"
+                render={({ field: { onChange } }) => (
+                  <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    onChange={(e) => onChange(e.target.value)}
+                  ></input>
+                )}
+              />
+            </FlexBox>
             <FlexBox>
               <LabelBox>지도</LabelBox>
               <InputBox onClick={postCode} {...register("cafe")} />
               <DaumPostBox ref={ref}></DaumPostBox>
             </FlexBox>{" "}
-            {/* <FlexBox>
-              <LabelBox>인원</LabelBox>
-              <InputBox {...register("partyMember")} />
-            </FlexBox> */}{" "}
-            <Controller
-              control={control}
-              name="time"
-              format="YYYY-MM-DD"
-              render={({ field: { onChange } }) => (
-                <Datepicker
-                  select="range"
-                  controls={["date", "time"]}
-                  onChange={(value) => {
-                    onChange(value);
-                  }}
-                />
-              )}
-            />
-            <Controller
-              control={control}
-              name="partyMember"
-              format="YYYY-MM-DD"
-              render={({ field: { onChange } }) => (
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  onChange={(e) => onChange(e.target.value)}
-                ></input>
-              )}
-            />
           </Inputbox>{" "}
           <Buttonbox>
             <Button
@@ -190,29 +186,30 @@ function Form() {
           </Buttonbox>
         </Formbox>
       </Wrap>
-    </>
+    </Layout>
   );
 }
 export default Form;
 
 const Wrap = styled.div`
-  width: 640px;
+  width: 100%;
   margin: 30px auto;
-  border: 2px solid black;
   border-radius: 15px;
-  background-color: wheat;
+  background-color: gray;
 `;
 
 const Formbox = styled.form`
+  width: 100%;
   padding: 20px;
   background: transparent;
   border-radius: 10px;
   display: flex;
+  flex-direction: column;
 `;
 
 const LabelBox = styled.label`
   margin-bottom: 10px;
-  font-weight: bold;
+  font-weight: 800;
   font-size: larger;
 `;
 
@@ -221,7 +218,7 @@ const Inputbox = styled.div`
   background: transparent;
   border-radius: 10px;
   display: flex;
-  width: 80%;
+  width: 90%;
   flex-direction: column;
 `;
 
@@ -240,16 +237,24 @@ const InputBox = styled.input`
 `;
 
 const Buttonbox = styled.div`
-  display: flex;
+  width: 90%;
+  display: inline-flex;
 `;
 const Button = styled.button`
+  width: 20%;
   display: flex;
+
+  justify-content: center;
   margin: 0 auto;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
 `;
 
 const DaumPostBox = styled.div`
   position: absolute;
   box-shadow: 0px 3px 3px 0px gray;
+
   top: 450px;
   left: 940px;
   width: 400px;
