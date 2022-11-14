@@ -9,13 +9,18 @@ import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Controller, useForm } from "react-hook-form";
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import { Controller } from "react-hook-form";
 import { Datepicker, setOptions } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import axios from "axios";
 
 const { kakao } = window;
 function Form() {
+  setOptions({
+    theme: "ios",
+    themeVariant: "light",
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();

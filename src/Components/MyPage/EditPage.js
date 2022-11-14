@@ -38,6 +38,10 @@ const MyPage = () => {
     }
   };
 
+  useEffect(() => {
+    getUser();
+  }, []);
+
   //수정할때 비밀번호를 넣어야함!!!!!!!!(비밀번호확인까지)
   const editUser = async (payload) => {
     try {
@@ -51,18 +55,10 @@ const MyPage = () => {
   return (
     <UserWrap>
       {user?.nickName}님의 마이페이지
-      {/* <UserCtn>
-        닉네임
-        {isEdit === 1 ? <input /> : <UserBox>{user?.nickName}</UserBox>}
-        <EditBtn
-          onClick={() => {
-            isEdit === 1 ? onSubmitHandler(1) : SetisEdit(1);
-          }}
-        />
-      </UserCtn> */}
       <UserCtn>
         {isEdit === 2 ? (
           <UserInput
+            autoFocus
             value={user.likeGame}
             name="likeGame"
             onChange={onChange}
@@ -79,6 +75,7 @@ const MyPage = () => {
       <UserCtn>
         {isEdit === 3 ? (
           <UserInput
+            autoFocus
             value={user.birth}
             type="date"
             name="birth"
@@ -95,7 +92,12 @@ const MyPage = () => {
       </UserCtn>
       <UserCtn>
         {isEdit === 4 ? (
-          <UserInput value={user.gender} name="gender" onChange={onChange} />
+          <UserInput
+            autoFocus
+            value={user.gender}
+            name="gender"
+            onChange={onChange}
+          />
         ) : (
           <UserBox>{user?.gender}</UserBox>
         )}
@@ -107,7 +109,12 @@ const MyPage = () => {
       </UserCtn>
       <UserCtn>
         {isEdit === 5 ? (
-          <UserInput value={user.address} name="address" onChange={onChange} />
+          <UserInput
+            autoFocus
+            value={user.address}
+            name="address"
+            onChange={onChange}
+          />
         ) : (
           <UserBox>{user?.address}</UserBox>
         )}
@@ -134,6 +141,8 @@ const MyPage = () => {
 };
 
 const UserWrap = styled.div`
+  width: 100%;
+  padding: 0px 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -143,23 +152,31 @@ const UserWrap = styled.div`
 `;
 
 const UserCtn = styled.div`
+  width: 100%;
   display: flex;
   gap: 30px;
 `;
 
 const UserBox = styled.div`
-  width: 300px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  width: 100%;
   height: 50px;
   border: 3px solid #9747ff;
   border-radius: 10px;
 `;
 
 const UserInput = styled.input`
-  width: 300px;
+  width: 100%;
   height: 50px;
   border: 3px solid #9747ff;
   border-radius: 10px;
+  padding-left: 20px;
   cursor: pointer;
+  :focus {
+    border: 4px solid #9747ff;
+  }
 `;
 
 const EditBtn = styled.div`

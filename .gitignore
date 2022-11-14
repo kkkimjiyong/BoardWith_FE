@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,react,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,react,visualstudiocode
 
+.npmrc
+
 ### react ###
 .DS_*
 *.log
@@ -13,6 +15,7 @@ bower_components
 
 *.sublime*
 
+.npmrc
 psd
 thumb
 sketch

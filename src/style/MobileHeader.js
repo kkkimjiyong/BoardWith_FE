@@ -6,6 +6,11 @@ const MobileHeader = () => {
 };
 
 const MobileHeaderCtn = styled.div`
+  @media only screen and (max-width: 428px) {
+    position: fixed;
+    bottom: 0px;
+  }
+
   width: 100%;
   height: 30px;
   background-color: #9747ff;

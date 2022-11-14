@@ -50,11 +50,11 @@ const MainSlide = () => {
   };
 
   useEffect(() => {
-    dispatch(acyncGetPosts());
+    // dispatch(acyncGetPosts());
     // if (!Myaddress) alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
     getPosts();
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
-    setTimeout(() => setLoading(false), 5000);
+    setTimeout(() => setLoading(false), 2000);
     // SetPosts([
     //   {
     //     title: "보드게임 괴고수 모집합니다",
@@ -94,10 +94,10 @@ const MainSlide = () => {
   // console.log(Posts);
   // console.log(Myaddress);
 
-  // //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
-  // const newcardData = useSelector((state) => state.posts.distance);
-  // //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
-  // const new2 = [...newcardData];
+  //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
+  const newcardData = useSelector((state) => state.posts.distance);
+  //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
+  const new2 = [...newcardData];
 
   // //이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   // const neardata = new2.sort((a, b) => a.distance - b.distance);
