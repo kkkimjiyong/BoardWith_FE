@@ -131,7 +131,10 @@ const Detail = () => {
     <Wrapper>
       <Wrap>
         <Layout>
+          {" "}
+          <div onClick={() => navigate("/main")}>뒤로가기</div>
           <StContainer>
+            {" "}
             <StHost>
               <div>
                 <FontAwesomeIcon
@@ -236,7 +239,6 @@ const Detail = () => {
                 참가하기
               </Stbutton>
             )}
-
             <StMap id="map">지도가 들어갑니다</StMap>
           </StContainer>
           <StCommentList></StCommentList>

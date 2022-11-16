@@ -31,7 +31,7 @@ const MyPage = () => {
       console.log(error);
     }
   };
-  console.log(user.img);
+  console.log(user?.img);
   useEffect(() => {
     getUser();
   }, []);
@@ -46,7 +46,7 @@ const MyPage = () => {
           </EditBox>
           <ProfileBox
             style={{
-              backgroundImage: `url(${user.img})`,
+              backgroundImage: `url(${user?.img})`,
               backgroundSize: "cover",
             }}
           />
