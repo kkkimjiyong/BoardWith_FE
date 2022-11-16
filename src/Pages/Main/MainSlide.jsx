@@ -83,8 +83,7 @@ const MainSlide = () => {
   // 추가된 부분
   console.log("items", items);
 
-  const [target, setTarget] = useState(null);
-  let page = 1;
+  let page = 0;
 
   const target = useRef();
 
