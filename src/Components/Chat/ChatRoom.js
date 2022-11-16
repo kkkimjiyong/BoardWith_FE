@@ -11,6 +11,10 @@ import FireNotification from "../../tools/useNotification";
 const ChatRoom = () => {
   // const socket = io("https://www.iceflower.shop/");
   const socket = io("https://www.iceflower.shop/");
+  //웹소켓으로만 통신하고싶을때
+  // {
+  //   transports: ["websocket"],
+  // }
   const [message, setMessage, onChange] = useInput();
   const [name, setName] = useState("김지용");
   const [notice, setNotice] = useState([]);
@@ -28,7 +32,7 @@ const ChatRoom = () => {
         }`
       );
       console.log(data.updateSocket.chat);
-      setChatArr(data.updateSocket.chat);
+      if (data.updateSocket.chat) setChatArr(data.updateSocket.chat);
     } catch (error) {}
   };
 
@@ -41,7 +45,8 @@ const ChatRoom = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   }, [chatArr]);
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
     socket.emit("chatMessage", {
       nickName: name,
       message: message.message,
@@ -52,6 +57,7 @@ const ChatRoom = () => {
       message: message.message,
       room: JSON.parse(localStorage.getItem("Room")).roomid,
     });
+    setMessage({ message: "" });
   };
 
   const roomsubmit = () => {
@@ -73,7 +79,7 @@ const ChatRoom = () => {
     });
   };
 
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   const exithandler = () => {
     socket.emit("leave-room", {
       nickName: name,
@@ -83,8 +89,7 @@ const ChatRoom = () => {
       nickName: name,
       room: JSON.parse(localStorage.getItem("Room")).roomid,
     });
-    localStorage.removeItem("Room");
-    naviate("/");
+    navigate(`/posts/${JSON.parse(localStorage.getItem("Room")).roomid}`);
   };
   console.log(chatArr);
 
@@ -142,14 +147,18 @@ const ChatRoom = () => {
           </div>
         </ChatHeader>
         <ChatCtn>
-          {chatArr.map((chat) => {
+          {chatArr?.map((chat) => {
             return <ChatMessage name={name} chat={chat} />;
           })}
           <div style={{ height: "0px" }} ref={scrollRef} />
         </ChatCtn>{" "}
-        <ChatInputBox>
-          <ChatInput name="message" onChange={onChange} />
-          <ChatBtn onClick={() => onSubmitHandler()}>전송</ChatBtn>
+        <ChatInputBox onSubmit={onSubmitHandler}>
+          <ChatInput
+            value={message?.message}
+            name="message"
+            onChange={onChange}
+          />
+          <ChatBtn>전송</ChatBtn>
         </ChatInputBox>
       </Wrapper>
     </>
@@ -194,7 +203,7 @@ const ChatCtn = styled.div`
   overflow-y: scroll;
 `;
 
-const ChatInputBox = styled.div`
+const ChatInputBox = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;

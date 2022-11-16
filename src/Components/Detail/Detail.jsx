@@ -87,6 +87,14 @@ const Detail = () => {
     });
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
+
+      localStorage.setItem(
+        "Room",
+        JSON.stringify({
+          roomid: res.data.data._id,
+          roomname: res.data.data.title,
+        })
+      );
     });
     dispatch(__getComments(postid));
     // handleMapInfo();
@@ -173,7 +181,7 @@ const Detail = () => {
                       size="2x"
                       icon={faPaperPlane}
                       onClick={() => {
-                        navigate("/form");
+                        navigate("/chat");
                       }}
                       cursor="pointer"
                     />
