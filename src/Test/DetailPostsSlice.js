@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { postApi } from "../../instance";
+import { postApi } from "../instance";
 
 //게시글 id로 받아오기
 export const __getPostslById = createAsyncThunk(
@@ -51,7 +51,13 @@ const detailSlice = createSlice({
       state.isLoading = false;
       state.detail = action.payload;
       console.log(action.payload);
-      localStorage.setItem("Room", action.payload.data._id);
+      localStorage.setItem(
+        "Room",
+        JSON.stringify({
+          roomid: action.payload.data._id,
+          roomname: action.payload.data.title,
+        })
+      );
     },
     [__getPostslById.rejected]: (state, action) => {
       state.isLoading = false;

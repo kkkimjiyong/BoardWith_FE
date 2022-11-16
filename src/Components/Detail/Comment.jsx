@@ -5,8 +5,13 @@ import {
   __deleteComment,
   __editComment,
 } from "../../redux/modules/CommentsSlice";
-import { commentsApi } from "../../instance";
-import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenToSquare,
+  faTrashCan,
+  faCircleCheck,
+} from "@fortawesome/free-regular-svg-icons";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Comments = ({ comments }) => {
   const dispatch = useDispatch();
@@ -19,35 +24,27 @@ const Comments = ({ comments }) => {
   };
   const [comment, setComment] = useState(initialState);
 
-  console.log("commentes", comment);
+  //console.log("commentes", comment);
 
-  const onEditHandler = () => {
-    console.log("comment", comment);
-    console.log(commentId);
-    dispatch(__editComment({ comment, commentId }));
+  const editCancel = () => {
+    setComment(initialState);
     setEdit(false);
   };
-  //console.log("comments", comments);
 
-  // const onEditHandler = () => {
-  //   console.log("commentId", commentId);
-  //   console.log("comment", { comment });
-  //   commentsApi
-  //     .editComments({
-  //       comment: { comment },
-  //       commentId: comments._id,
-  //     })
-  //     .then((res) => {
-  //       console.log("res", res);
-  //       //alert(res.data.message);
-  //       setComment(initialState);
-  //       // navigate(-1);
-  //     })
-  //     .catch((error) => {
-  //       alert("잘못된 값을 입력하셨습니다.");
-  //     });
-  //   setEdit(false);
-  // };
+  const onEditHandler = () => {
+    console.log(comment);
+    if (comment.comment === "") {
+      alert("수정할 내용을 입력해주세요");
+    } else {
+      dispatch(__editComment({ comment, commentId }));
+      setComment(initialState);
+      setEdit(false);
+    }
+    // console.log("comment", comment);
+    // console.log(commentId);
+    // dispatch(__editComment({ comment, commentId }));
+    // setEdit(false);
+  };
 
   const onDelCommentHandler = () => {
     const result = window.confirm("정말로 삭제하시겠습니까?");
@@ -60,12 +57,31 @@ const Comments = ({ comments }) => {
   };
 
   return (
-    <CommentBox key={comments.id}>
+    <CommentBox key={comment._id}>
       {!isEdit ? (
         <>
-          <CommentBody>{comments?.userId}</CommentBody>
+          <CommentBody>{comments?.nickName}</CommentBody>
           <CommentBody>{comments?.comment}</CommentBody>
-          <button onClick={() => setEdit(true)}>수정</button>
+          <Sticon>
+            <FontAwesomeIcon
+              style={{
+                color: "#919191",
+              }}
+              size="2x"
+              icon={faPenToSquare}
+              cursor="pointer"
+              onClick={() => setEdit(true)}
+            />
+            <FontAwesomeIcon
+              style={{
+                color: "#919191",
+              }}
+              size="2x"
+              icon={faTrashCan}
+              cursor="pointer"
+              onClick={() => onDelCommentHandler(comment.id)}
+            />
+          </Sticon>
         </>
       ) : (
         <>
@@ -83,10 +99,26 @@ const Comments = ({ comments }) => {
             //   setComment(e.target.value);
             // }}
           ></StText>
-          <button onClick={() => onEditHandler(comment.id)}>저장</button>
+          <FontAwesomeIcon
+            style={{
+              color: "#919191",
+            }}
+            size="2x"
+            icon={faCircleCheck}
+            onClick={() => onEditHandler(comment.id)}
+            cursor="pointer"
+          />
+          <FontAwesomeIcon
+            style={{
+              color: "#919191",
+            }}
+            size="2x"
+            icon={faXmark}
+            onClick={editCancel}
+            cursor="pointer"
+          />
         </>
       )}
-      <button onClick={() => onDelCommentHandler(comment.id)}>삭제</button>
     </CommentBox>
   );
 };
@@ -94,24 +126,33 @@ const Comments = ({ comments }) => {
 export default Comments;
 
 const CommentBox = styled.div`
-  margin: 20px 0px 0px 50px;
+  margin: 20px 5px 0px 5px;
   display: flex;
-  border: 1px solid salmon;
+  border: 1px solid #d7d7d7;
   border-radius: 10px;
-  padding: 5px;
-  height: 40px;
+  padding: 10px 20px 0 20px;
+  height: 100%;
 `;
 
 const CommentBody = styled.div`
   font-size: 20px;
-  width: 700px;
-  height: 30px;
+  width: 100%;
+  height: 100%;
 `;
 
-const StText = styled.textarea`
-  height: 30px;
-  width: 1000px;
+const StText = styled.input`
+  height: 100%;
+  width: 100%;
   background-color: transparent;
   border-bottom: 1px solid;
-  border-color: transparent transparent black transparent;
+  border-color: transparent transparent #d7d7d7 transparent;
+  :focus {
+    outline: none;
+  }
+`;
+const Sticon = styled.div`
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 5px;
 `;

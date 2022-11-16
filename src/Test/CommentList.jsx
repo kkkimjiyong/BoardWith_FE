@@ -3,11 +3,8 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import {
-  __getComments,
-  __postComments,
-} from "../../redux/modules/CommentsSlice";
-import Comments from "./Comment";
+import { __getComments, __postComments } from "../redux/modules/CommentsSlice";
+import Comments from "../Components/Detail/Comment";
 
 const CommentList = () => {
   const { postid } = useParams();
@@ -20,7 +17,7 @@ const CommentList = () => {
   const [comment, setComment] = useState(initialState);
 
   const { comments } = useSelector((state) => state.comments.comments);
-  //console.log("코멘트리스트", comments);
+  console.log("코멘트리스트", comments);
   useEffect(() => {
     dispatch(__getComments(postid));
   }, [dispatch]);
@@ -129,7 +126,7 @@ const Btnbox = styled.div`
     padding: 0;
     width: 200px;
     height: 40px;
-    background-color: salmon;
+    background-color: #d7d7d7;
     color: white;
     border: none;
     border-radius: 5px;

@@ -16,6 +16,7 @@ const MainSlide = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [Posts, SetPosts] = useState();
+  const [targetMargin, setTargetMargin] = useState(0);
 
   //초기값은 스파르타코딩클럽 본사위치로
   const [Myaddress, SetMyaddress] = useState({
@@ -43,7 +44,7 @@ const MainSlide = () => {
 
   const getPosts = async () => {
     try {
-      const { data } = await axios.get("https://www.iceFlower.shop/posts");
+      const { data } = await axios.get("https://www.iceflower.shop/posts");
       SetPosts(data.data);
     } catch (error) {
       console.log(error);
@@ -56,71 +57,30 @@ const MainSlide = () => {
     getPosts();
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
     setTimeout(() => setLoading(false), 1500);
-    // SetPosts([
-    //   {
-    //     title: "보드게임 괴고수 모집합니다",
-    //     content: "3232131",
-    //     location: { x: "127.034757121285", y: "37.4849665053325" },
-    //     cafe: "서울 강남구 강남대로 238",
-    //     date: "Thu Nov 10 2022 00:00:00 GMT+0900 (한국 표준시)",
-    //     time: "새벽3시",
-    //     map: "강남구",
-    //     partyMember: 4,
-    //   },
-    //   {
-    //     title: "보드게임 괴고수 모집합니다",
-    //     content: "321dssds",
-    //     location: { x: "128.034757121285", y: "37.4849665053325" },
-    //     cafe: "서울 강남구 강남대로 238",
-    //     date: "Thu Nov 10 2022 00:00:00 GMT+0900 (한국 표준시)",
-    //     time: "새벽3시",
-    //     map: "강남구",
-    //     partyMember: 4,
-    //   },
-    //   {
-    //     title: "보드게임 괴고수 모집합니다",
-    //     content: "32saaa1",
-    //     location: { x: "127.054757121285", y: "37.4849665053325" },
-    //     cafe: "서울 강남구 강남대로 238",
-    //     date: "Thu Nov 10 2022 00:00:00 GMT+0900 (한국 표준시)",
-    //     time: "새벽3시",
-    //     map: "강남구",
-    //     partyMember: 4,
-    //   },
-    // ]);
     //내 위치를 좌표값으로 알려주는 카카오 MAP API
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
 
-  // console.log(Posts);
-  // console.log(Myaddress);
+  console.log(Posts);
+  console.log(Myaddress);
 
   //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
   const newcardData = useSelector((state) => state.posts.distance);
   //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
   const new2 = [...newcardData];
 
-  // //이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
-  // const neardata = new2.sort((a, b) => a.distance - b.distance);
-  // console.log(newcardData);
-  // console.log(neardata);
-  //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
-  // const newcardData = useSelector((state) => state.posts.distance);
-  //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
-  // const new2 = [...newcardData];
+  // 이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
+  const neardata = new2.sort((a, b) => a.distance - b.distance);
+  console.log(newcardData);
+  console.log(neardata);
 
-  //이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
-  // const neardata = new2.sort((a, b) => a.distance - b.distance);
-  // console.log(newcardData);
-  // console.log(neardata);
-
-  // const items = useSelector((state) => state.posts.data);
-  // console.log(items);
+  const itemss = useSelector((state) => state.posts.data);
+  console.log(itemss);
 
   const [items, setItems] = useState([]); // 추가된 부분
   console.log("items", items);
   const [target, setTarget] = useState(null);
-  let page = 0;
+  let page = 1;
 
   const getData = async () => {
     const response = await axios.get(
@@ -131,6 +91,7 @@ const MainSlide = () => {
     setItems((prev) => prev.concat(response.data.data));
     page += 1;
   };
+  console.log(targetMargin);
 
   useEffect(() => {
     let observer;
@@ -143,7 +104,7 @@ const MainSlide = () => {
           observer.observe(entry.target);
         }
       };
-      observer = new IntersectionObserver(onIntersect, { threshold: 0.5 }); // 추가된 부분
+      observer = new IntersectionObserver(onIntersect, { threshold: 0.1 }); // 추가된 부분
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
@@ -179,18 +140,21 @@ const MainSlide = () => {
         >
           다음페이지
         </button>
-        <MainFilter items={items} setItems={setItems} getData={getData} />
       </MainBox>{" "}
-      <Target ref={target}>This is Target.</Target>
+      <MainFilter
+        targetMargin={targetMargin}
+        setTargetMargin={setTargetMargin}
+        items={items}
+        setItems={setItems}
+        getData={getData}
+      />
     </>
   );
 };
 
 export default MainSlide;
 
-const Target = styled.div`
-  margin-top: 500px;
-`;
+const Target = styled.div``;
 
 const MainBox = styled.div`
   width: 100%;

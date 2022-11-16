@@ -8,7 +8,14 @@ import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import Slider from "@mui/material/Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
-const MainFilter = ({ items, setItems, getData }) => {
+
+const MainFilter = ({
+  items,
+  setItems,
+  getData,
+  setTargetMargin,
+  targetMargin,
+}) => {
   const [open, setOpen] = useState();
 
   const onDateChange = (e) => {
@@ -60,7 +67,7 @@ const MainFilter = ({ items, setItems, getData }) => {
 
   const [filtered, setFiltered] = useState({
     time: [0, 99999999999],
-    partyMember: "10",
+    partyMember: [2, 4],
     map: "구",
   });
 
@@ -70,13 +77,21 @@ const MainFilter = ({ items, setItems, getData }) => {
       filtered.partyMember[0] < item.partyMember < filtered.partyMember[1] &&
       item.map.includes(filtered.map)
   );
+  //필터 선택하기
+  const filterhandler = () => {
+    setItems(filteredItems);
+    console.log(filteredItems.length);
+    if (filteredItems.length < 5) {
+      setTargetMargin((5 - filteredItems.length) * 200);
+    }
+    console.log(targetMargin);
+  };
 
   console.log(filteredItems);
 
   console.log(filtered);
 
-  // const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-
+  //양방향 인원 체크
   function valuetext(value) {
     return `${value}`;
   }
@@ -118,118 +133,42 @@ const MainFilter = ({ items, setItems, getData }) => {
 
       <div>
         <Contentbox>
-          <ContentForm
-            onSubmit={(e) => {
-              e.preventDefault();
-
-              setItems(filteredItems);
-            }}
-          >
-            <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
-            <ContentLabel>날짜 및 시간</ContentLabel>
-            <Datepicker
-              name="time"
-              select="range"
-              controls={["date", "time"]}
-              onChange={onDateChange}
+          <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
+          <ContentLabel>날짜 및 시간</ContentLabel>
+          <Datepicker
+            name="time"
+            select="range"
+            controls={["date", "time"]}
+            onChange={onDateChange}
+          />
+          <ContentLabel>인원</ContentLabel>
+          <InputBox>
+            <MemberSlider
+              value={value2}
+              onChange={handleChange2}
+              valueLabelDisplay="on"
+              getAriaValueText={valuetext}
+              disableSwap
+              min={1}
+              max={10}
+              marks
+              sx={{ color: "black" }}
             />
-            <ContentLabel>인원</ContentLabel>
-            <InputBox>
-              {/* <input
-                className="name_box"
-                style={{ color: "black" }}
-                name="partyMember"
-                type="range"
-                min="1"
-                max="10"
-                onChange={onChange}
-                list="tickmarks"
-              ></input>
-              <datalist id="tickmarks">
-                <option value="0" label="1" />
-                <option value="1" />
-                <option value="2" />
-                <option value="3" />
-                <option value="4" />
-                <option value="5" />
-                <option value="6" />
-                <option value="7" />
-                <option value="8" />
-                <option value="9" />
-                <option value="10" />
-              </datalist>{" "}
-              <Output htmlFor="range" id="output">
-                {Member.map((item) => (
-                  <div>{item}</div>
-                ))}
-              </Output> */}
-              {/* <Slider
-                getAriaLabel={() => "Minimum distance"}
-                value={value1}
-                onChange={handleChange1}
-                valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
-                disableSwap
-              /> */}
-              <Slider
-                style={{ marginTop: "50px" }}
-                getAriaLabel={() => "Minimum distance shift"}
-                value={value2}
-                onChange={handleChange2}
-                valueLabelDisplay="on"
-                getAriaValueText={valuetext}
-                disableSwap
-                min={1}
-                max={10}
-                marks
-                color="secondary"
-                valueLabelFormat={(value) => {
-                  return (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "-30px",
-                        left: "-3px",
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        style={{ color: "black" }}
-                        size="3x"
-                        icon={faLocationPin}
-                      ></FontAwesomeIcon>
-                      <div
-                        style={{
-                          position: "relative",
-                          bottom: "32px",
-                          color: "white",
-                          ZIndex: 999,
-                        }}
-                      >
-                        {value}
-                      </div>
-                    </div>
-                  );
-                }}
-                sx={{
-                  color: "black",
-                }}
-              />
-            </InputBox>
+          </InputBox>
 
-            <ContentLabel>위치</ContentLabel>
+          <ContentLabel>위치</ContentLabel>
 
-            <select
-              name="map"
-              size={1}
-              onChange={onChange}
-              defaultValue={seoulGu[0]}
-            >
-              {seoulGu.map((location) => {
-                return <option value={location.value}>{location.label}</option>;
-              })}
-            </select>
-            <ContentButton>선택하기</ContentButton>
-          </ContentForm>
+          <select
+            name="map"
+            size={1}
+            onChange={onChange}
+            defaultValue={seoulGu[0]}
+          >
+            {seoulGu.map((location) => {
+              return <option value={location.value}>{location.label}</option>;
+            })}
+          </select>
+          <ContentButton onClick={filterhandler}>선택하기</ContentButton>
         </Contentbox>
       </div>
     </Wrap>
@@ -237,6 +176,45 @@ const MainFilter = ({ items, setItems, getData }) => {
 };
 
 export default MainFilter;
+
+const MemberSlider = styled(Slider)({
+  color: "black",
+  height: 8,
+  "& .MuiSlider-track": {
+    border: "none",
+  },
+  "& .MuiSlider-thumb": {
+    height: 15,
+    width: 15,
+    backgroundColor: "black",
+    border: "2px solid currentColor",
+    "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
+      boxShadow: "inherit",
+    },
+    "&:before": {
+      display: "none",
+    },
+  },
+  "& .MuiSlider-valueLabel": {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: "unset",
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: "50% 50% 50% 0",
+    backgroundColor: "black",
+    transformOrigin: "bottom left",
+    transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
+    "&:before": { display: "none" },
+    "&.MuiSlider-valueLabelOpen": {
+      transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
+    },
+    "& > *": {
+      transform: "rotate(45deg)",
+    },
+  },
+});
 
 const Wrap = styled.div`
   display: flex;
