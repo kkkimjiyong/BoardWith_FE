@@ -16,6 +16,7 @@ const MainSlide = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [Posts, SetPosts] = useState();
+
   //초기값은 스파르타코딩클럽 본사위치로
   const [Myaddress, SetMyaddress] = useState({
     latitude: 127.037921,
@@ -119,7 +120,6 @@ const MainSlide = () => {
   const [items, setItems] = useState([]); // 추가된 부분
   console.log("items", items);
   const [target, setTarget] = useState(null);
-  const targetStyle = { width: "100%", height: "200px" };
   let page = 0;
 
   const getData = async () => {
@@ -129,7 +129,7 @@ const MainSlide = () => {
     console.log(response.data.data);
     // const data = await response.json();
     setItems((prev) => prev.concat(response.data.data));
-    page += 5;
+    page += 1;
   };
 
   useEffect(() => {
@@ -144,7 +144,7 @@ const MainSlide = () => {
           observer.observe(entry.target);
         }
       };
-      observer = new IntersectionObserver(onIntersect, { threshold: 1 }); // 추가된 부분
+      observer = new IntersectionObserver(onIntersect, { threshold: 0.5 }); // 추가된 부분
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
@@ -155,71 +155,83 @@ const MainSlide = () => {
   }, [items]);
 
   return (
-
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        textAlign: "center",
-      }}
-    >
-      {items?.map((items, idx) => {
-        return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
-      })}
-      <div ref={setTarget}>This is Target.</div>
-      <MainFilter items={items} setItems={setItems} getData={getData} />
-    </div>
-
+    <>
+      <MainBox
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          textAlign: "center",
+          gap: "10px",
+        }}
+      >
+        {items?.map((items, idx) => {
+          return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+        })}
+        <button
+          onClick={() => {
+            getData();
+          }}
+        >
+          다음페이지
+        </button>
+        <MainFilter items={items} setItems={setItems} getData={getData} />
+      </MainBox>{" "}
+      <Target ref={target}>This is Target.</Target>
+    </>
   );
 };
 
 export default MainSlide;
 
-const MainBox = styled.div`
-  max-width: 540px;
-  height: 660px;
+const Target = styled.div`
+  margin-top: 500px;
 `;
 
-const Container = styled.div`
-  background-color: #afb4ff;
-  display: grid;
-  gap: 20px 20px;
-  padding: 20px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(3, minmax(100px, auto));
-  width: 100%;
-  max-width: 540px;
-  height: 660px;
-`;
-const AppWrap = styled.div`
+const MainBox = styled.div`
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-
-  .Target-Element {
-    width: 100vw;
-    height: 140px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-  }
 `;
-const GlobalStyle = styled.div`
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    padding: 0px;
-    margin: 0px;
-  }
 
-  body {
-    background-color: #f2f5f7;
-  }
-`;
+// const Container = styled.div`
+//   background-color: #afb4ff;
+//   display: grid;
+//   gap: 20px 20px;
+//   padding: 20px;
+//   grid-template-columns: 1fr 1fr;
+//   grid-template-rows: repeat(3, minmax(100px, auto));
+//   width: 100%;
+//   max-width: 540px;
+//   height: 660px;
+// `;
+// const AppWrap = styled.div`
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   text-align: center;
+//   align-items: center;
+
+//   .Target-Element {
+//     width: 100vw;
+//     height: 140px;
+//     display: flex;
+//     justify-content: center;
+//     text-align: center;
+//     align-items: center;
+//   }
+// `;
+// const GlobalStyle = styled.div`
+//   *,
+//   *::before,
+//   *::after {
+//     box-sizing: border-box;
+//     padding: 0px;
+//     margin: 0px;
+//   }
+
+//   body {
+//     background-color: #f2f5f7;
+//   }
+// `;

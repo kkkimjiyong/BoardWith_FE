@@ -8,8 +8,6 @@ import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 
 const MainFilter = ({ items, setItems, getData }) => {
   const [open, setOpen] = useState();
-  const [filtered, setFiltered] = useState({});
-  console.log("filtered", filtered);
 
   const onDateChange = (e) => {
     setFiltered({
@@ -23,6 +21,7 @@ const MainFilter = ({ items, setItems, getData }) => {
       ...filtered,
       [name]: value,
     });
+    console.log(filtered);
   };
 
   setOptions({
@@ -58,29 +57,22 @@ const MainFilter = ({ items, setItems, getData }) => {
     { value: "중랑구", label: "중랑구" },
   ];
 
-  //필터 만들 부분
-  const baseData = {
-    data: {
-      normal: items,
-      time: items.filter((data) => data.time === filtered.time),
-      partyMember: items.filter(
-        (data) => data.partyMember === filtered.partyMember
-      ),
-      map: items.filter((data) => data.map === filtered.map),
-    },
-  };
-  const onFilterHandler = () => {
-    if (filtered?.time) {
-      setItems(baseData["data"]["time"]);
-      console.log(baseData);
-    } else if (filtered?.partyMember) {
-      setItems(baseData["data"]["partyMember"]);
-      console.log(baseData);
-    } else if (filtered?.map) {
-      setItems(baseData["data"]["map"]);
-      console.log(baseData);
-    }
-  };
+  const [filtered, setFiltered] = useState({
+    time: [0, 99999999999],
+    partyMember: "10",
+    map: "구",
+  });
+
+  const filteredItems = items.filter(
+    (item) =>
+      filtered.time[0] < item.time < filtered.time[1] &&
+      item.partyMember < filtered.partyMember &&
+      item.map.includes(filtered.map)
+  );
+
+  console.log(filteredItems);
+
+  console.log(filtered);
 
   const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   return (
@@ -111,31 +103,31 @@ const MainFilter = ({ items, setItems, getData }) => {
           <ContentLabel>인원</ContentLabel>
           <form>
             <output htmlFor="range" id="output">
-            {Member}
-          </output>
-          <input
-            name="partyMember"
-            type="range"
-            min="1"
-            max="10"
-            onChange={onChange}
-            list="tickmarks"
-          ></input>
-          <datalist id="tickmarks">
-            <option value="0" label="1" />
-            <option value="1" />
-            <option value="2" />
-            <option value="3" />
-            <option value="4" />
-            <option value="5" />
-            <option value="6" />
-            <option value="7" />
-            <option value="8" />
-            <option value="9" />
-            <option value="10" />
-          </datalist>
+              {Member}
+            </output>
+            <input
+              name="partyMember"
+              type="range"
+              min="1"
+              max="10"
+              onChange={onChange}
+              list="tickmarks"
+            ></input>
+            <datalist id="tickmarks">
+              <option value="0" label="1" />
+              <option value="1" />
+              <option value="2" />
+              <option value="3" />
+              <option value="4" />
+              <option value="5" />
+              <option value="6" />
+              <option value="7" />
+              <option value="8" />
+              <option value="9" />
+              <option value="10" />
+            </datalist>
           </form>
-          
+
           <ContentLabel>위치</ContentLabel>
 
           <select
@@ -148,7 +140,13 @@ const MainFilter = ({ items, setItems, getData }) => {
               return <option value={location.value}>{location.label}</option>;
             })}
           </select>
-          <ContentButton onClick={onFilterHandler}>선택하기</ContentButton>
+          <ContentButton
+            onClick={() => {
+              setItems(filteredItems);
+            }}
+          >
+            선택하기
+          </ContentButton>
           {/* </ContentForm> */}
         </Contentbox>
       </div>
