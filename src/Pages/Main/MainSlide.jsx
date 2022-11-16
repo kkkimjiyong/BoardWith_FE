@@ -44,7 +44,7 @@ const MainSlide = () => {
 
   const getPosts = async () => {
     try {
-      const { data } = await axios.get("https://www.iceflower.shop/posts");
+      const { data } = await axios.get("https://www.iceFlower.shop/posts");
       SetPosts(data.data);
     } catch (error) {
       console.log(error);
@@ -94,7 +94,6 @@ const MainSlide = () => {
   console.log(targetMargin);
 
   useEffect(() => {
-    console.log("h!");
     let observer;
     if (target) {
       const onIntersect = async ([entry], observer) => {
@@ -110,10 +109,6 @@ const MainSlide = () => {
     }
     return () => observer && observer.disconnect();
   }, [target]);
-  //필터 만들 부분~!
-  useEffect(() => {
-    setItems(items);
-  }, [items]);
 
   return (
     <>
@@ -126,8 +121,20 @@ const MainSlide = () => {
           gap: "10px",
         }}
       >
-        {items?.map((items, idx) => {
+        {/* {items?.map((items, idx) => {
           return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+
+        })} */}
+        {items?.map((items, idx) => {
+          if (items.participant.length < items.partyMember) {
+            console.log("참가자수", items.participant.length);
+            console.log("참가가능한수", items.partyMember);
+            return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+          } else {
+            <div>마감되었습니다</div>;
+          }
+        })}
+
         })}{" "}
         <Target
           style={
@@ -139,6 +146,7 @@ const MainSlide = () => {
         >
           This is Target.
         </Target>{" "}
+
         <button
           onClick={() => {
             getData();

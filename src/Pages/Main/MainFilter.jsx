@@ -5,6 +5,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { Datepicker, setOptions } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import Slider from "@mui/material/Slider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
 
 const MainFilter = ({
   items,
@@ -27,7 +30,6 @@ const MainFilter = ({
       ...filtered,
       [name]: value,
     });
-    console.log(filtered);
   };
 
   setOptions({
@@ -72,7 +74,7 @@ const MainFilter = ({
   const filteredItems = items.filter(
     (item) =>
       filtered.time[0] < item.time < filtered.time[1] &&
-      item.partyMember < filtered.partyMember &&
+      filtered.partyMember[0] < item.partyMember < filtered.partyMember[1] &&
       item.map.includes(filtered.map)
   );
 
@@ -89,7 +91,38 @@ const MainFilter = ({
 
   console.log(filtered);
 
-  const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  // const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+  function valuetext(value) {
+    return `${value}`;
+  }
+
+  const minDistance = 1;
+
+  const [value2, setValue2] = useState([2, 4]);
+
+  const handleChange2 = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 10 - minDistance);
+        setValue2([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        setValue2([clamped - minDistance, clamped]);
+      }
+    } else {
+      setValue2(newValue);
+      setFiltered({
+        ...filtered,
+        partyMember: newValue,
+      });
+    }
+  };
+
   return (
     <Wrap open={open}>
       <div
@@ -101,68 +134,120 @@ const MainFilter = ({
 
       <div>
         <Contentbox>
-          {/* <ContentForm
+          <ContentForm
             onSubmit={(e) => {
               e.preventDefault();
+
+              setItems(filteredItems);
+
               filterSumitHandler(filtered);
             }}
           > */}
-          <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
-          <ContentLabel>날짜 및 시간</ContentLabel>
-          <Datepicker
-            name="time"
-            select="range"
-            controls={["date", "time"]}
-            onChange={onDateChange}
-          />
-          <ContentLabel>인원</ContentLabel>
-          <form>
-            <output htmlFor="range" id="output">
-              {Member}
-            </output>
-            <input
-              name="partyMember"
-              type="range"
-              min="1"
-              max="10"
+            <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
+            <ContentLabel>날짜 및 시간</ContentLabel>
+            <Datepicker
+              name="time"
+              select="range"
+              controls={["date", "time"]}
+              onChange={onDateChange}
+            />
+            <ContentLabel>인원</ContentLabel>
+            <InputBox>
+              {/* <input
+                className="name_box"
+                style={{ color: "black" }}
+                name="partyMember"
+                type="range"
+                min="1"
+                max="10"
+                onChange={onChange}
+                list="tickmarks"
+              ></input>
+              <datalist id="tickmarks">
+                <option value="0" label="1" />
+                <option value="1" />
+                <option value="2" />
+                <option value="3" />
+                <option value="4" />
+                <option value="5" />
+                <option value="6" />
+                <option value="7" />
+                <option value="8" />
+                <option value="9" />
+                <option value="10" />
+              </datalist>{" "}
+              <Output htmlFor="range" id="output">
+                {Member.map((item) => (
+                  <div>{item}</div>
+                ))}
+              </Output> */}
+              {/* <Slider
+                getAriaLabel={() => "Minimum distance"}
+                value={value1}
+                onChange={handleChange1}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                disableSwap
+              /> */}
+              <Slider
+                style={{ marginTop: "50px" }}
+                getAriaLabel={() => "Minimum distance shift"}
+                value={value2}
+                onChange={handleChange2}
+                valueLabelDisplay="on"
+                getAriaValueText={valuetext}
+                disableSwap
+                min={1}
+                max={10}
+                marks
+                color="secondary"
+                valueLabelFormat={(value) => {
+                  return (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "-30px",
+                        left: "-3px",
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        style={{ color: "black" }}
+                        size="3x"
+                        icon={faLocationPin}
+                      ></FontAwesomeIcon>
+                      <div
+                        style={{
+                          position: "relative",
+                          bottom: "32px",
+                          color: "white",
+                          ZIndex: 999,
+                        }}
+                      >
+                        {value}
+                      </div>
+                    </div>
+                  );
+                }}
+                sx={{
+                  color: "black",
+                }}
+              />
+            </InputBox>
+
+            <ContentLabel>위치</ContentLabel>
+
+            <select
+              name="map"
+              size={1}
               onChange={onChange}
-              list="tickmarks"
-            ></input>
-            <datalist id="tickmarks">
-              <option value="0" label="1" />
-              <option value="1" />
-              <option value="2" />
-              <option value="3" />
-              <option value="4" />
-              <option value="5" />
-              <option value="6" />
-              <option value="7" />
-              <option value="8" />
-              <option value="9" />
-              <option value="10" />
-            </datalist>
-          </form>
-
-          <ContentLabel>위치</ContentLabel>
-
-          <select
-            name="map"
-            size={1}
-            onChange={onChange}
-            defaultValue={seoulGu[0]}
-          >
-            {seoulGu.map((location) => {
-              return <option value={location.value}>{location.label}</option>;
-            })}
-          </select>
-          <ContentButton
-            onClick={() => {
-              filterhandler();
-            }}
-          >
-            선택하기
-          </ContentButton>
-          {/* </ContentForm> */}
+              defaultValue={seoulGu[0]}
+            >
+              {seoulGu.map((location) => {
+                return <option value={location.value}>{location.label}</option>;
+              })}
+            </select>
+            <ContentButton>선택하기</ContentButton>
+          </ContentForm>
         </Contentbox>
       </div>
     </Wrap>
@@ -204,17 +289,22 @@ const Contentbox = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
-  margin-top: 40px;
 `;
 
 const ContentForm = styled.form`
   margin-top: 70px;
+  display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
 `;
 
 const InputBox = styled.div`
   display: flex;
-  width: 200px;
+  flex-direction: column;
+`;
+const Output = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const ContentInput = styled.input`
@@ -244,4 +334,5 @@ const SlideLabel = styled.div`
 `;
 const ContentLabel = styled.label`
   font-weight: 800;
+  margin-top: 20px;
 `;
