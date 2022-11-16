@@ -73,7 +73,7 @@ const ChatRoom = () => {
     });
   };
 
-  const naviate = useNavigate();
+  const navigate = useNavigate();
   const exithandler = () => {
     socket.emit("leave-room", {
       nickName: name,
@@ -83,8 +83,7 @@ const ChatRoom = () => {
       nickName: name,
       room: JSON.parse(localStorage.getItem("Room")).roomid,
     });
-    localStorage.removeItem("Room");
-    naviate("/");
+    navigate(`/posts/${JSON.parse(localStorage.getItem("Room")).roomid}`);
   };
   console.log(chatArr);
 
@@ -142,7 +141,7 @@ const ChatRoom = () => {
           </div>
         </ChatHeader>
         <ChatCtn>
-          {chatArr.map((chat) => {
+          {chatArr?.map((chat) => {
             return <ChatMessage name={name} chat={chat} />;
           })}
           <div style={{ height: "0px" }} ref={scrollRef} />
