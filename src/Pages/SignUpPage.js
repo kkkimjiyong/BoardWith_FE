@@ -5,6 +5,9 @@ import Logo from "../style/Logo";
 import MobileHeader from "../style/MobileHeader";
 
 const SignUpPage = () => {
+
+
+  
   return (
     <div>
       <Layout>
