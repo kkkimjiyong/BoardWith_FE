@@ -7,10 +7,10 @@ const ChatMessage = ({ chat, name }) => {
     <ChatCtn className={chat.nickName !== name && "anonymous"}>
       <ChatProfile>
         <ProfileBox></ProfileBox>
-        <div>{chat.nickName}</div>
-      </ChatProfile>
+      </ChatProfile>{" "}
       <ChatBox>
-        <div>{chat.message}</div>
+        <ChatNickName>{chat.nickName}</ChatNickName>{" "}
+        <ChatMessageBox>{chat.message}</ChatMessageBox>
       </ChatBox>
     </ChatCtn>
   );
@@ -18,23 +18,36 @@ const ChatMessage = ({ chat, name }) => {
 
 const ChatCtn = styled.div`
   width: 100%;
+  height: 13%;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
+  align-items: center;
   align-items: flex-end;
   //내가 아닌 상대가 보냈을 때
   &.anonymous {
-    flex-direction: row-reverse;
+    flex-direction: row;
   }
 `;
 
 const ChatBox = styled.div`
-  height: 100%;
-  border: 2px solid #be8eff;
+  height: 80%;
+  margin-bottom: 10px;
   border-radius: 5px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   padding: 10px;
+`;
+
+const ChatNickName = styled.div`
+  font-size: 13px;
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const ChatMessageBox = styled.div`
+  border: 2px solid #be8eff;
+  border-radius: 15px;
+  padding: 5px 20px;
 `;
 
 const ChatProfile = styled.div`
@@ -43,7 +56,6 @@ const ChatProfile = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
 `;
 
 const ProfileBox = styled.div`

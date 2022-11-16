@@ -2,7 +2,7 @@ import axios from "axios";
 import { getCookie } from "./hooks/CookieHook";
 
 const instance = axios.create({
-  baseURL: "https://www.spartaseosu.shop/",
+  baseURL: "https://www.iceflower.shop/",
   headers: {
     Authorization: `${getCookie("accessToken")}`,
   },

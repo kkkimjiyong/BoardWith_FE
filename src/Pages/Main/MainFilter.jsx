@@ -8,7 +8,14 @@ import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import Slider from "@mui/material/Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
-const MainFilter = ({ items, setItems, getData }) => {
+
+const MainFilter = ({
+  items,
+  setItems,
+  getData,
+  setTargetMargin,
+  targetMargin,
+}) => {
   const [open, setOpen] = useState();
 
   const onDateChange = (e) => {
@@ -71,6 +78,15 @@ const MainFilter = ({ items, setItems, getData }) => {
       item.map.includes(filtered.map)
   );
 
+  const filterhandler = () => {
+    setItems(filteredItems);
+    console.log(filteredItems.length);
+    if (filteredItems.length < 5) {
+      setTargetMargin((5 - filteredItems.length) * 200);
+    }
+    console.log(targetMargin);
+  };
+
   console.log(filteredItems);
 
   console.log(filtered);
@@ -123,8 +139,10 @@ const MainFilter = ({ items, setItems, getData }) => {
               e.preventDefault();
 
               setItems(filteredItems);
+
+              filterSumitHandler(filtered);
             }}
-          >
+          > */}
             <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
             <ContentLabel>날짜 및 시간</ContentLabel>
             <Datepicker
