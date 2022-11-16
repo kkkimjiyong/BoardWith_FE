@@ -110,7 +110,7 @@ function Form() {
 
   const ref = useRef(null);
   const postConfig = {
-    ref: ref, //팝업창으로 사용시 해당 파라메터를 없애면 된다.
+    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
       setValue("cafe", data.address);
