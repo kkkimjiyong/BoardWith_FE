@@ -95,7 +95,7 @@ const ChatRoom = () => {
 
   useEffect(() => {
     console.log("render!");
-    // roomsubmit();
+    roomsubmit();
     // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
     socket.on("roomUsers", (msg) => {
       console.log("룸유저들을 받음", msg);
