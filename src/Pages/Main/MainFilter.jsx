@@ -130,7 +130,6 @@ const MainFilter = ({
           setOpen((open) => !open);
         }}
       ></div>
-
       <div>
         <Contentbox>
           <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
@@ -143,7 +142,41 @@ const MainFilter = ({
           />
           <ContentLabel>인원</ContentLabel>
           <InputBox>
+
             <MemberSlider
+
+            {/* <input
+                className="name_box"
+                style={{ color: "black" }}
+                name="partyMember"
+                type="range"
+                min="1"
+                max="10"
+                onChange={onChange}
+                list="tickmarks"
+              ></input>
+              <datalist id="tickmarks">
+                <option value="0" label="1" />
+                <option value="1" />
+                <option value="2" />
+                <option value="3" />
+                <option value="4" />
+                <option value="5" />
+                <option value="6" />
+                <option value="7" />
+                <option value="8" />
+                <option value="9" />
+                <option value="10" />
+              </datalist>{" "}
+              <Output htmlFor="range" id="output">
+                {Member.map((item) => (
+                  <div>{item}</div>
+                ))}
+              </Output> */}
+       
+              style={{ marginTop: "50px" }}
+              getAriaLabel={() => "Minimum distance shift"}
+
               value={value2}
               onChange={handleChange2}
               valueLabelDisplay="on"
@@ -152,7 +185,7 @@ const MainFilter = ({
               min={1}
               max={10}
               marks
-              sx={{ color: "black" }}
+
             />
           </InputBox>
 
@@ -168,7 +201,11 @@ const MainFilter = ({
               return <option value={location.value}>{location.label}</option>;
             })}
           </select>
+
           <ContentButton onClick={filterhandler}>선택하기</ContentButton>
+
+ 
+
         </Contentbox>
       </div>
     </Wrap>
@@ -217,10 +254,10 @@ const MemberSlider = styled(Slider)({
 });
 
 const Wrap = styled.div`
+  margin-bottom: 10%;
   display: flex;
   flex-direction: column;
   max-width: 640px;
-  margin: 0 auto;
   padding: 10px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -228,8 +265,10 @@ const Wrap = styled.div`
   background-color: white;
   height: ${({ open }) => (open ? "500px" : "30px")};
   position: fixed;
+
   bottom: 0;
   left: 0%;
+
   transition: height 400ms ease-in-out;
   .innerDiv {
     position: absolute;
@@ -245,6 +284,7 @@ const Wrap = styled.div`
 `;
 
 const Contentbox = styled.div`
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   flex-direction: column;

@@ -66,6 +66,7 @@ function Form() {
       location: location,
       map: data.cafe.split(" ")[1],
       time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
+      date: "123",
     });
   };
 
@@ -112,6 +113,7 @@ function Form() {
 
   const ref = useRef(null);
   const postConfig = {
+
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
       setValue("cafe", data.address);
@@ -133,6 +135,10 @@ function Form() {
             <FlexBox>
               <LabelBox>제목</LabelBox>
               <InputBox {...register("title")} />
+            </FlexBox>
+            <FlexBox>
+              <LabelBox>내용</LabelBox>
+              <InputBox {...register("content")} />
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
