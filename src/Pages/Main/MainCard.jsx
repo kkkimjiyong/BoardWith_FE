@@ -146,7 +146,7 @@ const Item = ({ number, item, Myaddress }) => {
                 {/* {new Date(startDate)} */}
               </div>
               <div className="ItemWrap-Body-Wanted ">
-                모집중({item?.partyMember})
+                모집중({item?.participant.length}/{item?.partyMember})
               </div>
             </div>
           </div>

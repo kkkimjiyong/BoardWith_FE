@@ -42,7 +42,7 @@ const MainSlide = () => {
 
   const getPosts = async () => {
     try {
-      const { data } = await axios.get("https://www.iceflower.shop/posts");
+      const { data } = await axios.get("https://www.spartaseosu.shop/posts");
       SetPosts(data.data);
     } catch (error) {
       console.log(error);
@@ -129,11 +129,10 @@ const MainSlide = () => {
     console.log(response.data.data);
     // const data = await response.json();
     setItems((prev) => prev.concat(response.data.data));
-    page += 5;
+    page += 1;
   };
 
   useEffect(() => {
-    console.log("h!");
     let observer;
     if (target) {
       const onIntersect = async ([entry], observer) => {
@@ -144,15 +143,11 @@ const MainSlide = () => {
           observer.observe(entry.target);
         }
       };
-      observer = new IntersectionObserver(onIntersect, { threshold: 1 }); // 추가된 부분
+      observer = new IntersectionObserver(onIntersect, { threshold: 0.1 }); // 추가된 부분
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
   }, [target]);
-  //필터 만들 부분~!
-  useEffect(() => {
-    setItems(items);
-  }, [items]);
 
   return (
     <div
@@ -164,9 +159,17 @@ const MainSlide = () => {
       }}
     >
       {items?.map((items, idx) => {
-        return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+        if (items.participant.length < items.partyMember) {
+          console.log("참가자수", items.participant.length);
+          console.log("참가가능한수", items.partyMember);
+          return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+        } else {
+          <div>마감되었습니다</div>;
+        }
       })}
-      <div ref={setTarget}>This is Target.</div>
+      <div ref={setTarget} style={{ height: "100px" }}>
+        This is Target.
+      </div>
       <MainFilter items={items} setItems={setItems} getData={getData} />
     </div>
   );

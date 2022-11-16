@@ -9,6 +9,7 @@ import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 const MainFilter = ({ items, setItems, getData }) => {
   const [open, setOpen] = useState();
   const [filtered, setFiltered] = useState({});
+  console.log("items", items);
   console.log("filtered", filtered);
 
   const onDateChange = (e) => {
@@ -23,6 +24,10 @@ const MainFilter = ({ items, setItems, getData }) => {
       ...filtered,
       [name]: value,
     });
+  };
+  const onReset = () => {
+    getData();
+    setFiltered({});
   };
 
   setOptions({
@@ -58,31 +63,52 @@ const MainFilter = ({ items, setItems, getData }) => {
     { value: "중랑구", label: "중랑구" },
   ];
 
-  //필터 만들 부분
-  const baseData = {
-    data: {
-      normal: items,
-      time: items.filter((data) => data.time === filtered.time),
-      partyMember: items.filter(
-        (data) => data.partyMember === filtered.partyMember
-      ),
-      map: items.filter((data) => data.map === filtered.map),
-    },
-  };
-  const onFilterHandler = () => {
-    if (filtered?.time) {
-      setItems(baseData["data"]["time"]);
-      console.log(baseData);
-    } else if (filtered?.partyMember) {
-      setItems(baseData["data"]["partyMember"]);
-      console.log(baseData);
-    } else if (filtered?.map) {
-      setItems(baseData["data"]["map"]);
-      console.log(baseData);
+  //전체 데이터에 필터 걸기
+  const filterData = () => {
+    //아무 필터도 없는 맨 처음은 list가 나와야 함
+    if (
+      // filtered.time &&
+      filtered.map ===
+      // && filtered.partyMember
+      undefined
+    ) {
+      console.log("undefined");
+      return setItems(items);
+    } else {
+      const filteredList = items.reduce((acc, cur) => {
+        const mapCondition = filtered.map ? cur.map === filtered.map : true;
+        // const payNumKeywordCondition =
+        //   plateNumKeyword && plateNumKeyword.length > 0
+        //     ? cur.plateNum.includes(plateNumKeyword)
+        //     : true;
+        // const startDateCondition = startDate
+        //   ? startDate.getTime() -
+        //       new Date(cur.payDate.replace(/-/g, "/")).getTime() <=
+        //     0
+        //   : true;
+        // const endDateCondition = endDate
+        //   ? endDate.getTime() -
+        //       new Date(cur.payDate.replace(/-/g, "/")).getTime() >=
+        //     0
+        //   : true;
+
+        if (
+          mapCondition
+          //  &&
+          // payNumKeywordCondition &&
+          // startDateCondition &&
+          // endDateCondition
+        ) {
+          acc.push(cur);
+        }
+
+        return acc;
+      }, []);
+
+      setItems(filteredList);
     }
   };
-
-  const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   return (
     <Wrap open={open}>
       <div
@@ -94,62 +120,63 @@ const MainFilter = ({ items, setItems, getData }) => {
 
       <div>
         <Contentbox>
-          {/* <ContentForm
+          <ContentForm
             onSubmit={(e) => {
               e.preventDefault();
-              filterSumitHandler(filtered);
+              filterData();
             }}
-          > */}
-          <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
-          <ContentLabel>날짜 및 시간</ContentLabel>
-          <Datepicker
-            name="time"
-            select="range"
-            controls={["date", "time"]}
-            onChange={onDateChange}
-          />
-          <ContentLabel>인원</ContentLabel>
-          <form>
-            <output htmlFor="range" id="output">
-            {Member}
-          </output>
-          <input
-            name="partyMember"
-            type="range"
-            min="1"
-            max="10"
-            onChange={onChange}
-            list="tickmarks"
-          ></input>
-          <datalist id="tickmarks">
-            <option value="0" label="1" />
-            <option value="1" />
-            <option value="2" />
-            <option value="3" />
-            <option value="4" />
-            <option value="5" />
-            <option value="6" />
-            <option value="7" />
-            <option value="8" />
-            <option value="9" />
-            <option value="10" />
-          </datalist>
-          </form>
-          
-          <ContentLabel>위치</ContentLabel>
-
-          <select
-            name="map"
-            size={1}
-            onChange={onChange}
-            defaultValue={seoulGu[0]}
           >
-            {seoulGu.map((location) => {
-              return <option value={location.value}>{location.label}</option>;
-            })}
-          </select>
-          <ContentButton onClick={onFilterHandler}>선택하기</ContentButton>
-          {/* </ContentForm> */}
+            <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
+            <ContentLabel>날짜 및 시간</ContentLabel>
+            <Datepicker
+              name="time"
+              select="range"
+              controls={["date", "time"]}
+              onChange={onDateChange}
+            />
+            <ContentLabel>인원</ContentLabel>
+            <form>
+              <output htmlFor="range" id="output">
+                {Member}
+              </output>
+              <input
+                name="partyMember"
+                type="range"
+                min="1"
+                max="10"
+                onChange={onChange}
+                list="tickmarks"
+              ></input>
+              <datalist id="tickmarks">
+                <option value="0" label="1" />
+                <option value="1" />
+                <option value="2" />
+                <option value="3" />
+                <option value="4" />
+                <option value="5" />
+                <option value="6" />
+                <option value="7" />
+                <option value="8" />
+                <option value="9" />
+                <option value="10" />
+              </datalist>
+            </form>
+
+            <ContentLabel>위치</ContentLabel>
+
+            <select
+              name="map"
+              size={1}
+              onChange={onChange}
+              defaultValue={seoulGu[0]}
+            >
+              {seoulGu.map((location) => {
+                return <option value={location.value}>{location.label}</option>;
+              })}
+            </select>
+            <ContentButton onClick={onReset}>초기화</ContentButton>
+            <ContentButton>선택하기</ContentButton>
+          </ContentForm>
         </Contentbox>
       </div>
     </Wrap>
@@ -196,6 +223,8 @@ const Contentbox = styled.div`
 
 const ContentForm = styled.form`
   margin-top: 70px;
+  display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
 `;
 
