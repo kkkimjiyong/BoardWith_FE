@@ -170,11 +170,7 @@ const MainFilter = ({
               return <option value={location.value}>{location.label}</option>;
             })}
           </select>
-
           <ContentButton onClick={filterhandler}>선택하기</ContentButton>
-
- 
-
         </Contentbox>
       </div>
     </Wrap>
