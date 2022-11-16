@@ -317,9 +317,12 @@ const DaumPostBox = styled.div`
 `;
 
 const SignUpBtn = styled.button`
+  position: fixed;
+  bottom: 50px;
   font-weight: 600;
   margin-top: 90px;
   width: 80%;
+  max-width: 500px;
   height: 3em;
   border: none;
   border-radius: 20px;
@@ -367,18 +370,7 @@ const TagItem = styled.div`
 
 const Text = styled.span``;
 
-const TagButton = styled.button`
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 15px;
-  height: 15px;
-  margin-left: 5px;
-  background-color: white;
-  border-radius: 50%;
-  color: tomato;
-  cursor: pointer; */
-`;
+const TagButton = styled.button``;
 
 const TagInput = styled.input`
   display: inline-flex;

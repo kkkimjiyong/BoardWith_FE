@@ -51,7 +51,13 @@ const detailSlice = createSlice({
       state.isLoading = false;
       state.detail = action.payload;
       console.log(action.payload);
-      localStorage.setItem("Room", action.payload.data._id);
+      localStorage.setItem(
+        "Room",
+        JSON.stringify({
+          roomid: action.payload.data._id,
+          roomname: action.payload.data.title,
+        })
+      );
     },
     [__getPostslById.rejected]: (state, action) => {
       state.isLoading = false;

@@ -6,7 +6,13 @@ import { ko } from "date-fns/esm/locale";
 import { Datepicker, setOptions } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 
-const MainFilter = ({ items, setItems, getData }) => {
+const MainFilter = ({
+  items,
+  setItems,
+  getData,
+  setTargetMargin,
+  targetMargin,
+}) => {
   const [open, setOpen] = useState();
 
   const onDateChange = (e) => {
@@ -69,6 +75,15 @@ const MainFilter = ({ items, setItems, getData }) => {
       item.partyMember < filtered.partyMember &&
       item.map.includes(filtered.map)
   );
+
+  const filterhandler = () => {
+    setItems(filteredItems);
+    console.log(filteredItems.length);
+    if (filteredItems.length < 5) {
+      setTargetMargin((5 - filteredItems.length) * 200);
+    }
+    console.log(targetMargin);
+  };
 
   console.log(filteredItems);
 
@@ -142,7 +157,7 @@ const MainFilter = ({ items, setItems, getData }) => {
           </select>
           <ContentButton
             onClick={() => {
-              setItems(filteredItems);
+              filterhandler();
             }}
           >
             선택하기
