@@ -134,15 +134,7 @@ const MainFilter = ({
 
       <div>
         <Contentbox>
-          <ContentForm
-            onSubmit={(e) => {
-              e.preventDefault();
-
-              setItems(filteredItems);
-
-              filterSumitHandler(filtered);
-            }}
-          > */}
+         
             <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
             <ContentLabel>날짜 및 시간</ContentLabel>
             <Datepicker
@@ -247,7 +239,7 @@ const MainFilter = ({
               })}
             </select>
             <ContentButton>선택하기</ContentButton>
-          </ContentForm>
+
         </Contentbox>
       </div>
     </Wrap>
