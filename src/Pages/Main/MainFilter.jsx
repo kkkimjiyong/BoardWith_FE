@@ -135,14 +135,14 @@ const MainFilter = ({
       <div>
         <Contentbox>
           <ContentForm
-            onSubmit={(e) => {
-              e.preventDefault();
+          // onSubmit={(e) => {
+          //   e.preventDefault();
 
-              setItems(filteredItems);
+          //   setItems(filteredItems);
 
-              filterSumitHandler(filtered);
-            }}
-          > */}
+          //   filterSumitHandler(filtered);
+          // }}
+          >
             <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
             <ContentLabel>날짜 및 시간</ContentLabel>
             <Datepicker

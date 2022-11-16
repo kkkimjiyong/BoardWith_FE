@@ -134,8 +134,6 @@ const MainSlide = () => {
             <div>마감되었습니다</div>;
           }
         })}
-
-        })}{" "}
         <Target
           style={
             {
@@ -146,7 +144,6 @@ const MainSlide = () => {
         >
           This is Target.
         </Target>{" "}
-
         <button
           onClick={() => {
             getData();
