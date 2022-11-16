@@ -226,10 +226,10 @@ const Wrap = styled.div`
   border-top-right-radius: 15px;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "450px" : "30px")};
+  height: ${({ open }) => (open ? "500px" : "30px")};
   position: fixed;
   bottom: 0;
-  left: 30%;
+  left: 0%;
   transition: height 400ms ease-in-out;
   .innerDiv {
     position: absolute;
@@ -290,7 +290,7 @@ const ContentButton = styled.button`
 `;
 
 const SlideLabel = styled.div`
-  // height: 200px;
+  margin-top: 20px;
 `;
 const ContentLabel = styled.label`
   font-weight: 800;

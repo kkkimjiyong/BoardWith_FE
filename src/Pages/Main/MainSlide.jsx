@@ -123,6 +123,7 @@ const MainSlide = () => {
       >
         {/* {items?.map((items, idx) => {
           return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+
         })} */}
         {items?.map((items, idx) => {
           if (items.participant.length < items.partyMember) {
@@ -133,6 +134,16 @@ const MainSlide = () => {
             <div>마감되었습니다</div>;
           }
         })}
+        <Target
+          style={
+            {
+              // marginTop: `${targetMargin}px`,
+            }
+          }
+          ref={target}
+        >
+          This is Target.
+        </Target>{" "}
         <button
           onClick={() => {
             getData();
