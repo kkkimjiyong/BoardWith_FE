@@ -78,7 +78,9 @@ const MainSlide = () => {
   const itemss = useSelector((state) => state.posts.data);
   console.log(itemss);
 
-  const [items, setItems] = useState([]); // 추가된 부분
+  const [items, setItems] = useState([]);
+  const [nextPage, setNextPage] = useState(true);
+  // 추가된 부분
   console.log("items", items);
   const target = useRef();
 
@@ -89,16 +91,21 @@ const MainSlide = () => {
       `https://www.iceflower.shop/posts/?skip=${page}`
     );
     console.log(response.data.data);
-    // const data = await response.json();
     setItems((prev) => prev.concat(response.data.data));
-    page += 1;
-  };
+    page += 5;
+    if (!response.data.data) {
+      setNextPage(false);
+      console.log(1);
+    }
 
+    // const data = await response.json();
+  };
+  console.log(nextPage);
   console.log(targetMargin);
 
   useEffect(() => {
     let observer;
-    if (target.current) {
+    if (target.current && nextPage) {
       const onIntersect = async ([entry], observer) => {
         if (entry.isIntersecting) {
           observer.unobserve(entry.target);
@@ -113,15 +120,11 @@ const MainSlide = () => {
 
     return () => observer && observer.disconnect();
   }, [target]);
-<<<<<<< HEAD
   //필터 만들 부분~!
   useEffect(() => {
     setItems(items);
   }, []);
   console.log(target.current);
-=======
-
->>>>>>> 766dcc2beb41d8b6fc31fa52208d475226a9f4cb
   return (
     <>
       {" "}
@@ -147,8 +150,6 @@ const MainSlide = () => {
             <div>마감되었습니다</div>;
           }
         })}
-
-        })}{" "}
         <Target
           style={
             {
@@ -159,12 +160,7 @@ const MainSlide = () => {
         >
           This is Target.
         </Target>{" "}
-<<<<<<< HEAD
         {/* <button
-=======
-
-        <button
->>>>>>> 766dcc2beb41d8b6fc31fa52208d475226a9f4cb
           onClick={() => {
             getData();
           }}
@@ -190,7 +186,6 @@ const Target = styled.div`
 `;
 
 const MainBox = styled.div`
-  margin-top: 60px;
   width: 100%;
   height: 100%;
 `;

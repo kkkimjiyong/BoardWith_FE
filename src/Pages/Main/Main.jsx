@@ -7,7 +7,7 @@ import MainSlide from "./MainSlide";
 const Main = () => {
   return (
     <Layout>
-      {/* <MobileHeader /> */}
+      <MobileHeader />
       <MainSlide></MainSlide>
     </Layout>
   );

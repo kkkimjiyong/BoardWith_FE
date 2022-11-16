@@ -133,18 +133,17 @@ const MainFilter = ({
       ></div>
       <div>
         <Contentbox>
-         
-            <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
-            <ContentLabel>날짜 및 시간</ContentLabel>
-            <Datepicker
-              name="time"
-              select="range"
-              controls={["date", "time"]}
-              onChange={onDateChange}
-            />
-            <ContentLabel>인원</ContentLabel>
-            <InputBox>
-              {/* <input
+          <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
+          <ContentLabel>날짜 및 시간</ContentLabel>
+          <Datepicker
+            name="time"
+            select="range"
+            controls={["date", "time"]}
+            onChange={onDateChange}
+          />
+          <ContentLabel>인원</ContentLabel>
+          <InputBox>
+            {/* <input
                 className="name_box"
                 style={{ color: "black" }}
                 name="partyMember"
@@ -172,7 +171,7 @@ const MainFilter = ({
                   <div>{item}</div>
                 ))}
               </Output> */}
-              {/* <Slider
+            {/* <Slider
                 getAriaLabel={() => "Minimum distance"}
                 value={value1}
                 onChange={handleChange1}
@@ -180,65 +179,64 @@ const MainFilter = ({
                 getAriaValueText={valuetext}
                 disableSwap
               /> */}
-              <Slider
-                style={{ marginTop: "50px" }}
-                getAriaLabel={() => "Minimum distance shift"}
-                value={value2}
-                onChange={handleChange2}
-                valueLabelDisplay="on"
-                getAriaValueText={valuetext}
-                disableSwap
-                min={1}
-                max={10}
-                marks
-                color="secondary"
-                valueLabelFormat={(value) => {
-                  return (
+            <Slider
+              style={{ marginTop: "50px" }}
+              getAriaLabel={() => "Minimum distance shift"}
+              value={value2}
+              onChange={handleChange2}
+              valueLabelDisplay="on"
+              getAriaValueText={valuetext}
+              disableSwap
+              min={1}
+              max={10}
+              marks
+              color="secondary"
+              valueLabelFormat={(value) => {
+                return (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "-30px",
+                      left: "-3px",
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      style={{ color: "black" }}
+                      size="3x"
+                      icon={faLocationPin}
+                    ></FontAwesomeIcon>
                     <div
                       style={{
-                        position: "absolute",
-                        top: "-30px",
-                        left: "-3px",
+                        position: "relative",
+                        bottom: "32px",
+                        color: "white",
+                        ZIndex: 999,
                       }}
                     >
-                      <FontAwesomeIcon
-                        style={{ color: "black" }}
-                        size="3x"
-                        icon={faLocationPin}
-                      ></FontAwesomeIcon>
-                      <div
-                        style={{
-                          position: "relative",
-                          bottom: "32px",
-                          color: "white",
-                          ZIndex: 999,
-                        }}
-                      >
-                        {value}
-                      </div>
+                      {value}
                     </div>
-                  );
-                }}
-                sx={{
-                  color: "black",
-                }}
-              />
-            </InputBox>
+                  </div>
+                );
+              }}
+              sx={{
+                color: "black",
+              }}
+            />
+          </InputBox>
 
-            <ContentLabel>위치</ContentLabel>
+          <ContentLabel>위치</ContentLabel>
 
-            <select
-              name="map"
-              size={1}
-              onChange={onChange}
-              defaultValue={seoulGu[0]}
-            >
-              {seoulGu.map((location) => {
-                return <option value={location.value}>{location.label}</option>;
-              })}
-            </select>
-            <ContentButton>선택하기</ContentButton>
-
+          <select
+            name="map"
+            size={1}
+            onChange={onChange}
+            defaultValue={seoulGu[0]}
+          >
+            {seoulGu.map((location) => {
+              return <option value={location.value}>{location.label}</option>;
+            })}
+          </select>
+          <ContentButton>선택하기</ContentButton>
         </Contentbox>
       </div>
     </Wrap>
@@ -248,10 +246,10 @@ const MainFilter = ({
 export default MainFilter;
 
 const Wrap = styled.div`
+  margin-bottom: 10%;
   display: flex;
   flex-direction: column;
   max-width: 640px;
-  margin: 0 auto;
   padding: 10px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -259,8 +257,7 @@ const Wrap = styled.div`
   background-color: white;
   height: ${({ open }) => (open ? "450px" : "30px")};
   position: fixed;
-  bottom: 0;
-  left: 30%;
+  bottom: 0px;
   transition: height 400ms ease-in-out;
   .innerDiv {
     position: absolute;
@@ -276,6 +273,7 @@ const Wrap = styled.div`
 `;
 
 const Contentbox = styled.div`
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   flex-direction: column;
