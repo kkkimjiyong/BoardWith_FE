@@ -16,7 +16,7 @@ const ChatRoom = () => {
   //   transports: ["websocket"],
   // }
   const [message, setMessage, onChange] = useInput();
-  const [name, setName] = useState("김지용");
+  const [name, setName] = useState("수");
   const [notice, setNotice] = useState([]);
   const [users, setUsers] = useState([]);
   const [isEdit, SetisEdit] = useState(false);

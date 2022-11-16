@@ -45,7 +45,7 @@ const MainSlide = () => {
 
   const getPosts = async () => {
     try {
-      const { data } = await axios.get("https://www.iceFlower.shop/posts");
+      const { data } = await axios.get("https://www.iceflower.shop/posts");
       SetPosts(data.data);
     } catch (error) {
       console.log(error);
@@ -82,9 +82,13 @@ const MainSlide = () => {
   const [nextPage, setNextPage] = useState(true);
   // 추가된 부분
   console.log("items", items);
+
+  const [target, setTarget] = useState(null);
+  let page = 1;
+
   const target = useRef();
 
-  let page = 0;
+
 
   const getData = async () => {
     const response = await axios.get(
@@ -160,13 +164,15 @@ const MainSlide = () => {
         >
           This is Target.
         </Target>{" "}
-        {/* <button
+
+ <button
+
           onClick={() => {
             getData();
           }}
         >
           다음페이지
-        </button> */}
+        </button> 
       </MainBox>{" "}
       <MainFilter
         targetMargin={targetMargin}

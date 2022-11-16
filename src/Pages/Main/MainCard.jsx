@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment-timezone";
 import "moment/locale/ko";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar, faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
+import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 const Item = ({ number, item, Myaddress }) => {
   const navigate = useNavigate();
@@ -56,8 +57,9 @@ const Item = ({ number, item, Myaddress }) => {
               color: "black",
             }}
             size="2x"
-            icon={faBookmark}
+            icon={faStar}
           />{" "}
+          {/* <FontAwesomeIcon size="2x" icon={faSplotch} />{" "} */}
         </div>
         <div className="ItemWrap-Body">
           <div>
@@ -163,7 +165,7 @@ const ItemWrap = styled.div`
     border-radius: 130px;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 20%;
+    width: 30%;
     justify-content: center;
     padding: 0.5%;
   }
