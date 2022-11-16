@@ -111,31 +111,31 @@ const MainFilter = ({ items, setItems, getData }) => {
           <ContentLabel>인원</ContentLabel>
           <form>
             <output htmlFor="range" id="output">
-            {Member}
-          </output>
-          <input
-            name="partyMember"
-            type="range"
-            min="1"
-            max="10"
-            onChange={onChange}
-            list="tickmarks"
-          ></input>
-          <datalist id="tickmarks">
-            <option value="0" label="1" />
-            <option value="1" />
-            <option value="2" />
-            <option value="3" />
-            <option value="4" />
-            <option value="5" />
-            <option value="6" />
-            <option value="7" />
-            <option value="8" />
-            <option value="9" />
-            <option value="10" />
-          </datalist>
+              {Member}
+            </output>
+            <input
+              name="partyMember"
+              type="range"
+              min="1"
+              max="10"
+              onChange={onChange}
+              list="tickmarks"
+            ></input>
+            <datalist id="tickmarks">
+              <option value="0" label="1" />
+              <option value="1" />
+              <option value="2" />
+              <option value="3" />
+              <option value="4" />
+              <option value="5" />
+              <option value="6" />
+              <option value="7" />
+              <option value="8" />
+              <option value="9" />
+              <option value="10" />
+            </datalist>
           </form>
-          
+
           <ContentLabel>위치</ContentLabel>
 
           <select

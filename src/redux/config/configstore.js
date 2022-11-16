@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import detail from "../modules/DetailPostsSlice";
+import detail from "../../Test/DetailPostsSlice";
 import comments from "../modules/CommentsSlice";
 import posts from "../modules/postsSlice";
 

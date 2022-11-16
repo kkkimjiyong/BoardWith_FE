@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { postApi } from "../../instance";
+import { postApi } from "../instance";
 
 //게시글 id로 받아오기
 export const __getPostslById = createAsyncThunk(

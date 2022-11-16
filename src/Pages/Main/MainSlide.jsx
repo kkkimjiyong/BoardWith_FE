@@ -124,7 +124,7 @@ const MainSlide = () => {
 
   const getData = async () => {
     const response = await axios.get(
-      `https://www.spartaseosu.shop/posts/?skip=${page}`
+      `https://www.iceflower.shop/posts/?skip=${page}`
     );
     console.log(response.data.data);
     // const data = await response.json();

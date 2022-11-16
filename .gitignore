@@ -3,6 +3,7 @@
 
 .npmrc
 
+/Test
 ### react ###
 .DS_*
 *.log
