@@ -70,7 +70,7 @@ const CommentList = () => {
           </Btnbox>
           {comments?.map((comment) => {
             //console.log("map", comment.comment);
-            return <Comments key={comment.id} comment={comment} />;
+            return <Comments key={comment.id} comments={comment} />;
           })}
 
           {/* {comments.map((comment) => (
@@ -89,7 +89,7 @@ export default CommentList;
 const Wrap = styled.div`
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "500px" : "30px")};
+  height: ${({ open }) => (open ? "300px" : "30px")};
   position: absolute;
   bottom: 0;
   left: 0;

@@ -5,55 +5,83 @@ import {
   __deleteComment,
   __editComment,
 } from "../../redux/modules/CommentsSlice";
+import { commentsApi } from "../../instance";
+import axios from "axios";
 
-const Comments = ({ comment }) => {
+const Comments = ({ comments }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
 
-  //const { commentId } = comments._id;
-  const commentId = comment._id;
-  const commentsID = "636cf5f010493b7d10c84ffd";
-  //console.log(commentId);
-  //console.log(comments._id);
-  //console.log("코멘트", comments);
+  const commentId = comments._id;
 
   const initialState = {
     comment: "",
   };
-  const [comments, setComments] = useState(initialState);
-  console.log(comments);
+  const [comment, setComment] = useState(initialState);
+
+  console.log("commentes", comment);
 
   const onEditHandler = () => {
-    dispatch(__editComment({ comments, commentsID }));
+    console.log("comment", comment);
+    console.log(commentId);
+    dispatch(__editComment({ comment, commentId }));
     setEdit(false);
   };
+  //console.log("comments", comments);
+
+  // const onEditHandler = () => {
+  //   console.log("commentId", commentId);
+  //   console.log("comment", { comment });
+  //   commentsApi
+  //     .editComments({
+  //       comment: { comment },
+  //       commentId: comments._id,
+  //     })
+  //     .then((res) => {
+  //       console.log("res", res);
+  //       //alert(res.data.message);
+  //       setComment(initialState);
+  //       // navigate(-1);
+  //     })
+  //     .catch((error) => {
+  //       alert("잘못된 값을 입력하셨습니다.");
+  //     });
+  //   setEdit(false);
+  // };
 
   const onDelCommentHandler = () => {
     const result = window.confirm("정말로 삭제하시겠습니까?");
     if (result) {
-      console.log("comments", comment._id);
-      dispatch(__deleteComment(comment._id));
+      console.log("comments", comments._id);
+      dispatch(__deleteComment(comments._id));
     } else {
       return;
     }
   };
 
   return (
-    <CommentBox key={comment.id}>
+    <CommentBox key={comments.id}>
       {!isEdit ? (
         <>
-          <CommentBody>{comment?.userId}</CommentBody>
-          <CommentBody>{comment?.comment}</CommentBody>
+          <CommentBody>{comments?.userId}</CommentBody>
+          <CommentBody>{comments?.comment}</CommentBody>
           <button onClick={() => setEdit(true)}>수정</button>
         </>
       ) : (
         <>
           <StText
             placeholder="수정할 댓글내용을 입력하세요"
-            value={comments.comment}
+            value={comment.comment}
             onChange={(e) => {
-              setComments(e.target.value);
+              const { value } = e.target;
+              setComment({
+                ...comment,
+                comment: value,
+              });
             }}
+            // onChange={(e) => {
+            //   setComment(e.target.value);
+            // }}
           ></StText>
           <button onClick={() => onEditHandler(comment.id)}>저장</button>
         </>

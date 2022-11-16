@@ -73,6 +73,7 @@ const LoginCtn = styled.form`
   align-items: center;
   padding: 50px 20px;
   margin: 150px 20px;
+  width: 80%;
   gap: 20px;
   border: 2px solid #9747ff;
   border-radius: 10px;
@@ -115,7 +116,7 @@ const LoginBtn = styled.div`
   background-color: #9747ff;
 `;
 
-const KaKaoLogin = styled.div`
+const KaKaoLogin = styled.a`
   padding-left: 10px;
   height: 40px;
   border-radius: 10px;

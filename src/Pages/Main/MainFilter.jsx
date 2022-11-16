@@ -5,12 +5,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { Datepicker, setOptions } from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
-
+import Slider from "@mui/material/Slider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
 const MainFilter = ({ items, setItems, getData }) => {
   const [open, setOpen] = useState();
-  const [filtered, setFiltered] = useState({});
-  console.log("items", items);
-  console.log("filtered", filtered);
 
   const onDateChange = (e) => {
     setFiltered({
@@ -24,10 +23,6 @@ const MainFilter = ({ items, setItems, getData }) => {
       ...filtered,
       [name]: value,
     });
-  };
-  const onReset = () => {
-    getData();
-    setFiltered({});
   };
 
   setOptions({
@@ -63,52 +58,55 @@ const MainFilter = ({ items, setItems, getData }) => {
     { value: "중랑구", label: "중랑구" },
   ];
 
-  //전체 데이터에 필터 걸기
-  const filterData = () => {
-    //아무 필터도 없는 맨 처음은 list가 나와야 함
-    if (
-      // filtered.time &&
-      filtered.map ===
-      // && filtered.partyMember
-      undefined
-    ) {
-      console.log("undefined");
-      return setItems(items);
+  const [filtered, setFiltered] = useState({
+    time: [0, 99999999999],
+    partyMember: "10",
+    map: "구",
+  });
+
+  const filteredItems = items.filter(
+    (item) =>
+      filtered.time[0] < item.time < filtered.time[1] &&
+      filtered.partyMember[0] < item.partyMember < filtered.partyMember[1] &&
+      item.map.includes(filtered.map)
+  );
+
+  console.log(filteredItems);
+
+  console.log(filtered);
+
+  // const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
+  function valuetext(value) {
+    return `${value}`;
+  }
+
+  const minDistance = 1;
+
+  const [value2, setValue2] = useState([2, 4]);
+
+  const handleChange2 = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 10 - minDistance);
+        setValue2([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        setValue2([clamped - minDistance, clamped]);
+      }
     } else {
-      const filteredList = items.reduce((acc, cur) => {
-        const mapCondition = filtered.map ? cur.map === filtered.map : true;
-        // const payNumKeywordCondition =
-        //   plateNumKeyword && plateNumKeyword.length > 0
-        //     ? cur.plateNum.includes(plateNumKeyword)
-        //     : true;
-        // const startDateCondition = startDate
-        //   ? startDate.getTime() -
-        //       new Date(cur.payDate.replace(/-/g, "/")).getTime() <=
-        //     0
-        //   : true;
-        // const endDateCondition = endDate
-        //   ? endDate.getTime() -
-        //       new Date(cur.payDate.replace(/-/g, "/")).getTime() >=
-        //     0
-        //   : true;
-
-        if (
-          mapCondition
-          //  &&
-          // payNumKeywordCondition &&
-          // startDateCondition &&
-          // endDateCondition
-        ) {
-          acc.push(cur);
-        }
-
-        return acc;
-      }, []);
-
-      setItems(filteredList);
+      setValue2(newValue);
+      setFiltered({
+        ...filtered,
+        partyMember: newValue,
+      });
     }
   };
-  const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+
   return (
     <Wrap open={open}>
       <div
@@ -123,7 +121,8 @@ const MainFilter = ({ items, setItems, getData }) => {
           <ContentForm
             onSubmit={(e) => {
               e.preventDefault();
-              filterData();
+
+              setItems(filteredItems);
             }}
           >
             <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
@@ -135,11 +134,10 @@ const MainFilter = ({ items, setItems, getData }) => {
               onChange={onDateChange}
             />
             <ContentLabel>인원</ContentLabel>
-            <form>
-              <output htmlFor="range" id="output">
-                {Member}
-              </output>
-              <input
+            <InputBox>
+              {/* <input
+                className="name_box"
+                style={{ color: "black" }}
                 name="partyMember"
                 type="range"
                 min="1"
@@ -159,8 +157,64 @@ const MainFilter = ({ items, setItems, getData }) => {
                 <option value="8" />
                 <option value="9" />
                 <option value="10" />
-              </datalist>
-            </form>
+              </datalist>{" "}
+              <Output htmlFor="range" id="output">
+                {Member.map((item) => (
+                  <div>{item}</div>
+                ))}
+              </Output> */}
+              {/* <Slider
+                getAriaLabel={() => "Minimum distance"}
+                value={value1}
+                onChange={handleChange1}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                disableSwap
+              /> */}
+              <Slider
+                style={{ marginTop: "50px" }}
+                getAriaLabel={() => "Minimum distance shift"}
+                value={value2}
+                onChange={handleChange2}
+                valueLabelDisplay="on"
+                getAriaValueText={valuetext}
+                disableSwap
+                min={1}
+                max={10}
+                marks
+                color="secondary"
+                valueLabelFormat={(value) => {
+                  return (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "-30px",
+                        left: "-3px",
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        style={{ color: "black" }}
+                        size="3x"
+                        icon={faLocationPin}
+                      ></FontAwesomeIcon>
+                      <div
+                        style={{
+                          position: "relative",
+                          bottom: "32px",
+                          color: "white",
+                          ZIndex: 999,
+                        }}
+                      >
+                        {value}
+                      </div>
+                    </div>
+                  );
+                }}
+                sx={{
+                  color: "black",
+                }}
+              />
+            </InputBox>
 
             <ContentLabel>위치</ContentLabel>
 
@@ -174,7 +228,6 @@ const MainFilter = ({ items, setItems, getData }) => {
                 return <option value={location.value}>{location.label}</option>;
               })}
             </select>
-            <ContentButton onClick={onReset}>초기화</ContentButton>
             <ContentButton>선택하기</ContentButton>
           </ContentForm>
         </Contentbox>
@@ -218,7 +271,6 @@ const Contentbox = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
-  margin-top: 40px;
 `;
 
 const ContentForm = styled.form`
@@ -230,7 +282,11 @@ const ContentForm = styled.form`
 
 const InputBox = styled.div`
   display: flex;
-  width: 200px;
+  flex-direction: column;
+`;
+const Output = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const ContentInput = styled.input`
@@ -260,4 +316,5 @@ const SlideLabel = styled.div`
 `;
 const ContentLabel = styled.label`
   font-weight: 800;
+  margin-top: 20px;
 `;

@@ -74,8 +74,10 @@ const Detail = () => {
                 />
                 <Stgap />
                 <FontAwesomeIcon
+                  onClick={() => navigate("/chat")}
                   style={{
                     color: "black",
+                    cursor: "pointer",
                   }}
                   size="2x"
                   icon={faPaperPlane}
@@ -134,7 +136,7 @@ const Detail = () => {
             <StMap>지도가 들어갑니다</StMap>
           </StContainer>
         </Layout>
-        {/* <CommentList /> */}
+        <CommentList />
       </Wrap>
     </Wrapper>
   );

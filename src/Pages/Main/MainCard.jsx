@@ -30,13 +30,13 @@ const Item = ({ number, item, Myaddress }) => {
   //   );
   // }, []);
 
-  console.log(item);
+  // console.log(item);
   //요일시간 표기
   const moment = require("moment-timezone");
   const startDate = item?.time?.[0];
   const endDate = item?.time?.[1];
   const getStartTime = (startDate) => {
-    var m = moment(startDate).tz("Asia/Seoul").lang("ko");
+    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
     return m.format("MM.DD (ddd) HH:mm");
   };
   const getEndTime = (endDate) => {
@@ -45,67 +45,6 @@ const Item = ({ number, item, Myaddress }) => {
   };
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
-
-  const ItemWrap = styled.div`
-    .ItemWrap {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      padding: 4% 4%;
-      flex-direction: column;
-      background-color: gray;
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      border-radius: 6px;
-      margin-bottom: 2%;
-    }
-
-    .ItemWrap-Top {
-      display: flex;
-      border-top-left-radius: 6px;
-      border-top-right-radius: 6px;
-      /* background-color: #e2e5e7; */
-      color: black;
-      font-size: 1.5rem;
-      text-align: center;
-      align-items: center;
-      margin-bottom: 2%;
-    }
-    .ItemWrap-Body-SpaceBetween {
-      display: flex;
-      justify-content: space-between;
-    }
-    .ItemWrap-Body-Flex {
-      display: flex;
-      align-items: center;
-      margin-top: 2%;
-    }
-
-    .ItemWrap-Body {
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
-      text-align: left;
-      margin-top: 3%;
-    }
-
-    .ItemWrap-Body-Title {
-      border-radius: 4px;
-      margin-left: 2%;
-      position: relative;
-      /* background-color: #e2e5e7; */
-    }
-    .ItemWrap-Body-Wanted {
-      display: flex;
-      border-radius: 130px;
-      background-color: #e2e5e7;
-      white-space: nowrap;
-      width: 10%;
-      position: absolute;
-      justify-content: center;
-      padding: 0.5%;
-      left: 72%;
-    }
-  `;
 
   return (
     <ItemWrap onClick={() => navigate(`/posts/${item._id}`)}>
@@ -133,18 +72,27 @@ const Item = ({ number, item, Myaddress }) => {
               <div className="ItemWrap-Body-Title ">{item?.cafe}</div>
             </div>
 
-            <div className="ItemWrap-Body-Flex">
-              <FontAwesomeIcon
+            <div className="ItemWrap-Body-Flex2">
+              <div
                 style={{
-                  color: "black",
+                  width: "100%",
+                  display: "flex",
                 }}
-                size="2x"
-                icon={faLocationDot}
-              />{" "}
-              <div className="ItemWrap-Body-Title ">
-                {realStartTime + " ~ " + realEndTime}
-                {/* {new Date(startDate)} */}
+              >
+                {" "}
+                <FontAwesomeIcon
+                  style={{
+                    color: "black",
+                  }}
+                  size="2x"
+                  icon={faLocationDot}
+                />{" "}
+                <div className="ItemWrap-Body-Title ">
+                  {realStartTime + " ~ " + realEndTime}
+                  {/* {new Date(startDate)} */}
+                </div>
               </div>
+
               <div className="ItemWrap-Body-Wanted ">
                 모집중({item?.participant.length}/{item?.partyMember})
               </div>
@@ -155,5 +103,70 @@ const Item = ({ number, item, Myaddress }) => {
     </ItemWrap>
   );
 };
+
+const ItemWrap = styled.div`
+  .ItemWrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 4% 4%;
+    flex-direction: column;
+    background-color: gray;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 6px;
+    margin-bottom: 2%;
+  }
+
+  .ItemWrap-Top {
+    display: flex;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    /* background-color: #e2e5e7; */
+    color: black;
+    font-size: 1.5rem;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 2%;
+  }
+  .ItemWrap-Body-SpaceBetween {
+    display: flex;
+    justify-content: space-between;
+  }
+  .ItemWrap-Body-Flex {
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+  }
+  .ItemWrap-Body-Flex2 {
+    display: flex;
+    align-items: center;
+    margin-top: 2%;
+    justify-content: space-between;
+  }
+
+  .ItemWrap-Body {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    text-align: left;
+    margin-top: 3%;
+  }
+
+  .ItemWrap-Body-Title {
+    border-radius: 4px;
+    margin-left: 2%;
+    position: relative;
+    /* background-color: #e2e5e7; */
+  }
+  .ItemWrap-Body-Wanted {
+    display: flex;
+    border-radius: 130px;
+    background-color: #e2e5e7;
+    white-space: nowrap;
+    width: 20%;
+    justify-content: center;
+    padding: 0.5%;
+  }
+`;
 
 export default Item;
