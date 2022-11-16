@@ -141,42 +141,12 @@ const MainFilter = ({
             onChange={onDateChange}
           />
           <ContentLabel>인원</ContentLabel>
+
           <InputBox>
-
+              
             <MemberSlider
-
-            {/* <input
-                className="name_box"
-                style={{ color: "black" }}
-                name="partyMember"
-                type="range"
-                min="1"
-                max="10"
-                onChange={onChange}
-                list="tickmarks"
-              ></input>
-              <datalist id="tickmarks">
-                <option value="0" label="1" />
-                <option value="1" />
-                <option value="2" />
-                <option value="3" />
-                <option value="4" />
-                <option value="5" />
-                <option value="6" />
-                <option value="7" />
-                <option value="8" />
-                <option value="9" />
-                <option value="10" />
-              </datalist>{" "}
-              <Output htmlFor="range" id="output">
-                {Member.map((item) => (
-                  <div>{item}</div>
-                ))}
-              </Output> */}
-       
               style={{ marginTop: "50px" }}
               getAriaLabel={() => "Minimum distance shift"}
-
               value={value2}
               onChange={handleChange2}
               valueLabelDisplay="on"
@@ -185,12 +155,11 @@ const MainFilter = ({
               min={1}
               max={10}
               marks
-
             />
+                
           </InputBox>
 
           <ContentLabel>위치</ContentLabel>
-
           <select
             name="map"
             size={1}
