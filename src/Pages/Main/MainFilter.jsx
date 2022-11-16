@@ -98,7 +98,6 @@ const MainFilter = ({
           setOpen((open) => !open);
         }}
       ></div>
-
       <div>
         <Contentbox>
           {/* <ContentForm

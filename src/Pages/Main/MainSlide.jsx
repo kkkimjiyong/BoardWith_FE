@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Item from "../Main/MainCard";
 import axios, { Axios } from "axios";
 import MainFilter from "./MainFilter";
+import { useRef } from "react";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const MainSlide = () => {
   useEffect(() => {
     // dispatch(acyncGetPosts());
     // if (!Myaddress) alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
-    getPosts();
+    // getPosts();
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
     setTimeout(() => setLoading(false), 1500);
     //내 위치를 좌표값으로 알려주는 카카오 MAP API
@@ -79,7 +80,8 @@ const MainSlide = () => {
 
   const [items, setItems] = useState([]); // 추가된 부분
   console.log("items", items);
-  const [target, setTarget] = useState(null);
+  const target = useRef();
+
   let page = 0;
 
   const getData = async () => {
@@ -91,32 +93,35 @@ const MainSlide = () => {
     setItems((prev) => prev.concat(response.data.data));
     page += 1;
   };
+
   console.log(targetMargin);
 
   useEffect(() => {
     console.log("h!");
     let observer;
-    if (target) {
+    if (target.current) {
       const onIntersect = async ([entry], observer) => {
         if (entry.isIntersecting) {
           observer.unobserve(entry.target);
           await getData();
-          console.log("Hi!");
+          console.log(page);
           observer.observe(entry.target);
         }
       };
       observer = new IntersectionObserver(onIntersect, { threshold: 0.1 }); // 추가된 부분
-      observer.observe(target);
+      observer.observe(target.current);
     }
+
     return () => observer && observer.disconnect();
   }, [target]);
   //필터 만들 부분~!
   useEffect(() => {
     setItems(items);
-  }, [items]);
-
+  }, []);
+  console.log(target.current);
   return (
     <>
+      {" "}
       <MainBox
         style={{
           display: "flex",
@@ -139,13 +144,13 @@ const MainSlide = () => {
         >
           This is Target.
         </Target>{" "}
-        <button
+        {/* <button
           onClick={() => {
             getData();
           }}
         >
           다음페이지
-        </button>
+        </button> */}
       </MainBox>{" "}
       <MainFilter
         targetMargin={targetMargin}
@@ -160,9 +165,12 @@ const MainSlide = () => {
 
 export default MainSlide;
 
-const Target = styled.div``;
+const Target = styled.div`
+  /* height: 100px; */
+`;
 
 const MainBox = styled.div`
+  margin-top: 60px;
   width: 100%;
   height: 100%;
 `;

@@ -87,7 +87,6 @@ const Detail = () => {
     });
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
-
       localStorage.setItem(
         "Room",
         JSON.stringify({
@@ -155,7 +154,7 @@ const Detail = () => {
                       size="2x"
                       icon={faPenToSquare}
                       onClick={() => {
-                        navigate("/form");
+                        navigate("/chat");
                       }}
                       cursor="pointer"
                     />
@@ -167,7 +166,7 @@ const Detail = () => {
                       size="2x"
                       icon={faPaperPlane}
                       onClick={() => {
-                        navigate("/form");
+                        navigate("/chat");
                       }}
                       cursor="pointer"
                     />
