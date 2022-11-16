@@ -74,8 +74,10 @@ const Detail = () => {
                 />
                 <Stgap />
                 <FontAwesomeIcon
+                  onClick={() => navigate("/chat")}
                   style={{
                     color: "black",
+                    cursor: "pointer",
                   }}
                   size="2x"
                   icon={faPaperPlane}

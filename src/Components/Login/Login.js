@@ -116,7 +116,7 @@ const LoginBtn = styled.div`
   background-color: #9747ff;
 `;
 
-const KaKaoLogin = styled.div`
+const KaKaoLogin = styled.a`
   padding-left: 10px;
   height: 40px;
   border-radius: 10px;
