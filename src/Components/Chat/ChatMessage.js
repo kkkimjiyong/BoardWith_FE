@@ -20,12 +20,12 @@ const ChatCtn = styled.div`
   width: 100%;
   height: 13%;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
   align-items: flex-end;
   //내가 아닌 상대가 보냈을 때
   &.anonymous {
-    flex-direction: row-reverse;
+    flex-direction: row;
   }
 `;
 
