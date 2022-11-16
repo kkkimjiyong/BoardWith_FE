@@ -13,6 +13,7 @@ export const __getComments = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { data } = await commentsApi.getComments(payload);
+      //const { data } = await commentsApi.getComments(payload);
       return thunkAPI.fulfillWithValue(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -32,7 +33,7 @@ export const __postComments = createAsyncThunk(
       return thunkAPI.fulfillWithValue(data.data.createComment);
     } catch (error) {
       if (error.response.status === 412) {
-        alert("댓글 내용을 입력해주세요😌");
+        alert("댓글 내용을 입력해주세요");
       }
       return thunkAPI.rejectWithValue(error);
     }
@@ -44,9 +45,9 @@ export const __deleteComment = createAsyncThunk(
   "DEL_COMMENTS",
   async (payload, thunkAPI) => {
     try {
-      //console.log("payload", payload);
+      console.log("payload", payload);
       const data = await commentsApi.delComments(payload);
-      //console.log("data", data);
+      console.log("data", data);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -61,8 +62,11 @@ export const __editComment = createAsyncThunk(
       console.log("payload", payload);
       const data = await commentsApi.editComments(payload);
       console.log("data", data);
-      return thunkAPI.fulfillWithValue(payload);
+      return thunkAPI.fulfillWithValue(data);
     } catch (error) {
+      if (error.response.status === 412) {
+        alert("수정할 내용을 입력해주세요");
+      }
       console.log("edit에러1", error);
       return thunkAPI.rejectWithValue(error);
     }
@@ -88,6 +92,8 @@ export const CommentsSlice = createSlice({
       state.error = action.payload;
       console.log("get에러", state.error);
     },
+
+    //댓글달기
     [__postComments.pending]: (state) => {
       state.isLoading = true;
     },
@@ -97,6 +103,7 @@ export const CommentsSlice = createSlice({
       // console.log("state", state);
       // console.log("state.comments", state.comments.comments);
       state.comments.comments = [...state.comments.comments, action.payload];
+
       //state.comments = action.payload;
     },
     [__postComments.rejected]: (state, action) => {
@@ -111,11 +118,20 @@ export const CommentsSlice = createSlice({
     },
     [__deleteComment.fulfilled]: (state, action) => {
       state.isLoading = false;
+      console.log("action.payload", action.payload);
       //console.log(state.comments);
       const payloadelete = state.comments.comments.filter(
         (comment) => comment._id === action.payload
       );
       state.comments.comments.splice(payloadelete, 1);
+      // state.comments.comments.splice(action.payload.data, 1);
+      // for (let i = 0; i < state.comments.comments.length; i++) {
+      //   if (state.comments.comments._id === action.payload) {
+      //     state.comments.comments.splice(action.payload.data);
+      //   } else {
+      //     alert("오류");
+      //   }
+      // }
     },
     [__deleteComment.rejected]: (state, action) => {
       state.isLoading = false;
@@ -128,17 +144,22 @@ export const CommentsSlice = createSlice({
       state.isLoading = true;
     },
     [__editComment.fulfilled]: (state, action) => {
-      console.log("리듀서", action.payload);
+      //console.log("action", action);
       state.isLoading = false;
-      state.comments = action.payload;
-      // console.log("state", state);
-      // console.log("state.comments", state.comments.comments);
-      // const commentList = state.comments.comments.map((comment) =>
-      //   comment._id === action.payload.commentId
-      //     ? { ...comment, commentBody: action.payload.input }
-      //     : comment
-      // );
-      // state.comments.comments = commentList;
+      // state.comments.comments = action.payload.comments;
+      console.log("오는데이터 : ", action.payload.data);
+
+      const commentList = state.comments.comments.map((iter) =>
+        // comment._id === action.payload.data._id
+        //   ? { comment: action.payload.data.comment }
+        //   : comment
+        iter._id === action.payload.data._id
+          ? (iter.comment = action.payload.data.comment)
+          : iter
+      );
+      console.log("어캐바꼈니 : ", commentList);
+      //commentList[0].comment = action.payload.data.comment;
+      //state.comments.comments = [...state.comments.comments, commentList[0]];
     },
     [__editComment.pending]: (state, action) => {
       state.isLoading = false;
