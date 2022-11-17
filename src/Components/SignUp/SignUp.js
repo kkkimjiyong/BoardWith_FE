@@ -82,8 +82,14 @@ const SignUp = () => {
     console.log(data);
     reset();
     console.log({ ...data, birth: Age[birthvalue], likeGame: tagList });
-    navigate("/login");
-    postSignUp({ ...data, birth: Age[birthvalue] });
+    navigate("/");
+    //선호지역은 자동적으로 나의 집주소에서 구단위 까지만으로 적용
+    postSignUp({
+      ...data,
+      birth: Age[birthvalue],
+      likeGame: tagList,
+      MyPlace: data.address.split(" ").slice(0, 2),
+    });
   };
 
   const postConfig = {
@@ -214,7 +220,7 @@ const SignUp = () => {
           </SignUpBox>
           <SignUpBox>
             <SignUpInput
-              placeholder="클릭하여, 주소입력"
+              placeholder="거주하시는 주소를 입력"
               type="text"
               onClick={postCode}
               {...register("address")}

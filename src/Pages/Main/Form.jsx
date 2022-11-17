@@ -187,6 +187,13 @@ function Form() {
               초기화하기
             </Button>
             <Button
+              onClick={() => {
+                navigate("/main");
+              }}
+            >
+              취소
+            </Button>
+            <Button
             // onClick={() => {
             //   onclickSubmitHandler();
             // }}

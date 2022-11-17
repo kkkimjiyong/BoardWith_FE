@@ -143,42 +143,6 @@ const MainFilter = ({
           />
           <ContentLabel>인원</ContentLabel>
           <InputBox>
-            {/* <input
-                className="name_box"
-                style={{ color: "black" }}
-                name="partyMember"
-                type="range"
-                min="1"
-                max="10"
-                onChange={onChange}
-                list="tickmarks"
-              ></input>
-              <datalist id="tickmarks">
-                <option value="0" label="1" />
-                <option value="1" />
-                <option value="2" />
-                <option value="3" />
-                <option value="4" />
-                <option value="5" />
-                <option value="6" />
-                <option value="7" />
-                <option value="8" />
-                <option value="9" />
-                <option value="10" />
-              </datalist>{" "}
-              <Output htmlFor="range" id="output">
-                {Member.map((item) => (
-                  <div>{item}</div>
-                ))}
-              </Output> */}
-            {/* <Slider
-                getAriaLabel={() => "Minimum distance"}
-                value={value1}
-                onChange={handleChange1}
-                valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
-                disableSwap
-              /> */}
             <Slider
               style={{ marginTop: "50px" }}
               getAriaLabel={() => "Minimum distance shift"}
@@ -225,7 +189,6 @@ const MainFilter = ({
           </InputBox>
 
           <ContentLabel>위치</ContentLabel>
-
           <select
             name="map"
             size={1}
@@ -255,7 +218,7 @@ const Wrap = styled.div`
   border-top-right-radius: 15px;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "450px" : "30px")};
+  height: ${({ open }) => (open ? "470px" : "30px")};
   position: fixed;
   bottom: 0px;
   transition: height 400ms ease-in-out;
@@ -280,30 +243,9 @@ const Contentbox = styled.div`
   gap: 20px;
 `;
 
-const ContentForm = styled.form`
-  margin-top: 70px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`;
-
 const InputBox = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const Output = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ContentInput = styled.input`
-  border: 2px solid green;
-  border-radius: 5px;
-  width: 400px;
-  height: 20px;
-  input:focus {
-    outline: none;
-  }
 `;
 
 const ContentButton = styled.button`
@@ -323,5 +265,4 @@ const SlideLabel = styled.div`
 `;
 const ContentLabel = styled.label`
   font-weight: 800;
-  margin-top: 20px;
 `;
