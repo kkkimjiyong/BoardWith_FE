@@ -43,27 +43,15 @@ const MainSlide = () => {
     console.warn("ERROR(" + err.code + "): " + err.message);
   }
 
-  const getPosts = async () => {
-    try {
-      const { data } = await axios.get("https://www.iceflower.shop/posts");
-      SetPosts(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     // dispatch(acyncGetPosts());
-    // if (!Myaddress) alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
+    if (!Myaddress) alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
     // getPosts();
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
     setTimeout(() => setLoading(false), 1500);
     //내 위치를 좌표값으로 알려주는 카카오 MAP API
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
-
-  console.log(Posts);
-  console.log(Myaddress);
 
   //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
   const newcardData = useSelector((state) => state.posts.distance);
@@ -75,8 +63,13 @@ const MainSlide = () => {
   console.log(newcardData);
   console.log(neardata);
 
-  const itemss = useSelector((state) => state.posts.data);
-  console.log(itemss);
+  const nearFilterHandler = () => {
+    if (Myaddress) {
+      setItems(neardata);
+    } else {
+      alert("위치 허용을 누르셔야 이용가능합니다!");
+    }
+  };
 
   const [items, setItems] = useState([]);
   const [nextPage, setNextPage] = useState(true);
@@ -86,8 +79,6 @@ const MainSlide = () => {
   let page = 0;
 
   const target = useRef();
-
-
 
   const getData = async () => {
     const response = await axios.get(
@@ -100,8 +91,6 @@ const MainSlide = () => {
       setNextPage(false);
       console.log(1);
     }
-
-    // const data = await response.json();
   };
   console.log(nextPage);
   console.log(targetMargin);
@@ -142,6 +131,9 @@ const MainSlide = () => {
       >
         <MainHeader>
           파티모집
+          <NearBtn onClick={() => nearFilterHandler()}>
+            가장 가까운 순으로 정렬
+          </NearBtn>
           <div onClick={() => navigate("/form")}>글쓰기</div>
         </MainHeader>
         {/* {items?.map((items, idx) => {
@@ -166,15 +158,13 @@ const MainSlide = () => {
         >
           This is Target.
         </Target>{" "}
-
- <button
-
+        {/* <button
           onClick={() => {
             getData();
           }}
         >
           다음페이지
-        </button> 
+        </button> */}
       </MainBox>{" "}
       <MainFilter
         targetMargin={targetMargin}
@@ -203,6 +193,12 @@ const MainHeader = styled.div`
   padding: 10px 0px 0px 0px;
   display: flex;
   justify-content: space-between;
+`;
+
+const NearBtn = styled.div`
+  padding: 0px 20px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 2px 0px gray;
 `;
 
 // const Container = styled.div`
