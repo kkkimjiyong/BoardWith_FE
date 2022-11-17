@@ -140,9 +140,12 @@ const MainSlide = () => {
           gap: "10px",
         }}
       >
+        <MainHeader>
+          파티모집
+          <div onClick={() => navigate("/form")}>글쓰기</div>
+        </MainHeader>
         {/* {items?.map((items, idx) => {
           return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
-
         })} */}
         {items?.map((items, idx) => {
           if (items.participant.length < items.partyMember) {
@@ -193,6 +196,13 @@ const Target = styled.div`
 const MainBox = styled.div`
   width: 100%;
   height: 100%;
+  padding: 0px 10px;
+`;
+
+const MainHeader = styled.div`
+  padding: 10px 0px 0px 0px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 // const Container = styled.div`

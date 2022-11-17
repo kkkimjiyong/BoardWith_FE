@@ -61,10 +61,28 @@ const MyPage = () => {
               alt="React"
             />
           </ProfileName>
-          <div>
+          <ProfileInput>
+            {" "}
+            <input
+              value={user?.birth}
+              placeholder={user?.birth}
+              onChange={onchange}
+            />
+            <input
+              value={user?.gender}
+              placeholder={user?.gender}
+              onChange={onchange}
+            />
+            <input
+              value={user?.address}
+              placeholder={user?.address}
+              onChange={onchange}
+            />
+          </ProfileInput>
+          {/* <div>
             {user?.birth}/{user?.gender}/{user?.address?.split(" ")[0]}&nbsp;
             {user?.address?.split(" ")[1]}
-          </div>
+          </div> */}
         </ProfileCtn>
         <LikeGameCtn>
           <LikeGameTitle>선호게임</LikeGameTitle>
@@ -78,7 +96,11 @@ const MyPage = () => {
           {/* 맵돌려야지~ */}
         </LikeGameCtn>
         <IntroCtn>
-          <IntroBox>안녕하세요</IntroBox>
+          <IntroBox
+            value={user?.introduce}
+            placeholder={user?.introduce}
+            onchange={onChange}
+          />
         </IntroCtn>
       </Wrapper>
     );
@@ -136,6 +158,11 @@ const ProfileName = styled.div`
   gap: 4px;
 `;
 
+const ProfileInput = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
 const LikeGameCtn = styled.div`
   width: 100%;
   display: flex;
@@ -173,7 +200,7 @@ const IntroCtn = styled.div`
   padding: 20px;
 `;
 
-const IntroBox = styled.div`
+const IntroBox = styled.input`
   width: 100%;
   border-radius: 10px;
   padding: 10px;

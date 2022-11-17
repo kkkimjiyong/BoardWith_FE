@@ -7,6 +7,7 @@ const MobileHeader = () => {
   return (
     <MobileHeaderCtn>
       <div onClick={() => navigate("/main")}>메인으로가기</div>
+      <div onClick={() => navigate("/myparty")}>마이파티</div>
       <div onClick={() => navigate("/mypage")}>마이페이지</div>
     </MobileHeaderCtn>
   );
@@ -23,7 +24,6 @@ const MobileHeaderCtn = styled.div`
   bottom: 0px;
   width: 100%;
   /* background-color: #9747ff; */
-  border: 2px solid black;
 `;
 
 export default MobileHeader;
