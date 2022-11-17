@@ -41,6 +41,19 @@ const MyPage = () => {
     getUser();
   }, []);
 
+  const postEditUser = () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
+
+  const editSubmitHandler = () => {
+
+  }
+
   const postConfig = {
     //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
@@ -60,7 +73,9 @@ const MyPage = () => {
         <ProfileCtn>
           {" "}
           <EditBox onClick={() => navigate("/editpage")}>
-            <EditBtn>편집</EditBtn>
+            <EditBtn
+            onClick={() => {}}
+            >편집</EditBtn>
           </EditBox>
           <ProfileBox
             style={{

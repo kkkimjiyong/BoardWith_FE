@@ -11,6 +11,7 @@ import Item from "../Main/MainCard";
 import axios, { Axios } from "axios";
 import MainFilter from "./MainFilter";
 import { useRef } from "react";
+import NotifModal from "../../tools/NotifModal";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const MainSlide = () => {
   const [loading, setLoading] = useState(true);
   const [Posts, SetPosts] = useState();
   const [targetMargin, setTargetMargin] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
   //초기값은 스파르타코딩클럽 본사위치로
   const [Myaddress, SetMyaddress] = useState({
@@ -61,11 +63,13 @@ const MainSlide = () => {
   // 이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   const neardata = new2.sort((a, b) => a.distance - b.distance);
   console.log(newcardData);
+  console.log(newcardData[0]?._id);
   console.log(neardata);
 
   const nearFilterHandler = () => {
     if (Myaddress) {
-      setItems(neardata);
+      // setItems(neardata);
+      setModalOpen(true);
     } else {
       alert("위치 허용을 누르셔야 이용가능합니다!");
     }
@@ -128,8 +132,14 @@ const MainSlide = () => {
         <MainHeader>
           파티모집
           <NearBtn onClick={() => nearFilterHandler()}>
-            가장 가까운 순으로 정렬
+            가장 가까운 게 뭐시여?
           </NearBtn>
+          {modalOpen && (
+            <NotifModal
+              postid={newcardData[0]?._id}
+              setModalOpen={setModalOpen}
+            />
+          )}
           <div onClick={() => navigate("/form")}>글쓰기</div>
         </MainHeader>
         {/* {items?.map((items, idx) => {

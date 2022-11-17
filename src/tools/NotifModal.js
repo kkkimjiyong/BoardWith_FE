@@ -3,19 +3,34 @@ import React, { useRef } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import styled from "styled-components";
+import { postApi, userApi } from "../instance";
 
-const NotifModal = ({ content, modalOpen, setModalOpen }) => {
+const NotifModal = ({ setModalOpen, postid }) => {
+  const [post, setPost] = useState();
+  const [user, setUser] = useState();
   // 모달창 노출
   const closeModal = () => {
     setModalOpen(false);
     console.log(1);
   };
 
+  console.log(postid);
+  useEffect(() => {
+    userApi.getUser().then((res) => {
+      setUser(res.data.findUser);
+    });
+    postApi.getDetailId(postid).then((res) => {
+      setPost(res.data.data);
+    });
+  }, []);
+
   return (
     <Wrap onClick={closeModal}>
       {" "}
       <ModalCtn onClick={(e) => e.stopPropagation()}>
-        <ContentBox>{content}</ContentBox>{" "}
+        <ContentBox>{post?.title}</ContentBox>{" "}
+        <ContentBox>{post?.cafe}</ContentBox>{" "}
+        {/* <ContentBox>{post?.title}</ContentBox>{" "} */}
         <CloseBtn onClick={closeModal}>확인</CloseBtn>
       </ModalCtn>
     </Wrap>
