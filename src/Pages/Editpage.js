@@ -1,12 +1,12 @@
 import React from "react";
 import Layout from "../style/Layout";
-import EditPage from "../Components/MyPage/EditPage";
+import Edit2 from "../Components/MyPage/Edit2";
 
 const Editpage = () => {
   return (
     <div>
       <Layout>
-        <EditPage />
+        <Edit2 />
       </Layout>
     </div>
   );

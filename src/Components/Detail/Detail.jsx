@@ -18,6 +18,8 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
+import { getCookie } from "../../hooks/CookieHook";
+import LoginNotif from "../../Pages/LoginNotif";
 
 const { kakao } = window;
 const Detail = () => {
@@ -32,7 +34,6 @@ const Detail = () => {
   const [nickName, setNickName] = useState();
   const [open, setOpen] = useState(false);
   const { comments } = useSelector((state) => state.comments.comments);
-  // const { detail } = useSelector((state) => state.detail);
   const [x, setX] = useState();
   const [y, setY] = useState();
 
@@ -48,28 +49,6 @@ const Detail = () => {
   console.log("nickName1", detail?.data?.nickName);
   console.log("nickName2", nickName);
 
-  // const x = detail?.data?.location?.x;
-  // const y = detail?.data?.location?.y;
-
-  const handleMapInfo = () => {
-    setX(detail?.data?.location?.x);
-    setY(detail?.data?.location?.y);
-    console.log("x", x);
-    console.log("y", y);
-    const container = document?.getElementById("map");
-    const options = {
-      center: new kakao.maps.LatLng(y, x),
-      level: 3,
-    };
-    const map = new kakao.maps.Map(container, options);
-    const markerPosition = new kakao.maps.LatLng(y, x);
-    const marker = new kakao.maps.Marker({
-      position: markerPosition,
-    });
-    marker.setMap(map);
-    setDetail({ ...detail });
-  };
-
   const commentOnsumitHandler = () => {
     if (comment.comment === "") {
       alert("댓글 내용을 입력해주세요");
@@ -77,6 +56,15 @@ const Detail = () => {
       dispatch(__postComments({ comment, postid }));
       setComment(initialState);
     }
+  };
+
+  //나중에 participant가 아니라, confirm으로 바뀔듯
+  const enterChatRoomHandler = () => {
+    // if (detail.data.participant.includes(nickName)) {
+    navigate(`/chat/${postid}`);
+    // } else {
+    //   alert("확정된 이후 들어갈 수 있습니다.");
+    // }
   };
 
   useEffect(() => {
@@ -87,16 +75,8 @@ const Detail = () => {
     });
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
-      localStorage.setItem(
-        "Room",
-        JSON.stringify({
-          roomid: res.data.data._id,
-          roomname: res.data.data.title,
-        })
-      );
     });
     dispatch(__getComments(postid));
-    // handleMapInfo();
     handleIsHost();
   }, []);
 
@@ -137,13 +117,16 @@ const Detail = () => {
             {" "}
             <StHost>
               <div>
-                <FontAwesomeIcon
+                <div
                   style={{
-                    color: "white",
+                    borderRadius: "10px",
+                    width: "30px",
+                    height: "30px",
+                    backgroundColor: "white",
+                    // backgroundImage: `url(${detail?.data?.img})`,
+                    backgroundSize: "cover",
                   }}
-                  size="3x"
-                  icon={faSquare}
-                />
+                ></div>
                 <Stgap />
                 <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
               </div>
@@ -157,7 +140,7 @@ const Detail = () => {
                       size="2x"
                       icon={faPenToSquare}
                       onClick={() => {
-                        navigate("/chat");
+                        enterChatRoomHandler();
                       }}
                       cursor="pointer"
                     />
@@ -169,7 +152,7 @@ const Detail = () => {
                       size="2x"
                       icon={faPaperPlane}
                       onClick={() => {
-                        navigate("/chat");
+                        enterChatRoomHandler();
                       }}
                       cursor="pointer"
                     />
@@ -183,7 +166,7 @@ const Detail = () => {
                       size="2x"
                       icon={faPaperPlane}
                       onClick={() => {
-                        navigate("/chat");
+                        enterChatRoomHandler();
                       }}
                       cursor="pointer"
                     />
@@ -233,7 +216,11 @@ const Detail = () => {
               <Stbutton
                 className="innerDiv"
                 onClick={() => {
-                  setOpen((open) => !open);
+                  if (getCookie("accesstoken")) {
+                    setOpen((open) => !open);
+                  } else {
+                    alert("로그인이 필요한 기능입니다.");
+                  }
                 }}
               >
                 참가하기
@@ -305,13 +292,13 @@ const Wrapper = styled.div`
 `;
 
 const Wrap = styled.div`
-  width: 95%;
+  width: 100%;
   position: fixed;
   left: 50%;
-  top: 25%;
+  top: 20%;
   transform: translate(-50%, -50%);
   border-radius: 12px;
-  padding: 24px 24px 40px;
+  padding: 12px 24px 40px;
 `;
 
 const StContainer = styled.div`
@@ -320,7 +307,7 @@ const StContainer = styled.div`
   border-radius: 16px;
   background-color: #d7d7d7;
   margin: 10px;
-  width: 65%;
+  width: 90%;
 `;
 
 const StHost = styled.div`

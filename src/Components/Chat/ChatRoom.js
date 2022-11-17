@@ -4,7 +4,7 @@ import useInput from "../../hooks/UseInput";
 import { io } from "socket.io-client";
 import ChatMessage from "./ChatMessage";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import FireNotification from "../../tools/useNotification";
 import { userApi } from "../../instance";
@@ -20,7 +20,7 @@ const ChatRoom = () => {
   // {
   //   transports: ["websocket"],
   // }
-
+  const { roomid } = useParams();
   const [message, setMessage, onChange] = useInput();
   const [notice, setNotice] = useState([]);
   const [users, setUsers] = useState([]);
@@ -30,9 +30,6 @@ const ChatRoom = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState();
   const [detail, setDetail] = useState();
-  const [roomInfo, setRoomInfo] = useState(
-    JSON.parse(localStorage.getItem("Room"))
-  );
 
   const moment = require("moment-timezone");
   const getStartTime = (startDate) => {
@@ -45,7 +42,7 @@ const ChatRoom = () => {
   const getChat = async () => {
     try {
       const { data } = await axios.get(
-        `https://www.iceflower.shop/chats/${roomInfo.roomid}`
+        `https://www.iceflower.shop/chats/${roomid}`
       );
       if (data.updateSocket.chat) setChatArr(data.updateSocket.chat);
     } catch (error) {}
@@ -68,7 +65,7 @@ const ChatRoom = () => {
   useEffect(() => {
     getUser();
     getChat();
-    postApi.getDetailId(roomInfo.roomid).then((res) => {
+    postApi.getDetailId(roomid).then((res) => {
       setDetail(res.data.data);
     });
   }, []);
@@ -83,7 +80,7 @@ const ChatRoom = () => {
     socket.emit("chatMessage", {
       nickName: user.nickName,
       message: message.message,
-      room: roomInfo.roomid,
+      room: roomid,
     });
 
     setMessage({ message: "" });
@@ -92,25 +89,26 @@ const ChatRoom = () => {
   const roomsubmit = () => {
     socket.emit("joinRoom", {
       nickName: user?.nickName,
-      room: roomInfo.roomid,
+      room: roomid,
     });
   };
 
   const ban = (user) => {
     socket.emit("ban", {
-      nickName: user.nickName,
-      room: roomInfo.roomid,
+      nickName: user?.nickName,
+      room: roomid,
     });
+    console.log("ban");
   };
 
   const navigate = useNavigate();
+
   const exithandler = () => {
     socket.emit("leave-room", {
-      nickName: user.nickName,
-      room: roomInfo.roomid,
+      nickName: user?.nickName,
+      room: roomid,
     });
-
-    navigate(`/posts/${roomInfo.roomid}`);
+    navigate(`/posts/${roomid}`);
   };
 
   useEffect(() => {
@@ -137,9 +135,9 @@ const ChatRoom = () => {
       <Wrapper>
         <ChatHeader>
           <Arrow className="left" onClick={() => exithandler()}></Arrow>
-          <div>{roomInfo.roomname}</div>
-          <div onClick={() => SetisEdit(!isEdit)}>
-            <UserBtn>유저</UserBtn>
+          <div>{detail?.title}</div>
+          <div>
+            <UserBtn onClick={() => SetisEdit(!isEdit)}>유저</UserBtn>
             {isEdit && (
               <UserList>
                 {users?.map((user) => {
@@ -305,18 +303,19 @@ const ChatInputBox = styled.form`
 `;
 
 const ChatInput = styled.input`
+  margin-left: 10%;
   border: none;
   border-radius: 20px;
   width: 70%;
   height: 40px;
   background-color: #be8eff;
-  margin: 0 auto;
 `;
 
 const ChatBtn = styled.button`
-  position: absolute;
-  right: 15%;
+  position: relative;
+  right: 10%;
   width: 10%;
+  max-width: 42.8px;
   height: 40px;
   border: none;
   border-radius: 100%;
@@ -326,9 +325,10 @@ const ChatBtn = styled.button`
 const UserList = styled.div`
   padding: 10px;
   position: absolute;
+  min-width: 30%;
   top: 4%;
   right: 5%;
-  height: 30%;
+  min-height: 10%;
   overflow: hidden;
   overflow-y: scroll;
   display: flex;
@@ -336,6 +336,7 @@ const UserList = styled.div`
   border: 2px solid #be8eff;
   gap: 10px;
   background-color: #be8eff;
+  z-index: 99;
 `;
 
 const UserBox = styled.div`
