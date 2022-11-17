@@ -43,6 +43,7 @@ const Login = () => {
 
   return (
     <LoginCtn>
+          <a href="/main">일단그냥둘러볼래</a>
       <LoginTitle>로그인</LoginTitle>
       <LoginInput
         value={login.userId}

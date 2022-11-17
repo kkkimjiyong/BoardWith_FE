@@ -31,7 +31,7 @@ const MyPage = () => {
       console.log(error);
     }
   };
-
+  console.log(user?.img);
   useEffect(() => {
     getUser();
   }, []);
@@ -44,7 +44,12 @@ const MyPage = () => {
           <EditBox onClick={() => navigate("/editpage")}>
             <EditBtn>편집</EditBtn>
           </EditBox>
-          <ProfileBox />
+          <ProfileBox
+            style={{
+              backgroundImage: `url(${user?.img})`,
+              backgroundSize: "cover",
+            }}
+          />
           <ProfileName>
             {" "}
             <div>{user?.nickName}</div>{" "}
@@ -159,7 +164,6 @@ const ProfileBox = styled.div`
   margin-bottom: 5px;
   border-radius: 10px;
   border: none;
-  background-color: #be8eff;
 `;
 
 const ProfileName = styled.div`
