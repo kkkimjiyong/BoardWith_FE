@@ -26,6 +26,7 @@ const ChatCtn = styled.div`
   //내가 아닌 상대가 보냈을 때
   &.anonymous {
     flex-direction: row;
+    /* background-color: red; */
   }
 `;
 
