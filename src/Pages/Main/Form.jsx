@@ -15,6 +15,7 @@ import { Datepicker, setOptions } from "@mobiscroll/react";
 import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 import { useForm } from "react-hook-form";
+import Slider from "@mui/material/Slider";
 
 const { kakao } = window;
 function Form() {
@@ -68,6 +69,7 @@ function Form() {
       date: "123",
     });
   };
+
   //useForm 설정
 
   const creatPost = async (payload) => {
@@ -111,7 +113,7 @@ function Form() {
 
   const ref = useRef(null);
   const postConfig = {
-    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
+
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
       setValue("cafe", data.address);
@@ -158,7 +160,7 @@ function Form() {
             </FlexBox>{" "}
             <FlexBox>
               <LabelBox>인원</LabelBox>
-              <Controller
+              {/* <Controller
                 control={control}
                 name="partyMember"
                 format="YYYY-MM-DD"
@@ -170,13 +172,32 @@ function Form() {
                     onChange={(e) => onChange(e.target.value)}
                   ></input>
                 )}
+              /> */}
+              <Controller
+                control={control}
+                name="partyMember"
+                render={({ field: { onChange } }) => (
+                  <MemberSlider
+                    defaultValue={10}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                    }}
+                    valueLabelDisplay="on"
+                    // getAriaValueText={valuetext}
+                    disableSwap
+                    min={1}
+                    max={10}
+                    marks
+                    sx={{ color: "black" }}
+                  />
+                )}
               />
             </FlexBox>
             <FlexBox>
               <LabelBox>지도</LabelBox>
               <InputBox onClick={postCode} {...register("cafe")} />
-              <DaumPostBox ref={ref}></DaumPostBox>
             </FlexBox>{" "}
+            <DaumPostBox></DaumPostBox>
           </Inputbox>{" "}
           <Buttonbox>
             <Button
@@ -209,6 +230,45 @@ function Form() {
 }
 export default Form;
 
+const MemberSlider = styled(Slider)({
+  color: "black",
+  height: 8,
+  "& .MuiSlider-track": {
+    border: "none",
+  },
+  "& .MuiSlider-thumb": {
+    height: 15,
+    width: 15,
+    backgroundColor: "black",
+    border: "2px solid currentColor",
+    "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
+      boxShadow: "inherit",
+    },
+    "&:before": {
+      display: "none",
+    },
+  },
+  "& .MuiSlider-valueLabel": {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: "unset",
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: "50% 50% 50% 0",
+    backgroundColor: "black",
+    transformOrigin: "bottom left",
+    transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
+    "&:before": { display: "none" },
+    "&.MuiSlider-valueLabelOpen": {
+      transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
+    },
+    "& > *": {
+      transform: "rotate(45deg)",
+    },
+  },
+});
+
 const Wrap = styled.div`
   width: 100%;
   margin: 30px auto;
@@ -236,7 +296,7 @@ const Inputbox = styled.div`
   background: transparent;
   border-radius: 10px;
   display: flex;
-  width: 90%;
+  width: 100%;
   flex-direction: column;
 `;
 
@@ -255,11 +315,11 @@ const InputBox = styled.input`
 `;
 
 const Buttonbox = styled.div`
-  width: 90%;
+  width: 100%;
   display: inline-flex;
 `;
 const Button = styled.button`
-  width: 20%;
+  width: 30%;
   display: flex;
 
   justify-content: center;
@@ -270,10 +330,7 @@ const Button = styled.button`
 `;
 
 const DaumPostBox = styled.div`
-  position: absolute;
+  position: relative;
   box-shadow: 0px 3px 3px 0px gray;
-
-  top: 450px;
-  left: 940px;
   width: 400px;
 `;

@@ -67,7 +67,7 @@ const MainFilter = ({
 
   const [filtered, setFiltered] = useState({
     time: [0, 99999999999],
-    partyMember: "10",
+    partyMember: [2, 4],
     map: "구",
   });
 
@@ -77,7 +77,7 @@ const MainFilter = ({
       filtered.partyMember[0] < item.partyMember < filtered.partyMember[1] &&
       item.map.includes(filtered.map)
   );
-
+  //필터 선택하기
   const filterhandler = () => {
     setItems(filteredItems);
     console.log(filteredItems.length);
@@ -91,8 +91,7 @@ const MainFilter = ({
 
   console.log(filtered);
 
-  // const Member = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-
+  //양방향 인원 체크
   function valuetext(value) {
     return `${value}`;
   }
@@ -142,8 +141,10 @@ const MainFilter = ({
             onChange={onDateChange}
           />
           <ContentLabel>인원</ContentLabel>
+
           <InputBox>
-            <Slider
+      
+            <MemberSlider
               style={{ marginTop: "50px" }}
               getAriaLabel={() => "Minimum distance shift"}
               value={value2}
@@ -154,38 +155,8 @@ const MainFilter = ({
               min={1}
               max={10}
               marks
-              color="secondary"
-              valueLabelFormat={(value) => {
-                return (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "-30px",
-                      left: "-3px",
-                    }}
-                  >
-                    <FontAwesomeIcon
-                      style={{ color: "black" }}
-                      size="3x"
-                      icon={faLocationPin}
-                    ></FontAwesomeIcon>
-                    <div
-                      style={{
-                        position: "relative",
-                        bottom: "32px",
-                        color: "white",
-                        ZIndex: 999,
-                      }}
-                    >
-                      {value}
-                    </div>
-                  </div>
-                );
-              }}
-              sx={{
-                color: "black",
-              }}
             />
+                
           </InputBox>
 
           <ContentLabel>위치</ContentLabel>
@@ -199,7 +170,7 @@ const MainFilter = ({
               return <option value={location.value}>{location.label}</option>;
             })}
           </select>
-          <ContentButton>선택하기</ContentButton>
+          <ContentButton onClick={filterhandler}>선택하기</ContentButton>
         </Contentbox>
       </div>
     </Wrap>
@@ -207,6 +178,45 @@ const MainFilter = ({
 };
 
 export default MainFilter;
+
+const MemberSlider = styled(Slider)({
+  color: "black",
+  height: 8,
+  "& .MuiSlider-track": {
+    border: "none",
+  },
+  "& .MuiSlider-thumb": {
+    height: 15,
+    width: 15,
+    backgroundColor: "black",
+    border: "2px solid currentColor",
+    "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
+      boxShadow: "inherit",
+    },
+    "&:before": {
+      display: "none",
+    },
+  },
+  "& .MuiSlider-valueLabel": {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: "unset",
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: "50% 50% 50% 0",
+    backgroundColor: "black",
+    transformOrigin: "bottom left",
+    transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
+    "&:before": { display: "none" },
+    "&.MuiSlider-valueLabelOpen": {
+      transform: "translate(50%, -100%) rotate(-45deg) scale(1)",
+    },
+    "& > *": {
+      transform: "rotate(45deg)",
+    },
+  },
+});
 
 const Wrap = styled.div`
   margin-bottom: 10%;
@@ -218,9 +228,12 @@ const Wrap = styled.div`
   border-top-right-radius: 15px;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "470px" : "30px")};
+  height: ${({ open }) => (open ? "500px" : "30px")};
   position: fixed;
-  bottom: 0px;
+
+  bottom: 0;
+  left: 0%;
+
   transition: height 400ms ease-in-out;
   .innerDiv {
     position: absolute;
@@ -261,7 +274,7 @@ const ContentButton = styled.button`
 `;
 
 const SlideLabel = styled.div`
-  // height: 200px;
+  margin-top: 20px;
 `;
 const ContentLabel = styled.label`
   font-weight: 800;
