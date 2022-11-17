@@ -12,6 +12,7 @@ import axios, { Axios } from "axios";
 import MainFilter from "./MainFilter";
 import { useRef } from "react";
 import NotifModal from "../../tools/NotifModal";
+import { DetailModal } from "../../Components/Detail/DetailModal";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -134,8 +135,14 @@ const MainSlide = () => {
           <NearBtn onClick={() => nearFilterHandler()}>
             가장 가까운 게 뭐시여?
           </NearBtn>
-          {modalOpen && (
+          {/* {modalOpen && (
             <NotifModal
+              postid={newcardData[0]?._id}
+              setModalOpen={setModalOpen}
+            />
+          )} */}
+          {modalOpen && (
+            <DetailModal
               postid={newcardData[0]?._id}
               setModalOpen={setModalOpen}
             />

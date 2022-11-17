@@ -52,8 +52,8 @@ const Wrap = styled.div`
 
 const ModalCtn = styled.div`
   /* 모달창 크기 */
-  width: 300px;
-  height: 200px;
+  width: 90%;
+  height: 50%;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -87,8 +87,6 @@ const CloseBtn = styled.div`
   }
 `;
 const ContentBox = styled.div`
-  width: 100%;
-  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
