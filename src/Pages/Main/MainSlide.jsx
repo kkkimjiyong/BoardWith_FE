@@ -87,19 +87,15 @@ const MainSlide = () => {
     console.log(response.data.data);
     setItems((prev) => prev.concat(response.data.data));
     page += 5;
-    if (!response.data.data) {
-      setNextPage(false);
-      console.log(1);
-    }
   };
   console.log(nextPage);
   console.log(targetMargin);
 
   useEffect(() => {
     let observer;
-    if (target.current && nextPage) {
+    if (target.current) {
       const onIntersect = async ([entry], observer) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && true) {
           observer.unobserve(entry.target);
           await getData();
           console.log(page);

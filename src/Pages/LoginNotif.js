@@ -3,14 +3,16 @@ import styled from "styled-components";
 
 const LoginNotif = () => {
   return (
-    <div>
+    <Wrapper>
       <div>로그인이 필요합니다!</div>
       <div>로그인</div>
       <div>회원가입</div>
-    </div>
+    </Wrapper>
   );
 };
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  position: absolute;
+`;
 
 export default LoginNotif;

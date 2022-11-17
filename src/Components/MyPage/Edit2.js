@@ -7,6 +7,8 @@ import male from "../../Assets/free-icon-female-2404482.png";
 import female from "../../Assets/free-icon-gender-symbol-5272547.png";
 import { useNavigate } from "react-router-dom";
 import LoginNotif from "../../Pages/LoginNotif";
+import ReactDaumPost from "react-daumpost-hook";
+import { useRef } from "react";
 
 const MyPage = () => {
   const [gender, setGender] = useState();
@@ -15,6 +17,8 @@ const MyPage = () => {
   const [isOpen1, SetisOpen1] = useState();
   const [isOpen2, SetisOpen2] = useState();
   const [user, Setuser, onChange] = useInput();
+
+  const ref = useRef(null);
 
   const navigate = useNavigate();
 
@@ -36,6 +40,17 @@ const MyPage = () => {
   useEffect(() => {
     getUser();
   }, []);
+
+  const postConfig = {
+    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
+    onComplete: (data) => {
+      // 데이터를 받아와서 set해주는 부분
+      setAddress(data.address);
+      // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
+      ref.current.style.display = "none";
+    },
+  };
+  const postCode = ReactDaumPost(postConfig);
 
   if (!getCookie("accessToken")) {
     return <LoginNotif />;
@@ -61,24 +76,25 @@ const MyPage = () => {
               alt="React"
             />
           </ProfileName>
-          <ProfileInput>
+          <ProfileInputBox>
             {" "}
-            <input
+            <ProfileInput
               value={user?.birth}
               placeholder={user?.birth}
               onChange={onchange}
             />
-            <input
+            <ProfileInput
               value={user?.gender}
               placeholder={user?.gender}
               onChange={onchange}
             />
-            <input
+            <ProfileInput
+              onClick={postCode}
               value={user?.address}
               placeholder={user?.address}
-              onChange={onchange}
             />
-          </ProfileInput>
+            <DaumPostBox ref={ref}></DaumPostBox>
+          </ProfileInputBox>
           {/* <div>
             {user?.birth}/{user?.gender}/{user?.address?.split(" ")[0]}&nbsp;
             {user?.address?.split(" ")[1]}
@@ -158,9 +174,16 @@ const ProfileName = styled.div`
   gap: 4px;
 `;
 
-const ProfileInput = styled.div`
+const ProfileInputBox = styled.div`
   display: flex;
+  justify-content: center;
+  padding: 10px 0px;
+  gap: 5px;
   width: 100%;
+`;
+
+const ProfileInput = styled.input`
+  width: 30%;
 `;
 
 const LikeGameCtn = styled.div`
@@ -213,5 +236,7 @@ const GenderImg = styled.img`
   height: 1.2rem;
   object-fit: cover;
 `;
+
+const DaumPostBox = styled.div``;
 
 export default MyPage;

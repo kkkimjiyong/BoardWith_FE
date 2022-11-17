@@ -7,6 +7,8 @@ import male from "../../Assets/free-icon-female-2404482.png";
 import female from "../../Assets/free-icon-gender-symbol-5272547.png";
 import { useNavigate } from "react-router-dom";
 import LoginNotif from "../../Pages/LoginNotif";
+import axios from "axios";
+import NotifModal from "../../tools/NotifModal";
 
 const MyPage = () => {
   const [gender, setGender] = useState();
@@ -32,13 +34,30 @@ const MyPage = () => {
       console.log(error);
     }
   };
-  console.log(user?.img);
+
   useEffect(() => {
     getUser();
   }, []);
 
+  //성별 보이게/ 안보이게 api
+
+  // const postVisible = async () => {
+  //   try {
+  //     const {data} = await axios(`www.iceflower.shop/${user.id}`, {
+  //       headers:{
+  //         Authorization: getCookie("accessToken")
+  //       }
+  //     })
+  //     console.log(data)
+  //   } catch () {
+
+  //   }
+  // }
+
   if (!getCookie("accessToken")) {
-    return <LoginNotif />;
+    if (window.confirm("로그인이 필요한 페이지입니다!")) {
+      window.location.replace("/");
+    }
   } else {
     return (
       <Wrapper>
@@ -53,18 +72,25 @@ const MyPage = () => {
               backgroundSize: "cover",
             }}
           />
-          <ProfileName>
+          <ProfileRow>
             {" "}
             <div>{user?.nickName}</div>{" "}
             <GenderImg
               src={user?.gender === "female" ? female : male}
               alt="React"
             />
-          </ProfileName>
-          <div>
-            {user?.birth}/{user?.gender}/{user?.address?.split(" ")[0]}&nbsp;
-            {user?.address?.split(" ")[1]}
-          </div>
+          </ProfileRow>
+          <ProfileRow>
+            <div>
+              {user?.birth}/{user?.visible ? `${user?.gender}` : null}/
+              {user?.address
+                ? `${user?.address?.split(" ")[0]} ${
+                    user?.address?.split(" ")[1]
+                  }`
+                : "없음"}{" "}
+            </div>
+            <div onClick={() => {}}>안보이게</div>
+          </ProfileRow>
         </ProfileCtn>
         <LikeGameCtn>
           <LikeGameTitle>선호게임</LikeGameTitle>
@@ -131,7 +157,7 @@ const ProfileBox = styled.div`
   border: none;
 `;
 
-const ProfileName = styled.div`
+const ProfileRow = styled.div`
   display: flex;
   gap: 4px;
 `;
