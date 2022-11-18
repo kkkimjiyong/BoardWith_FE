@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/UseInput";
 import { loginApi } from "../../instance";
 import { setCookie } from "../../hooks/CookieHook";
+import NotifModal from "../../tools/NotifModal";
 
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
   const initialState = {
     userId: "",
     password: "",
@@ -34,16 +36,23 @@ const Login = () => {
     console.log(error);
     postLogin(login);
     if (error) {
-      alert(error);
       setLogin(initialState);
+      setModalOpen(true);
     } else {
-      navigate("/");
+      navigate("/main");
     }
   };
 
   return (
     <LoginCtn>
-          <a href="/main">일단그냥둘러볼래</a>
+      {modalOpen && (
+        <NotifModal
+          setModalOpen={setModalOpen}
+          modalOpen={modalOpen}
+          content={"다시 로그인해주세요"}
+        />
+      )}
+      <a href="/main">일단그냥둘러볼래</a>
       <LoginTitle>로그인</LoginTitle>
       <LoginInput
         value={login.userId}

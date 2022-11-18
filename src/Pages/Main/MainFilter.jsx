@@ -254,30 +254,9 @@ const Contentbox = styled.div`
   gap: 20px;
 `;
 
-const ContentForm = styled.form`
-  margin-top: 70px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`;
-
 const InputBox = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const Output = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ContentInput = styled.input`
-  border: 2px solid green;
-  border-radius: 5px;
-  width: 400px;
-  height: 20px;
-  input:focus {
-    outline: none;
-  }
 `;
 
 const ContentButton = styled.button`
@@ -297,5 +276,4 @@ const SlideLabel = styled.div`
 `;
 const ContentLabel = styled.label`
   font-weight: 800;
-  margin-top: 20px;
 `;

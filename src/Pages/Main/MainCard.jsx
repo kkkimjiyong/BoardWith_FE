@@ -14,23 +14,38 @@ import { useNavigate } from "react-router-dom";
 const Item = ({ number, item, Myaddress }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
-  //   //부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
-  //   dispatch(
-  //     addDistance({
-  //       ...item,
-  //       distance: getDistance(
-  //         { latitude: item.location?.y, longitude: item.location?.x },
-  //         {
-  //           latitude: Myaddress.latitude,
-  //           longitude: Myaddress.longitude,
-  //         }
-  //       ),
-  //     })
-  //   );
-  // }, []);
+  //30%까지는 여유, 60&까지는 보통, 90%까지는 마감임박
+  const memberStatus = ["여유", "보통", "마감임박"];
+  const statusIndicator = () => {
+    if (item?.participant.length / item?.partyMember <= 0.3) {
+      return memberStatus[0];
+    }
+    if (item?.participant.length / item?.partyMember <= 0.6) {
+      return memberStatus[1];
+    }
+    if (item?.participant.length / item?.partyMember <= 1) {
+      return memberStatus[2];
+    }
+  };
 
+  useEffect(() => {
+    //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
+    //부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
+    if (Myaddress) {
+      dispatch(
+        addDistance({
+          ...item,
+          distance: getDistance(
+            { latitude: item.location?.y, longitude: item.location?.x },
+            {
+              latitude: Myaddress.latitude,
+              longitude: Myaddress.longitude,
+            }
+          ),
+        })
+      );
+    }
+  }, []);
   // console.log(item);
   //요일시간 표기
   const moment = require("moment-timezone");
@@ -51,7 +66,20 @@ const Item = ({ number, item, Myaddress }) => {
     <ItemWrap onClick={() => navigate(`/posts/${item._id}`)}>
       <div className="ItemWrap">
         <div className="ItemWrap-Body-SpaceBetween">
-          <div className="ItemWrap-Top ">{item?.title}</div>
+          <ItemProfile>
+            {" "}
+            <div
+              style={{
+                borderRadius: "10px",
+                width: "30px",
+                height: "30px",
+                backgroundColor: "#ddd",
+                // backgroundImage: `url(${item?.img})`,
+                backgroundSize: "cover",
+              }}
+            ></div>
+            <div>{item?.nickName}</div>
+          </ItemProfile>
           <FontAwesomeIcon
             style={{
               color: "black",
@@ -63,6 +91,7 @@ const Item = ({ number, item, Myaddress }) => {
         </div>
         <div className="ItemWrap-Body">
           <div>
+            <div className="ItemWrap-Top ">{item?.title}</div>
             <div className="ItemWrap-Body-Flex">
               <FontAwesomeIcon
                 style={{
@@ -95,8 +124,10 @@ const Item = ({ number, item, Myaddress }) => {
                 </div>
               </div>
 
-              <div className="ItemWrap-Body-Wanted ">
-                모집중({item?.participant.length}/{item?.partyMember})
+              <div
+                className={"status" + memberStatus.indexOf(statusIndicator())}
+              >
+                {statusIndicator()}
               </div>
             </div>
           </div>
@@ -114,7 +145,7 @@ const ItemWrap = styled.div`
     justify-content: center;
     padding: 4% 4%;
     flex-direction: column;
-    background-color: gray;
+    background-color: #bdbdbd;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 6px;
     margin-bottom: 2%;
@@ -126,10 +157,11 @@ const ItemWrap = styled.div`
     border-top-right-radius: 6px;
     /* background-color: #e2e5e7; */
     color: black;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     text-align: center;
     align-items: center;
     margin-bottom: 2%;
+    padding: 5px 0px;
   }
   .ItemWrap-Body-SpaceBetween {
     display: flex;
@@ -169,6 +201,43 @@ const ItemWrap = styled.div`
     justify-content: center;
     padding: 0.5%;
   }
+  .status0 {
+    display: flex;
+    border-radius: 130px;
+    background-color: #e2e5e7;
+    white-space: nowrap;
+    width: 30%;
+    justify-content: center;
+    padding: 0.5%;
+    background-color: #05ff5b;
+  }
+  .status1 {
+    display: flex;
+    border-radius: 130px;
+    background-color: #e2e5e7;
+    white-space: nowrap;
+    width: 30%;
+    justify-content: center;
+    padding: 0.5%;
+    background-color: #dafe6d;
+  }
+  .status2 {
+    display: flex;
+    border-radius: 130px;
+    background-color: #e2e5e7;
+    white-space: nowrap;
+    width: 30%;
+    justify-content: center;
+    padding: 0.5%;
+    background-color: red;
+  }
+`;
+
+const ItemProfile = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 `;
 
 export default Item;

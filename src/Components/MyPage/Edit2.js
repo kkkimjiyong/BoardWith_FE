@@ -7,8 +7,8 @@ import male from "../../Assets/free-icon-female-2404482.png";
 import female from "../../Assets/free-icon-gender-symbol-5272547.png";
 import { useNavigate } from "react-router-dom";
 import LoginNotif from "../../Pages/LoginNotif";
-import axios from "axios";
-import NotifModal from "../../tools/NotifModal";
+import ReactDaumPost from "react-daumpost-hook";
+import { useRef } from "react";
 
 const MyPage = () => {
   const [gender, setGender] = useState();
@@ -17,6 +17,8 @@ const MyPage = () => {
   const [isOpen1, SetisOpen1] = useState();
   const [isOpen2, SetisOpen2] = useState();
   const [user, Setuser, onChange] = useInput();
+
+  const ref = useRef(null);
 
   const navigate = useNavigate();
 
@@ -34,37 +36,46 @@ const MyPage = () => {
       console.log(error);
     }
   };
-
+  console.log(user?.img);
   useEffect(() => {
     getUser();
   }, []);
 
-  //성별 보이게/ 안보이게 api
+  const postEditUser = () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
 
-  // const postVisible = async () => {
-  //   try {
-  //     const {data} = await axios(`www.iceflower.shop/${user.id}`, {
-  //       headers:{
-  //         Authorization: getCookie("accessToken")
-  //       }
-  //     })
-  //     console.log(data)
-  //   } catch () {
 
-  //   }
-  // }
+  const editSubmitHandler = () => {
+
+  }
+
+  const postConfig = {
+    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
+    onComplete: (data) => {
+      // 데이터를 받아와서 set해주는 부분
+      setAddress(data.address);
+      // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
+      ref.current.style.display = "none";
+    },
+  };
+  const postCode = ReactDaumPost(postConfig);
 
   if (!getCookie("accessToken")) {
-    if (window.confirm("로그인이 필요한 페이지입니다!")) {
-      window.location.replace("/");
-    }
+    return <LoginNotif />;
   } else {
     return (
       <Wrapper>
         <ProfileCtn>
           {" "}
           <EditBox onClick={() => navigate("/editpage")}>
-            <EditBtn>편집</EditBtn>
+            <EditBtn
+            onClick={() => {}}
+            >편집</EditBtn>
           </EditBox>
           <ProfileBox
             style={{
@@ -72,25 +83,37 @@ const MyPage = () => {
               backgroundSize: "cover",
             }}
           />
-          <ProfileRow>
+          <ProfileName>
             {" "}
             <div>{user?.nickName}</div>{" "}
             <GenderImg
               src={user?.gender === "female" ? female : male}
               alt="React"
             />
-          </ProfileRow>
-          <ProfileRow>
-            <div>
-              {user?.birth}/{user?.visible ? `${user?.gender}` : null}/
-              {user?.address
-                ? `${user?.address?.split(" ")[0]} ${
-                    user?.address?.split(" ")[1]
-                  }`
-                : "없음"}{" "}
-            </div>
-            <div onClick={() => {}}>안보이게</div>
-          </ProfileRow>
+          </ProfileName>
+          <ProfileInputBox>
+            {" "}
+            <ProfileInput
+              value={user?.birth}
+              placeholder={user?.birth}
+              onChange={onchange}
+            />
+            <ProfileInput
+              value={user?.gender}
+              placeholder={user?.gender}
+              onChange={onchange}
+            />
+            <ProfileInput
+              onClick={postCode}
+              value={user?.address}
+              placeholder={user?.address}
+            />
+            <DaumPostBox ref={ref}></DaumPostBox>
+          </ProfileInputBox>
+          {/* <div>
+            {user?.birth}/{user?.gender}/{user?.address?.split(" ")[0]}&nbsp;
+            {user?.address?.split(" ")[1]}
+          </div> */}
         </ProfileCtn>
         <LikeGameCtn>
           <LikeGameTitle>선호게임</LikeGameTitle>
@@ -104,7 +127,11 @@ const MyPage = () => {
           {/* 맵돌려야지~ */}
         </LikeGameCtn>
         <IntroCtn>
-          <IntroBox>안녕하세요</IntroBox>
+          <IntroBox
+            value={user?.introduce}
+            placeholder={user?.introduce}
+            onchange={onChange}
+          />
         </IntroCtn>
       </Wrapper>
     );
@@ -157,9 +184,21 @@ const ProfileBox = styled.div`
   border: none;
 `;
 
-const ProfileRow = styled.div`
+const ProfileName = styled.div`
   display: flex;
   gap: 4px;
+`;
+
+const ProfileInputBox = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 10px 0px;
+  gap: 5px;
+  width: 100%;
+`;
+
+const ProfileInput = styled.input`
+  width: 30%;
 `;
 
 const LikeGameCtn = styled.div`
@@ -199,7 +238,7 @@ const IntroCtn = styled.div`
   padding: 20px;
 `;
 
-const IntroBox = styled.div`
+const IntroBox = styled.input`
   width: 100%;
   border-radius: 10px;
   padding: 10px;
@@ -212,5 +251,7 @@ const GenderImg = styled.img`
   height: 1.2rem;
   object-fit: cover;
 `;
+
+const DaumPostBox = styled.div``;
 
 export default MyPage;

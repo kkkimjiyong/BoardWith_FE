@@ -82,12 +82,18 @@ const SignUp = () => {
     console.log(data);
     reset();
     console.log({ ...data, birth: Age[birthvalue], likeGame: tagList });
-    navigate("/login");
-    postSignUp({ ...data, birth: Age[birthvalue] });
+    navigate("/");
+    //선호지역은 자동적으로 나의 집주소에서 구단위 까지만으로 적용
+    postSignUp({
+      ...data,
+      birth: Age[birthvalue],
+      likeGame: tagList,
+      MyPlace: data.address.split(" ").slice(0, 2),
+    });
   };
 
   const postConfig = {
-    ref: ref, //팝업창으로 사용시 해당 파라메터를 없애면 된다.
+    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
       setValue("address", data.address);
@@ -214,7 +220,7 @@ const SignUp = () => {
           </SignUpBox>
           <SignUpBox>
             <SignUpInput
-              placeholder="클릭하여, 주소입력"
+              placeholder="거주하시는 주소를 입력"
               type="text"
               onClick={postCode}
               {...register("address")}
