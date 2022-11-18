@@ -131,10 +131,8 @@ const Detail = () => {
     <Wrapper>
       <Wrap>
         <Layout>
-          {" "}
           <div onClick={() => navigate("/main")}>뒤로가기</div>
           <StContainer>
-            {" "}
             <StHost>
               <div>
                 <FontAwesomeIcon
@@ -307,8 +305,8 @@ const Wrapper = styled.div`
 const Wrap = styled.div`
   width: 95%;
   position: fixed;
-  left: 50%;
-  top: 25%;
+  left: 47.5%;
+  top: 20%;
   transform: translate(-50%, -50%);
   border-radius: 12px;
   padding: 24px 24px 40px;
@@ -320,7 +318,7 @@ const StContainer = styled.div`
   border-radius: 16px;
   background-color: #d7d7d7;
   margin: 10px;
-  width: 65%;
+  width: 90%;
 `;
 
 const StHost = styled.div`
@@ -380,7 +378,7 @@ const ListWrap = styled.div`
   width: 100%;
 
   background-color: white;
-  height: ${({ open }) => (open ? "80%" : "0")};
+  height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
   bottom: 0;
   left: 0;
