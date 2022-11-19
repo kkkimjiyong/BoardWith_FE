@@ -11,11 +11,6 @@ import axios from "axios";
 import NotifModal from "../../tools/NotifModal";
 
 const MyPage = () => {
-  const [gender, setGender] = useState();
-  const [address, setAddress] = useState();
-  const [isOpen, SetisOpen] = useState();
-  const [isOpen1, SetisOpen1] = useState();
-  const [isOpen2, SetisOpen2] = useState();
   const [user, Setuser, onChange] = useInput();
 
   const navigate = useNavigate();
@@ -43,15 +38,15 @@ const MyPage = () => {
 
   const postVisible = async () => {
     try {
-      const { data } = await axios.put(
-        `https://www.iceflower.shop/${user.userId}`,
-        { visible: !user.visible },
+      const { data } = await axios.get(
+        `https://www.iceflower.shop/users/visible/${user.userId}`,
         {
           headers: {
             Authorization: `${getCookie("accessToken")}`,
           },
         }
       );
+      Setuser(data.messgae);
       console.log(data);
     } catch (error) {
       console.log(error);

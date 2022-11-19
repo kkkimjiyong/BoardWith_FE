@@ -12,7 +12,7 @@ const AvatarSelect = () => {
 
   const [userSelect, setUserSelect] = useState(userAvatar);
   const ImgList = [
-    { Num: 1, Category: "Eye" },
+    { Category: "Eye", Num: 1 },
     { Category: "Mouth", Num: 1 },
     { Category: "Mouth", Num: 2 },
     { Category: "Mouth", Num: 3 },
@@ -24,7 +24,7 @@ const AvatarSelect = () => {
     { Category: "Eye", Num: 1 },
     { Category: "Hair", Num: 2 },
   ];
-
+  console.log(userSelect);
   return (
     <Wrap>
       <AvatarBox userSelect={userSelect} />
@@ -61,7 +61,7 @@ const AvatarSelect = () => {
               return (
                 <ImgItem
                   onClick={() =>
-                    setUserSelect({ ...userAvatar, [Img.Category]: Img.Num })
+                    setUserSelect({ ...userSelect, [Img.Category]: Img.Num })
                   }
                 >
                   {Img.Category}_{Img.Num}
