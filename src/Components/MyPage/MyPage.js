@@ -38,21 +38,25 @@ const MyPage = () => {
   useEffect(() => {
     getUser();
   }, []);
+  // console.log({ visible: !user.visible });
+  // 성별 보이게 안보이게 api
 
-  //성별 보이게/ 안보이게 api
-
-  // const postVisible = async () => {
-  //   try {
-  //     const {data} = await axios(`www.iceflower.shop/${user.id}`, {
-  //       headers:{
-  //         Authorization: getCookie("accessToken")
-  //       }
-  //     })
-  //     console.log(data)
-  //   } catch () {
-
-  //   }
-  // }
+  const postVisible = async () => {
+    try {
+      const { data } = await axios.put(
+        `https://www.iceflower.shop/${user.userId}`,
+        { visible: !user.visible },
+        {
+          headers: {
+            Authorization: `${getCookie("accessToken")}`,
+          },
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (!getCookie("accessToken")) {
     if (window.confirm("로그인이 필요한 페이지입니다!")) {
@@ -75,10 +79,12 @@ const MyPage = () => {
           <ProfileRow>
             {" "}
             <div>{user?.nickName}</div>{" "}
-            <GenderImg
-              src={user?.gender === "female" ? female : male}
-              alt="React"
-            />
+            {user?.visible && (
+              <GenderImg
+                src={user?.gender === "female" ? female : male}
+                alt="React"
+              />
+            )}
           </ProfileRow>
           <ProfileRow>
             <div>
@@ -89,7 +95,7 @@ const MyPage = () => {
                   }`
                 : "없음"}{" "}
             </div>
-            <div onClick={() => {}}>안보이게</div>
+            <div onClick={() => postVisible()}>안보이게</div>
           </ProfileRow>
         </ProfileCtn>
         <LikeGameCtn>

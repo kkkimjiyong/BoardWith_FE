@@ -13,6 +13,7 @@ import MainFilter from "./MainFilter";
 import { useRef } from "react";
 import NotifModal from "../../tools/NotifModal";
 import { DetailModal } from "../../Components/Detail/DetailModal";
+import { setCookie } from "../../hooks/CookieHook";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -22,11 +23,9 @@ const MainSlide = () => {
   const [targetMargin, setTargetMargin] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
 
+  //?-----------------------------가장 가까운 모임 기능--------------------------
   //초기값은 스파르타코딩클럽 본사위치로
-  const [Myaddress, SetMyaddress] = useState({
-    latitude: 127.037921,
-    longitude: 37.4980853,
-  });
+  const [Myaddress, SetMyaddress] = useState();
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -35,51 +34,45 @@ const MainSlide = () => {
 
   //내 위치를 불러오는 것에 성공했을 때 , 실행되는 함수
   function success(position) {
-    //현재 위치를 state값으로
     SetMyaddress({
       latitude: position.coords.latitude,
       longitude: position.coords.longitude,
     });
   }
-  //불러오지 못했을 때 실행되는 함수.
+  //!불러오지 못했을 때 실행되는 함수.
   function error(err) {
     console.warn("ERROR(" + err.code + "): " + err.message);
   }
 
   useEffect(() => {
-    // dispatch(acyncGetPosts());
-    if (!Myaddress) alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
-    // getPosts();
+    if (Myaddress) {
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    }
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
     setTimeout(() => setLoading(false), 1500);
-    //내 위치를 좌표값으로 알려주는 카카오 MAP API
-    navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
 
   //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
   const newcardData = useSelector((state) => state.posts.distance);
-  //복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
+  //!복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
   const new2 = [...newcardData];
 
-  // 이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
+  // *이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   const neardata = new2.sort((a, b) => a.distance - b.distance);
-  console.log(newcardData);
-  console.log(newcardData[0]?._id);
-  console.log(neardata);
 
   const nearFilterHandler = () => {
     if (Myaddress) {
-      // setItems(neardata);
+      setItems(neardata);
       setModalOpen(true);
     } else {
       alert("위치 허용을 누르셔야 이용가능합니다!");
     }
   };
 
+  //? --------------------------------------------------------------------------
+
   const [items, setItems] = useState([]);
   const [nextPage, setNextPage] = useState(true);
-  // 추가된 부분
-  console.log("items", items);
 
   let page = 0;
 
@@ -89,12 +82,9 @@ const MainSlide = () => {
     const response = await axios.get(
       `https://www.iceflower.shop/posts/?skip=${page}`
     );
-    console.log(response.data.data);
     setItems((prev) => prev.concat(response.data.data));
     page += 5;
   };
-  console.log(nextPage);
-  console.log(targetMargin);
 
   useEffect(() => {
     let observer;
@@ -103,7 +93,6 @@ const MainSlide = () => {
         if (entry.isIntersecting && true) {
           observer.unobserve(entry.target);
           await getData();
-          console.log(page);
           observer.observe(entry.target);
         }
       };
@@ -117,7 +106,6 @@ const MainSlide = () => {
   useEffect(() => {
     setItems(items);
   }, []);
-  console.log(target.current);
   return (
     <>
       {" "}
@@ -154,8 +142,6 @@ const MainSlide = () => {
         })} */}
         {items?.map((items, idx) => {
           if (items.participant.length < items.partyMember) {
-            console.log("참가자수", items.participant.length);
-            console.log("참가가능한수", items.partyMember);
             return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
           } else {
             <div>마감되었습니다</div>;

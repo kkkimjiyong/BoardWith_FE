@@ -21,7 +21,7 @@ font-family: 'NanumSquareRound';    box-sizing: border-box;
 
   body {
 font-family: 'NanumSquareRound';    font-weight: normal;
-    font-size: 16px;
+    font-size: 17px;
     line-height: 24px;
     color: var(--gray-900);
         display: block;

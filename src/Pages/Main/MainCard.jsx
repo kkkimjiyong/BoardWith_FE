@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 const Item = ({ number, item, Myaddress }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //30%까지는 여유, 60&까지는 보통, 90%까지는 마감임박
+  //?---------------30%까지는 여유, 60&까지는 보통, 100%미만까지는 마감임박------------
   const memberStatus = ["여유", "보통", "마감임박"];
   const statusIndicator = () => {
     if (item?.participant.length / item?.partyMember <= 0.3) {
@@ -27,10 +27,10 @@ const Item = ({ number, item, Myaddress }) => {
       return memberStatus[2];
     }
   };
-
   useEffect(() => {
-    //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
-    //부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
+    //*각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
+    //*부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
+
     if (Myaddress) {
       dispatch(
         addDistance({
@@ -46,7 +46,6 @@ const Item = ({ number, item, Myaddress }) => {
       );
     }
   }, []);
-  // console.log(item);
   //요일시간 표기
   const moment = require("moment-timezone");
   const startDate = item?.time?.[0];
