@@ -13,52 +13,38 @@ const KaKaoLogin = () => {
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code");
 
-  const REST_API_KEY = "52825ae71c4b6cef839a32553fcc6890";
+  const REST_API_KEY = "55dc07a0e4c564bac2630a91922eab90";
   const REDIRECT_URI = "http://localhost:3000/signup/oauth";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   //이 코드를 백엔드로 보내주면됨
   console.log(code);
 
-  async function getKaKaoToken() {
+  const postCode = async () => {
     try {
       const { data } = await axios.post(
-        "https://kauth.kakao.com/oauth/token",
-        `grant_type=authorization_code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&code=${code}`,
-        {
-          headers: {
-            "Content-Type": `application/x-www-form-urlencoded`,
-          },
-        }
+        "https://www.iceflower.shop/kakao/callback",
+        { code: code }
       );
-      console.log(data.access_token);
+      console.log(data.accessToken);
 
-      setCookie("KakaoToken", data.access_token, { path: "/" });
+      setCookie("access_token", data.accessToken);
     } catch (error) {
       console.log(error);
     }
-  }
-  async function getUserinfo() {
-    const data = await axios.get("https://kapi.kakao.com/v2/user/me", {
-      headers: {
-        Authorization: `Bearer ${getCookie("KakaoToken")}`,
-        "Content-Type": `application/x-www-form-urlencoded;charset=utf-8`,
-      },
-    });
-  }
+  };
+
+  useEffect(() => {
+    postCode();
+    setCookie("123", 123);
+  }, []);
 
   //   console.log(Fetch());
   //   useEffect(() => {
   //     Fetch();
   //   }, []);
 
-  return (
-    <div>
-      로그인 성공!
-      <button onClick={() => getKaKaoToken()}>액세스토큰받기</button>
-      <button onClick={() => getUserinfo()}>유저정보받기</button>
-    </div>
-  );
+  return <div>로그인 성공!</div>;
 };
 
 export default KaKaoLogin;

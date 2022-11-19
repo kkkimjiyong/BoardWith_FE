@@ -27,10 +27,11 @@ const Item = ({ number, item, Myaddress }) => {
       return memberStatus[2];
     }
   };
-
+  console.log(Myaddress);
   useEffect(() => {
     //각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
     //부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
+
     if (Myaddress) {
       dispatch(
         addDistance({
