@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
-import { __getPostslById } from "../../Test/DetailPostsSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPenToSquare,
   faPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import { faLocationDot, faUserGroup } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar, faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import {
   __getComments,
   __postComments,
@@ -19,15 +18,12 @@ import {
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
-import LoginNotif from "../../Pages/LoginNotif";
 
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const initialState = {
-    comment: "",
-  };
+  const initialState = { comment: "" };
   const [comment, setComment] = useState(initialState);
   const [isHost, setIsHost] = useState(false);
   const [nickName, setNickName] = useState();
@@ -38,16 +34,6 @@ export const DetailModal = ({ postid, setModalOpen }) => {
 
   const [detail, setDetail] = useState();
 
-  console.log("detail", detail?.data);
-  console.log("isHost", isHost);
-
-  const handleIsHost = () => {
-    console.log("여기언제타용");
-  };
-
-  console.log("nickName1", detail?.data?.nickName);
-  console.log("nickName2", nickName);
-
   const commentOnsumitHandler = () => {
     if (comment.comment === "") {
       alert("댓글 내용을 입력해주세요");
@@ -57,17 +43,16 @@ export const DetailModal = ({ postid, setModalOpen }) => {
     }
   };
 
-  //나중에 participant가 아니라, confirm으로 바뀔듯
+  //!나중에 participant가 아니라, confirm으로 바뀔듯
   const enterChatRoomHandler = () => {
-    // if (detail.data.participant.includes(nickName)) {
-    navigate(`/chat/${postid}`);
-    // } else {
-    //   alert("확정된 이후 들어갈 수 있습니다.");
-    // }
+    if (detail.data.participant.includes(nickName)) {
+      navigate(`/chat/${postid}`);
+    } else {
+      alert("확정된 이후 들어갈 수 있습니다.");
+    }
   };
-
+  //?--------------------디테일내용 불러오기---------------------
   useEffect(() => {
-    console.log("useEffect");
     // dispatch(__getPostslById(postid));
     userApi.getUser().then((res) => {
       setNickName(res.data.findUser.nickName);
@@ -76,9 +61,9 @@ export const DetailModal = ({ postid, setModalOpen }) => {
       setDetail(res.data);
     });
     dispatch(__getComments(postid));
-    handleIsHost();
   }, []);
 
+  //?--------------------디테일이 불러와지고 실행될 부분 (순서)---------------------
   useEffect(() => {
     if (detail?.data?.nickName === nickName) {
       setIsHost(true);
@@ -90,8 +75,7 @@ export const DetailModal = ({ postid, setModalOpen }) => {
 
     setX(detail?.data?.location?.x);
     setY(detail?.data?.location?.y);
-    console.log("x", x);
-    console.log("y", y);
+
     const container = document?.getElementById("map");
     const options = {
       center: new kakao.maps.LatLng(y, x),

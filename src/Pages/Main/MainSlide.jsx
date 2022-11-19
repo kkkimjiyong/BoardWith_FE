@@ -23,7 +23,7 @@ const MainSlide = () => {
   const [targetMargin, setTargetMargin] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
 
-  //?-----------------------------가장 가까운 모임 찾기 기능--------------------------
+  //?-----------------------------가장 가까운 모임 기능--------------------------
   //초기값은 스파르타코딩클럽 본사위치로
   const [Myaddress, SetMyaddress] = useState();
   const options = {
@@ -45,9 +45,7 @@ const MainSlide = () => {
   }
 
   useEffect(() => {
-    if (!Myaddress) {
-      alert("위치기반을 누르시면, 위치기반 매칭이 가능합니다.");
-    } else {
+    if (Myaddress) {
       navigator.geolocation.getCurrentPosition(success, error, options);
     }
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
@@ -61,24 +59,20 @@ const MainSlide = () => {
 
   // *이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   const neardata = new2.sort((a, b) => a.distance - b.distance);
-  console.log(newcardData);
-  console.log(newcardData[0]?._id);
-  console.log(neardata);
 
   const nearFilterHandler = () => {
     if (Myaddress) {
-      // setItems(neardata);
+      setItems(neardata);
       setModalOpen(true);
     } else {
       alert("위치 허용을 누르셔야 이용가능합니다!");
     }
   };
+
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
   const [nextPage, setNextPage] = useState(true);
-  // 추가된 부분
-  console.log("items", items);
 
   let page = 0;
 
@@ -88,12 +82,9 @@ const MainSlide = () => {
     const response = await axios.get(
       `https://www.iceflower.shop/posts/?skip=${page}`
     );
-    console.log(response.data.data);
     setItems((prev) => prev.concat(response.data.data));
     page += 5;
   };
-  console.log(nextPage);
-  console.log(targetMargin);
 
   useEffect(() => {
     let observer;
@@ -102,7 +93,6 @@ const MainSlide = () => {
         if (entry.isIntersecting && true) {
           observer.unobserve(entry.target);
           await getData();
-          console.log(page);
           observer.observe(entry.target);
         }
       };
@@ -116,7 +106,6 @@ const MainSlide = () => {
   useEffect(() => {
     setItems(items);
   }, []);
-  console.log(target.current);
   return (
     <>
       {" "}
@@ -153,8 +142,6 @@ const MainSlide = () => {
         })} */}
         {items?.map((items, idx) => {
           if (items.participant.length < items.partyMember) {
-            console.log("참가자수", items.participant.length);
-            console.log("참가가능한수", items.partyMember);
             return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
           } else {
             <div>마감되었습니다</div>;

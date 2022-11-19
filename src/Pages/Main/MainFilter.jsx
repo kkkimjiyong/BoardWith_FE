@@ -80,16 +80,10 @@ const MainFilter = ({
   //필터 선택하기
   const filterhandler = () => {
     setItems(filteredItems);
-    console.log(filteredItems.length);
     if (filteredItems.length < 5) {
       setTargetMargin((5 - filteredItems.length) * 200);
     }
-    console.log(targetMargin);
   };
-
-  console.log(filteredItems);
-
-  console.log(filtered);
 
   //양방향 인원 체크
   function valuetext(value) {
@@ -143,7 +137,6 @@ const MainFilter = ({
           <ContentLabel>인원</ContentLabel>
 
           <InputBox>
-      
             <MemberSlider
               style={{ marginTop: "50px" }}
               getAriaLabel={() => "Minimum distance shift"}
@@ -156,7 +149,6 @@ const MainFilter = ({
               max={10}
               marks
             />
-                
           </InputBox>
 
           <ContentLabel>위치</ContentLabel>
