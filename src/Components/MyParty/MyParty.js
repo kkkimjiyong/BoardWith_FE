@@ -1,13 +1,52 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { getCookie } from "../../hooks/CookieHook";
 
 const MyParty = () => {
   const navigate = useNavigate();
   const [isOpen, SetisOpen] = useState();
   const [isOpen1, SetisOpen1] = useState();
   const [isOpen2, SetisOpen2] = useState();
+  const [reservedParty, setReservedParty] = useState();
+  const [confirmParty, setConfirmParty] = useState();
+  const getReserved = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://www.iceflower.shop/users/partyReserved",
+        {
+          headers: { Authorization: `${getCookie("accessToken")}` },
+        }
+      );
+      console.log(data);
+      setReservedParty(data.partyReservedData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getConfirm = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://www.iceflower.shop/users/partyGo",
+        {
+          headers: { Authorization: `${getCookie("accessToken")}` },
+        }
+      );
+      console.log(data);
+      setConfirmParty(data.partyGoData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getReserved();
+    getConfirm();
+  }, []);
+
   return (
     <div>
       <div onClick={() => navigate("/form")}>글쓰기</div>
@@ -19,7 +58,6 @@ const MyParty = () => {
         {/* 맵돌려야지~ */}
         {isOpen && (
           <MyPartyBox>
-            {" "}
             <MyPartyItem>불금 달리실 분~</MyPartyItem>
             <MyPartyItem>불금 달리실 분~</MyPartyItem>
             <MyPartyItem>불금 달리실 분~</MyPartyItem>
@@ -32,10 +70,9 @@ const MyParty = () => {
         </MyPartyTitle>
         {isOpen1 && (
           <MyPartyBox>
-            {" "}
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
+            {reservedParty?.map((party) => {
+              return <MyPartyItem>{party?.title}</MyPartyItem>;
+            })}
           </MyPartyBox>
         )}
         <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
@@ -44,10 +81,9 @@ const MyParty = () => {
         </MyPartyTitle>
         {isOpen2 && (
           <MyPartyBox>
-            {" "}
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
-            <MyPartyItem>불금 달리실 분~</MyPartyItem>
+            {confirmParty?.map((party) => {
+              return <MyPartyItem>{party?.title}</MyPartyItem>;
+            })}
           </MyPartyBox>
         )}
       </MyPartyCtn>
@@ -80,7 +116,7 @@ const MyPartyBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 85%;
-  height: 130px;
+  max-height: 130px;
   overflow-y: scroll;
   margin: 0 auto;
 `;
