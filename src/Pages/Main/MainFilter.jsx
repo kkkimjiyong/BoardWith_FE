@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
-import DatePicker, { getDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-// import { Datepicker, setOptions } from "@mobiscroll/react";
-// import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import Slider from "@mui/material/Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
@@ -31,11 +28,6 @@ const MainFilter = ({
       [name]: value,
     });
   };
-
-  // setOptions({
-  //   theme: "ios",
-  //   themeVariant: "light",
-  // });
 
   const seoulGu = [
     { value: "강남구", label: "강남구" },
@@ -128,12 +120,6 @@ const MainFilter = ({
         <Contentbox>
           <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
           <ContentLabel>날짜 및 시간</ContentLabel>
-          {/* <Datepicker
-            name="time"
-            select="range"
-            controls={["date", "time"]}
-            onChange={onDateChange}
-          /> */}
           <ContentLabel>인원</ContentLabel>
 
           <InputBox>
@@ -211,18 +197,16 @@ const MemberSlider = styled(Slider)({
 });
 
 const Wrap = styled.div`
-  margin-bottom: 10%;
   display: flex;
   flex-direction: column;
-  max-width: 640px;
+  max-width: 820px;
   padding: 10px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  width: 100%;
-  background-color: white;
-  height: ${({ open }) => (open ? "500px" : "30px")};
+  width: 100vw;
+  background-color: #dddddd;
+  height: ${({ open }) => (open ? "500px" : "80px")};
   position: fixed;
-
   bottom: 0;
   left: 0%;
 

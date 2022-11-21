@@ -14,21 +14,19 @@ const Layout = ({ children }) => {
 export default Layout;
 
 const Wrap = styled.div`
-  position: absolute;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  /* background-color: black; */
+  width: 100vw;
+  background-color: #2e294e;
   z-index: -1;
 `;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  margin: 0;
+  width: 100vw;
   max-width: 640px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -9,9 +9,7 @@ import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import { Controller } from "react-hook-form";
-// import { Datepicker, setOptions } from "@mobiscroll/react";
 import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 import { useForm } from "react-hook-form";
@@ -19,10 +17,6 @@ import Slider from "@mui/material/Slider";
 
 const { kakao } = window;
 function Form() {
-  // setOptions({
-  //   theme: "ios",
-  //   themeVariant: "light",
-  // });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();
@@ -38,11 +32,6 @@ function Form() {
     map: yup.string(),
     partyMember: yup.number(),
   });
-
-  // setOptions({
-  //   theme: "ios",
-  //   themeVariant: "light",
-  // });
 
   const onSubmit = (data) => {
     console.log("submit", {
@@ -135,21 +124,6 @@ function Form() {
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
-
-              {/* <Controller
-                control={control}
-                name="time"
-                format="YYYY-MM-DD"
-                render={({ field: { onChange } }) => (
-                  <Datepicker
-                    select="range"
-                    controls={["date", "time"]}
-                    onChange={(value) => {
-                      onChange(value);
-                    }}
-                  />
-                )}
-              /> */}
             </FlexBox>{" "}
             <FlexBox>
               <LabelBox>인원</LabelBox>

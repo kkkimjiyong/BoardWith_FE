@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Item from "../Main/MainCard";
 import axios from "axios";
 import MainFilter from "./MainFilter";
@@ -106,30 +104,32 @@ const MainSlide = () => {
   return (
     <>
       {" "}
-      <MainBox>
+      <MainBox className="Scroll">
         <MainHeader>
           <BiCurrentLocation size={"30"} onClick={() => nearFilterHandler()} />
-          파티모집
-          <div>
+          <div className="headtxt">파티모집</div>
+          <Rowbox>
             <FiFilter size={"24"} onClick={() => setOpen(!open)} />
             <BsPencil size={"24"} onClick={() => navigate("/form")} />
-          </div>
+          </Rowbox>
         </MainHeader>
-        {items?.map((items, idx) => {
-          if (items.participant.length < items.partyMember) {
-            return (
-              <Item
-                setModalOpen={setModalOpen}
-                key={idx}
-                item={items}
-                Myaddress={Myaddress}
-              ></Item>
-            );
-          } else {
-            <div>마감되었습니다</div>;
-          }
-        })}
-        <Target ref={target}>This is Target.</Target>{" "}
+        <MainListCtn>
+          {items?.map((items, idx) => {
+            if (items.participant.length < items.partyMember) {
+              return (
+                <Item
+                  setModalOpen={setModalOpen}
+                  key={idx}
+                  item={items}
+                  Myaddress={Myaddress}
+                ></Item>
+              );
+            } else {
+              <div>마감되었습니다</div>;
+            }
+          })}
+          <Target ref={target}>This is Target.</Target>{" "}
+        </MainListCtn>
       </MainBox>{" "}
       <MainFilter
         targetMargin={targetMargin}
@@ -140,14 +140,6 @@ const MainSlide = () => {
         open={open}
         setOpen={setOpen}
       />{" "}
-      {/* //! 리스트에서 보여주는 디테일모달창 */}
-      {/* {ModalOpen && (
-        <DetailModal
-          postid={id}
-          ModalOpen={ModalOpen}
-          setModalOpen={setModalOpen}
-        />
-      )} */}
       {/* //! 가장 가까운 모임 보여주는 모달창 */}
       {NearModalOpen && (
         <NearDetailModal
@@ -166,14 +158,38 @@ const Target = styled.div`
 `;
 
 const MainBox = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 0px 10px;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
 `;
 
 const MainHeader = styled.div`
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #2e294e;
+  box-shadow: 0px 0.5px 15px 0.1px black;
+  z-index: 999;
   color: white;
-  padding: 10px 0px 0px 0px;
+  padding: 3.5% 5%;
   display: flex;
   justify-content: space-between;
+
+  align-items: center;
+  .headtxt {
+    margin-left: 20px;
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #d90368,
+      0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
+  }
+`;
+
+const MainListCtn = styled.div`
+  width: 100%;
+  padding: 3% 5% 0 5%;
+`;
+
+const Rowbox = styled.div`
+  display: flex;
+  gap: 10px;
 `;

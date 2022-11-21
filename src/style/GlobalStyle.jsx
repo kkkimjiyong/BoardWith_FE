@@ -18,13 +18,18 @@ font-family: 'NanumSquareRound';    box-sizing: border-box;
   }
 
   body {
+    margin:0;
     overflow-x: hidden;
-    margin: 0;
-    font-family: 'NanumSquareRound';    font-weight: normal;
+font-family: 'NanumSquareRound';    font-weight: normal;
     font-size: 17px;
     line-height: 24px;
     color: var(--gray-900);
     display: block;
+  }
+
+
+  input {
+    font-size: 17px;
   }
   /* :root {
     --primary-050: #F4FFFC;

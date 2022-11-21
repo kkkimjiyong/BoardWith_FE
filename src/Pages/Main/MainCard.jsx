@@ -73,18 +73,16 @@ const Item = ({ number, item, Myaddress }) => {
             <div
               style={{
                 borderRadius: "10px",
+                border: "2px solid #ddd",
                 width: "30px",
                 height: "30px",
-                backgroundColor: "#ddd",
-                // backgroundImage: `url(${item?.img})`,
-                backgroundSize: "cover",
               }}
             ></div>
             <div>{item?.nickName}</div>
           </ItemProfile>
           <FontAwesomeIcon
             style={{
-              color: "black",
+              color: "#dddddd",
             }}
             size="2x"
             icon={faStar}
@@ -97,9 +95,9 @@ const Item = ({ number, item, Myaddress }) => {
             <div className="ItemWrap-Body-Flex">
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "#ddd",
                 }}
-                size="2x"
+                size="1x"
                 icon={faCalendar}
               />{" "}
               <div className="ItemWrap-Body-Title ">{item?.cafe}</div>
@@ -110,14 +108,15 @@ const Item = ({ number, item, Myaddress }) => {
                 style={{
                   width: "100%",
                   display: "flex",
+                  gap: "5px",
                 }}
               >
                 {" "}
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "#ddd",
                   }}
-                  size="2x"
+                  size="1x"
                   icon={faLocationDot}
                 />{" "}
                 <div className="ItemWrap-Body-Title ">
@@ -125,17 +124,19 @@ const Item = ({ number, item, Myaddress }) => {
                   {/* {new Date(startDate)} */}
                 </div>
               </div>
-
-              <div
-                className={"status" + memberStatus.indexOf(statusIndicator())}
-              >
-                {statusIndicator()}
-              </div>
+              <StatusBox>
+                {" "}
+                <div
+                  className={"status" + memberStatus.indexOf(statusIndicator())}
+                >
+                  {/* {statusIndicator()} */}
+                </div>
+              </StatusBox>
             </div>
           </div>
         </div>
       </div>
-      {/* //! 리스트에서 보여주는 디테일모달창 */}
+      {/*! 리스트에서 보여주는 디테일모달창  */}
       {ModalOpen && (
         <DetailModal
           postid={item._id}
@@ -149,16 +150,21 @@ const Item = ({ number, item, Myaddress }) => {
 
 const ItemWrap = styled.div`
   .ItemWrap {
+    color: #dddddd;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     padding: 4% 4%;
     flex-direction: column;
-    background-color: #bdbdbd;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: #2e294e;
+    box-shadow: 3px 10px 10px 1px black;
     border-radius: 6px;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
+    :hover {
+      color: white;
+      box-shadow: 5px 5px 10px 2px #d90368;
+    }
   }
 
   .ItemWrap-Top {
@@ -166,7 +172,6 @@ const ItemWrap = styled.div`
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     /* background-color: #e2e5e7; */
-    color: black;
     font-size: 1.2rem;
     text-align: center;
     align-items: center;
@@ -178,6 +183,7 @@ const ItemWrap = styled.div`
     justify-content: space-between;
   }
   .ItemWrap-Body-Flex {
+    gap: 5px;
     display: flex;
     align-items: center;
     margin-top: 2%;
@@ -197,6 +203,7 @@ const ItemWrap = styled.div`
   }
 
   .ItemWrap-Body-Title {
+    font-size: 14px;
     border-radius: 4px;
     margin-left: 2%;
     position: relative;
@@ -211,9 +218,18 @@ const ItemWrap = styled.div`
     justify-content: center;
     padding: 0.5%;
   }
+`;
+
+const StatusBox = styled.div`
+  width: 25%;
+  height: 20px;
+  border: 1px solid;
+  border-radius: 20px;
+  display: flex;
   .status0 {
     display: flex;
-    border-radius: 130px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
     background-color: #e2e5e7;
     white-space: nowrap;
     width: 30%;
@@ -226,7 +242,7 @@ const ItemWrap = styled.div`
     border-radius: 130px;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 30%;
+    width: 60%;
     justify-content: center;
     padding: 0.5%;
     background-color: #dafe6d;
@@ -236,7 +252,7 @@ const ItemWrap = styled.div`
     border-radius: 130px;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 30%;
+    width: 100%;
     justify-content: center;
     padding: 0.5%;
     background-color: red;
@@ -244,6 +260,7 @@ const ItemWrap = styled.div`
 `;
 
 const ItemProfile = styled.div`
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -13,6 +13,8 @@ import MyPartyPage from "../Pages/MyPartyPage";
 import { Modal } from "@mui/material";
 import NotifModal from "../tools/NotifModal";
 import AvatarPage from "../Pages/AvatarPage";
+import FindPage from "../Pages/FindPage";
+import PracPage from "../Pages/PracPage";
 
 const Router = () => {
   return (
@@ -29,7 +31,8 @@ const Router = () => {
         <Route path="/chat/:roomid" element={<ChatPage />} />
         <Route path="/posts/:postid" element={<DetailPage />} />
         <Route path="/avatar" element={<AvatarPage />} />
-        <Route path="/modal" element={<NotifModal />} />
+        <Route path="/find/:id" element={<FindPage />} />
+        <Route path="/prac" element={<PracPage />} />
       </Routes>
     </BrowserRouter>
   );

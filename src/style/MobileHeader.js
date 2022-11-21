@@ -1,14 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
+import { GrHomeRounded } from "react-icons/gr";
+import { CgProfile } from "react-icons/cg";
+import { CgHome } from "react-icons/cg";
+import { GoGraph, GoSearch } from "react-icons/go";
 
 const MobileHeader = () => {
   const navigate = useNavigate();
   return (
     <MobileHeaderCtn>
-      <div onClick={() => navigate("/main")}>메인으로가기</div>
-      <div onClick={() => navigate("/myparty")}>마이파티</div>
-      <div onClick={() => navigate("/mypage")}>마이페이지</div>
+      {" "}
+      <GoSearch size="24" color="white" onClick={() => alert("개발중")} />
+      <FontAwesomeIcon
+        onClick={() => alert("여기가 캐릭터인가?")}
+        style={{
+          color: "#dddddd",
+        }}
+        size="lg"
+        icon={faStar}
+      />
+      <CgHome size="24" color="white" onClick={() => navigate("/main")} />
+      <GoGraph size="24" color="white" onClick={() => alert("개발중")} />
+      <CgProfile size="24" color="white" onClick={() => navigate("/mypage")} />
     </MobileHeaderCtn>
   );
 };
@@ -17,11 +33,12 @@ const MobileHeaderCtn = styled.div`
   position: fixed;
   z-index: 997;
   height: 5%;
-  background-color: #ddd;
+  background-color: #2e294e;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 20px;
-  bottom: 0px;
+  bottom: 0;
   width: 100%;
   /* background-color: #9747ff; */
 `;

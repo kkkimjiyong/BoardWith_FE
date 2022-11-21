@@ -26,8 +26,11 @@ const Login = () => {
     try {
       const { data } = await loginApi.postLogin(payload);
       console.log(data);
-      setCookie("accessToken", data.accessToken, { path: "/" });
-      setCookie("refresh_token", data.refresh_token, { path: "/" });
+      if (data.accessToken) {
+        setCookie("accessToken", data.accessToken, { path: "/" });
+        setCookie("refresh_token", data.refresh_token, { path: "/" });
+        setCookie("nickName", payload.userId);
+      }
     } catch (error) {
       setError(error.response.data.message);
       console.log(error.response.data.message);
@@ -47,7 +50,7 @@ const Login = () => {
 
   return (
     <LoginCtn>
-      <MainLogo />
+      <MainLogo className="logo" />
       {/* <Logo src={MyLogo} /> */}
       {modalOpen && (
         <NotifModal
@@ -56,8 +59,7 @@ const Login = () => {
           content={"다시 로그인해주세요"}
         />
       )}
-      <a href="/main">일단그냥둘러볼래</a>
-      <LoginTitle>로고</LoginTitle>
+      {/* <a href="/main">일단그냥둘러볼래</a> */}
       <LoginInput
         value={login.userId}
         name="userId"
@@ -79,8 +81,12 @@ const Login = () => {
         <div className="txtbox" onClick={() => navigate("/signup")}>
           회원가입
         </div>
-        <div className="txtbox">아이디찾기</div>
-        <div className="txtbox-noborder">비밀번호찾기</div>
+        <div className="txtbox" onClick={() => navigate("/find/id")}>
+          아이디찾기
+        </div>
+        <div className="txtbox-noborder" onClick={() => navigate("/find/pw")}>
+          비밀번호찾기
+        </div>
       </BottomTxt>
     </LoginCtn>
   );
@@ -92,11 +98,14 @@ const LoginCtn = styled.form`
   justify-content: center;
   align-items: center;
   padding: 50px 20px;
-  margin: 100px 20px;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   gap: 30px;
   border-radius: 10px;
   color: white;
+  .logo {
+    margin-bottom: 20%;
+  }
 `;
 
 const LoginTitle = styled.div`
@@ -107,6 +116,7 @@ const LoginTitle = styled.div`
 `;
 
 const LoginInput = styled.input`
+color: white;
   width: 87%;
   height: 40px;
   background: transparent;
@@ -135,9 +145,10 @@ const LoginBtn = styled.div`
   cursor: pointer;
   border-radius: 10px;
   background-color: white;
+  box-shadow: 0px 3px 10px 0px black;
 `;
 
-const KaKaoLogin = styled.a`
+const KaKaoLogin = styled.div`
   padding-left: 10px;
   height: 50px;
   border-radius: 10px;
@@ -147,6 +158,7 @@ const KaKaoLogin = styled.a`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  box-shadow: 0px 3px 10px 0px black;
 `;
 
 const BottomTxt = styled.div`
