@@ -12,6 +12,7 @@ import Editpage from "../Pages/Editpage";
 import MyPartyPage from "../Pages/MyPartyPage";
 import { Modal } from "@mui/material";
 import NotifModal from "../tools/NotifModal";
+import AvatarPage from "../Pages/AvatarPage";
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
         <Route path="/form" element={<Form />} />
         <Route path="/chat/:roomid" element={<ChatPage />} />
         <Route path="/posts/:postid" element={<DetailPage />} />
+        <Route path="/avatar" element={<AvatarPage />} />
         <Route path="/modal" element={<NotifModal />} />
       </Routes>
     </BrowserRouter>

@@ -80,16 +80,10 @@ const MainFilter = ({
   //필터 선택하기
   const filterhandler = () => {
     setItems(filteredItems);
-    console.log(filteredItems.length);
     if (filteredItems.length < 5) {
       setTargetMargin((5 - filteredItems.length) * 200);
     }
-    console.log(targetMargin);
   };
-
-  console.log(filteredItems);
-
-  console.log(filtered);
 
   //양방향 인원 체크
   function valuetext(value) {

@@ -39,16 +39,6 @@ const Detail = () => {
 
   const [detail, setDetail] = useState();
 
-  console.log("detail", detail?.data);
-  console.log("isHost", isHost);
-
-  const handleIsHost = () => {
-    console.log("여기언제타용");
-  };
-
-  console.log("nickName1", detail?.data?.nickName);
-  console.log("nickName2", nickName);
-
   const commentOnsumitHandler = () => {
     if (comment.comment === "") {
       alert("댓글 내용을 입력해주세요");
@@ -77,7 +67,6 @@ const Detail = () => {
       setDetail(res.data);
     });
     dispatch(__getComments(postid));
-    handleIsHost();
   }, []);
 
   useEffect(() => {
