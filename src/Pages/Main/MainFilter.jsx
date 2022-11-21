@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
-import DatePicker, { getDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import Slider from "@mui/material/Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
@@ -30,11 +28,6 @@ const MainFilter = ({
       [name]: value,
     });
   };
-
-  setOptions({
-    theme: "ios",
-    themeVariant: "light",
-  });
 
   const seoulGu = [
     { value: "강남구", label: "강남구" },
