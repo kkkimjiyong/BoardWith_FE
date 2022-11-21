@@ -37,21 +37,21 @@ export const postApi = {
   getDetailId: (payload) => instance.get(`/posts/${payload}`),
   editDetail: (payload) => instance.post(`/posts/${payload}`),
   delDetail: (payload) => instance.post(`/posts/${payload}`),
+  closeParty: (payload) =>
+    instance.put(`/posts/closeParty/${payload}`, payload),
+  openParty: (payload) =>
+    instance.put(`/posts/reopenParty/${payload.postid}`, payload.time),
 };
 
 export const commentsApi = {
   getComments: (payload) => instance.get(`/comments/${payload}`),
   postComments: (payload) =>
     instance.post(`/comments/${payload.postid}`, payload.comment),
-  // editComments: (payload) =>
-  //   instance.put(`/comments/${payload.commentId}`, payload.input),
-  //636c8a58b1f01ee67b65daa9
   editComments: (payload) =>
-    // https://www.iceflower.shop/comments/636cf5f010493b7d10c84ffd
     instance.put(`/comments/${payload.commentId}`, payload.comment),
-  //instance.put(`/comments/636cf5f010493b7d10c84ffd`, payload.input),
   delComments: (payload) => instance.delete(`/comments/${payload}`),
 };
+
 export const postsApi = {
   getPosts: () => {
     return instance.get("/posts");
