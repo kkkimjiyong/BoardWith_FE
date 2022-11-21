@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Item from "../Main/MainCard";
 import axios from "axios";
 import MainFilter from "./MainFilter";
