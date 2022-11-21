@@ -107,6 +107,7 @@ const LoginTitle = styled.div`
 `;
 
 const LoginInput = styled.input`
+color: white;
   width: 87%;
   height: 40px;
   background: transparent;
