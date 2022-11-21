@@ -3,8 +3,8 @@ import { useState } from "react";
 import DatePicker, { getDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
-import { Datepicker, setOptions } from "@mobiscroll/react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+// import { Datepicker, setOptions } from "@mobiscroll/react";
+// import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import Slider from "@mui/material/Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
@@ -32,10 +32,10 @@ const MainFilter = ({
     });
   };
 
-  setOptions({
-    theme: "ios",
-    themeVariant: "light",
-  });
+  // setOptions({
+  //   theme: "ios",
+  //   themeVariant: "light",
+  // });
 
   const seoulGu = [
     { value: "강남구", label: "강남구" },
@@ -128,12 +128,12 @@ const MainFilter = ({
         <Contentbox>
           <SlideLabel>원하는 모임의 종류를 선택해주세요</SlideLabel>
           <ContentLabel>날짜 및 시간</ContentLabel>
-          <Datepicker
+          {/* <Datepicker
             name="time"
             select="range"
             controls={["date", "time"]}
             onChange={onDateChange}
-          />
+          /> */}
           <ContentLabel>인원</ContentLabel>
 
           <InputBox>
