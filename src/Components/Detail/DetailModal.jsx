@@ -121,7 +121,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                   <>
                     <FontAwesomeIcon
                       style={{
-                        color: "black",
+                        color: "#ddd",
                       }}
                       size="2x"
                       icon={faPenToSquare}
@@ -133,7 +133,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                     <Stgap />
                     <FontAwesomeIcon
                       style={{
-                        color: "black",
+                        color: "#ddd",
                       }}
                       size="2x"
                       icon={faPaperPlane}
@@ -147,7 +147,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                   <>
                     <FontAwesomeIcon
                       style={{
-                        color: "black",
+                        color: "#ddd",
                       }}
                       size="2x"
                       icon={faPaperPlane}
@@ -166,7 +166,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
             <StContentWrap>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "#ddd",
                 }}
                 size="1x"
                 icon={faLocationDot}
@@ -177,7 +177,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
             <StContentWrap>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "#ddd",
                 }}
                 size="1x"
                 icon={faCalendar}
@@ -188,7 +188,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
             <StContentWrap>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "#ddd",
                 }}
                 size="1x"
                 icon={faUserGroup}
@@ -202,7 +202,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <Stbutton
                 className="innerDiv"
                 onClick={() => {
-                  if (getCookie("accesstoken")) {
+                  if (getCookie("accessToken")) {
                     setOpen((open) => !open);
                   } else {
                     alert("로그인이 필요한 기능입니다.");
@@ -216,7 +216,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
           </StContainer>
           <StCommentList></StCommentList>
         </Wrap>
-        <ListWrap open={open}>
+        <ListWrap onClick={(e) => e.stopPropagation()} open={open}>
           <div
             className="innerDiv"
             onClick={() => {
@@ -299,12 +299,15 @@ const Wrap = styled.div`
 `;
 
 const StContainer = styled.div`
+  color: #d7d7d7;
   padding: 5% 8%;
   border: none;
   border-radius: 16px;
   background-color: #d7d7d7;
   width: 370px;
   max-width: 500px;
+  background-color: #2e294e;
+  box-shadow: 3px 5px 20px 2px #5b5b5b;
 `;
 
 const StHost = styled.div`
