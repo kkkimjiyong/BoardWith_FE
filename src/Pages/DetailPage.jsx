@@ -1,8 +1,8 @@
 import React from "react";
-import Detail from "../Components/Detail/Detail";
+import Layout from "../style/Layout";
 
 const DetailPage = () => {
-  return <Detail />;
+  return <Layout></Layout>;
 };
 
 export default DetailPage;

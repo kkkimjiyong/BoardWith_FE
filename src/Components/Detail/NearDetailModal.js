@@ -20,7 +20,7 @@ import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
 const { kakao } = window;
-export const DetailModal = ({ postid, setModalOpen }) => {
+export const NearDetailModal = ({ postid, setNearModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -91,128 +91,125 @@ export const DetailModal = ({ postid, setModalOpen }) => {
   }, [postApi.getDetailId(postid)]);
 
   return (
-    <BackGroudModal onClick={() => setModalOpen(false)}>
+    <BackGroudModal onClick={() => setNearModalOpen(false)}>
       <Wrapper>
         <Wrap onClick={(e) => e.stopPropagation()}>
-          <Layout>
+          {" "}
+          <StContainer>
             {" "}
-            <StContainer>
-              {" "}
-              <StHost>
-                <div>
-                  <div
-                    style={{
-                      borderRadius: "10px",
-                      width: "30px",
-                      height: "30px",
-                      backgroundColor: "white",
-                      // backgroundImage: `url(${detail?.data?.img})`,
-                      backgroundSize: "cover",
-                    }}
-                  ></div>
-                  <Stgap />
-                  <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
-                </div>
-                <StContentWrap>
-                  {isHost ? (
-                    <>
-                      <FontAwesomeIcon
-                        style={{
-                          color: "black",
-                        }}
-                        size="2x"
-                        icon={faPenToSquare}
-                        onClick={() => {
-                          enterChatRoomHandler();
-                        }}
-                        cursor="pointer"
-                      />
-                      <Stgap />
-                      <FontAwesomeIcon
-                        style={{
-                          color: "black",
-                        }}
-                        size="2x"
-                        icon={faPaperPlane}
-                        onClick={() => {
-                          enterChatRoomHandler();
-                        }}
-                        cursor="pointer"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <FontAwesomeIcon
-                        style={{
-                          color: "black",
-                        }}
-                        size="2x"
-                        icon={faPaperPlane}
-                        onClick={() => {
-                          enterChatRoomHandler();
-                        }}
-                        cursor="pointer"
-                      />
-                    </>
-                  )}
-                </StContentWrap>
-              </StHost>
+            <StHost>
               <div>
-                <h3>{detail?.data?.title}</h3> {/* 제목 */}
+                <div
+                  style={{
+                    borderRadius: "10px",
+                    width: "30px",
+                    height: "30px",
+                    backgroundColor: "white",
+                    // backgroundImage: `url(${detail?.data?.img})`,
+                    backgroundSize: "cover",
+                  }}
+                ></div>
+                <Stgap />
+                <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
               </div>
               <StContentWrap>
-                <FontAwesomeIcon
-                  style={{
-                    color: "black",
-                  }}
-                  size="1x"
-                  icon={faLocationDot}
-                />
-                <div />
-                <h4>{detail?.data?.cafe}</h4> {/* 장소 */}
+                {isHost ? (
+                  <>
+                    <FontAwesomeIcon
+                      style={{
+                        color: "black",
+                      }}
+                      size="2x"
+                      icon={faPenToSquare}
+                      onClick={() => {
+                        enterChatRoomHandler();
+                      }}
+                      cursor="pointer"
+                    />
+                    <Stgap />
+                    <FontAwesomeIcon
+                      style={{
+                        color: "black",
+                      }}
+                      size="2x"
+                      icon={faPaperPlane}
+                      onClick={() => {
+                        enterChatRoomHandler();
+                      }}
+                      cursor="pointer"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <FontAwesomeIcon
+                      style={{
+                        color: "black",
+                      }}
+                      size="2x"
+                      icon={faPaperPlane}
+                      onClick={() => {
+                        enterChatRoomHandler();
+                      }}
+                      cursor="pointer"
+                    />
+                  </>
+                )}
               </StContentWrap>
-              <StContentWrap>
-                <FontAwesomeIcon
-                  style={{
-                    color: "black",
-                  }}
-                  size="1x"
-                  icon={faCalendar}
-                />
-                <div />
-                <h4>{detail?.data?.time[0]}</h4> {/* 날짜 */}
-              </StContentWrap>
-              <StContentWrap>
-                <FontAwesomeIcon
-                  style={{
-                    color: "black",
-                  }}
-                  size="1x"
-                  icon={faUserGroup}
-                />
-                <div />
-                <h4>{detail?.data?.partyMember}명</h4> {/* 인원 */}
-              </StContentWrap>
-              {isHost ? (
-                <Stbutton>마감하기</Stbutton>
-              ) : (
-                <Stbutton
-                  className="innerDiv"
-                  onClick={() => {
-                    if (getCookie("accesstoken")) {
-                      setOpen((open) => !open);
-                    } else {
-                      alert("로그인이 필요한 기능입니다.");
-                    }
-                  }}
-                >
-                  참가하기
-                </Stbutton>
-              )}
-              <StMap id="map">지도가 들어갑니다</StMap>
-            </StContainer>
-            <StCommentList></StCommentList>
-          </Layout>
+            </StHost>
+            <div>
+              <h3>{detail?.data?.title}</h3> {/* 제목 */}
+            </div>
+            <StContentWrap>
+              <FontAwesomeIcon
+                style={{
+                  color: "black",
+                }}
+                size="1x"
+                icon={faLocationDot}
+              />
+              <div />
+              <h4>{detail?.data?.cafe}</h4> {/* 장소 */}
+            </StContentWrap>
+            <StContentWrap>
+              <FontAwesomeIcon
+                style={{
+                  color: "black",
+                }}
+                size="1x"
+                icon={faCalendar}
+              />
+              <div />
+              <h4>{detail?.data?.time[0]}</h4> {/* 날짜 */}
+            </StContentWrap>
+            <StContentWrap>
+              <FontAwesomeIcon
+                style={{
+                  color: "black",
+                }}
+                size="1x"
+                icon={faUserGroup}
+              />
+              <div />
+              <h4>{detail?.data?.partyMember}명</h4> {/* 인원 */}
+            </StContentWrap>
+            {isHost ? (
+              <Stbutton>마감하기</Stbutton>
+            ) : (
+              <Stbutton
+                className="innerDiv"
+                onClick={() => {
+                  // if (getCookie("accesstoken")) {
+                  setOpen((open) => !open);
+                  // } else {
+                  //   alert("로그인이 필요한 기능입니다.");
+                  // }
+                }}
+              >
+                참가하기
+              </Stbutton>
+            )}
+            <StMap id="map">지도가 들어갑니다</StMap>
+          </StContainer>
         </Wrap>
         <ListWrap open={open}>
           <div
@@ -247,19 +244,9 @@ export const DetailModal = ({ postid, setModalOpen }) => {
                 <button>추가하기</button>
               </form>
             </Btnbox>
-            {/* {comments?.map((comment) => {
-            return <Comments key={comment.id} comments={comment} />;
-          })} */}
-
             {comments?.map((comment) => (
               <Comments key={comment._id} comments={comment} />
             ))}
-
-            {/* {comments.map((comment) => (
-            <div key={comment.id}>
-              <Comments comment={comment} /> : null}
-            </div>
-          ))} */}
           </div>
         </ListWrap>
       </Wrapper>
@@ -267,7 +254,7 @@ export const DetailModal = ({ postid, setModalOpen }) => {
   );
 };
 
-export default DetailModal;
+export default NearDetailModal;
 
 const BackGroudModal = styled.div`
   position: fixed;
@@ -285,17 +272,15 @@ const BackGroudModal = styled.div`
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Wrap = styled.div`
-  width: 100%;
-  position: fixed;
-  left: 50%;
-  top: 20%;
-  transform: translate(-50%, -50%);
-  border-radius: 12px;
-  padding: 12px 24px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StContainer = styled.div`
@@ -303,8 +288,8 @@ const StContainer = styled.div`
   border: none;
   border-radius: 16px;
   background-color: #d7d7d7;
-  margin: 10px;
-  width: 90%;
+  width: 370px;
+  max-width: 500px;
 `;
 
 const StHost = styled.div`
@@ -328,10 +313,6 @@ const StContentWrap = styled.div`
   > div {
     width: 2%;
   }
-`;
-
-const StCommentList = styled.div`
-  margin-top: 100%;
 `;
 
 const Stbutton = styled.button`

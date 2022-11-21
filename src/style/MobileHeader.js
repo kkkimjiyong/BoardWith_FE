@@ -15,9 +15,9 @@ const MobileHeader = () => {
 
 const MobileHeaderCtn = styled.div`
   position: fixed;
-  z-index: 999;
+  z-index: 997;
   height: 5%;
-  background-color: #9747ff;
+  background-color: #ddd;
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;

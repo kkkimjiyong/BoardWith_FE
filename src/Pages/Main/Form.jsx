@@ -30,7 +30,7 @@ function Form() {
   var geocoder = new kakao.maps.services.Geocoder();
 
   const formSchema = yup.object({
-    title: yup.string(),
+    title: yup.string().required("제목을 입력해주세요 😰"),
     content: yup.string(),
     location: yup.string(),
     cafe: yup.string(),
@@ -45,13 +45,6 @@ function Form() {
   });
 
   const onSubmit = (data) => {
-    // console.log({
-    //   ...data,
-    //   location: JSON.stringify(location),
-    //   map: data.cafe.split(" ")[1],
-    // });
-    const aaa = data.time.value;
-
     console.log("submit", {
       ...data,
       location: location,
@@ -98,6 +91,7 @@ function Form() {
     formState: { errors },
   } = useForm({
     mode: "onChange",
+    resolver: yupResolver(formSchema),
     defaultValues: { partyMember: "10" },
   });
 
@@ -113,7 +107,6 @@ function Form() {
 
   const ref = useRef(null);
   const postConfig = {
-
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
       setValue("cafe", data.address);
@@ -160,19 +153,7 @@ function Form() {
             </FlexBox>{" "}
             <FlexBox>
               <LabelBox>인원</LabelBox>
-              {/* <Controller
-                control={control}
-                name="partyMember"
-                format="YYYY-MM-DD"
-                render={({ field: { onChange } }) => (
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    onChange={(e) => onChange(e.target.value)}
-                  ></input>
-                )}
-              /> */}
+
               <Controller
                 control={control}
                 name="partyMember"
