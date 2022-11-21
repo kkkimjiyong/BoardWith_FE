@@ -73,12 +73,13 @@ const SignUp = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
+    defaultValues: { gender: "female" },
     resolver: yupResolver(formSchema),
   });
 
   const birthvalue = watch("birth");
   const ref = useRef(null);
-
+  console.log(errors);
   //submit 핸들러
   const onSubmit = (data) => {
     console.log(data);
@@ -114,7 +115,7 @@ const SignUp = () => {
 
   const onKeyPress = (e) => {
     console.log(e);
-    if (e.target.value.length !== 0 && e.charCode === 32) {
+    if (e.target.value.length !== 0 && e.charCode === 13) {
       submitTagItem();
       console.log("enter");
     }
@@ -139,14 +140,10 @@ const SignUp = () => {
     setTagList(filteredTagList);
   };
   console.log(watch());
-  useEffect(() => {
-    if (getCookie("kakao")) {
-      setNext(2);
-    }
-  }, []);
+
   return (
     <>
-      <SignUpWrap onSubmit={handleSubmit(onSubmit)}>
+      <SignUpWrap>
         {/* 회원가입 첫 페이지 */}
 
         {next === 0 && (
@@ -263,20 +260,20 @@ const SignUp = () => {
                 />
               </TagBox>
             </WholeBox>
-            <NextBtn>완료</NextBtn>
+            <NextBtn onClick={handleSubmit(onSubmit)}>완료</NextBtn>
           </>
         )}
       </SignUpWrap>{" "}
     </>
   );
 };
-const SignUpWrap = styled.form`
+const SignUpWrap = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 30px;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   color: white;
 `;
 
@@ -290,6 +287,8 @@ const SignUpCtn = styled.div`
 `;
 
 const SignUpHeader = styled.div`
+  position: relative;
+  top: 0;
   font-size: 1.5rem;
   font-weight: 400;
   width: 100%;
@@ -319,6 +318,7 @@ const InputBirth = styled.input`
 `;
 
 const SignUpInput = styled.input`
+  color: white;
   display: block;
   width: 90%;
   padding: 0 20px;
@@ -400,6 +400,7 @@ const Text = styled.span``;
 const TagButton = styled.button``;
 
 const TagInput = styled.input`
+  color: white;
   display: inline-flex;
   min-width: 150px;
   background: transparent;

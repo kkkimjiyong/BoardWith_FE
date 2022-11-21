@@ -197,7 +197,6 @@ const MemberSlider = styled(Slider)({
 });
 
 const Wrap = styled.div`
-  margin-bottom: 10%;
   display: flex;
   flex-direction: column;
   max-width: 820px;
@@ -205,8 +204,8 @@ const Wrap = styled.div`
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   width: 100vw;
-  background-color: white;
-  height: ${({ open }) => (open ? "500px" : "50px")};
+  background-color: #dddddd;
+  height: ${({ open }) => (open ? "500px" : "80px")};
   position: fixed;
   bottom: 0;
   left: 0%;
