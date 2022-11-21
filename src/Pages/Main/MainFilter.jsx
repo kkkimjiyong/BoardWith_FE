@@ -214,15 +214,14 @@ const Wrap = styled.div`
   margin-bottom: 10%;
   display: flex;
   flex-direction: column;
-  max-width: 640px;
+  max-width: 820px;
   padding: 10px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  width: 100%;
+  width: 100vw;
   background-color: white;
-  height: ${({ open }) => (open ? "500px" : "30px")};
+  height: ${({ open }) => (open ? "500px" : "50px")};
   position: fixed;
-
   bottom: 0;
   left: 0%;
 

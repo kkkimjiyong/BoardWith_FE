@@ -12,12 +12,6 @@
     fill:none;
     stroke-width:1.35px;
     }
-
-
-
-
-
-
 </style>
        <filter id="f1" x="0" y="0" width="200%" height="200%">
        <feOffset result="offOut" in="SourceGraphic" dx="1" dy="1" />
