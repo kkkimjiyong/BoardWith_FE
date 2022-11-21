@@ -161,8 +161,12 @@ const MainBox = styled.div`
 `;
 
 const MainHeader = styled.div`
+  position: sticky;
+  top: 0;
+  background-color: black;
+  z-index: 999;
   color: white;
-  padding: 4% 0;
+  padding: 3.5% 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
