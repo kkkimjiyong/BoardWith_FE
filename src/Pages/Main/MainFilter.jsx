@@ -15,9 +15,9 @@ const MainFilter = ({
   getData,
   setTargetMargin,
   targetMargin,
+  open,
+  setOpen,
 }) => {
-  const [open, setOpen] = useState();
-
   const onDateChange = (e) => {
     setFiltered({
       ...filtered,

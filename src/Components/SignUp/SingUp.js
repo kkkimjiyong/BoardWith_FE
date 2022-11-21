@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
 import ReactDaumPost from "react-daumpost-hook";
@@ -8,8 +8,11 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi } from "../../instance.js";
 import { useState } from "react";
+import { getCookie } from "../../hooks/CookieHook.js";
 
 const SignUp = () => {
+  const [next, setNext] = useState(0);
+
   const navigate = useNavigate();
   const Age = [
     "20대 초반",
@@ -70,7 +73,6 @@ const SignUp = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { birth: "5" },
     resolver: yupResolver(formSchema),
   });
 
@@ -132,125 +134,134 @@ const SignUp = () => {
     );
     setTagList(filteredTagList);
   };
-
+  console.log(watch());
+  useEffect(() => {
+    if (getCookie("kakao")) {
+      setNext(2);
+    }
+  }, []);
   return (
     <>
       <SignUpWrap onSubmit={handleSubmit(onSubmit)}>
-        <SignUpCtn>
-          {" "}
-          <SignUpBox>
+        {/* 회원가입 첫 페이지 */}
+
+        {next === 0 && (
+          <SignUpCtn>
+            {" "}
+            <SignUpHeader>
+              <Arrow onClick={() => navigate("/")} />
+              <div>회원가입</div>
+            </SignUpHeader>
+            <h3>
+              아이디와 닉네임을 <br /> 입력해주세요
+            </h3>
             <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
             {errors.userId && (
               <small role="alert">{errors.userId.message}</small>
             )}
-          </SignUpBox>{" "}
-          <SignUpBox>
             <SignUpInput placeholder="닉네임" {...register("nickName")} />
             {errors.nickName && (
               <small role="alert">{errors.nickName.message}</small>
             )}
-          </SignUpBox>
-          <SignUpBox>
+            <NextBtn onClick={() => setNext(1)}>다음</NextBtn>
+          </SignUpCtn>
+        )}
+        {next === 1 && (
+          <SignUpCtn>
+            <SignUpHeader>
+              <Arrow onClick={() => setNext(0)} />
+              <div>회원가입</div>
+            </SignUpHeader>
+            <h3>비밀번호를 입력해주세요</h3>
             <SignUpInput
               placeholder="비밀번호"
-              id="password"
               type="password"
               {...register("password")}
             />
             {errors.password && (
               <small role="alert">{errors.password.message}</small>
             )}
-          </SignUpBox>
-          <SignUpBox>
+
             <SignUpInput
               placeholder="비밀번호확인"
-              id="confirm"
               type="password"
               {...register("confirm")}
             />
             {errors.confirm && (
               <small role="alert">{errors.confirm.message}</small>
             )}
-          </SignUpBox>
-        </SignUpCtn>
-        <SignUpCtn>
-          {" "}
-          <SignUpBox className="BirthGender">
-            <Controller
-              control={control}
-              name="birth"
-              format="YYYY-MM-DD"
-              render={({ field: { onChange } }) => (
-                <InputRangeBox>
-                  {" "}
-                  <output htmlFor="range" id="output">
-                    {Age[birthvalue]}
-                  </output>
-                  <InputRange
-                    id="range"
-                    oninput="output"
-                    type="range"
-                    min="0"
-                    max="5"
-                    list="tickmarks"
-                    onChange={(e) => onChange(e.target.value)}
-                  ></InputRange>
-                  {/* 유저가 현재 선택하고 있는 값을 보여줌 */}
-                  {/* value가 위치하는 곳에 눈금을 표시해주는 곳  */}
-                  <datalist id="tickmarks">
-                    <option value="0" />
-                    <option value="1" />
-                    <option value="2" />
-                    <option value="3" />
-                    <option value="4" />
-                    <option value="5" />
-                  </datalist>
-                </InputRangeBox>
-              )}
-            />{" "}
-            {/* 일단 이렇게 나이랑 성별 붙여만 놓자. */}
-            <InputBirth
-              type="gender"
-              defaultValue="female"
-              {...register("gender", { required: true, minLength: 2 })}
-            >
-              <option value="female">남자</option>
-              <option value="male">여자</option>
-            </InputBirth>
-          </SignUpBox>
-          <SignUpBox>
-            <SignUpInput
-              placeholder="거주하시는 주소를 입력"
-              type="text"
-              onClick={postCode}
-              {...register("address")}
-            />
-          </SignUpBox>
-          <DaumPostBox ref={ref}></DaumPostBox>
-        </SignUpCtn>
 
-        {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
-        <WholeBox>
-          <TagBox>
-            {tagList.map((tagItem, index) => {
-              return (
-                <TagItem key={index}>
-                  <Text>{tagItem}</Text>
-                  <TagButton onClick={deleteTagItem}>X</TagButton>
-                </TagItem>
-              );
-            })}
-            <TagInput
-              type="text"
-              placeholder="#선호게임"
-              tabIndex={2}
-              onChange={(e) => setTagItem(e.target.value)}
-              value={tagItem}
-              onKeyPress={onKeyPress}
-            />
-          </TagBox>
-        </WholeBox>
-        <SignUpBtn>가입하기</SignUpBtn>
+            <NextBtn onClick={() => setNext(2)}>다음</NextBtn>
+          </SignUpCtn>
+        )}
+
+        {next === 2 && (
+          <>
+            <SignUpCtn>
+              <SignUpHeader>
+                <Arrow onClick={() => setNext(1)} />
+                <div>회원가입</div>
+              </SignUpHeader>
+              <RowBox className="column">
+                <h3>추가정보를 입력해주세요</h3> <div>성별</div>
+              </RowBox>
+
+              <RowBox>
+                <label htmlFor="female">남자</label>
+                <InputBirth
+                  id="female"
+                  type="radio"
+                  defaultValue="female"
+                  value={"female"}
+                  {...register("gender")}
+                ></InputBirth>
+
+                <label htmlFor="male">여자</label>
+                <InputBirth
+                  id="male"
+                  type="radio"
+                  value={"male"}
+                  {...register("gender")}
+                ></InputBirth>
+              </RowBox>
+              <SignUpInput
+                className="Birth1"
+                placeholder="나이를 입력해주세요"
+                {...register("birth")}
+              />
+              <SignUpInput
+                placeholder="거주하시는 주소를 입력"
+                type="text"
+                onClick={postCode}
+                {...register("address")}
+              />
+              <DaumPostBox ref={ref}></DaumPostBox>
+            </SignUpCtn>
+
+            {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
+            <WholeBox>
+              <TagBox>
+                {tagList.map((tagItem, index) => {
+                  return (
+                    <TagItem key={index}>
+                      <Text>{tagItem}</Text>
+                      <TagButton onClick={deleteTagItem}>X</TagButton>
+                    </TagItem>
+                  );
+                })}
+                <TagInput
+                  type="text"
+                  placeholder="#선호게임"
+                  tabIndex={2}
+                  onChange={(e) => setTagItem(e.target.value)}
+                  value={tagItem}
+                  onKeyPress={onKeyPress}
+                />
+              </TagBox>
+            </WholeBox>
+            <NextBtn>완료</NextBtn>
+          </>
+        )}
       </SignUpWrap>{" "}
     </>
   );
@@ -261,6 +272,8 @@ const SignUpWrap = styled.form`
   justify-content: center;
   align-items: center;
   gap: 30px;
+  width: 100%;
+  color: white;
 `;
 
 const SignUpCtn = styled.div`
@@ -269,35 +282,34 @@ const SignUpCtn = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  gap: 20px;
 `;
 
-const SignUpBox = styled.div`
-  width: 70%;
+const SignUpHeader = styled.div`
+  font-size: 1.5rem;
+  font-weight: 400;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  &.BirthGender {
-    width: 62%;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 20px;
+  padding: 40px 20px;
+  padding-right: 40%;
+`;
+
+const RowBox = styled.div`
+  width: 90%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  &.column {
+    align-items: flex-start;
+    flex-direction: column;
   }
 `;
-const InputRangeBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const InputRange = styled.input`
-  width: 100%;
-`;
-const InputBirth = styled.select`
+
+const InputBirth = styled.input`
   border-radius: 5px;
-  width: 40%;
+  width: 10%;
   padding: 10px;
   border: 2px solid #9747ff;
 `;
@@ -308,11 +320,13 @@ const SignUpInput = styled.input`
   padding: 0 20px;
   margin-bottom: 5px;
   height: 40px;
-  border: 2px solid #9747ff;
-  border-radius: 10px;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  background-color: transparent;
   cursor: pointer;
-  &:focus-within {
-    border: 3px solid #8c37ff;
+  &:focus {
+    border: none;
+    border-bottom: 2px solid white;
   }
 `;
 
@@ -322,11 +336,14 @@ const DaumPostBox = styled.div`
   width: 400px;
 `;
 
-const SignUpBtn = styled.button`
+const NextBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
   position: fixed;
   bottom: 50px;
   font-weight: 600;
-  margin-top: 90px;
   width: 80%;
   max-width: 500px;
   height: 3em;
@@ -334,9 +351,9 @@ const SignUpBtn = styled.button`
   border-radius: 20px;
   box-shadow: 0px 3px 3px 0px gray;
   cursor: pointer;
-  background-color: #bc8aff;
+  background-color: white;
   :hover {
-    background-color: #8c37ff;
+    background-color: gray;
   }
 `;
 
@@ -355,10 +372,10 @@ const TagBox = styled.div`
   min-height: 40px;
   margin: 10px;
   padding: 0 10px;
-  border: 2px solid #8c37ff;
-  border-radius: 10px;
+  border: none;
+  border-bottom: 1px solid white;
   &:focus-within {
-    border: 3px solid #8c37ff;
+    border-bottom: 2px solid white;
   }
 `;
 
@@ -385,6 +402,12 @@ const TagInput = styled.input`
   border: none;
   outline: none;
   cursor: text;
+`;
+
+const Arrow = styled.div`
+  border: 7px solid transparent;
+  border-top-color: white;
+  transform: rotate(90deg);
 `;
 
 export default SignUp;
