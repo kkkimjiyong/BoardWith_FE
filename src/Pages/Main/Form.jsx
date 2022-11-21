@@ -135,8 +135,7 @@ function Form() {
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
-
-              <Controller
+              {/* <Controller
                 control={control}
                 name="time"
                 format="YYYY-MM-DD"
@@ -149,7 +148,7 @@ function Form() {
                     }}
                   />
                 )}
-              />
+              /> */}
             </FlexBox>{" "}
             <FlexBox>
               <LabelBox>인원</LabelBox>

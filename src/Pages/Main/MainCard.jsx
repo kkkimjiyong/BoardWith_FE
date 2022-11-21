@@ -135,7 +135,7 @@ const Item = ({ number, item, Myaddress }) => {
           </div>
         </div>
       </div>
-      {/* //! 리스트에서 보여주는 디테일모달창 */}
+      {/*! 리스트에서 보여주는 디테일모달창  */}
       {ModalOpen && (
         <DetailModal
           postid={item._id}
@@ -158,7 +158,7 @@ const ItemWrap = styled.div`
     background-color: #bdbdbd;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 6px;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
   }
 
   .ItemWrap-Top {

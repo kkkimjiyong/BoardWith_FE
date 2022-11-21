@@ -21,7 +21,7 @@ const MobileHeaderCtn = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
-  bottom: 0px;
+  bottom: 0;
   width: 100%;
   /* background-color: #9747ff; */
 `;

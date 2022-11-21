@@ -106,14 +106,14 @@ const MainSlide = () => {
   return (
     <>
       {" "}
-      <MainBox>
+      <MainBox className="Scroll">
         <MainHeader>
           <BiCurrentLocation size={"30"} onClick={() => nearFilterHandler()} />
-          파티모집
-          <div>
+          <div className="headtxt">파티모집</div>
+          <Rowbox>
             <FiFilter size={"24"} onClick={() => setOpen(!open)} />
             <BsPencil size={"24"} onClick={() => navigate("/form")} />
-          </div>
+          </Rowbox>
         </MainHeader>
         {items?.map((items, idx) => {
           if (items.participant.length < items.partyMember) {
@@ -140,15 +140,7 @@ const MainSlide = () => {
         open={open}
         setOpen={setOpen}
       />{" "}
-      //! 리스트에서 보여주는 디테일모달창
-      {/* {ModalOpen && (
-        <DetailModal
-          postid={id}
-          ModalOpen={ModalOpen}
-          setModalOpen={setModalOpen}
-        />
-      )} */}
-      //! 가장 가까운 모임 보여주는 모달창
+      {/* //! 가장 가까운 모임 보여주는 모달창 */}
       {NearModalOpen && (
         <NearDetailModal
           postid={newcardData[0]?._id}
@@ -166,14 +158,22 @@ const Target = styled.div`
 `;
 
 const MainBox = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 0px 10px;
+  width: 100vw;
+  padding: 0% 5%;
 `;
 
 const MainHeader = styled.div`
   color: white;
-  padding: 10px 0px 0px 0px;
+  padding: 4% 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  .headtxt {
+    margin-left: 20px;
+  }
+`;
+
+const Rowbox = styled.div`
+  display: flex;
+  gap: 10px;
 `;
