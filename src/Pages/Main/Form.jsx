@@ -135,20 +135,6 @@ function Form() {
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
-              {/* <Controller
-                control={control}
-                name="time"
-                format="YYYY-MM-DD"
-                render={({ field: { onChange } }) => (
-                  <Datepicker
-                    select="range"
-                    controls={["date", "time"]}
-                    onChange={(value) => {
-                      onChange(value);
-                    }}
-                  />
-                )}
-              /> */}
             </FlexBox>{" "}
             <FlexBox>
               <LabelBox>인원</LabelBox>
