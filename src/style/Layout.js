@@ -19,7 +19,7 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  background-color: black;
+  background-color: #2e294e;
   z-index: -1;
 `;
 

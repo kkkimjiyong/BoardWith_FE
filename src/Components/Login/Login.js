@@ -26,8 +26,11 @@ const Login = () => {
     try {
       const { data } = await loginApi.postLogin(payload);
       console.log(data);
-      setCookie("accessToken", data.accessToken, { path: "/" });
-      setCookie("refresh_token", data.refresh_token, { path: "/" });
+      if (data.accessToken) {
+        setCookie("accessToken", data.accessToken, { path: "/" });
+        setCookie("refresh_token", data.refresh_token, { path: "/" });
+        setCookie("nickName", payload.userId);
+      }
     } catch (error) {
       setError(error.response.data.message);
       console.log(error.response.data.message);
@@ -47,7 +50,7 @@ const Login = () => {
 
   return (
     <LoginCtn>
-      <MainLogo />
+      <MainLogo className="logo" />
       {/* <Logo src={MyLogo} /> */}
       {modalOpen && (
         <NotifModal
@@ -56,8 +59,7 @@ const Login = () => {
           content={"다시 로그인해주세요"}
         />
       )}
-      <a href="/main">일단그냥둘러볼래</a>
-      <LoginTitle>로고</LoginTitle>
+      {/* <a href="/main">일단그냥둘러볼래</a> */}
       <LoginInput
         value={login.userId}
         name="userId"
@@ -101,6 +103,9 @@ const LoginCtn = styled.form`
   gap: 30px;
   border-radius: 10px;
   color: white;
+  .logo {
+    margin-bottom: 20%;
+  }
 `;
 
 const LoginTitle = styled.div`
@@ -140,6 +145,7 @@ const LoginBtn = styled.div`
   cursor: pointer;
   border-radius: 10px;
   background-color: white;
+  box-shadow: 0px 3px 10px 0px black;
 `;
 
 const KaKaoLogin = styled.div`
@@ -152,6 +158,7 @@ const KaKaoLogin = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  box-shadow: 0px 3px 10px 0px black;
 `;
 
 const BottomTxt = styled.div`

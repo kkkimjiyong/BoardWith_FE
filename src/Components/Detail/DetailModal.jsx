@@ -55,9 +55,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   //?--------------------디테일내용 불러오기---------------------
   useEffect(() => {
     // dispatch(__getPostslById(postid));
-    userApi.getUser().then((res) => {
-      setNickName(res.data.findUser.nickName);
-    });
+    if (getCookie("access_token")) {
+      userApi.getUser().then((res) => {
+        setNickName(res.data.findUser.nickName);
+      });
+    }
+
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
     });

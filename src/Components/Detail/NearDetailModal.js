@@ -284,10 +284,12 @@ const Wrap = styled.div`
 `;
 
 const StContainer = styled.div`
+  color: #dddddd;
   padding: 5% 8%;
   border: none;
   border-radius: 16px;
-  background-color: #d7d7d7;
+  background-color: #2e294e;
+  box-shadow: 3px 5px 20px 2px #5b5b5b;
   width: 370px;
   max-width: 500px;
 `;

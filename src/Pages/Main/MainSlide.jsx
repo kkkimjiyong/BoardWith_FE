@@ -113,21 +113,23 @@ const MainSlide = () => {
             <BsPencil size={"24"} onClick={() => navigate("/form")} />
           </Rowbox>
         </MainHeader>
-        {items?.map((items, idx) => {
-          if (items.participant.length < items.partyMember) {
-            return (
-              <Item
-                setModalOpen={setModalOpen}
-                key={idx}
-                item={items}
-                Myaddress={Myaddress}
-              ></Item>
-            );
-          } else {
-            <div>마감되었습니다</div>;
-          }
-        })}
-        <Target ref={target}>This is Target.</Target>{" "}
+        <MainListCtn>
+          {items?.map((items, idx) => {
+            if (items.participant.length < items.partyMember) {
+              return (
+                <Item
+                  setModalOpen={setModalOpen}
+                  key={idx}
+                  item={items}
+                  Myaddress={Myaddress}
+                ></Item>
+              );
+            } else {
+              <div>마감되었습니다</div>;
+            }
+          })}
+          <Target ref={target}>This is Target.</Target>{" "}
+        </MainListCtn>
       </MainBox>{" "}
       <MainFilter
         targetMargin={targetMargin}
@@ -157,22 +159,34 @@ const Target = styled.div`
 
 const MainBox = styled.div`
   width: 100vw;
-  padding: 0% 5%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const MainHeader = styled.div`
   position: sticky;
   top: 0;
-  background-color: black;
+  width: 100%;
+  background-color: #2e294e;
+  box-shadow: 0px 0.5px 15px 0.1px black;
   z-index: 999;
   color: white;
-  padding: 3.5% 0;
+  padding: 3.5% 5%;
   display: flex;
   justify-content: space-between;
+
   align-items: center;
   .headtxt {
     margin-left: 20px;
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #d90368,
+      0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
   }
+`;
+
+const MainListCtn = styled.div`
+  width: 100%;
+  padding: 3% 5% 0 5%;
 `;
 
 const Rowbox = styled.div`
