@@ -17,10 +17,6 @@ import Slider from "@mui/material/Slider";
 
 const { kakao } = window;
 function Form() {
-  setOptions({
-    theme: "ios",
-    themeVariant: "light",
-  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();
@@ -35,11 +31,6 @@ function Form() {
     date: yup.string(),
     map: yup.string(),
     partyMember: yup.number(),
-  });
-
-  setOptions({
-    theme: "ios",
-    themeVariant: "light",
   });
 
   const onSubmit = (data) => {
