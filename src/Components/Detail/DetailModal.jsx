@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
-import { __getPostslById } from "../../Test/DetailPostsSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPenToSquare,
   faPaperPlane,
 } from "@fortawesome/free-regular-svg-icons";
 import { faLocationDot, faUserGroup } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar, faSquare } from "@fortawesome/free-regular-svg-icons";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import {
   __getComments,
   __postComments,
@@ -19,16 +18,12 @@ import {
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
-import LoginNotif from "../../Pages/LoginNotif";
 
 const { kakao } = window;
-const Detail = () => {
-  const { postid } = useParams();
+export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const initialState = {
-    comment: "",
-  };
+  const initialState = { comment: "" };
   const [comment, setComment] = useState(initialState);
   const [isHost, setIsHost] = useState(false);
   const [nickName, setNickName] = useState();
@@ -47,8 +42,9 @@ const Detail = () => {
       setComment(initialState);
     }
   };
+  console.log(ModalOpen);
 
-  //나중에 participant가 아니라, confirm으로 바뀔듯
+  //!나중에 participant가 아니라, confirm으로 바뀔듯
   const enterChatRoomHandler = () => {
     if (detail.data.participant.includes(nickName)) {
       navigate(`/chat/${postid}`);
@@ -56,9 +52,8 @@ const Detail = () => {
       alert("확정된 이후 들어갈 수 있습니다.");
     }
   };
-
+  //?--------------------디테일내용 불러오기---------------------
   useEffect(() => {
-    console.log("useEffect");
     // dispatch(__getPostslById(postid));
     userApi.getUser().then((res) => {
       setNickName(res.data.findUser.nickName);
@@ -69,6 +64,7 @@ const Detail = () => {
     dispatch(__getComments(postid));
   }, []);
 
+  //?--------------------디테일이 불러와지고 실행될 부분 (순서)---------------------
   useEffect(() => {
     if (detail?.data?.nickName === nickName) {
       setIsHost(true);
@@ -80,8 +76,7 @@ const Detail = () => {
 
     setX(detail?.data?.location?.x);
     setY(detail?.data?.location?.y);
-    console.log("x", x);
-    console.log("y", y);
+
     const container = document?.getElementById("map");
     const options = {
       center: new kakao.maps.LatLng(y, x),
@@ -97,11 +92,10 @@ const Detail = () => {
   }, [postApi.getDetailId(postid)]);
 
   return (
-    <Wrapper>
-      <Wrap>
-        <Layout>
+    <BackGroudModal onClick={() => setModalOpen(false)}>
+      <Wrapper>
+        <Wrap onClick={(e) => e.stopPropagation()}>
           {" "}
-          <div onClick={() => navigate("/main")}>뒤로가기</div>
           <StContainer>
             {" "}
             <StHost>
@@ -218,76 +212,87 @@ const Detail = () => {
             <StMap id="map">지도가 들어갑니다</StMap>
           </StContainer>
           <StCommentList></StCommentList>
-        </Layout>
-      </Wrap>
-      <ListWrap open={open}>
-        <div
-          className="innerDiv"
-          onClick={() => {
-            setOpen((open) => !open);
-          }}
-        >
-          {open ? "눌러서 댓글 내리기" : ""}
-        </div>
-        <div>
-          <Btnbox>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                commentOnsumitHandler(comment);
-              }}
-            >
-              <input
-                value={comment.comment}
-                type="text"
-                placeholder="댓글내용을 입력하세요"
-                onChange={(e) => {
-                  const { value } = e.target;
-                  setComment({
-                    ...comment,
-                    comment: value,
-                  });
+        </Wrap>
+        <ListWrap open={open}>
+          <div
+            className="innerDiv"
+            onClick={() => {
+              setOpen((open) => !open);
+            }}
+          >
+            {open ? "눌러서 댓글 내리기" : ""}
+          </div>
+          <div>
+            <Btnbox>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  commentOnsumitHandler(comment);
                 }}
-              />
+              >
+                <input
+                  value={comment.comment}
+                  type="text"
+                  placeholder="댓글내용을 입력하세요"
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    setComment({
+                      ...comment,
+                      comment: value,
+                    });
+                  }}
+                />
 
-              <button>추가하기</button>
-            </form>
-          </Btnbox>
-          {/* {comments?.map((comment) => {
+                <button>추가하기</button>
+              </form>
+            </Btnbox>
+            {/* {comments?.map((comment) => {
             return <Comments key={comment.id} comments={comment} />;
           })} */}
 
-          {comments?.map((comment) => (
-            <Comments key={comment._id} comments={comment} />
-          ))}
+            {comments?.map((comment) => (
+              <Comments key={comment._id} comments={comment} />
+            ))}
 
-          {/* {comments.map((comment) => (
+            {/* {comments.map((comment) => (
             <div key={comment.id}>
               <Comments comment={comment} /> : null}
             </div>
           ))} */}
-        </div>
-      </ListWrap>
-    </Wrapper>
+          </div>
+        </ListWrap>
+      </Wrapper>
+    </BackGroudModal>
   );
 };
 
-export default Detail;
+export default DetailModal;
+
+const BackGroudModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 998;
+`;
 
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Wrap = styled.div`
-  width: 100%;
-  position: fixed;
-  left: 50%;
-  top: 20%;
-  transform: translate(-50%, -50%);
-  border-radius: 12px;
-  padding: 12px 24px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StContainer = styled.div`
@@ -295,8 +300,8 @@ const StContainer = styled.div`
   border: none;
   border-radius: 16px;
   background-color: #d7d7d7;
-  margin: 10px;
-  width: 90%;
+  width: 370px;
+  max-width: 500px;
 `;
 
 const StHost = styled.div`

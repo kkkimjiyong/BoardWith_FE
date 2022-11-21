@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getDistance } from "geolib";
 import { useDispatch } from "react-redux";
@@ -11,9 +11,12 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
 import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { DetailModal } from "../../Components/Detail/DetailModal";
+
 const Item = ({ number, item, Myaddress }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [ModalOpen, setModalOpen] = useState();
   //?---------------30%까지는 여유, 60&까지는 보통, 100%미만까지는 마감임박------------
   const memberStatus = ["여유", "보통", "마감임박"];
   const statusIndicator = () => {
@@ -62,8 +65,8 @@ const Item = ({ number, item, Myaddress }) => {
   const realEndTime = getEndTime(endDate);
 
   return (
-    <ItemWrap onClick={() => navigate(`/posts/${item._id}`)}>
-      <div className="ItemWrap">
+    <ItemWrap>
+      <div className="ItemWrap" onClick={() => setModalOpen(true)}>
         <div className="ItemWrap-Body-SpaceBetween">
           <ItemProfile>
             {" "}
@@ -132,6 +135,14 @@ const Item = ({ number, item, Myaddress }) => {
           </div>
         </div>
       </div>
+      {/* //! 리스트에서 보여주는 디테일모달창 */}
+      {ModalOpen && (
+        <DetailModal
+          postid={item._id}
+          ModalOpen={ModalOpen}
+          setModalOpen={setModalOpen}
+        />
+      )}
     </ItemWrap>
   );
 };

@@ -1,27 +1,26 @@
 import styled from "styled-components";
-import MainCard from "./MainCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { acyncGetPosts } from "../../redux/modules/postsSlice";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Item from "../Main/MainCard";
-import axios, { Axios } from "axios";
+import axios from "axios";
 import MainFilter from "./MainFilter";
 import { useRef } from "react";
-import NotifModal from "../../tools/NotifModal";
+import { NearDetailModal } from "../../Components/Detail/NearDetailModal";
+import { BiCurrentLocation } from "react-icons/bi";
+import { BsPencil } from "react-icons/bs";
+import { FiFilter } from "react-icons/fi";
 import { DetailModal } from "../../Components/Detail/DetailModal";
-import { setCookie } from "../../hooks/CookieHook";
 
 const MainSlide = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [Posts, SetPosts] = useState();
   const [targetMargin, setTargetMargin] = useState(0);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [NearModalOpen, setNearModalOpen] = useState(false);
+  const [ModalOpen, setModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   //?-----------------------------가장 가까운 모임 기능--------------------------
   //초기값은 스파르타코딩클럽 본사위치로
@@ -45,9 +44,8 @@ const MainSlide = () => {
   }
 
   useEffect(() => {
-    if (Myaddress) {
-      navigator.geolocation.getCurrentPosition(success, error, options);
-    }
+    navigator.geolocation.getCurrentPosition(success, error, options);
+
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
     setTimeout(() => setLoading(false), 1500);
   }, []);
@@ -63,7 +61,7 @@ const MainSlide = () => {
   const nearFilterHandler = () => {
     if (Myaddress) {
       setItems(neardata);
-      setModalOpen(true);
+      setNearModalOpen(true);
     } else {
       alert("위치 허용을 누르셔야 이용가능합니다!");
     }
@@ -73,7 +71,6 @@ const MainSlide = () => {
 
   const [items, setItems] = useState([]);
   const [nextPage, setNextPage] = useState(true);
-
   let page = 0;
 
   const target = useRef();
@@ -85,7 +82,7 @@ const MainSlide = () => {
     setItems((prev) => prev.concat(response.data.data));
     page += 5;
   };
-
+  console.log(ModalOpen);
   useEffect(() => {
     let observer;
     if (target.current) {
@@ -109,61 +106,30 @@ const MainSlide = () => {
   return (
     <>
       {" "}
-      <MainBox
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          textAlign: "center",
-          gap: "10px",
-        }}
-      >
+      <MainBox>
         <MainHeader>
+          <BiCurrentLocation size={"30"} onClick={() => nearFilterHandler()} />
           파티모집
-          <NearBtn onClick={() => nearFilterHandler()}>
-            가장 가까운 게 뭐시여?
-          </NearBtn>
-          {/* {modalOpen && (
-            <NotifModal
-              postid={newcardData[0]?._id}
-              setModalOpen={setModalOpen}
-            />
-          )} */}
-          {modalOpen && (
-            <DetailModal
-              postid={newcardData[0]?._id}
-              setModalOpen={setModalOpen}
-            />
-          )}
-          <div onClick={() => navigate("/form")}>글쓰기</div>
+          <div>
+            <FiFilter size={"24"} onClick={() => setOpen(!open)} />
+            <BsPencil size={"24"} onClick={() => navigate("/form")} />
+          </div>
         </MainHeader>
-        {/* {items?.map((items, idx) => {
-          return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
-        })} */}
         {items?.map((items, idx) => {
           if (items.participant.length < items.partyMember) {
-            return <Item key={idx} item={items} Myaddress={Myaddress}></Item>;
+            return (
+              <Item
+                setModalOpen={setModalOpen}
+                key={idx}
+                item={items}
+                Myaddress={Myaddress}
+              ></Item>
+            );
           } else {
             <div>마감되었습니다</div>;
           }
         })}
-        <Target
-          style={
-            {
-              // marginTop: `${targetMargin}px`,
-            }
-          }
-          ref={target}
-        >
-          This is Target.
-        </Target>{" "}
-        {/* <button
-          onClick={() => {
-            getData();
-          }}
-        >
-          다음페이지
-        </button> */}
+        <Target ref={target}>This is Target.</Target>{" "}
       </MainBox>{" "}
       <MainFilter
         targetMargin={targetMargin}
@@ -171,7 +137,24 @@ const MainSlide = () => {
         items={items}
         setItems={setItems}
         getData={getData}
-      />
+        open={open}
+        setOpen={setOpen}
+      />{" "}
+      //! 리스트에서 보여주는 디테일모달창
+      {/* {ModalOpen && (
+        <DetailModal
+          postid={id}
+          ModalOpen={ModalOpen}
+          setModalOpen={setModalOpen}
+        />
+      )} */}
+      //! 가장 가까운 모임 보여주는 모달창
+      {NearModalOpen && (
+        <NearDetailModal
+          postid={newcardData[0]?._id}
+          setNearModalOpen={setNearModalOpen}
+        />
+      )}
     </>
   );
 };
@@ -189,56 +172,8 @@ const MainBox = styled.div`
 `;
 
 const MainHeader = styled.div`
+  color: white;
   padding: 10px 0px 0px 0px;
   display: flex;
   justify-content: space-between;
 `;
-
-const NearBtn = styled.div`
-  padding: 0px 20px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 2px 0px gray;
-`;
-
-// const Container = styled.div`
-//   background-color: #afb4ff;
-//   display: grid;
-//   gap: 20px 20px;
-//   padding: 20px;
-//   grid-template-columns: 1fr 1fr;
-//   grid-template-rows: repeat(3, minmax(100px, auto));
-//   width: 100%;
-//   max-width: 540px;
-//   height: 660px;
-// `;
-// const AppWrap = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   text-align: center;
-//   align-items: center;
-
-//   .Target-Element {
-//     width: 100vw;
-//     height: 140px;
-//     display: flex;
-//     justify-content: center;
-//     text-align: center;
-//     align-items: center;
-//   }
-// `;
-// const GlobalStyle = styled.div`
-//   *,
-//   *::before,
-//   *::after {
-//     box-sizing: border-box;
-//     padding: 0px;
-//     margin: 0px;
-//   }
-
-//   body {
-//     background-color: #f2f5f7;
-//   }
-// `;

@@ -24,11 +24,12 @@ const KaKaoLogin = () => {
     try {
       const { data } = await axios.post(
         "https://www.iceflower.shop/kakao/callback",
-        { code: code }
+        { code: code, nickName: "123", address: "124" }
       );
       console.log(data.accessToken);
-
-      setCookie("access_token", data.accessToken);
+      if (data.accessToken)
+        setCookie("access_token", data.accessToken, { path: "/" });
+      setCookie("kakao", true, { path: "/" });
     } catch (error) {
       console.log(error);
     }
@@ -36,13 +37,7 @@ const KaKaoLogin = () => {
 
   useEffect(() => {
     postCode();
-    setCookie("123", 123);
   }, []);
-
-  //   console.log(Fetch());
-  //   useEffect(() => {
-  //     Fetch();
-  //   }, []);
 
   return <div>로그인 성공!</div>;
 };
