@@ -79,8 +79,12 @@ const Login = () => {
         <div className="txtbox" onClick={() => navigate("/signup")}>
           회원가입
         </div>
-        <div className="txtbox">아이디찾기</div>
-        <div className="txtbox-noborder">비밀번호찾기</div>
+        <div className="txtbox" onClick={() => navigate("/find/id")}>
+          아이디찾기
+        </div>
+        <div className="txtbox-noborder" onClick={() => navigate("/find/pw")}>
+          비밀번호찾기
+        </div>
       </BottomTxt>
     </LoginCtn>
   );
@@ -107,6 +111,7 @@ const LoginTitle = styled.div`
 `;
 
 const LoginInput = styled.input`
+  color: white;
   width: 87%;
   height: 40px;
   background: transparent;

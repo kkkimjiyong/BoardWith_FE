@@ -94,6 +94,8 @@ const SignUp = () => {
     });
   };
 
+  //* --------------------  다음 주소창  ----------------------------
+
   const postConfig = {
     //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
@@ -104,6 +106,8 @@ const SignUp = () => {
     },
   };
   const postCode = ReactDaumPost(postConfig);
+
+  //* --------------------  선호게임 태그인풋창  ---------------------------
 
   const [tagItem, setTagItem] = useState("");
   const [tagList, setTagList] = useState([]);

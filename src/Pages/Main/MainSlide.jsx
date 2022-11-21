@@ -140,14 +140,6 @@ const MainSlide = () => {
         open={open}
         setOpen={setOpen}
       />{" "}
-      //! 리스트에서 보여주는 디테일모달창
-      {/* {ModalOpen && (
-        <DetailModal
-          postid={id}
-          ModalOpen={ModalOpen}
-          setModalOpen={setModalOpen}
-        />
-      )} */}
       //! 가장 가까운 모임 보여주는 모달창
       {NearModalOpen && (
         <NearDetailModal
