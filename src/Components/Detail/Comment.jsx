@@ -104,7 +104,7 @@ const Comments = ({
       });
   };
   //파티원 강퇴 취소 핸들러------------------------------------------------------------
-  // console.log("comments", comments);
+
   const kickPartyCancelHandler = () => {
     const nickName = { nickName: comments.nickName };
     console.log("nickName", nickName);
@@ -138,7 +138,8 @@ const Comments = ({
         setIsBanUser(false);
       }
   });
-  // console.log("isEdit", isEdit);
+  console.log("detail", detail);
+  console.log("comments", comments);
 
   return (
     <>
@@ -317,6 +318,7 @@ const Comments = ({
 export default Comments;
 
 const StButton = styled.button`
+  background-color: #5893d4;
   margin: 0 3% 0 0;
   width: 20%;
   height: 50px;
@@ -324,7 +326,6 @@ const StButton = styled.button`
   font-size: large;
   font-weight: bold;
   cursor: pointer;
-  background-color: #a5d0ff;
   color: white;
   border: 1px solid white;
   &:active {
@@ -333,6 +334,7 @@ const StButton = styled.button`
 `;
 
 const StButton2 = styled.button`
+  background-color: #f66b0e;
   width: 20%;
   height: 50px;
   border-radius: 15px;
@@ -348,7 +350,8 @@ const StButton2 = styled.button`
 `;
 
 const StBanButton = styled.button`
-  width: 30%;
+  background-color: #f66b0e;
+  width: 20%;
   height: 50px;
   border-radius: 15px;
   font-size: large;
@@ -363,12 +366,14 @@ const StBanButton = styled.button`
 `;
 
 const CommentBox = styled.div`
+  background-color: #2e294e52;
   margin: 3% 3%;
   display: flex;
-  border: 1px solid #d7d7d7;
+  border: 2px solid #d6a4ff;
   border-radius: 10px;
   padding: 3% 0;
   height: 100%;
+  box-shadow: 0 5px 18px -7px #c47aff;
 `;
 
 const StCommentBodyWrap = styled.div`

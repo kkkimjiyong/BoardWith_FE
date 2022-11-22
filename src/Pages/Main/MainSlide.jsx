@@ -170,12 +170,11 @@ const MainHeader = styled.div`
   width: 100%;
   background-color: #2e294e;
   box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 999;
+  z-index: 10;
   color: white;
   padding: 3.5% 5%;
   display: flex;
   justify-content: space-between;
-
   align-items: center;
   .headtxt {
     margin-left: 20px;
