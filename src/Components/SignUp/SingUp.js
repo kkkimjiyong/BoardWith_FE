@@ -5,23 +5,19 @@ import ReactDaumPost from "react-daumpost-hook";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { parsePath, useNavigate } from "react-router-dom";
 import { signUpApi } from "../../instance.js";
 import { useState } from "react";
 import { getCookie } from "../../hooks/CookieHook.js";
+import axios from "axios";
+import useInput from "../../hooks/UseInput.js";
 
 const SignUp = () => {
   const [next, setNext] = useState(0);
+  const initialState = { phoneNumber: "", verifyCode: "" };
+  const [user, setUser, onChange] = useInput(initialState);
 
   const navigate = useNavigate();
-  const Age = [
-    "20대 초반",
-    "20대 중반",
-    "20대 후반",
-    "30대 초반",
-    "30대 중반",
-    "30대 후반",
-  ];
 
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({
@@ -64,9 +60,7 @@ const SignUp = () => {
   //useForm 설정
   const {
     register,
-    control,
     setValue,
-    getValues,
     watch,
     handleSubmit,
     reset,
@@ -77,23 +71,63 @@ const SignUp = () => {
     resolver: yupResolver(formSchema),
   });
 
-  const birthvalue = watch("birth");
   const ref = useRef(null);
   console.log(errors);
   //submit 핸들러
   const onSubmit = (data) => {
     console.log(data);
     reset();
-    console.log({ ...data, birth: Age[birthvalue], likeGame: tagList });
+    console.log({
+      ...data,
+      age: data.age,
+      likeGame: tagList,
+      myPlace: data.address.split(" ").slice(0, 2),
+      phoneNumber: user.phoneNumber,
+    });
     navigate("/");
     //선호지역은 자동적으로 나의 집주소에서 구단위 까지만으로 적용
     postSignUp({
       ...data,
-      birth: Age[birthvalue],
+      age: data.age,
       likeGame: tagList,
-      MyPlace: data.address.split(" ").slice(0, 2),
+      myPlace: data.address.split(" ").slice(0, 2),
+      phoneNumber: user.phoneNumber,
     });
+    console.log(errors);
   };
+
+  //* ---------------------  인증번호 관련 기능 -------------------
+
+  const postPhone = async () => {
+    try {
+      const { data } = await axios.post("https://www.iceflower.shop/sms/send", {
+        phoneNumber: user.phoneNumber,
+      });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  };
+  const postVerify = async () => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/sms/verify",
+        user
+      );
+      if (data == "success") {
+        alert("인증성공!");
+        setNext(3);
+      } else {
+        alert("틀려요!");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("틀려요!");
+    }
+  };
+
+  const verifyCodeHandler = () => {};
 
   //* --------------------  다음 주소창  ----------------------------
 
@@ -195,12 +229,40 @@ const SignUp = () => {
             <NextBtn onClick={() => setNext(2)}>다음</NextBtn>
           </SignUpCtn>
         )}
-
         {next === 2 && (
+          <SignUpCtn>
+            <SignUpHeader>
+              <Arrow onClick={() => setNext(1)} />
+              <div>회원가입</div>
+            </SignUpHeader>
+            <h3>본인인증 해주세요</h3>
+            <RowBox>
+              {" "}
+              <SignUpInput
+                placeholder="전화번호를 입력해주세요."
+                onChange={onChange}
+                value={user.phoneNumber}
+                name="phoneNumber"
+              />
+              <VerfiyBtn onClick={() => postPhone()}>인증번호 받기</VerfiyBtn>
+            </RowBox>
+
+            <SignUpInput
+              placeholder="인증번호를 입력해주세요."
+              onChange={onChange}
+              value={user.verifyCode}
+              name="verifyCode"
+            />
+
+            <NextBtn onClick={() => postVerify()}>다음</NextBtn>
+          </SignUpCtn>
+        )}
+
+        {next === 3 && (
           <>
             <SignUpCtn>
               <SignUpHeader>
-                <Arrow onClick={() => setNext(1)} />
+                <Arrow onClick={() => setNext(2)} />
                 <div>회원가입</div>
               </SignUpHeader>
               <RowBox className="column">
@@ -208,27 +270,27 @@ const SignUp = () => {
               </RowBox>
 
               <RowBox>
-                <label htmlFor="female">남자</label>
-                <InputBirth
-                  id="female"
-                  type="radio"
-                  defaultValue="female"
-                  value={"female"}
-                  {...register("gender")}
-                ></InputBirth>
-
-                <label htmlFor="male">여자</label>
+                <label htmlFor="male">남자</label>
                 <InputBirth
                   id="male"
                   type="radio"
+                  defaultValue="male"
                   value={"male"}
+                  {...register("gender")}
+                ></InputBirth>
+
+                <label htmlFor="female">여자</label>
+                <InputBirth
+                  id="female"
+                  type="radio"
+                  value={"female"}
                   {...register("gender")}
                 ></InputBirth>
               </RowBox>
               <SignUpInput
                 className="Birth1"
                 placeholder="나이를 입력해주세요"
-                {...register("birth")}
+                {...register("age")}
               />
               <SignUpInput
                 placeholder="거주하시는 주소를 입력"
@@ -252,7 +314,7 @@ const SignUp = () => {
                 })}
                 <TagInput
                   type="text"
-                  placeholder="#선호게임"
+                  placeholder="엔터로 태그를 만들어주세요."
                   tabIndex={2}
                   onChange={(e) => setTagItem(e.target.value)}
                   value={tagItem}
@@ -308,6 +370,15 @@ const RowBox = styled.div`
     align-items: flex-start;
     flex-direction: column;
   }
+`;
+
+const VerfiyBtn = styled.div`
+  font-size: 15px;
+  color: #2e294e;
+  width: 35%;
+  background-color: #ddd;
+  border-radius: 15px;
+  padding: 5px 10px;
 `;
 
 const InputBirth = styled.input`

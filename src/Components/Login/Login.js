@@ -32,7 +32,7 @@ const Login = () => {
       }
       navigate("/main");
     } catch (error) {
-      setModalOpen(true);
+      alert("다시 로그인해주세요");
       console.log(error.response.data.message);
     }
   };
@@ -46,13 +46,13 @@ const Login = () => {
     <LoginCtn>
       <MainLogo className="logo" />
       {/* <Logo src={MyLogo} /> */}
-      {modalOpen && (
+      {/* {modalOpen && (
         <NotifModal
           setModalOpen={setModalOpen}
           modalOpen={modalOpen}
           content={"다시 로그인해주세요"}
         />
-      )}
+      )} */}
       {/* <a href="/main">일단그냥둘러볼래</a> */}
       <LoginInput
         value={login.userId}
@@ -110,7 +110,7 @@ const LoginTitle = styled.div`
 `;
 
 const LoginInput = styled.input`
-color: white;
+  color: white;
   width: 87%;
   height: 40px;
   background: transparent;
@@ -142,7 +142,7 @@ const LoginBtn = styled.div`
   box-shadow: 0px 3px 10px 0px black;
 `;
 
-const KaKaoLogin = styled.div`
+const KaKaoLogin = styled.a`
   padding-left: 10px;
   height: 50px;
   border-radius: 10px;
