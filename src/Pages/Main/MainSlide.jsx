@@ -68,6 +68,7 @@ const MainSlide = () => {
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
+  console.log("items", items);
   const [nextPage, setNextPage] = useState(true);
   let page = 0;
 

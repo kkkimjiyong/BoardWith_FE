@@ -64,7 +64,11 @@ function Form() {
     console.log(endTime.toISOString());
 
     creatPost({
-      ...data,
+      title: data.title,
+      content: data.content,
+      partyMember: data.partyMember,
+      date: "임시",
+      cafe: data.cafe,
       location: location,
       map: data.cafe.split(" ")[1],
       time: [startTime.toISOString(), endTime.toISOString()],
@@ -147,16 +151,12 @@ function Form() {
                 <Controller
                   control={control}
                   name="fullday"
-                  format="YYYY-MM-DD"
-                  render={({ field: { onChange } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <MobileDatePicker
-                      select="range"
                       inputFormat={"yyyy-MM-dd"}
                       mask={"____-__-__"}
-                      controls={["fullday"]}
-                      onChange={(value) => {
-                        onChange(value);
-                      }}
+                      value={value}
+                      onChange={onChange}
                       renderInput={(params) => <TextField {...params} />}
                     />
                   )}
@@ -169,7 +169,7 @@ function Form() {
                 <TimeSelect
                   name="startTime"
                   size={1}
-                  defaultValue={timeSelect[0]}
+                  defaultValue={timeSelect[0].value}
                   {...register("startTime")}
                 >
                   {timeSelect.map((time) => {
@@ -184,7 +184,7 @@ function Form() {
                   name="endTime"
                   size={1}
                   // onChange={onChange}
-                  defaultValue={timeSelect[0]}
+                  defaultValue={timeSelect[23].value}
                   {...register("endTime")}
                 >
                   {timeSelect.map((time) => {

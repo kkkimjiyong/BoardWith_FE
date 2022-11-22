@@ -11,6 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
+import { date } from "yup";
 
 const MainFilter = ({
   items,
@@ -21,28 +22,28 @@ const MainFilter = ({
 }) => {
   const [open, setOpen] = useState();
   //시작 날짜 받기
-  const onDateChange = (e) => {
-    const { value } = e.target;
+  const onDateChange = (date) => {
+    filtered.date = date;
+    filtered.time[0].setFullYear(date.getYear());
+    filtered.time[1].setFullYear(date.getYear());
     setFiltered({
       ...filtered,
-      // time: startDate,
     });
   };
   //시작 시간 받기
   const onTimeChange1 = (e) => {
     const { value } = e.target;
-    const startTime = value.getTime();
+    filtered.time[0].setHours(value.split(":")[0]);
     setFiltered({
       ...filtered,
-      time: startTime,
     });
   };
   //종료 시간 받기
   const onTimeChange2 = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
+    filtered.time[1].setHours(value.split(":")[0]);
     setFiltered({
       ...filtered,
-      [name]: value,
     });
   };
   //map 값 변환
@@ -81,21 +82,23 @@ const MainFilter = ({
     { value: "중구", label: "중구" },
     { value: "중랑구", label: "중랑구" },
   ];
-
+  console.log("timefilter", new Date("1970-01-01"));
   const [filtered, setFiltered] = useState({
     time: [new Date("1970-01-01"), new Date("9999-12-31")],
+    date: new Date(),
     partyMember: [2, 4],
     map: "구",
   });
-  console.log(filtered);
 
   const filteredItems = items?.filter(
     (item) =>
-      filtered.time[0] < item.time &&
-      item.time < filtered.time[1] &&
-      filtered.partyMember[0] < item.partyMember < filtered.partyMember[1] &&
-      item.map.includes(filtered.map)
+      filtered.time[0] <= new Date(item.time) &&
+      new Date(item.time) <= filtered.time[1] &&
+      filtered.partyMember[0] <= item.partyMember &&
+      item.partyMember <= filtered.partyMember[1]
+    // item.map.includes(filtered.map)
   );
+  console.log(items);
   //필터 선택하기
   const filterhandler = () => {
     setItems(filteredItems);
@@ -169,6 +172,7 @@ const MainFilter = ({
               inputFormat={"yyyy-MM-dd"}
               mask={"____-__-__"}
               onChange={onDateChange}
+              value={filtered.date}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -179,7 +183,7 @@ const MainFilter = ({
               name="time"
               size={1}
               onChange={onTimeChange1}
-              defaultValue={timeSelect[0]}
+              defaultValue={timeSelect[0].label}
             >
               {timeSelect.map((time) => {
                 return (
@@ -192,8 +196,8 @@ const MainFilter = ({
             <TimeSelect
               name="time"
               size={1}
-              onChange={onChange}
-              defaultValue={timeSelect[0]}
+              onChange={onTimeChange2}
+              defaultValue={timeSelect[23].label}
             >
               {timeSelect.map((time) => {
                 return (
@@ -278,10 +282,10 @@ const Wrap = styled.div`
   border-top-right-radius: 15px;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "600px" : "30px")};
+  height: ${({ open }) => (open ? "600px" : "80px")};
   width: 100vw;
   background-color: #dddddd;
-  height: ${({ open }) => (open ? "500px" : "80px")};
+  /* height: ${({ open }) => (open ? "500px" : "80px")}; */
   position: fixed;
   bottom: 0;
   left: 0%;
