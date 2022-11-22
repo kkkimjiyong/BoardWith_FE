@@ -72,7 +72,7 @@ const Comments = ({
   };
 
   //파티원 수락 핸들러------------------------------------------------------------
-  console.log("comments", comments);
+  // console.log("comments", comments);
   const acceptingPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
     console.log("nickName", nickName);
@@ -89,7 +89,7 @@ const Comments = ({
   // console.log("confirmMember", detail.confirmMember[0]);
 
   //파티원 강퇴 핸들러------------------------------------------------------------
-  console.log("comments", comments);
+  // console.log("comments", comments);
   const kickPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
     console.log("nickName", nickName);
@@ -103,8 +103,23 @@ const Comments = ({
         console.log("에러", error);
       });
   };
+  //파티원 강퇴 취소 핸들러------------------------------------------------------------
+  // console.log("comments", comments);
+  const kickPartyCancelHandler = () => {
+    const nickName = { nickName: comments.nickName };
+    console.log("nickName", nickName);
+    postApi
+      .kickingPartyCancel({ postid: postid, nickName: nickName })
+      .then((res) => {
+        console.log("성공", res);
+        setIsBanUser(false);
+      })
+      .catch((error) => {
+        console.log("에러", error);
+      });
+  };
 
-  console.log("detail", detail);
+  // console.log("detail", detail);
 
   useEffect(() => {
     //참가 확정 받은 유저인지 비교
@@ -123,141 +138,187 @@ const Comments = ({
         setIsBanUser(false);
       }
   });
-  // console.log(comments);
+  // console.log("isEdit", isEdit);
 
   return (
-    <CommentBox key={comment._id}>
+    <>
       {!isBanUser ? (
         <>
-          {!isEdit ? (
-            <StCommentBodyWrap>
-              <div>
+          <CommentBox key={comment._id}>
+            {!isEdit ? (
+              <StCommentBodyWrap>
                 <div>
-                  <div
-                    style={{
-                      border: "1px solid gray",
-                      margin: "20px",
-                      borderRadius: "50%",
-                      width: "70px",
-                      height: "70px",
-                      backgroundColor: "white",
-                      // backgroundImage: `url(${detail?.data?.img})`,
-                      backgroundSize: "cover",
-                      backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
-                    }}
-                  />
-                </div>
-                <div>
-                  <StCommentBody>
-                    <Stspan
+                  <div>
+                    <div
                       style={{
-                        fontSize: "17px",
+                        border: "1px solid gray",
+                        margin: "20px",
+                        borderRadius: "50%",
+                        width: "70px",
+                        height: "70px",
+                        backgroundColor: "white",
+                        // backgroundImage: `url(${detail?.data?.img})`,
+                        backgroundSize: "cover",
+                        backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
                       }}
-                    >
-                      {comments?.nickName}
-                    </Stspan>
-                    <Stspan>
-                      <span>20대</span>
-                      <span>&nbsp;/&nbsp;</span>
-                      <span>{comments?.gender}</span>
-                      <span>&nbsp;/&nbsp;</span>
-                      <span>{comments?.myPlace}</span>
-                    </Stspan>
-                    <div style={{ height: "6px" }} />
-                    <Stspan style={{ fontSize: "20px" }}>
-                      {comments?.comment}
-                    </Stspan>
-                  </StCommentBody>
+                    />
+                  </div>
+                  <div>
+                    <StCommentBody>
+                      <Stspan
+                        style={{
+                          fontSize: "17px",
+                        }}
+                      >
+                        {comments?.nickName}
+                      </Stspan>
+                      <Stspan>
+                        <span>20대</span>
+                        <span>&nbsp;/&nbsp;</span>
+                        <span>{comments?.gender}</span>
+                        <span>&nbsp;/&nbsp;</span>
+                        <span>{comments?.myPlace}</span>
+                      </Stspan>
+                      <div style={{ height: "6px" }} />
+                      <Stspan style={{ fontSize: "20px" }}>
+                        {comments?.comment}
+                      </Stspan>
+                    </StCommentBody>
+                  </div>
                 </div>
-              </div>
-              {isHost && !isPartyAccept ? (
-                <StButton onClick={acceptingPartyHandler}>수락</StButton>
-              ) : (
-                <div />
-              )}
-              {isHost && isPostEdit ? (
-                <StButton2 onClick={kickPartyHandler}>강퇴</StButton2>
-              ) : (
-                <div />
-              )}
-              {nickName === comments?.nickName ? (
-                <Sticon>
-                  <FontAwesomeIcon
-                    style={{
-                      color: "#919191",
-                    }}
-                    size="lg"
-                    icon={faPenToSquare}
-                    cursor="pointer"
-                    onClick={() => setEdit(true)}
-                  />
-                  <FontAwesomeIcon
-                    style={{
-                      color: "#919191",
-                    }}
-                    size="lg"
-                    icon={faTrashCan}
-                    cursor="pointer"
-                    onClick={() => onDelCommentHandler(comment.id)}
-                  />
-                </Sticon>
-              ) : (
-                <div />
-              )}
-            </StCommentBodyWrap>
-          ) : (
-            <>
-              <StText
-                placeholder="수정할 댓글내용을 입력하세요"
-                value={comment.comment}
-                onChange={(e) => {
-                  const { value } = e.target;
-                  setComment({
-                    ...comment,
-                    comment: value,
-                  });
-                }}
-              ></StText>
-              <FontAwesomeIcon
-                style={{
-                  color: "#919191",
-                  marginRight: "5px",
-                }}
-                size="lg"
-                icon={faCircleCheck}
-                onClick={() => onEditHandler(comment.id)}
-                cursor="pointer"
-              />
-              <FontAwesomeIcon
-                style={{
-                  color: "#919191",
-                  marginRight: "10px",
-                }}
-                size="lg"
-                icon={faXmark}
-                onClick={editCancel}
-                cursor="pointer"
-              />
-            </>
-          )}
+                {isHost && !isPartyAccept ? (
+                  <StButton onClick={acceptingPartyHandler}>수락</StButton>
+                ) : (
+                  <></>
+                )}
+                {isHost && isPostEdit ? (
+                  <StButton2 onClick={kickPartyHandler}>강퇴</StButton2>
+                ) : (
+                  <></>
+                )}
+                {nickName === comments?.nickName ? (
+                  <Sticon>
+                    <FontAwesomeIcon
+                      style={{
+                        color: "#919191",
+                      }}
+                      size="lg"
+                      icon={faPenToSquare}
+                      cursor="pointer"
+                      onClick={() => setEdit(true)}
+                    />
+                    <FontAwesomeIcon
+                      style={{
+                        color: "#919191",
+                      }}
+                      size="lg"
+                      icon={faTrashCan}
+                      cursor="pointer"
+                      onClick={() => onDelCommentHandler(comment.id)}
+                    />
+                  </Sticon>
+                ) : (
+                  <></>
+                )}
+              </StCommentBodyWrap>
+            ) : (
+              <>
+                <StText
+                  placeholder="수정할 댓글내용을 입력하세요"
+                  value={comment.comment}
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    setComment({
+                      ...comment,
+                      comment: value,
+                    });
+                  }}
+                ></StText>
+                <FontAwesomeIcon
+                  style={{
+                    color: "#919191",
+                    marginRight: "5px",
+                  }}
+                  size="lg"
+                  icon={faCircleCheck}
+                  onClick={() => onEditHandler(comment.id)}
+                  cursor="pointer"
+                />
+                <FontAwesomeIcon
+                  style={{
+                    color: "#919191",
+                    marginRight: "10px",
+                  }}
+                  size="lg"
+                  icon={faXmark}
+                  onClick={editCancel}
+                  cursor="pointer"
+                />
+              </>
+            )}
+          </CommentBox>
         </>
       ) : (
-        <div
-          style={{
-            marginLeft: "5%",
-          }}
-        >
-          차단 당함
-        </div>
+        <>
+          {isPostEdit ? (
+            <CommentBox key={comment._id}>
+              <StCommentBodyWrap>
+                <div>
+                  <div>
+                    <div
+                      style={{
+                        border: "1px solid gray",
+                        margin: "20px",
+                        borderRadius: "50%",
+                        width: "70px",
+                        height: "70px",
+                        backgroundColor: "white",
+                        // backgroundImage: `url(${detail?.data?.img})`,
+                        backgroundSize: "cover",
+                        backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <StCommentBody>
+                      <Stspan
+                        style={{
+                          fontSize: "17px",
+                        }}
+                      >
+                        {comments?.nickName}
+                      </Stspan>
+                      <Stspan>
+                        <span>20대</span>
+                        <span>&nbsp;/&nbsp;</span>
+                        <span>{comments?.gender}</span>
+                        <span>&nbsp;/&nbsp;</span>
+                        <span>{comments?.myPlace}</span>
+                      </Stspan>
+                      <div style={{ height: "6px" }} />
+                      <Stspan style={{ fontSize: "20px" }}>
+                        {comments?.comment}
+                      </Stspan>
+                    </StCommentBody>
+                  </div>
+                </div>
+                <StBanButton onClick={kickPartyCancelHandler}>취소</StBanButton>
+              </StCommentBodyWrap>
+            </CommentBox>
+          ) : (
+            <></>
+          )}
+        </>
       )}
-    </CommentBox>
+    </>
   );
 };
 
 export default Comments;
 
 const StButton = styled.button`
-  width: 15%;
+  margin: 0 3% 0 0;
+  width: 20%;
   height: 50px;
   border-radius: 15px;
   font-size: large;
@@ -272,7 +333,22 @@ const StButton = styled.button`
 `;
 
 const StButton2 = styled.button`
-  width: 15%;
+  width: 20%;
+  height: 50px;
+  border-radius: 15px;
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #ff6565;
+  color: white;
+  border: 1px solid white;
+  &:active {
+    scale: 95%;
+  }
+`;
+
+const StBanButton = styled.button`
+  width: 30%;
   height: 50px;
   border-radius: 15px;
   font-size: large;

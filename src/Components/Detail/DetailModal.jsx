@@ -23,7 +23,13 @@ import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
 const { kakao } = window;
-export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
+export const DetailModal = ({
+  postid,
+  setModalOpen,
+  ModalOpen,
+  realStartTime,
+  realEndTime,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -213,21 +219,23 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                 <StContentWrap>
                   <FontAwesomeIcon
                     style={{
-                      color: "black",
+                      fontSize: "25px",
+                      color: "white",
                     }}
-                    size="2x"
+                    // size="lg"
                     icon={faShareFromSquare}
                     onClick={() => {
-                      enterChatRoomHandler();
+                      alert("공유기능 개발중!");
                     }}
                     cursor="pointer"
                   />
                   <Stgap />
                   <FontAwesomeIcon
                     style={{
-                      color: "black",
+                      fontSize: "27px",
+                      color: "white",
                     }}
-                    size="2x"
+                    // size="lg"
                     icon={faCommentDots}
                     onClick={() => {
                       enterChatRoomHandler();
@@ -242,7 +250,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <StContentWrap>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                   }}
                   size="1x"
                   icon={faLocationDot}
@@ -253,18 +261,18 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <StContentWrap>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                   }}
                   size="1x"
                   icon={faCalendar}
                 />
                 <div />
-                <h4>{detail?.data?.time[0]}</h4> {/* 날짜 */}
+                <h4>{realStartTime + " ~ " + realEndTime}</h4> {/* 날짜 */}
               </StContentWrap>
               <StContentWrap>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                   }}
                   size="1x"
                   icon={faUserGroup}
@@ -274,11 +282,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               </StContentWrap>
               {isHost ? (
                 <StButtonWrap>
-                  {!isClosed ? (
-                    <Stbutton onClick={closePartyHandler}>마감하기</Stbutton>
-                  ) : (
-                    <Stbutton onClick={openPartyHandler}>마감취소</Stbutton>
-                  )}
                   <Stbutton
                     onClick={() => {
                       if (getCookie("accesstoken") !== null) {
@@ -288,9 +291,14 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                       }
                     }}
                   >
-                    신청현황 ({comments?.length}/{detail?.data?.partyMember - 1}
+                    예약현황 ({comments?.length}/{detail?.data?.partyMember - 1}
                     )
                   </Stbutton>
+                  {!isClosed ? (
+                    <Stbutton1 onClick={closePartyHandler}>마감하기</Stbutton1>
+                  ) : (
+                    <Stbutton1 onClick={openPartyHandler}>마감취소</Stbutton1>
+                  )}
                 </StButtonWrap>
               ) : (
                 <Stbutton
@@ -336,7 +344,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <StCommentbull>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                     marginRight: "3%",
                   }}
                   size="1x"
@@ -347,7 +355,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
             ) : (
               <></>
             )}
-
             <div>
               {!isCommentAuthor && !isHost ? (
                 <Btnbox>
@@ -369,7 +376,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                         });
                       }}
                     />
-                    <button>신청하기</button>
+                    <button>예약하기</button>
                   </form>
                 </Btnbox>
               ) : (
@@ -562,6 +569,18 @@ const Stbutton = styled.button`
   width: 100%;
   height: 45px;
   border-radius: 15px;
+  margin: 2% 2% 5% 0;
+  border: none;
+  background-color: white;
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+const Stbutton1 = styled.button`
+  width: 40%;
+  height: 45px;
+  border-radius: 15px;
   margin: 2% 0 5% 0;
   border: none;
   background-color: white;
@@ -620,7 +639,7 @@ const Btnbox = styled.div`
   }
   button:hover {
     opacity: 0.8;
-    color: black;
+    color: white;
     cursor: pointer;
   }
 `;
