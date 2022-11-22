@@ -5,13 +5,19 @@ import ReactDaumPost from "react-daumpost-hook";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { parsePath, useNavigate } from "react-router-dom";
 import { signUpApi } from "../../instance.js";
 import { useState } from "react";
 import { getCookie } from "../../hooks/CookieHook.js";
+import axios from "axios";
 
 const SignUp = () => {
   const [next, setNext] = useState(0);
+  const initialState = {
+    verfiyCode: "",
+    phoneNumber: "",
+  };
+  const [user, setUser, onChange] = useState(initialState);
 
   const navigate = useNavigate();
   const Age = [
@@ -92,8 +98,41 @@ const SignUp = () => {
       birth: Age[birthvalue],
       likeGame: tagList,
       MyPlace: data.address.split(" ").slice(0, 2),
+      phoneNumber: user.phoneNumber,
     });
+    console.log(errors);
   };
+
+  //* ---------------------  인증번호 관련 기능 -------------------
+
+  const postPhone = async () => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/sms/sendID",
+        { phoneNumber: user.phoneNumber }
+      );
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  };
+
+  const postVerify = async () => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/sms/verifyID",
+        user
+      );
+      if (data) {
+        setNext(3);
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
+
+  const verifyCodeHandler = () => {};
 
   //* --------------------  다음 주소창  ----------------------------
 
@@ -195,12 +234,48 @@ const SignUp = () => {
             <NextBtn onClick={() => setNext(2)}>다음</NextBtn>
           </SignUpCtn>
         )}
-
         {next === 2 && (
+          <SignUpCtn>
+            <SignUpHeader>
+              <Arrow onClick={() => setNext(1)} />
+              <div>회원가입</div>
+            </SignUpHeader>
+            <h3>본인인증 해주세요</h3>
+            <RowBox>
+              {" "}
+              <SignUpInput
+                placeholder="휴대폰번호를 입력해주세요"
+                type="phoneNumber"
+                defaultValue={user.phoneNumber}
+                name="phoneNumber"
+                onChange={onChange}
+              />
+              {errors.phoneNumber && (
+                <small role="alert">{errors.phoneNumber.message}</small>
+              )}
+              <VerfiyBtn onClick={() => postPhone()}>인증번호 받기</VerfiyBtn>
+            </RowBox>
+
+            <SignUpInput
+              placeholder="인증번호를 입력해주세요"
+              type="text"
+              defaultValue={user.verfiyCode}
+              name="verifyCode"
+              onChange={onChange}
+            />
+            {errors.verfiyCode && (
+              <small role="alert">{errors.verfiyCode.message}</small>
+            )}
+
+            <NextBtn onClick={() => postVerify()}>다음</NextBtn>
+          </SignUpCtn>
+        )}
+
+        {next === 3 && (
           <>
             <SignUpCtn>
               <SignUpHeader>
-                <Arrow onClick={() => setNext(1)} />
+                <Arrow onClick={() => setNext(2)} />
                 <div>회원가입</div>
               </SignUpHeader>
               <RowBox className="column">
@@ -308,6 +383,15 @@ const RowBox = styled.div`
     align-items: flex-start;
     flex-direction: column;
   }
+`;
+
+const VerfiyBtn = styled.div`
+  font-size: 15px;
+  color: #2e294e;
+  width: 35%;
+  background-color: #ddd;
+  border-radius: 15px;
+  padding: 5px 10px;
 `;
 
 const InputBirth = styled.input`

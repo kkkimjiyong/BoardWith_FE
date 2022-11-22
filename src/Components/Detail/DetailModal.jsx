@@ -167,8 +167,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
     }
   }, []);
 
-  console.log(isHost);
-
   return (
     <StContainers onClick={() => setModalOpen(false)}>
       {/*상세페이지 시작-------------------------------------------------------- */}
@@ -390,11 +388,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               ) : (
                 <div />
               )}
-
-              {/* {comments?.map((comment) => {
-            return <Comments key={comment.id} comments={comment} />;
-          })} */}
-
               {comments?.map((comment) => (
                 <Comments
                   key={comment._id}
@@ -403,12 +396,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                   nickName={nickName}
                 />
               ))}
-
-              {/* {comments.map((comment) => (
-            <div key={comment.id}>
-              <Comments comment={comment} /> : null}
-            </div>
-          ))} */}
             </div>
           </ListWrap>
         </Wrapper>
@@ -499,7 +486,7 @@ const ListWrap = styled.div`
   z-index: 90;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "100%" : "0")};
+  height: ${({ open }) => (open ? "80%" : "0")};
   position: absolute;
   bottom: 0;
   left: 0;

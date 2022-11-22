@@ -32,7 +32,7 @@ const Login = () => {
       }
       navigate("/main");
     } catch (error) {
-      setModalOpen(true);
+      alert("다시 로그인해주세요");
       console.log(error.response.data.message);
     }
   };
@@ -110,7 +110,7 @@ const LoginTitle = styled.div`
 `;
 
 const LoginInput = styled.input`
-color: white;
+  color: white;
   width: 87%;
   height: 40px;
   background: transparent;

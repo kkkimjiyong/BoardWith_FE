@@ -25,7 +25,7 @@ const ChatRoom = () => {
   const { roomid } = useParams();
   const [message, setMessage, onChange] = useInput();
   const [notice, setNotice] = useState([]);
-  const [users, setUsers] = useState(["123", "123", "123", "123"]);
+  const [users, setUsers] = useState([]);
   const [isEdit, SetisEdit] = useState(false);
   const scrollRef = useRef();
   const [chatArr, setChatArr] = useState([]);
@@ -117,9 +117,9 @@ const ChatRoom = () => {
     console.log("render!");
     roomsubmit();
     // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
-    // socket.on("roomUsers", (msg) => {
-    //   setUsers(msg.nickName);
-    // });
+    socket.on("roomUsers", (msg) => {
+      setUsers(msg.nickName);
+    });
 
     socket.on("message", (message) => {
       setChatArr((chatArr) => [...chatArr, message]);

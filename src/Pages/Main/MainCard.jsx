@@ -18,7 +18,7 @@ const Item = ({ number, item, Myaddress }) => {
   const dispatch = useDispatch();
   const [ModalOpen, setModalOpen] = useState();
   //?---------------30%까지는 여유, 60&까지는 보통, 100%미만까지는 마감임박------------
-  const memberStatus = ["여유", "보통", "마감임박"];
+  const memberStatus = ["여유", "보통", "마감임박", "마감"];
   const statusIndicator = () => {
     if (item?.participant.length / item?.partyMember <= 0.3) {
       return memberStatus[0];
@@ -26,8 +26,10 @@ const Item = ({ number, item, Myaddress }) => {
     if (item?.participant.length / item?.partyMember <= 0.6) {
       return memberStatus[1];
     }
-    if (item?.participant.length / item?.partyMember <= 1) {
+    if (item?.participant.length / item?.partyMember < 1) {
       return memberStatus[2];
+    } else {
+      return memberStatus[3];
     }
   };
   useEffect(() => {
@@ -129,6 +131,7 @@ const Item = ({ number, item, Myaddress }) => {
                 <div
                   className={"status" + memberStatus.indexOf(statusIndicator())}
                 >
+                  {memberStatus.indexOf(statusIndicator()) === 3 && "마감"}{" "}
                   {/* {statusIndicator()} */}
                 </div>
               </StatusBox>
@@ -221,9 +224,10 @@ const ItemWrap = styled.div`
 `;
 
 const StatusBox = styled.div`
+  color: #2e294e;
   width: 25%;
   height: 20px;
-  border: 1px solid;
+  border: 1px solid #dddddd;
   border-radius: 20px;
   display: flex;
   .status0 {
@@ -255,6 +259,16 @@ const StatusBox = styled.div`
     justify-content: center;
     padding: 0.5%;
     background-color: red;
+  }
+  .status3 {
+    display: flex;
+    border-radius: 130px;
+    background-color: #e2e5e7;
+    white-space: nowrap;
+    width: 100%;
+    justify-content: center;
+    padding: 0.5%;
+    background-color: gainsboro;
   }
 `;
 

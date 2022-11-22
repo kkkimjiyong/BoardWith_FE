@@ -69,15 +69,19 @@ const FindPw = () => {
       </SignUpHeader>
       <RowBox>
         <ColumnBox>
-          <input value={findUser.userId} name="userId" onChange={onChange} />
+          <SignUpInput
+            value={findUser.userId}
+            name="userId"
+            onChange={onChange}
+          />
           <small role="alert">dk</small>
         </ColumnBox>
 
-        <button onClick={() => console.log(1)}>아이디만 적는 칸</button>
+        <VerfiyBtn onClick={() => console.log(1)}>아이디</VerfiyBtn>
       </RowBox>
       <RowBox>
         <ColumnBox>
-          <input
+          <SignUpInput
             value={findUser.phoneNumber}
             name="phoneNumber"
             onChange={onChange}
@@ -85,11 +89,11 @@ const FindPw = () => {
           <small role="alert">dk</small>
         </ColumnBox>
 
-        <button onClick={() => postPw()}>post 전번</button>
+        <VerfiyBtn onClick={() => postPw()}>전번</VerfiyBtn>
       </RowBox>
       <RowBox>
         <ColumnBox>
-          <input
+          <SignUpInput
             value={findUser.verifyCode}
             name="verifyCode"
             onChange={onChange}
@@ -97,11 +101,11 @@ const FindPw = () => {
           <small role="alert">dk</small>
         </ColumnBox>
 
-        <button onClick={() => postVerify()}>post 전번,인증번호</button>
+        <VerfiyBtn onClick={() => postVerify()}>인증번호</VerfiyBtn>
       </RowBox>
       <RowBox>
         <ColumnBox>
-          <input
+          <SignUpInput
             value={findUser.password}
             name="password"
             onChange={onChange}
@@ -109,7 +113,7 @@ const FindPw = () => {
           <small role="alert">dk</small>
         </ColumnBox>
 
-        <button onClick={() => postChangePw()}>post 비번바꾸기</button>
+        <VerfiyBtn onClick={() => postChangePw()}>비번바꾸기</VerfiyBtn>
       </RowBox>
     </SignUpWrap>
   );
@@ -122,9 +126,12 @@ const SignUpWrap = styled.div`
   align-items: center;
   gap: 30px;
   width: 100%;
+  height: 100vh;
   color: white;
 `;
 const SignUpHeader = styled.div`
+  position: fixed;
+  top: 0;
   font-size: 1.5rem;
   font-weight: 400;
   width: 100%;
@@ -133,6 +140,34 @@ const SignUpHeader = styled.div`
   align-items: center;
   padding: 40px 20px;
   padding-right: 40%;
+`;
+
+const SignUpInput = styled.input`
+  color: white;
+  display: block;
+  width: 90%;
+  padding: 0 20px;
+  margin-bottom: 5px;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  background-color: transparent;
+  cursor: pointer;
+  &:focus {
+    border: none;
+    border-bottom: 2px solid white;
+  }
+`;
+
+const VerfiyBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+  color: #2e294e;
+  width: 35%;
+  background-color: #ddd;
+  border-radius: 15px;
+  padding: 5px 10px;
 `;
 
 const RowBox = styled.div`

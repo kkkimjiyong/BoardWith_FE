@@ -105,7 +105,7 @@ const MyPage = () => {
         <AvatarCtn>아바타들어올자리</AvatarCtn>
         <ProfileCtn>
           {" "}
-          <EditBox onClick={() => navigate("/editpage")}>
+          <EditBox onClick={() => alert("수정중")}>
             <EditBtn>편집</EditBtn>
           </EditBox>
           <ProfileRow>
@@ -121,9 +121,9 @@ const MyPage = () => {
                 }`
               : "없음"}{" "}
             {user?.visible ? (
-              <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-            ) : (
               <AiFillEye size="24" onClick={() => postVisible()} />
+            ) : (
+              <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
             )}{" "}
           </ProfileRow>{" "}
           <LikeGameCtn>
