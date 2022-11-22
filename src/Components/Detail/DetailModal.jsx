@@ -5,17 +5,14 @@ import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPenToSquare,
-  faComments,
-  faCalendar,
-} from "@fortawesome/free-regular-svg-icons";
+import { faCalendar, faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import {
   faLocationDot,
   faUserGroup,
   faX,
   faChevronLeft,
   faBullhorn,
+  faShareFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   __getComments,
@@ -42,6 +39,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   const [y, setY] = useState();
 
   const [detail, setDetail] = useState();
+
+  //게시글 편집 상태 핸들러
+  const postEditHandler = () => {
+    !isEdit ? setIsEdit(true) : setIsEdit(false);
+  };
 
   //파티마감 핸들러-----------------------------------------
   const closePartyHandler = () => {
@@ -103,14 +105,14 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
     //   alert("확정된 이후 들어갈 수 있습니다.");
     // }
   };
+
   //useEffect 디테일 데이터 불러오기---------------------
   useEffect(() => {
     // dispatch(__getPostslById(postid));
-    if (getCookie("access_token")) {
-      userApi.getUser().then((res) => {
-        setNickName(res.data.findUser.nickName);
-      });
-    }
+    userApi.getUser().then((res) => {
+      // console.log("res", res);
+      setNickName(res.data.findUser.nickName);
+    });
 
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
@@ -205,47 +207,29 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                   <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
                 </div>
                 <StContentWrap>
-                  {isHost ? (
-                    <>
-                      <FontAwesomeIcon
-                        style={{
-                          color: "black",
-                        }}
-                        size="2x"
-                        icon={faPenToSquare}
-                        onClick={() => {
-                          enterChatRoomHandler();
-                        }}
-                        cursor="pointer"
-                      />
-                      <Stgap />
-                      <FontAwesomeIcon
-                        style={{
-                          color: "black",
-                        }}
-                        size="2x"
-                        icon={faComments}
-                        onClick={() => {
-                          enterChatRoomHandler();
-                        }}
-                        cursor="pointer"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <FontAwesomeIcon
-                        style={{
-                          color: "black",
-                        }}
-                        size="2x"
-                        icon={faComments}
-                        onClick={() => {
-                          enterChatRoomHandler();
-                        }}
-                        cursor="pointer"
-                      />
-                    </>
-                  )}
+                  <FontAwesomeIcon
+                    style={{
+                      color: "black",
+                    }}
+                    size="2x"
+                    icon={faShareFromSquare}
+                    onClick={() => {
+                      enterChatRoomHandler();
+                    }}
+                    cursor="pointer"
+                  />
+                  <Stgap />
+                  <FontAwesomeIcon
+                    style={{
+                      color: "black",
+                    }}
+                    size="2x"
+                    icon={faCommentDots}
+                    onClick={() => {
+                      enterChatRoomHandler();
+                    }}
+                    cursor="pointer"
+                  />
                 </StContentWrap>
               </StHost>
               <div>
@@ -291,7 +275,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                   ) : (
                     <Stbutton onClick={openPartyHandler}>마감취소</Stbutton>
                   )}
-
                   <Stbutton
                     onClick={() => {
                       if (getCookie("accesstoken") !== null) {
@@ -315,9 +298,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                       alert("로그인이 필요한 기능입니다.");
                     }
                   }}
-                  // onClick={() => {
-                  //   setOpen((open) => !open);
-                  // }}
                 >
                   참가하기
                 </Stbutton>
@@ -334,7 +314,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <FontAwesomeIcon
                 style={{
                   color: "black",
-                  marginRight: "18%",
                 }}
                 size="1x"
                 icon={faChevronLeft}
@@ -342,8 +321,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                   setOpen((open) => !open);
                 }}
               />
-              <div></div>
               <h3>{detail?.data?.title}</h3>
+              {!isEdit ? (
+                <h5 onClick={postEditHandler}>편집</h5>
+              ) : (
+                <h5 onClick={postEditHandler}>취소</h5>
+              )}
             </StCommentTitle>
             {!isHost ? (
               <StCommentbull>
@@ -394,6 +377,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                   comments={comment}
                   isHost={isHost}
                   nickName={nickName}
+                  postid={postid}
+                  detail={detail?.data}
+                  isPostEdit={isEdit}
                 />
               ))}
             </div>
@@ -423,12 +409,12 @@ const StCommentbull = styled.div`
 `;
 
 const StCommentTitle = styled.div`
-  padding: 0 2%;
+  padding: 0 3%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  .div {
-    width: 30%;
+  > h5 {
+    cursor: pointer;
   }
 `;
 
@@ -483,10 +469,10 @@ const BackGroudModal = styled.div`
 `;
 
 const ListWrap = styled.div`
-  z-index: 90;
+  z-index: 235;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "80%" : "0")};
+  height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
   bottom: 0;
   left: 0;

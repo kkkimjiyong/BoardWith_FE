@@ -31,8 +31,8 @@ const MobileHeader = () => {
 
 const MobileHeaderCtn = styled.div`
   position: fixed;
-  z-index: 997;
-  height: 5%;
+  z-index: 178;
+  height: 5vh;
   background-color: #2e294e;
   display: flex;
   justify-content: space-between;

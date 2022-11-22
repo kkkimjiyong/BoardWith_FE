@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { userApi } from "../../instance";
 import styled from "styled-components";
 import useInput from "../../hooks/UseInput";
-import { getCookie, setCookie } from "../../hooks/CookieHook";
+import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
@@ -31,25 +31,30 @@ const MyPage = () => {
     getUser();
   }, []);
   // console.log({ visible: !user.visible });
-  // 성별 보이게 안보이게 api
+  //? ------------------  로그아웃 -------------------
 
+  const logoutHandler = (name) => {
+    removeCookie(name);
+    navigate("/");
+  };
+  //? ----------------- 성별 보이게 안보이게 api --------------------------
   const postVisible = async () => {
     try {
-      const { data } = await axios.get(
-        `https://www.iceflower.shop/users/visible/${user.userId}`,
+      const { data } = await axios.put(
+        `https://www.iceflower.shop/users`,
+        { visible: !user.visible },
         {
           headers: {
             Authorization: `${getCookie("accessToken")}`,
           },
         }
       );
-      Setuser(data.messgae);
+      Setuser({ ...user, visible: data.visible });
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
-
   //*----------------------  마이파티  --------------------------------
   const [isOpen, SetisOpen] = useState(false);
   const [isOpen1, SetisOpen1] = useState(false);
@@ -87,20 +92,20 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    getReserved();
-    getConfirm();
+    // getReserved();
+    // getConfirm();
   }, []);
 
   if (!getCookie("accessToken")) {
-    if (window.confirm("로그인이 필요한 페이지입니다!")) {
-      window.location.replace("/");
-    }
+    alert("로그인이 필요한 페이지입니다!");
+    window.location.replace("/");
   } else {
     return (
       <Wrapper>
         <MainHeader>
           <Arrow className="head" onClick={() => navigate("/main")} />
           <div className="headtxt">마이페이지</div>
+          <div onClick={() => logoutHandler("accessToken")}>로그아웃</div>
         </MainHeader>
         <AvatarCtn>아바타들어올자리</AvatarCtn>
         <ProfileCtn>
@@ -124,8 +129,8 @@ const MyPage = () => {
               <AiFillEye size="24" onClick={() => postVisible()} />
             ) : (
               <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-            )}{" "}
-          </ProfileRow>{" "}
+            )}
+          </ProfileRow>
           <LikeGameCtn>
             <LikeGameBox>
               {}
@@ -196,7 +201,7 @@ const MainHeader = styled.div`
   box-shadow: 0px 0.5px 15px 0.1px black;
   z-index: 999;
   color: white;
-  padding: 3.5% 40% 3.5% 2%;
+  padding: 3.5% 2% 3.5% 2%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -204,7 +209,7 @@ const MainHeader = styled.div`
   .headtxt {
     margin-left: 20px;
     color: #fff;
-    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #d90368,
+    text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
       0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
   }
 `;

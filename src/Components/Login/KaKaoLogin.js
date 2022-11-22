@@ -26,11 +26,11 @@ const KaKaoLogin = () => {
     try {
       const { data } = await axios.post(
         "https://www.iceflower.shop/kakao/callback",
-        { ...signup, code }
+        { ...signup, code, myPlace: signup.address.split(" ").slice(0, 2) }
       );
       console.log(data.accessToken);
       if (data.accessToken)
-        setCookie("access_token", data.accessToken, { path: "/" });
+        setCookie("accessToken", data.accessToken, { path: "/" });
       setCookie("kakao", true, { path: "/" });
     } catch (error) {
       console.log(error);
@@ -46,7 +46,7 @@ const KaKaoLogin = () => {
 
   const onKeyPress = (e) => {
     console.log(e);
-    if (e.target.value.length !== 0 && e.charCode === 32) {
+    if (e.target.value.length !== 0 && e.charCode === 13) {
       submitTagItem();
       console.log("enter");
     }
@@ -74,12 +74,12 @@ const KaKaoLogin = () => {
   //* --------------------- 닉네임,주소입력 기능  -----------------------
 
   const initialState = {
+    nickName: "",
     address: "",
     myPlace: "",
-    birth: "",
+    age: "",
     gender: "",
     likeGame: "",
-    introduce: "",
   };
 
   const [signup, setSignup, onChange] = useInput(initialState);
@@ -102,7 +102,7 @@ const KaKaoLogin = () => {
   };
   const postCode = ReactDaumPost(postConfig);
   if (getCookie("kakao")) {
-    return <div>로그인성공</div>;
+    window.location.replace("/main");
   } else {
     return (
       <div>
@@ -117,15 +117,7 @@ const KaKaoLogin = () => {
                 <h3>추가정보를 입력해주세요</h3> <div>성별</div>
               </RowBox>
               <RowBox>
-                <label htmlFor="female">남자</label>
-                <InputBirth
-                  id="female"
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  onChange={onChange}
-                />
-                <label htmlFor="male">여자</label>
+                <label htmlFor="male">남자</label>
                 <InputBirth
                   id="male"
                   type="radio"
@@ -133,12 +125,26 @@ const KaKaoLogin = () => {
                   value="male"
                   onChange={onChange}
                 />
-              </RowBox>
+                <label htmlFor="female">여자</label>
+                <InputBirth
+                  id="female"
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  onChange={onChange}
+                />
+              </RowBox>{" "}
+              <SignUpInput
+                placeholder="닉네임"
+                value={signup.nickName}
+                onChange={onChange}
+                name="nickName"
+              />
               <SignUpInput
                 placeholder="나이"
-                value={signup.birth}
+                value={signup.age}
                 onChange={onChange}
-                name="birth"
+                name="age"
               />
               <SignUpInput
                 placeholder="주소"

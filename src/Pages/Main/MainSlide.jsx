@@ -20,6 +20,14 @@ const MainSlide = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
+  //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   //?-----------------------------가장 가까운 모임 기능--------------------------
   //초기값은 스파르타코딩클럽 본사위치로
   const [Myaddress, SetMyaddress] = useState();
@@ -105,7 +113,7 @@ const MainSlide = () => {
     <>
       {" "}
       <MainBox className="Scroll">
-        <MainHeader>
+        <MainHeader onClick={() => scrollToTop()}>
           <BiCurrentLocation size={"30"} onClick={() => nearFilterHandler()} />
           <div className="headtxt">파티모집</div>
           <Rowbox>
@@ -169,9 +177,10 @@ const MainHeader = styled.div`
   width: 100%;
   background-color: #2e294e;
   box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 999;
+  z-index: 10;
   color: white;
-  padding: 3.5% 5%;
+  padding: 0% 5%;
+  height: 7vh;
   display: flex;
   justify-content: space-between;
 
@@ -179,7 +188,7 @@ const MainHeader = styled.div`
   .headtxt {
     margin-left: 20px;
     color: #fff;
-    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #d90368,
+    text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
       0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
   }
 `;

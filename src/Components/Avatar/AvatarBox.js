@@ -24,8 +24,7 @@ const AvatarCtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 45vh;
-  width: 45vh;
+  height: 38vh;
   border: 2px solid black;
 `;
 
