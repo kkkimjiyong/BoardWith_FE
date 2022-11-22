@@ -72,6 +72,7 @@ const Comments = ({
   };
 
   //파티원 수락 핸들러------------------------------------------------------------
+  // console.log("comments", comments);
   const acceptingPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
     console.log("nickName", nickName);
@@ -88,6 +89,7 @@ const Comments = ({
   // console.log("confirmMember", detail.confirmMember[0]);
 
   //파티원 강퇴 핸들러------------------------------------------------------------
+  // console.log("comments", comments);
   const kickPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
     console.log("nickName", nickName);
@@ -101,7 +103,6 @@ const Comments = ({
         console.log("에러", error);
       });
   };
-
   //파티원 강퇴 취소 핸들러------------------------------------------------------------
 
   const kickPartyCancelHandler = () => {
@@ -120,7 +121,6 @@ const Comments = ({
 
   // console.log("detail", detail);
 
-
   useEffect(() => {
     //참가 확정 받은 유저인지 비교
     for (let i = 0; i < detail?.confirmMember?.length; i++)
@@ -138,7 +138,6 @@ const Comments = ({
         setIsBanUser(false);
       }
   });
-
   console.log("detail", detail);
   console.log("comments", comments);
 
@@ -311,14 +310,6 @@ const Comments = ({
             <></>
           )}
         </>
-      ) : (
-        <div
-          style={{
-            marginLeft: "5%",
-          }}
-        >
-          차단 당함
-        </div>
       )}
     </>
   );
@@ -361,21 +352,6 @@ const StButton2 = styled.button`
 const StBanButton = styled.button`
   background-color: #f66b0e;
   width: 20%;
-  height: 50px;
-  border-radius: 15px;
-  font-size: large;
-  font-weight: bold;
-  cursor: pointer;
-  background-color: #ff6565;
-  color: white;
-  border: 1px solid white;
-  &:active {
-    scale: 95%;
-  }
-`;
-
-const StButton2 = styled.button`
-  width: 15%;
   height: 50px;
   border-radius: 15px;
   font-size: large;
