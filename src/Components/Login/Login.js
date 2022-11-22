@@ -25,14 +25,14 @@ const Login = () => {
   const postLogin = async (payload) => {
     try {
       const { data } = await loginApi.postLogin(payload);
-      console.log(data);
+      console.log(data.nickName);
       if (data.accessToken) {
         setCookie("accessToken", data.accessToken, { path: "/" });
-        setCookie("refresh_token", data.refresh_token, { path: "/" });
-        setCookie("nickName", payload.userId);
+        setCookie("nickName", data.nickName);
       }
+      navigate("/main");
     } catch (error) {
-      setError(error.response.data.message);
+      setModalOpen(true);
       console.log(error.response.data.message);
     }
   };
@@ -40,12 +40,6 @@ const Login = () => {
   const onSubmitHandler = (e) => {
     console.log(error);
     postLogin(login);
-    if (error) {
-      setLogin(initialState);
-      setModalOpen(true);
-    } else {
-      navigate("/main");
-    }
   };
 
   return (

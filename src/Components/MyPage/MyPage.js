@@ -50,10 +50,10 @@ const MyPage = () => {
     }
   };
 
-  //*------------------  마이파티  --------------------------------
-  const [isOpen, SetisOpen] = useState();
-  const [isOpen1, SetisOpen1] = useState();
-  const [isOpen2, SetisOpen2] = useState();
+  //*----------------------  마이파티  --------------------------------
+  const [isOpen, SetisOpen] = useState(false);
+  const [isOpen1, SetisOpen1] = useState(false);
+  const [isOpen2, SetisOpen2] = useState(false);
   const [reservedParty, setReservedParty] = useState();
   const [confirmParty, setConfirmParty] = useState();
   const getReserved = async () => {
@@ -98,6 +98,10 @@ const MyPage = () => {
   } else {
     return (
       <Wrapper>
+        <MainHeader>
+          <Arrow className="head" onClick={() => navigate("/main")} />
+          <div className="headtxt">마이페이지</div>
+        </MainHeader>
         <AvatarCtn>아바타들어올자리</AvatarCtn>
         <ProfileCtn>
           {" "}
@@ -135,7 +139,7 @@ const MyPage = () => {
           <MyPartyCtn>
             <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
               내가 속한 모임
-              <Arrow />
+              <Arrow className={isOpen ? "open" : null} />
             </MyPartyTitle>
             {/* 맵돌려야지~ */}
             {isOpen && (
@@ -148,7 +152,7 @@ const MyPage = () => {
 
             <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
               참여 신청 중인 모임
-              <Arrow />
+              <Arrow className={isOpen1 ? "open" : null} />
             </MyPartyTitle>
             {isOpen1 && (
               <MyPartyBox>
@@ -159,7 +163,7 @@ const MyPage = () => {
             )}
             <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
               참여 확정 모임
-              <Arrow />
+              <Arrow className={isOpen2 ? "open" : null} />
             </MyPartyTitle>
             {isOpen2 && (
               <MyPartyBox>
@@ -183,6 +187,28 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
 `;
+
+const MainHeader = styled.div`
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #2e294e;
+  box-shadow: 0px 0.5px 15px 0.1px black;
+  z-index: 999;
+  color: white;
+  padding: 3.5% 40% 3.5% 2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 100px;
+  .headtxt {
+    margin-left: 20px;
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #d90368,
+      0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
+  }
+`;
+
 const AvatarCtn = styled.div`
   display: flex;
   height: 40%;
@@ -220,14 +246,6 @@ const ProfileCtn = styled.div`
   height: 100%;
   padding: 0px 50px;
   gap: 30px;
-`;
-
-const ProfileBox = styled.div`
-  width: 50px;
-  height: 50px;
-  margin-bottom: 5px;
-  border-radius: 10px;
-  border: none;
 `;
 
 const ProfileRow = styled.div`
@@ -321,10 +339,17 @@ const MyPartyItem = styled.div`
 `;
 
 const Arrow = styled.div`
-  margin-top: 9px;
   display: inline-block;
   border: 7px solid transparent;
-  border-top-color: black;
+  border-top-color: #2e294e;
+  transform: rotate(90deg);
+  &.open {
+    margin-top: 7px;
+    transform: rotate(0deg);
+  }
+  &.head {
+    border-top-color: white;
+  }
 `;
 
 export default MyPage;

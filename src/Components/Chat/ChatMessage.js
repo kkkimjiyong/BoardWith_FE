@@ -17,6 +17,7 @@ const ChatMessage = ({ chat, name }) => {
 };
 
 const ChatCtn = styled.div`
+  color: #dddddd;
   width: 100%;
   height: 13%;
   display: flex;
@@ -46,7 +47,7 @@ const ChatNickName = styled.div`
 `;
 
 const ChatMessageBox = styled.div`
-  border: 2px solid #be8eff;
+  border: 2px solid #dddddd;
   border-radius: 15px;
   padding: 5px 20px;
 `;
@@ -62,7 +63,7 @@ const ChatProfile = styled.div`
 const ProfileBox = styled.div`
   width: 30px;
   height: 30px;
-  background-color: #be8eff;
+  background-color: #dddddd;
   border-radius: 10px;
 `;
 

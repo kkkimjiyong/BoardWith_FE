@@ -15,7 +15,7 @@ const MobileHeader = () => {
       {" "}
       <GoSearch size="24" color="white" onClick={() => alert("개발중")} />
       <FontAwesomeIcon
-        onClick={() => alert("여기가 캐릭터인가?")}
+        onClick={() => navigate("/avatar")}
         style={{
           color: "#dddddd",
         }}
@@ -40,6 +40,7 @@ const MobileHeaderCtn = styled.div`
   padding: 10px 20px;
   bottom: 0;
   width: 100%;
+  box-shadow: 1px 1px 15px 3px black;
   /* background-color: #9747ff; */
 `;
 

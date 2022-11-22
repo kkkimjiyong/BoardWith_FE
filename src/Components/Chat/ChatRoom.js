@@ -12,6 +12,8 @@ import { setCookie } from "../../hooks/CookieHook";
 import { postApi } from "../../instance";
 import moment from "moment-timezone";
 import "moment/locale/ko";
+import { BiAlignRight } from "react-icons/bi";
+import { AiOutlineNotification } from "react-icons/ai";
 
 const ChatRoom = () => {
   // const socket = io("https://www.iceflower.shop/");
@@ -23,7 +25,7 @@ const ChatRoom = () => {
   const { roomid } = useParams();
   const [message, setMessage, onChange] = useInput();
   const [notice, setNotice] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(["123", "123", "123", "123"]);
   const [isEdit, SetisEdit] = useState(false);
   const scrollRef = useRef();
   const [chatArr, setChatArr] = useState([]);
@@ -108,16 +110,16 @@ const ChatRoom = () => {
       nickName: user?.nickName,
       room: roomid,
     });
-    navigate(`/posts/${roomid}`);
+    navigate("/main");
   };
 
   useEffect(() => {
     console.log("render!");
     roomsubmit();
     // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
-    socket.on("roomUsers", (msg) => {
-      setUsers(msg.nickName);
-    });
+    // socket.on("roomUsers", (msg) => {
+    //   setUsers(msg.nickName);
+    // });
 
     socket.on("message", (message) => {
       setChatArr((chatArr) => [...chatArr, message]);
@@ -133,33 +135,41 @@ const ChatRoom = () => {
   return (
     <>
       <Wrapper>
+        <UserWrap
+          isEdit={isEdit}
+          onClick={() => {
+            SetisEdit(!isEdit);
+          }}
+        >
+          <UserCtn onClick={(e) => e.stopPropagation()} isEdit={isEdit}>
+            {users?.map((user) => {
+              return (
+                <UserBox>
+                  <div>{user}</div>
+                  <button
+                    onClick={() => {
+                      ban(user);
+                    }}
+                  >
+                    밴
+                  </button>
+                </UserBox>
+              );
+            })}
+          </UserCtn>
+        </UserWrap>
         <ChatHeader>
           <Arrow className="left" onClick={() => exithandler()}></Arrow>
-          <div>{detail?.title}</div>
-          <div>
-            <UserBtn onClick={() => SetisEdit(!isEdit)}>유저</UserBtn>
-            {isEdit && (
-              <UserList>
-                {users?.map((user) => {
-                  return (
-                    <UserBox>
-                      <div>{user}</div>
-                      <button
-                        onClick={() => {
-                          ban(user);
-                        }}
-                      >
-                        밴
-                      </button>
-                    </UserBox>
-                  );
-                })}
-              </UserList>
-            )}
-          </div>
+          <div className="headtxt">{detail?.title}</div>
+
+          <BiAlignRight size="24" onClick={() => SetisEdit(!isEdit)} />
         </ChatHeader>{" "}
         <RoomInfoHeader onClick={() => setIsOpen(!isOpen)}>
-          <div> 파티 정보</div> <Arrow className={isOpen && "UpArrow"} />
+          <div className="infotitle">
+            <AiOutlineNotification size="20" />
+            파티 정보
+          </div>{" "}
+          <Arrow className={isOpen && "UpArrow"} />
         </RoomInfoHeader>
         {isOpen && (
           <RoomInfo>
@@ -207,26 +217,35 @@ const Wrapper = styled.div`
   height: 95vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ChatHeader = styled.div`
+  color: white;
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 20px 20px;
   height: 6%;
+  .headtxt {
+    margin-left: 20px;
+    color: #fff;
+    text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff, 0 0 42px #d90368,
+      0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
+  }
 `;
 
 const RoomInfo = styled.div`
   position: absolute;
   top: 9%;
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   padding: 20px 20px 10px 20px;
   background-color: #ddd;
-  gap: 10px;
+  gap: 20px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
 `;
@@ -235,14 +254,18 @@ const RoomInfoHeader = styled.div`
   z-index: 10;
   display: flex;
   position: absolute;
-  width: 100%;
+  width: 90%;
   top: 6%;
   height: 5%;
   align-items: center;
   justify-content: space-between;
   background-color: #ddd;
-  padding: 0px 40px;
+  padding: 0px 30px;
   border-radius: 15px;
+  .infotitle {
+    display: flex;
+    gap: 10px;
+  }
 `;
 
 const RoomBox = styled.div`
@@ -269,6 +292,8 @@ const Arrow = styled.div`
   border-top-color: black;
   margin-top: 12px;
   &.left {
+    border-top-color: white;
+    margin-top: 0px;
     transform: rotate(90deg);
   }
   &.UpArrow {
@@ -281,6 +306,44 @@ const UserBtn = styled.div`
   cursor: pointer;
 `;
 
+const UserWrap = styled.div`
+  width: ${({ isEdit }) => (isEdit ? "100%" : "0px")};
+  z-index: 998;
+  position: absolute;
+  height: 95vh;
+  background-color: rgba(0, 0, 0, 0.4); ;
+`;
+
+const UserCtn = styled.div`
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: ${({ isEdit }) => (isEdit ? "70%" : "0px")};
+  height: 95vh;
+  padding: 20% 0%;
+  right: 0px;
+  background-color: #dddddd;
+  transition: width 400ms ease-in-out;
+`;
+const UserList = styled.div`
+  height: 100%;
+  overflow: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  z-index: 99;
+`;
+const UserBox = styled.div`
+  padding: 10px 20px;
+  color: #2e294e;
+  background-color: #dddddd;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+`;
 const ChatCtn = styled.div`
   width: 100%;
   height: 100%;
@@ -288,7 +351,7 @@ const ChatCtn = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
-  padding: 20px 10px;
+  padding: 40px 10px;
   overflow: hidden;
   overflow-y: scroll;
 `;
@@ -297,18 +360,21 @@ const ChatInputBox = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   padding: 10px 0px;
   gap: 20px;
   background-color: #ddd;
 `;
 
 const ChatInput = styled.input`
+  color: #ddd;
   margin-left: 10%;
   border: none;
   border-radius: 20px;
+  padding: 0px 20px;
   width: 70%;
   height: 40px;
-  background-color: #be8eff;
+  background-color: #2e294e;
 `;
 
 const ChatBtn = styled.button`
@@ -320,29 +386,6 @@ const ChatBtn = styled.button`
   border: none;
   border-radius: 100%;
   box-shadow: 0px 3px 3px 0px gray;
-`;
-
-const UserList = styled.div`
-  padding: 10px;
-  position: absolute;
-  min-width: 30%;
-  top: 4%;
-  right: 5%;
-  min-height: 10%;
-  overflow: hidden;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #be8eff;
-  gap: 10px;
-  background-color: #be8eff;
-  z-index: 99;
-`;
-
-const UserBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
 `;
 
 export default ChatRoom;

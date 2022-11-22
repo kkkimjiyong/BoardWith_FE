@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useInput from "../../hooks/UseInput";
 import styled from "styled-components";
 import axios from "axios";
@@ -11,15 +11,18 @@ const FindId = () => {
     verifyCode: "",
   };
 
+  const [number, setNumber] = useState(55940325);
+
   const [findUser, setFindUser, onChange] = useInput(initialState);
 
   //* ------------ 서버로 인증코드 및 전번 보내기 ---------------------
 
   const postPhone = async () => {
     try {
-      const { data } = await axios.post("www.iceflower.shop/sms/sendID", {
-        phoneNumber: findUser.phoneNumber,
-      });
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/sms/sendID",
+        { phoneNumber: "01055940325" }
+      );
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -28,9 +31,13 @@ const FindId = () => {
 
   const postVerify = async () => {
     try {
-      const { data } = await axios.post("www.iceflower.shop/sms/verifyID", {
-        ...findUser,
-      });
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/sms/verifyID",
+        {
+          ...findUser,
+          phoneNumber: "01055940325",
+        }
+      );
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -55,7 +62,7 @@ const FindId = () => {
           <small role="alert">dk</small>
         </ColumnBox>
 
-        <button onClick={() => console.log(1)}>post 전번</button>
+        <button onClick={() => postPhone()}>post 전번</button>
       </RowBox>
       <RowBox>
         <ColumnBox>
@@ -66,8 +73,7 @@ const FindId = () => {
           />
           <small role="alert">dk</small>
         </ColumnBox>
-
-        <button>post 전번,인증번호</button>
+        <button onClick={() => postVerify()}>post 전번,인증번호</button>
       </RowBox>
     </SignUpWrap>
   );
