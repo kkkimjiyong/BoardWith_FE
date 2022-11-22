@@ -487,7 +487,7 @@ const ListWrap = styled.div`
   z-index: 90;
   width: 100%;
   background-color: white;
-  height: ${({ open }) => (open ? "93%" : "0")};
+  height: ${({ open }) => (open ? "80%" : "0")};
   position: absolute;
   bottom: 0;
   left: 0;
