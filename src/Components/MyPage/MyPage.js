@@ -51,9 +51,9 @@ const MyPage = () => {
   };
 
   //*----------------------  마이파티  --------------------------------
-  const [isOpen, SetisOpen] = useState();
-  const [isOpen1, SetisOpen1] = useState();
-  const [isOpen2, SetisOpen2] = useState();
+  const [isOpen, SetisOpen] = useState(false);
+  const [isOpen1, SetisOpen1] = useState(false);
+  const [isOpen2, SetisOpen2] = useState(false);
   const [reservedParty, setReservedParty] = useState();
   const [confirmParty, setConfirmParty] = useState();
   const getReserved = async () => {
@@ -99,7 +99,7 @@ const MyPage = () => {
     return (
       <Wrapper>
         <MainHeader>
-          <Arrow onClick={() => navigate("/main")} />
+          <Arrow className="head" onClick={() => navigate("/main")} />
           <div className="headtxt">마이페이지</div>
         </MainHeader>
         <AvatarCtn>아바타들어올자리</AvatarCtn>
@@ -139,7 +139,7 @@ const MyPage = () => {
           <MyPartyCtn>
             <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
               내가 속한 모임
-              <Arrow />
+              <Arrow className={isOpen ? "open" : null} />
             </MyPartyTitle>
             {/* 맵돌려야지~ */}
             {isOpen && (
@@ -152,7 +152,7 @@ const MyPage = () => {
 
             <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
               참여 신청 중인 모임
-              <Arrow />
+              <Arrow className={isOpen1 ? "open" : null} />
             </MyPartyTitle>
             {isOpen1 && (
               <MyPartyBox>
@@ -163,7 +163,7 @@ const MyPage = () => {
             )}
             <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
               참여 확정 모임
-              <Arrow />
+              <Arrow className={isOpen2 ? "open" : null} />
             </MyPartyTitle>
             {isOpen2 && (
               <MyPartyBox>
@@ -341,8 +341,15 @@ const MyPartyItem = styled.div`
 const Arrow = styled.div`
   display: inline-block;
   border: 7px solid transparent;
-  border-top-color: white;
+  border-top-color: #2e294e;
   transform: rotate(90deg);
+  &.open {
+    margin-top: 7px;
+    transform: rotate(0deg);
+  }
+  &.head {
+    border-top-color: white;
+  }
 `;
 
 export default MyPage;

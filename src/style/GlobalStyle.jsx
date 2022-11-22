@@ -2,7 +2,6 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 
-
 @font-face {
     font-family: 'NanumSquareRound';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
@@ -13,7 +12,6 @@ const GlobalStyle = createGlobalStyle`
 @font-face {
     font-family: 'SpoqaHanSansNeo-Regular';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
-
 }
   *, *::before, *::after {
 font-family: 'NanumSquareRound';    box-sizing: border-box;
@@ -26,7 +24,7 @@ font-family: 'NanumSquareRound';    font-weight: normal;
     font-size: 17px;
     line-height: 24px;
     color: var(--gray-900);
-        display: block;
+    display: block;
   }
 
 
