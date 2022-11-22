@@ -117,7 +117,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
                   <>
                     <FontAwesomeIcon
                       style={{
-                        color: "black",
+                        color: "#ddd",
                       }}
                       size="2x"
                       icon={faPenToSquare}
@@ -129,7 +129,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
                     <Stgap />
                     <FontAwesomeIcon
                       style={{
-                        color: "black",
+                        color: "#ddd",
                       }}
                       size="2x"
                       icon={faPaperPlane}
@@ -143,7 +143,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
                   <>
                     <FontAwesomeIcon
                       style={{
-                        color: "black",
+                        color: "#ddd",
                       }}
                       size="2x"
                       icon={faPaperPlane}
@@ -162,7 +162,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
             <StContentWrap>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "#ddd",
                 }}
                 size="1x"
                 icon={faLocationDot}
@@ -173,7 +173,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
             <StContentWrap>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "#ddd",
                 }}
                 size="1x"
                 icon={faCalendar}
@@ -184,7 +184,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
             <StContentWrap>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "#ddd",
                 }}
                 size="1x"
                 icon={faUserGroup}

@@ -74,21 +74,27 @@ const AvatarSelect = () => {
   );
 };
 
-const Wrap = styled.div``;
+const Wrap = styled.div`
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+`;
 
 const AvatarSelectCtn = styled.div`
-  width: 100%;
-  height: 60%;
-  border: 2px solid black;
+  height: 50.5vh;
 `;
 
 const AvatarCategory = styled.div`
   display: flex;
   align-items: center;
-  height: 20%;
+  /* height: 20%; */
   justify-content: space-around;
+  padding: 10px 10px;
   color: gray;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 600;
   .selected {
     color: black;
@@ -104,7 +110,8 @@ const AvatarItemCtn = styled.div`
   align-items: center;
   padding: 10px 20px;
   gap: 10px;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   background-color: #ddd;
 `;
 

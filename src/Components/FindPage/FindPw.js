@@ -18,9 +18,13 @@ const FindPw = () => {
 
   const postPw = async () => {
     try {
-      const { data } = await axios.post("www.iceflower.shop/sms/sendID", {
-        phoneNumber: findUser.phoneNumber,
-      });
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/sms/sendPW",
+        {
+          userId: findUser.userId,
+          phoneNumber: findUser.phoneNumber,
+        }
+      );
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -29,9 +33,26 @@ const FindPw = () => {
 
   const postVerify = async () => {
     try {
-      const { data } = await axios.post("www.iceflower.shop/sms/verifyID", {
-        ...findUser,
-      });
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/sms/verify",
+        {
+          userId: findUser.userId,
+          phoneNumber: findUser.phoneNumber,
+          verifyCode: findUser.verifyCode,
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  };
+
+  const postChangePw = async () => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/users/change/password",
+        findUser
+      );
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -56,14 +77,6 @@ const FindPw = () => {
       </RowBox>
       <RowBox>
         <ColumnBox>
-          <input value={findUser.userId} name="userId" onChange={onChange} />
-          <small role="alert">dk</small>
-        </ColumnBox>
-
-        <button onClick={() => console.log(1)}>post 전번</button>
-      </RowBox>
-      <RowBox>
-        <ColumnBox>
           <input
             value={findUser.phoneNumber}
             name="phoneNumber"
@@ -72,7 +85,7 @@ const FindPw = () => {
           <small role="alert">dk</small>
         </ColumnBox>
 
-        <button onClick={() => console.log(1)}>post 전번,인증번호</button>
+        <button onClick={() => postPw()}>post 전번</button>
       </RowBox>
       <RowBox>
         <ColumnBox>
@@ -84,7 +97,19 @@ const FindPw = () => {
           <small role="alert">dk</small>
         </ColumnBox>
 
-        <button>post 비번바꾸기</button>
+        <button onClick={() => postVerify()}>post 전번,인증번호</button>
+      </RowBox>
+      <RowBox>
+        <ColumnBox>
+          <input
+            value={findUser.password}
+            name="password"
+            onChange={onChange}
+          />
+          <small role="alert">dk</small>
+        </ColumnBox>
+
+        <button onClick={() => postChangePw()}>post 비번바꾸기</button>
       </RowBox>
     </SignUpWrap>
   );

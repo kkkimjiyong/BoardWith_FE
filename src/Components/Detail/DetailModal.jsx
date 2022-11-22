@@ -97,11 +97,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   //todo나중에 participant가 아니라, confirm으로 바뀔듯
   //채팅 입장 핸들러-----------------------------------------
   const enterChatRoomHandler = () => {
-    if (detail.data.participant.includes(nickName)) {
-      navigate(`/chat/${postid}`);
-    } else {
-      alert("확정된 이후 들어갈 수 있습니다.");
-    }
+    // if (detail.data.participant.includes(nickName)) {
+    navigate(`/chat/${postid}`);
+    // } else {
+    //   alert("확정된 이후 들어갈 수 있습니다.");
+    // }
   };
   //useEffect 디테일 데이터 불러오기---------------------
   useEffect(() => {
@@ -170,9 +170,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   console.log(isHost);
 
   return (
-    <StContainers onClick={(e) => e.stopPropagation()}>
+    <StContainers onClick={() => setModalOpen(false)}>
       {/*상세페이지 시작-------------------------------------------------------- */}
-      <Sth onClick={() => setModalOpen(false)}>
+      <Sth>
         {open ? (
           ""
         ) : (
@@ -331,7 +331,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
           {/*상세페이지 끝-------------------------------------------------------- */}
 
           {/*댓글 슬라이드 시작--------------------------------------------------------- */}
-          <ListWrap open={open}>
+          <ListWrap onClick={(e) => e.stopPropagation()} open={open}>
             <StCommentTitle>
               <FontAwesomeIcon
                 style={{
@@ -532,12 +532,15 @@ const Wrap = styled.div`
 `;
 
 const StContainer = styled.div`
+  color: #d7d7d7;
   padding: 5% 8%;
   border: none;
   border-radius: 16px;
   background-color: #d7d7d7;
   width: 370px;
   max-width: 500px;
+  background-color: #2e294e;
+  box-shadow: 3px 5px 20px 2px #5b5b5b;
 `;
 
 const StHost = styled.div`
