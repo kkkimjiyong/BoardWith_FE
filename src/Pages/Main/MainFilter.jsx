@@ -6,7 +6,6 @@ import Slider from "@mui/material/Slider";
 import { seoulGu, timeSelect } from "../../tools/select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -82,7 +81,7 @@ const MainFilter = ({
     { value: "중구", label: "중구" },
     { value: "중랑구", label: "중랑구" },
   ];
-  console.log("timefilter", new Date("1970-01-01"));
+  // console.log("timefilter", new Date("1970-01-01"));
   const [filtered, setFiltered] = useState({
     time: [new Date("1970-01-01"), new Date("9999-12-31")],
     date: new Date(),
@@ -98,7 +97,7 @@ const MainFilter = ({
       item.partyMember <= filtered.partyMember[1]
     // item.map.includes(filtered.map)
   );
-  console.log(items);
+  // console.log(items);
   //필터 선택하기
   const filterhandler = () => {
     setItems(filteredItems);
@@ -288,7 +287,7 @@ const Wrap = styled.div`
 
   /* height: ${({ open }) => (open ? "500px" : "80px")}; */
 
- /* height: ${({ open }) => (open ? "500px" : "0px")}; */
+  /* height: ${({ open }) => (open ? "500px" : "0px")}; */
 
   position: fixed;
   bottom: 0;

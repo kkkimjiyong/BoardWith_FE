@@ -16,7 +16,6 @@ import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 import { useForm } from "react-hook-form";
 import Slider from "@mui/material/Slider";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";

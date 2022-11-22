@@ -87,8 +87,6 @@ const Item = ({ number, item, Myaddress }) => {
             ></div>
             <div>{item?.nickName}</div>
           </ItemProfile>
-
-          <div className="ItemWrap-Top ">{item?.title}</div>
           {starMark ? (
             <div>
               <FontAwesomeIcon
@@ -160,6 +158,8 @@ const Item = ({ number, item, Myaddress }) => {
           postid={item._id}
           ModalOpen={ModalOpen}
           setModalOpen={setModalOpen}
+          realStartTime={realStartTime}
+          realEndTime={realEndTime}
         />
       )}
     </ItemWrap>
