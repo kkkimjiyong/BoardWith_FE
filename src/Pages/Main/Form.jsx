@@ -10,7 +10,6 @@ import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller } from "react-hook-form";
-import { setOptions } from "@mobiscroll/react";
 import Datepicker from "react-datepicker";
 import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
