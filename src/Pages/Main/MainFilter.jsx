@@ -285,7 +285,11 @@ const Wrap = styled.div`
   height: ${({ open }) => (open ? "600px" : "80px")};
   width: 100vw;
   background-color: #dddddd;
+
   /* height: ${({ open }) => (open ? "500px" : "80px")}; */
+
+ /* height: ${({ open }) => (open ? "500px" : "0px")}; */
+
   position: fixed;
   bottom: 0;
   left: 0%;

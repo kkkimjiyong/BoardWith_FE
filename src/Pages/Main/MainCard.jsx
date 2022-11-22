@@ -168,7 +168,7 @@ const Item = ({ number, item, Myaddress }) => {
 
 const ItemWrap = styled.div`
   .ItemWrap {
-    color: #dddddd;
+    color: #d7d7d7;
     width: 100%;
     height: 100%;
     display: flex;
@@ -181,7 +181,7 @@ const ItemWrap = styled.div`
     margin-bottom: 5%;
     :hover {
       color: white;
-      box-shadow: 5px 5px 10px 2px #d90368;
+      /* box-shadow: 5px 5px 10px 2px #d90368; */
     }
   }
 
@@ -246,11 +246,10 @@ const StatusBox = styled.div`
   display: flex;
   .status0 {
     display: flex;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-radius: 130px;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 30%;
+    width: 40%;
     justify-content: center;
     padding: 0.5%;
     background-color: #05ff5b;

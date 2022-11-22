@@ -3,11 +3,9 @@ import styled from "styled-components";
 
 const Layout = ({ children }) => {
   return (
-    <>
-      <Wrap>
-        <Container>{children}</Container>
-      </Wrap>
-    </>
+    <Wrap>
+      <Container>{children}</Container>
+    </Wrap>
   );
 };
 
