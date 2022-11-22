@@ -45,6 +45,10 @@ export const postApi = {
     instance.put(`/posts/confirm/${payload.postid}`, payload.nickName),
   kickingParty: (payload) =>
     instance.put(`/posts/ban/${payload.postid}`, payload.nickName),
+
+  kickingPartyCancel: (payload) =>
+    instance.put(`/posts/cancelBan/${payload.postid}`, payload.nickName),
+
 };
 
 export const commentsApi = {

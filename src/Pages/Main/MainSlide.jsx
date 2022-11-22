@@ -76,6 +76,7 @@ const MainSlide = () => {
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
+  // console.log("items", items);
   const [nextPage, setNextPage] = useState(true);
   let page = 0;
 
@@ -183,7 +184,6 @@ const MainHeader = styled.div`
   height: 7vh;
   display: flex;
   justify-content: space-between;
-
   align-items: center;
   .headtxt {
     margin-left: 20px;

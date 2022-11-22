@@ -5,7 +5,14 @@ import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faCommentDots } from "@fortawesome/free-regular-svg-icons";
+
+import {
+  faCalendar,
+  faCommentDots,
+  faCircleUp,
+  faFaceSmile,
+} from "@fortawesome/free-regular-svg-icons";
+
 import {
   faLocationDot,
   faUserGroup,
@@ -23,7 +30,13 @@ import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
 const { kakao } = window;
-export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
+export const DetailModal = ({
+  postid,
+  setModalOpen,
+  ModalOpen,
+  realStartTime,
+  realEndTime,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -169,6 +182,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
     }
   }, []);
 
+
   return (
     <StContainers onClick={() => setModalOpen(false)}>
       {/*상세페이지 시작-------------------------------------------------------- */}
@@ -209,21 +223,27 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                 <StContentWrap>
                   <FontAwesomeIcon
                     style={{
-                      color: "black",
+
+                      fontSize: "25px",
+                      color: "white",
                     }}
-                    size="2x"
+                    // size="lg"
                     icon={faShareFromSquare}
                     onClick={() => {
-                      enterChatRoomHandler();
+                      alert("공유기능 개발중!");
+
                     }}
                     cursor="pointer"
                   />
                   <Stgap />
                   <FontAwesomeIcon
                     style={{
-                      color: "black",
+
+                      fontSize: "27px",
+                      color: "white",
                     }}
-                    size="2x"
+                    // size="lg"
+
                     icon={faCommentDots}
                     onClick={() => {
                       enterChatRoomHandler();
@@ -238,7 +258,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <StContentWrap>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                   }}
                   size="1x"
                   icon={faLocationDot}
@@ -249,18 +269,18 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <StContentWrap>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                   }}
                   size="1x"
                   icon={faCalendar}
                 />
                 <div />
-                <h4>{detail?.data?.time[0]}</h4> {/* 날짜 */}
+                <h4>{realStartTime + " ~ " + realEndTime}</h4> {/* 날짜 */}
               </StContentWrap>
               <StContentWrap>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                   }}
                   size="1x"
                   icon={faUserGroup}
@@ -270,11 +290,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               </StContentWrap>
               {isHost ? (
                 <StButtonWrap>
-                  {!isClosed ? (
-                    <Stbutton onClick={closePartyHandler}>마감하기</Stbutton>
-                  ) : (
-                    <Stbutton onClick={openPartyHandler}>마감취소</Stbutton>
-                  )}
+
                   <Stbutton
                     onClick={() => {
                       if (getCookie("accesstoken") !== null) {
@@ -284,9 +300,14 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                       }
                     }}
                   >
-                    신청현황 ({comments?.length}/{detail?.data?.partyMember - 1}
+                    예약현황 ({comments?.length}/{detail?.data?.partyMember - 1}
                     )
                   </Stbutton>
+                  {!isClosed ? (
+                    <Stbutton1 onClick={closePartyHandler}>마감하기</Stbutton1>
+                  ) : (
+                    <Stbutton1 onClick={openPartyHandler}>마감취소</Stbutton1>
+                  )}
                 </StButtonWrap>
               ) : (
                 <Stbutton
@@ -313,7 +334,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
             <StCommentTitle>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+
+                  color: "white",
+
                 }}
                 size="1x"
                 icon={faChevronLeft}
@@ -332,7 +355,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
               <StCommentbull>
                 <FontAwesomeIcon
                   style={{
-                    color: "black",
+                    color: "white",
                     marginRight: "3%",
                   }}
                   size="1x"
@@ -343,9 +366,29 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
             ) : (
               <></>
             )}
-
             <div>
-              {!isCommentAuthor && !isHost ? (
+              {/* {comments?.map((comment) => {
+            return <Comments key={comment.id} comments={comment} />;
+          })} */}
+
+              {comments?.map((comment) => (
+                <Comments
+                  key={comment._id}
+                  comments={comment}
+                  isHost={isHost}
+                  nickName={nickName}
+                  postid={postid}
+                  detail={detail?.data}
+                  isPostEdit={isEdit}
+                />
+              ))}
+
+              {/* {comments.map((comment) => (
+            <div key={comment.id}>
+              <Comments comment={comment} /> : null}
+            </div>
+          ))} */}
+              {!isCommentAuthor && !isHost && open ? (
                 <Btnbox>
                   <form
                     onSubmit={(e) => {
@@ -365,23 +408,20 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                         });
                       }}
                     />
-                    <button>신청하기</button>
+                    <button>
+                      <FontAwesomeIcon
+                        style={{
+                          color: "black",
+                        }}
+                        size="2x"
+                        icon={faCircleUp}
+                      />
+                    </button>
                   </form>
                 </Btnbox>
               ) : (
-                <div />
+                <></>
               )}
-              {comments?.map((comment) => (
-                <Comments
-                  key={comment._id}
-                  comments={comment}
-                  isHost={isHost}
-                  nickName={nickName}
-                  postid={postid}
-                  detail={detail?.data}
-                  isPostEdit={isEdit}
-                />
-              ))}
             </div>
           </ListWrap>
         </Wrapper>
@@ -404,7 +444,7 @@ const StCommentbull = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #d7d7d7;
+  background-color: #544c8a;
   border-radius: 12px;
 `;
 
@@ -471,7 +511,8 @@ const BackGroudModal = styled.div`
 const ListWrap = styled.div`
   z-index: 235;
   width: 100%;
-  background-color: white;
+  background-color: #2e294e;
+  color: white;
   height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
   bottom: 0;
@@ -547,6 +588,18 @@ const Stbutton = styled.button`
   width: 100%;
   height: 45px;
   border-radius: 15px;
+  margin: 2% 2% 5% 0;
+  border: none;
+  background-color: white;
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+const Stbutton1 = styled.button`
+  width: 40%;
+  height: 45px;
+  border-radius: 15px;
   margin: 2% 0 5% 0;
   border: none;
   background-color: white;
@@ -571,13 +624,27 @@ const Stgap = styled.div`
 `;
 
 const Btnbox = styled.div`
-  form {
+  background-color: #544c8a;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 13%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > form {
+    border-radius: 20px;
+    width: 90%;
+    background-color: white;
     display: flex;
-    margin-top: 3%;
+    margin: 3% 0;
     justify-content: center;
+    align-items: center;
   }
+
   input {
-    border: 2px solid #d7d7d7;
+    border: none;
     border-radius: 5px;
     height: 40px;
     width: 70%;
@@ -594,18 +661,13 @@ const Btnbox = styled.div`
     outline: none;
   }
   button {
-    padding: 0;
-    max-width: 200px;
-    width: 20%;
-    height: 40px;
-    background-color: #d7d7d7;
-    color: white;
+    background-color: transparent;
     border: none;
-    border-radius: 5px;
+    cursor: pointer;
   }
   button:hover {
     opacity: 0.8;
-    color: black;
+    color: white;
     cursor: pointer;
   }
 `;

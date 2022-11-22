@@ -66,6 +66,13 @@ const Item = ({ number, item, Myaddress }) => {
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
 
+  //북마크(별) 색깔 변환
+  const [starMark, setStarMark] = useState(true);
+  const bookMark = (event) => {
+    event.stopPropagation();
+    setStarMark(!starMark);
+  };
+
   return (
     <ItemWrap>
       <div className="ItemWrap" onClick={() => setModalOpen(true)}>
@@ -82,14 +89,23 @@ const Item = ({ number, item, Myaddress }) => {
             ></div>
             <div>{item?.nickName}</div>
           </ItemProfile>
-          <FontAwesomeIcon
-            style={{
-              color: "#dddddd",
-            }}
-            size="2x"
-            icon={faStar}
-          />{" "}
-          {/* <FontAwesomeIcon size="2x" icon={faSplotch} />{" "} */}
+          {starMark ? (
+            <div>
+              <FontAwesomeIcon
+                style={{
+                  color: "black",
+                }}
+                onClick={bookMark}
+                size="2x"
+                icon={faStar}
+              />
+            </div>
+          ) : (
+            <div>
+              {" "}
+              <FontAwesomeIcon size="2x" onClick={bookMark} icon={faSplotch} />
+            </div>
+          )}
         </div>
         <div className="ItemWrap-Body">
           <div>
@@ -145,6 +161,8 @@ const Item = ({ number, item, Myaddress }) => {
           postid={item._id}
           ModalOpen={ModalOpen}
           setModalOpen={setModalOpen}
+          realStartTime={realStartTime}
+          realEndTime={realEndTime}
         />
       )}
     </ItemWrap>

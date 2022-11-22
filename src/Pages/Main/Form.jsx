@@ -10,10 +10,17 @@ import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller } from "react-hook-form";
+import { setOptions } from "@mobiscroll/react";
+import Datepicker from "react-datepicker";
 import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 import { useForm } from "react-hook-form";
 import Slider from "@mui/material/Slider";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { TextField } from "@mui/material";
+import { timeSelect } from "../../tools/select";
 
 const { kakao } = window;
 function Form() {
@@ -34,21 +41,36 @@ function Form() {
   });
 
   const onSubmit = (data) => {
-    console.log("submit", {
-      ...data,
-      location: location,
-      map: data.cafe.split(" ")[1],
-      time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
-    });
-    console.log("time", data.time.value);
+    // console.log("submit", {
+    //   ...data,
+    //   location: location,
+    //   map: data.cafe.split(" ")[1],
+    //   time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
+    // });
+
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
+
+    data.fullday.setMinutes(0);
+    data.fullday.setSeconds(0);
+    data.fullday.setMilliseconds(0);
+    let startTime = new Date(data.fullday);
+    let endTime = new Date(data.fullday);
+    startTime.setHours(data.startTime.split(":")[0]);
+    endTime.setHours(data.endTime.split(":")[0]);
+
+    console.log(startTime.toISOString());
+    console.log(endTime.toISOString());
+
     creatPost({
-      ...data,
+      title: data.title,
+      content: data.content,
+      partyMember: data.partyMember,
+      date: "임시",
+      cafe: data.cafe,
       location: location,
       map: data.cafe.split(" ")[1],
-      time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
-      date: "123",
+      time: [startTime.toISOString(), endTime.toISOString()],
     });
   };
 
@@ -124,7 +146,56 @@ function Form() {
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <Controller
+                  control={control}
+                  name="fullday"
+                  render={({ field: { onChange, value } }) => (
+                    <MobileDatePicker
+                      inputFormat={"yyyy-MM-dd"}
+                      mask={"____-__-__"}
+                      value={value}
+                      onChange={onChange}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
             </FlexBox>{" "}
+            <FlexBox>
+              <LabelBox>시간</LabelBox>
+              <div>
+                <TimeSelect
+                  name="startTime"
+                  size={1}
+                  defaultValue={timeSelect[0].value}
+                  {...register("startTime")}
+                >
+                  {timeSelect.map((time) => {
+                    return (
+                      <option key={time.label} value={time.value}>
+                        {time.label}
+                      </option>
+                    );
+                  })}
+                </TimeSelect>
+                <TimeSelect
+                  name="endTime"
+                  size={1}
+                  // onChange={onChange}
+                  defaultValue={timeSelect[23].value}
+                  {...register("endTime")}
+                >
+                  {timeSelect.map((time) => {
+                    return (
+                      <option key={time.label} value={time.value}>
+                        {time.label}
+                      </option>
+                    );
+                  })}
+                </TimeSelect>
+              </div>
+            </FlexBox>
             <FlexBox>
               <LabelBox>인원</LabelBox>
 
@@ -288,4 +359,12 @@ const DaumPostBox = styled.div`
   position: relative;
   box-shadow: 0px 3px 3px 0px gray;
   width: 400px;
+`;
+const TimeSelect = styled.select`
+  width: 48%;
+  padding: 10px;
+  border-radius: 10px;
+  :first-child {
+    margin-right: 4%;
+  }
 `;
