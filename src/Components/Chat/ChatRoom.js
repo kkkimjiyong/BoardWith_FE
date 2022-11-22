@@ -324,6 +324,7 @@ const UserCtn = styled.div`
   padding: 20% 0%;
   right: 0px;
   background-color: #dddddd;
+  transition: width 400ms ease-in-out;
 `;
 const UserList = styled.div`
   height: 100%;
