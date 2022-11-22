@@ -5,7 +5,12 @@ import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faCommentDots } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCalendar,
+  faCommentDots,
+  faCircleUp,
+  faFaceSmile,
+} from "@fortawesome/free-regular-svg-icons";
 import {
   faLocationDot,
   faUserGroup,
@@ -325,7 +330,7 @@ export const DetailModal = ({
             <StCommentTitle>
               <FontAwesomeIcon
                 style={{
-                  color: "black",
+                  color: "white",
                 }}
                 size="1x"
                 icon={faChevronLeft}
@@ -356,33 +361,6 @@ export const DetailModal = ({
               <></>
             )}
             <div>
-              {!isCommentAuthor && !isHost ? (
-                <Btnbox>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      commentOnsumitHandler(comment);
-                    }}
-                  >
-                    <input
-                      value={comment.comment}
-                      type="text"
-                      placeholder="신청 내용을 입력하세요"
-                      onChange={(e) => {
-                        const { value } = e.target;
-                        setComment({
-                          ...comment,
-                          comment: value,
-                        });
-                      }}
-                    />
-                    <button>예약하기</button>
-                  </form>
-                </Btnbox>
-              ) : (
-                <div />
-              )}
-
               {/* {comments?.map((comment) => {
             return <Comments key={comment.id} comments={comment} />;
           })} */}
@@ -404,6 +382,40 @@ export const DetailModal = ({
               <Comments comment={comment} /> : null}
             </div>
           ))} */}
+              {!isCommentAuthor && !isHost && open ? (
+                <Btnbox>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      commentOnsumitHandler(comment);
+                    }}
+                  >
+                    <input
+                      value={comment.comment}
+                      type="text"
+                      placeholder="신청 내용을 입력하세요"
+                      onChange={(e) => {
+                        const { value } = e.target;
+                        setComment({
+                          ...comment,
+                          comment: value,
+                        });
+                      }}
+                    />
+                    <button>
+                      <FontAwesomeIcon
+                        style={{
+                          color: "black",
+                        }}
+                        size="2x"
+                        icon={faCircleUp}
+                      />
+                    </button>
+                  </form>
+                </Btnbox>
+              ) : (
+                <></>
+              )}
             </div>
           </ListWrap>
         </Wrapper>
@@ -426,7 +438,7 @@ const StCommentbull = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #d7d7d7;
+  background-color: #544c8a;
   border-radius: 12px;
 `;
 
@@ -493,8 +505,9 @@ const BackGroudModal = styled.div`
 const ListWrap = styled.div`
   z-index: 90;
   width: 100%;
-  background-color: white;
-  height: ${({ open }) => (open ? "80%" : "0")};
+  background-color: #2e294e;
+  color: white;
+  height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
   bottom: 0;
   left: 0;
@@ -605,13 +618,27 @@ const Stgap = styled.div`
 `;
 
 const Btnbox = styled.div`
-  form {
+  background-color: #544c8a;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 13%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > form {
+    border-radius: 20px;
+    width: 90%;
+    background-color: white;
     display: flex;
-    margin-top: 3%;
+    margin: 3% 0;
     justify-content: center;
+    align-items: center;
   }
+
   input {
-    border: 2px solid #d7d7d7;
+    border: none;
     border-radius: 5px;
     height: 40px;
     width: 70%;
@@ -628,14 +655,9 @@ const Btnbox = styled.div`
     outline: none;
   }
   button {
-    padding: 0;
-    max-width: 200px;
-    width: 20%;
-    height: 40px;
-    background-color: #d7d7d7;
-    color: white;
+    background-color: transparent;
     border: none;
-    border-radius: 5px;
+    cursor: pointer;
   }
   button:hover {
     opacity: 0.8;
