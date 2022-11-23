@@ -82,8 +82,8 @@ const StContainer = styled.div`
   height: 100%;
   > h2 {
     color: #fff;
-    text-shadow: -1px 0px #d6a4ffa1, 0px 1px #d6a4ffa1, 1px 0px #d6a4ffa1,
-      0px -1px #d6a4ffa1;
+    text-shadow: -1px 0px #c72363, 0px 1px #c72363, 1px 0px #c72363,
+      0px -1px #c72363;
   }
   > div {
     width: 100%;
@@ -94,8 +94,8 @@ const StContainer = styled.div`
   }
 `;
 const StAvatar = styled.div`
-  border: 2px solid #d6a4ff;
-  box-shadow: 0 5px 18px -7px #c47aff;
+  border: 2px solid #c72363;
+  /* box-shadow: 0 5px 18px -7px #c47aff; */
   margin-bottom: 10px;
   border-radius: 50%;
   width: 70px;
