@@ -12,6 +12,7 @@ import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
 import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
+import ProfileAvatarBox from "../../Components/Avatar/ProfileAvatarBox";
 
 const Item = ({ number, item, Myaddress }) => {
   const navigate = useNavigate();
@@ -79,14 +80,17 @@ const Item = ({ number, item, Myaddress }) => {
         <div className="ItemWrap-Body-SpaceBetween">
           <ItemProfile>
             {" "}
-            <div
+            {/* <div
               style={{
                 borderRadius: "10px",
                 border: "2px solid #ddd",
                 width: "30px",
                 height: "30px",
               }}
-            ></div>
+            ></div> */}
+            <ProfileAvatarBox
+              userSelect={{ Eye: 1, Hair: 1, Mouth: 1, Back: 1 }}
+            />
             <div>{item?.nickName}</div>
           </ItemProfile>
           {starMark ? (

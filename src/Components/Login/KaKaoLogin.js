@@ -84,9 +84,12 @@ const KaKaoLogin = () => {
 
   const [signup, setSignup, onChange] = useInput(initialState);
   const onSubmitHandler = () => {
-    console.log(signup);
-    postKaKaoCode(signup);
-    navigate("/main");
+    if (signup.nickName) {
+      postKaKaoCode(signup);
+      navigate("/main");
+    } else {
+      alert("다시 입력해주세요!");
+    }
   };
 
   //? --------------------  다음 주소창  ----------------------------
@@ -105,83 +108,90 @@ const KaKaoLogin = () => {
     window.location.replace("/main");
   } else {
     return (
-      <div>
-        <>
-          <Layout>
-            <SignUpCtn>
-              <SignUpHeader>
-                <Arrow onClick={() => navigate("/")} />
-                <div>추가정보</div>
-              </SignUpHeader>
-              <RowBox className="column">
-                <h3>추가정보를 입력해주세요</h3> <div>성별</div>
-              </RowBox>
-              <RowBox>
-                <label htmlFor="male">남자</label>
-                <InputBirth
-                  id="male"
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  onChange={onChange}
-                />
-                <label htmlFor="female">여자</label>
-                <InputBirth
-                  id="female"
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  onChange={onChange}
-                />
-              </RowBox>{" "}
-              <SignUpInput
-                placeholder="닉네임"
-                value={signup.nickName}
+      <Layout>
+        <Wrap>
+          {" "}
+          <SignUpCtn>
+            {" "}
+            <SignUpHeader>
+              <Arrow onClick={() => navigate("/")} />
+              <div>추가정보</div>
+            </SignUpHeader>
+            <RowBox className="column">
+              <h3>추가정보를 입력해주세요</h3> <div>성별</div>
+            </RowBox>
+            <RowBox>
+              <label htmlFor="male">남자</label>
+              <InputBirth
+                id="male"
+                type="radio"
+                name="gender"
+                value="male"
                 onChange={onChange}
-                name="nickName"
               />
-              <SignUpInput
-                placeholder="나이"
-                value={signup.age}
+              <label htmlFor="female">여자</label>
+              <InputBirth
+                id="female"
+                type="radio"
+                name="gender"
+                value="female"
                 onChange={onChange}
-                name="age"
               />
-              <SignUpInput
-                placeholder="주소"
-                onClick={postCode}
-                value={signup.address}
+            </RowBox>{" "}
+            <SignUpInput
+              placeholder="닉네임 (필수)"
+              value={signup.nickName}
+              onChange={onChange}
+              name="nickName"
+            />
+            <SignUpInput
+              placeholder="나이"
+              value={signup.age}
+              onChange={onChange}
+              name="age"
+            />
+            <SignUpInput
+              placeholder="주소"
+              onClick={postCode}
+              value={signup.address}
+            />
+            <DaumPostBox ref={ref}></DaumPostBox>
+          </SignUpCtn>
+          {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
+          <WholeBox>
+            <TagBox>
+              {tagList.map((tagItem, index) => {
+                return (
+                  <TagItem key={index}>
+                    <Text>{tagItem}</Text>
+                    <TagButton onClick={deleteTagItem}>X</TagButton>
+                  </TagItem>
+                );
+              })}
+              <TagInput
+                type="text"
+                placeholder="#선호게임"
+                tabIndex={2}
+                onChange={(e) => setTagItem(e.target.value)}
+                value={tagItem}
+                onKeyPress={onKeyPress}
               />
-              <DaumPostBox ref={ref}></DaumPostBox>
-            </SignUpCtn>
-
-            {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
-            <WholeBox>
-              <TagBox>
-                {tagList.map((tagItem, index) => {
-                  return (
-                    <TagItem key={index}>
-                      <Text>{tagItem}</Text>
-                      <TagButton onClick={deleteTagItem}>X</TagButton>
-                    </TagItem>
-                  );
-                })}
-                <TagInput
-                  type="text"
-                  placeholder="#선호게임"
-                  tabIndex={2}
-                  onChange={(e) => setTagItem(e.target.value)}
-                  value={tagItem}
-                  onKeyPress={onKeyPress}
-                />
-              </TagBox>
-            </WholeBox>
-            <NextBtn onClick={onSubmitHandler}>완료</NextBtn>
-          </Layout>
-        </>
-      </div>
+            </TagBox>
+          </WholeBox>
+          <NextBtn onClick={onSubmitHandler}>완료</NextBtn>
+        </Wrap>
+      </Layout>
     );
   }
 };
+
+const Wrap = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const SignUpCtn = styled.div`
   display: flex;
@@ -194,6 +204,8 @@ const SignUpCtn = styled.div`
 `;
 
 const SignUpHeader = styled.div`
+  position: fixed;
+  top: 0;
   font-size: 1.5rem;
   font-weight: 400;
   width: 100%;

@@ -35,8 +35,10 @@ const FindId = () => {
         "https://www.iceflower.shop/sms/verifyID",
         findUser
       );
-      if (data) {
+      if (data === "success") {
         alert(`아이디는 ${data}입니다!`);
+      } else {
+        alert("다시 시도해주세요");
       }
     } catch (error) {
       console.log(error);
@@ -50,7 +52,8 @@ const FindId = () => {
     <SignUpWrap>
       <SignUpHeader>
         <Arrow onClick={() => navigate("/")} />
-        <div>호호</div>
+        <div>아이디 찾기</div>
+        <div></div>
       </SignUpHeader>
       <RowBox>
         <ColumnBox>
@@ -97,7 +100,6 @@ const SignUpHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 40px 20px;
-  padding-right: 40%;
 `;
 
 const SignUpInput = styled.input`

@@ -9,9 +9,9 @@ const AvatarBox = ({ userSelect }) => {
   console.log(Mouth);
   return (
     <AvatarCtn>
+      {" "}
       <Avatar />
       {/* <BackCtn Back={Back}>
-        {" "}
         <FaceCtn Face={Face}>
           <HairCtn Hair={Hair} />
           <EyeCtn Eye={Eye} />
@@ -26,8 +26,9 @@ const AvatarCtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 38vh;
-  border: 2px solid black;
+  width: 40px;
+  height: 40px;
+  /* border: 2px solid black; */
 `;
 
 const BackCtn = styled.div`

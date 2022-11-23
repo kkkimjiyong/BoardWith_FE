@@ -6,14 +6,29 @@ viewBox="0 0 180 50">
     <style>
          .cls-1 {
         fill: #fff;
-        stroke-width: 1px;
+        stroke-width: 2px;
       }
 
       .cls-1, .cls-2 {
         stroke: white;
         stroke-linejoin: round;
+        stroke-dasharray: 160;
+        stroke-dashoffset: 160;
+        animation: ani 5s linear infinite;
         filter:url(#f1)
       }
+@keyframes ani {
+  0% {
+    stroke-dashoffset: 160; 
+  }
+  50% {
+    stroke-dashoffset: 0;  
+  }
+  100% {
+    stroke-dashoffset: -160;
+  }
+}
+
 
       .cls-2 {
         fill: none;
