@@ -173,7 +173,28 @@ const SignUp = () => {
     );
     setTagList(filteredTagList);
   };
-  console.log(watch());
+
+  //* ---------------------  빈칸 따로 정의  ---------------------------
+  console.log();
+
+  const nextHandler = (Num) => {
+    // 첫번째 페이지회원가입 간단한 유효성 (그냥 페이지만 못넘어가게)
+    if (Num == 1) {
+      if (errors.userId || errors.nickName) {
+        console.log(errors);
+        alert("다시 확인해주세요!");
+      } else {
+        setNext(Num);
+      }
+    } else if (Num == 2) {
+      if (errors.password || errors.confirm) {
+        console.log(errors);
+        alert("다시 확인해주세요!");
+      } else {
+        setNext(Num);
+      }
+    }
+  };
 
   return (
     <>
@@ -189,16 +210,16 @@ const SignUp = () => {
             </SignUpHeader>
             <h3>
               아이디와 닉네임을 <br /> 입력해주세요
-            </h3>
+            </h3>{" "}
             <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
             {errors.userId && (
-              <small role="alert">{errors.userId.message}</small>
+              <AlertError role="alert">{errors.userId.message}</AlertError>
             )}
             <SignUpInput placeholder="닉네임" {...register("nickName")} />
             {errors.nickName && (
-              <small role="alert">{errors.nickName.message}</small>
+              <AlertError role="alert">{errors.nickName.message}</AlertError>
             )}
-            <NextBtn onClick={() => setNext(1)}>다음</NextBtn>
+            <NextBtn onClick={() => nextHandler(1)}>다음</NextBtn>
           </SignUpCtn>
         )}
         {next === 1 && (
@@ -214,7 +235,7 @@ const SignUp = () => {
               {...register("password")}
             />
             {errors.password && (
-              <small role="alert">{errors.password.message}</small>
+              <AlertError role="alert">{errors.password.message}</AlertError>
             )}
 
             <SignUpInput
@@ -223,10 +244,10 @@ const SignUp = () => {
               {...register("confirm")}
             />
             {errors.confirm && (
-              <small role="alert">{errors.confirm.message}</small>
+              <AlertError role="alert">{errors.confirm.message}</AlertError>
             )}
 
-            <NextBtn onClick={() => setNext(2)}>다음</NextBtn>
+            <NextBtn onClick={() => nextHandler(2)}>다음</NextBtn>
           </SignUpCtn>
         )}
         {next === 2 && (
@@ -274,7 +295,6 @@ const SignUp = () => {
                 <InputBirth
                   id="male"
                   type="radio"
-                  defaultValue="male"
                   value={"male"}
                   {...register("gender")}
                 ></InputBirth>
@@ -293,7 +313,7 @@ const SignUp = () => {
                 {...register("age")}
               />
               <SignUpInput
-                placeholder="거주하시는 주소를 입력"
+                placeholder="클릭하면, 주소창이 뜹니다."
                 type="text"
                 onClick={postCode}
                 {...register("address")}
@@ -484,6 +504,11 @@ const Arrow = styled.div`
   border: 7px solid transparent;
   border-top-color: white;
   transform: rotate(90deg);
+`;
+
+const AlertError = styled.div`
+  font-size: 14px;
+  color: red;
 `;
 
 export default SignUp;

@@ -30,7 +30,7 @@ const ChatRoom = () => {
   const scrollRef = useRef();
   const [chatArr, setChatArr] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [detail, setDetail] = useState();
 
   const moment = require("moment-timezone");
@@ -59,11 +59,12 @@ const ChatRoom = () => {
       } else {
         setUser(data.findUser);
       }
+      roomsubmit(data.findUser);
     } catch (error) {
       console.log(error);
     }
   };
-
+  console.log(user);
   useEffect(() => {
     getUser();
     getChat();
@@ -88,7 +89,8 @@ const ChatRoom = () => {
     setMessage({ message: "" });
   };
 
-  const roomsubmit = () => {
+  const roomsubmit = (user) => {
+    console.log(user?.nickName);
     socket.emit("joinRoom", {
       nickName: user?.nickName,
       room: roomid,
@@ -115,8 +117,8 @@ const ChatRoom = () => {
 
   useEffect(() => {
     console.log("render!");
-    roomsubmit();
     // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
+
     socket.on("roomUsers", (msg) => {
       setUsers(msg.nickName);
     });
