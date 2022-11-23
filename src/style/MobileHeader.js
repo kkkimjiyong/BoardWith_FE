@@ -23,7 +23,7 @@ const MobileHeader = () => {
         icon={faStar}
       />
       <CgHome size="24" color="white" onClick={() => navigate("/main")} />
-      <GoGraph size="24" color="white" onClick={() => alert("개발중")} />
+      <GoGraph size="24" color="white" onClick={() => navigate("/rank")} />
       <CgProfile size="24" color="white" onClick={() => navigate("/mypage")} />
     </MobileHeaderCtn>
   );

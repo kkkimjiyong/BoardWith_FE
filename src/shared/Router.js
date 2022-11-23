@@ -15,6 +15,7 @@ import NotifModal from "../tools/NotifModal";
 import AvatarPage from "../Pages/AvatarPage";
 import FindPage from "../Pages/FindPage";
 import PracPage from "../Pages/PracPage";
+import RankingPage from "../Pages/RankingPage";
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
         <Route path="/avatar" element={<AvatarPage />} />
         <Route path="/find/:id" element={<FindPage />} />
         <Route path="/prac" element={<PracPage />} />
+        <Route path="/rank" element={<RankingPage />} />
       </Routes>
     </BrowserRouter>
   );
