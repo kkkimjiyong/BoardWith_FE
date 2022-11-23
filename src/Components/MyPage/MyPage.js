@@ -255,6 +255,7 @@ const ProfileCtn = styled.div`
 
 const ProfileRow = styled.div`
   width: 100%;
+  padding: 0px 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;

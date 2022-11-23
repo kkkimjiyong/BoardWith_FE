@@ -41,6 +41,11 @@ const FindPw = () => {
           verifyCode: findUser.verifyCode,
         }
       );
+      if (data === "success") {
+        alert(`아이디는 ${data}입니다!`);
+      } else {
+        alert("다시 시도해주세요");
+      }
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -65,7 +70,8 @@ const FindPw = () => {
     <SignUpWrap>
       <SignUpHeader>
         <Arrow onClick={() => navigate("/")} />
-        <div>호호</div>
+        <div>비밀번호 찾기</div>
+        <div></div>
       </SignUpHeader>
       <RowBox>
         <ColumnBox>
@@ -74,7 +80,7 @@ const FindPw = () => {
             name="userId"
             onChange={onChange}
           />
-          <small role="alert">dk</small>
+          {/* <small role="alert">dk</small> */}
         </ColumnBox>
 
         <VerfiyBtn onClick={() => console.log(1)}>아이디</VerfiyBtn>
@@ -86,7 +92,7 @@ const FindPw = () => {
             name="phoneNumber"
             onChange={onChange}
           />
-          <small role="alert">dk</small>
+          {/* <small role="alert">dk</small> */}
         </ColumnBox>
 
         <VerfiyBtn onClick={() => postPw()}>전번</VerfiyBtn>
@@ -98,7 +104,7 @@ const FindPw = () => {
             name="verifyCode"
             onChange={onChange}
           />
-          <small role="alert">dk</small>
+          {/* <small role="alert">dk</small> */}
         </ColumnBox>
 
         <VerfiyBtn onClick={() => postVerify()}>인증번호</VerfiyBtn>
@@ -110,7 +116,7 @@ const FindPw = () => {
             name="password"
             onChange={onChange}
           />
-          <small role="alert">dk</small>
+          {/* <small role="alert">dk</small> */}
         </ColumnBox>
 
         <VerfiyBtn onClick={() => postChangePw()}>비번바꾸기</VerfiyBtn>
@@ -139,7 +145,6 @@ const SignUpHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 40px 20px;
-  padding-right: 40%;
 `;
 
 const SignUpInput = styled.input`
