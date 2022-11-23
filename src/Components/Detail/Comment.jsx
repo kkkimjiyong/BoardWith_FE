@@ -138,8 +138,8 @@ const Comments = ({
         setIsBanUser(false);
       }
   });
-  console.log("detail", detail);
-  console.log("comments", comments);
+  // console.log("detail", detail);
+  // console.log("comments", comments);
 
   return (
     <>
@@ -366,14 +366,13 @@ const StBanButton = styled.button`
 `;
 
 const CommentBox = styled.div`
-  background-color: #2e294e52;
   margin: 3% 3%;
   display: flex;
-  border: 2px solid #d6a4ff;
+  /* border: 2px solid #c72363; */
   border-radius: 10px;
   padding: 3% 0;
   height: 100%;
-  box-shadow: 0 5px 18px -7px #c47aff;
+  background-color: #343434;
 `;
 
 const StCommentBodyWrap = styled.div`

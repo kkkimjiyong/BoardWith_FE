@@ -10,7 +10,6 @@ import {
   faCalendar,
   faCommentDots,
   faCircleUp,
-  faFaceSmile,
 } from "@fortawesome/free-regular-svg-icons";
 
 import {
@@ -50,7 +49,7 @@ export const DetailModal = ({
   const [isEdit, setIsEdit] = useState(false);
   const [x, setX] = useState();
   const [y, setY] = useState();
-
+  const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
 
   //게시글 편집 상태 핸들러
@@ -119,11 +118,9 @@ export const DetailModal = ({
     // }
   };
 
-  //useEffect 디테일 데이터 불러오기---------------------
+  //useEffect 디테일 데이터 불러오기---------------------------------------
   useEffect(() => {
-    // dispatch(__getPostslById(postid));
     userApi.getUser().then((res) => {
-      // console.log("res", res);
       setNickName(res.data.findUser.nickName);
     });
 
@@ -134,6 +131,8 @@ export const DetailModal = ({
   }, []);
 
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
+  // console.log(detail?.data?.nickName);
+  // console.log(nickName);
   useEffect(() => {
     // 파티장인지 확인
     if (detail?.data?.nickName === nickName) {
@@ -147,21 +146,23 @@ export const DetailModal = ({
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
     setX(detail?.data?.location?.x);
     setY(detail?.data?.location?.y);
-
-    //카카오맵 api 사용해서 지도 띄우기
-    const container = document?.getElementById("map");
-    const options = {
-      center: new kakao.maps.LatLng(y, x),
-      level: 3,
-    };
-    const map = new kakao.maps.Map(container, options);
-    //카카오맵 api 사용해서 지도 위에 마커 찍기
-    const markerPosition = new kakao.maps.LatLng(y, x);
-    const marker = new kakao.maps.Marker({
-      position: markerPosition,
-    });
-    marker.setMap(map);
-
+    // 카카오맵 api 사용해서 지도 띄우기
+    if (loading === false) {
+      const container = document?.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(y, x),
+        level: 3,
+      };
+      console.log(container);
+      console.log(options);
+      //카카오맵 api 사용해서 지도 위에 마커 찍기
+      const map = new kakao.maps.Map(container, options);
+      const markerPosition = new kakao.maps.LatLng(y, x);
+      const marker = new kakao.maps.Marker({
+        position: markerPosition,
+      });
+      marker.setMap(map);
+    }
     //접속자가 댓글작성자인지 확인
     for (let i = 0; i < comments?.length; i++) {
       if (nickName === comments[i]?.nickName) {
@@ -169,8 +170,8 @@ export const DetailModal = ({
         setIsCommentAuthor(true);
       }
     }
-  }, [postApi.getDetailId(postid)]);
-
+  });
+  // [postApi.getDetailId(postid)]
   useEffect(() => {
     //파티 마감 상태
     if (detail?.data?.closed === 0) {
@@ -182,292 +183,318 @@ export const DetailModal = ({
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (loading === false) {
+  //     const container = document?.getElementById("map");
+  //     const options = {
+  //       center: new kakao.maps.LatLng(y, x),
+  //       level: 3,
+  //     };
+  //     console.log(container);
+  //     console.log(options);
+  //     //카카오맵 api 사용해서 지도 위에 마커 찍기
+  //     const map = new kakao.maps.Map(container, options);
+  //     const markerPosition = new kakao.maps.LatLng(y, x);
+  //     const marker = new kakao.maps.Marker({
+  //       position: markerPosition,
+  //     });
+  //     marker.setMap(map);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    // api();
+    // setLoading(false);
+    dummy();
+  }, []);
+  const api = async () => {
+    try {
+      setLoading(false);
+    } catch (e) {}
+  };
+
+  const dummy = async () => {
+    setLoading(true);
+    console.log("시작", loading);
+    await delay(100);
+    console.log("끝", loading);
+    setLoading(false);
+  };
+  const delay = (ms) => {
+    return new Promise((resolve) =>
+      setTimeout(() => {
+        resolve(ms);
+      }, ms)
+    );
+  };
 
   return (
-    <StContainers onClick={() => setModalOpen(false)}>
-      {/*상세페이지 시작-------------------------------------------------------- */}
-      <Sth>
-        {open ? (
-          ""
+    <>
+      <StContainers onClick={() => setModalOpen(false)}>
+        {loading ? (
+          <></>
         ) : (
-          <FontAwesomeIcon
-            style={{
-              color: "white",
-            }}
-            size="1x"
-            icon={faX}
-            cursor="pointer"
-          />
-        )}
-      </Sth>
-      <BackGroudModal>
-        <Wrapper>
-          <Wrap onClick={(e) => e.stopPropagation()}>
-            <StContainer>
-              <StHost>
-                <div>
-                  <div
-                    style={{
-                      borderRadius: "20px",
-                      width: "50px",
-                      height: "50px",
-                      backgroundColor: "white",
-                      // backgroundImage: `url(${detail?.data?.img})`,
-                      backgroundSize: "cover",
-                      backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
-                    }}
-                  />
-                  <Stgap />
-                  <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
-                </div>
-                <StContentWrap>
-                  <FontAwesomeIcon
-                    style={{
+          <>
+            <BackGroudModal>
+              <Wrapper>
+                <Wrap onClick={(e) => e.stopPropagation()}>
+                  <StContainer>
+                    <Sth>
+                      {open ? (
+                        ""
+                      ) : (
+                        <FontAwesomeIcon
+                          onClick={() => setModalOpen(false)}
+                          style={{
+                            color: "white",
+                          }}
+                          size="1x"
+                          icon={faX}
+                          cursor="pointer"
+                        />
+                      )}
+                    </Sth>
+                    <StHost>
+                      <div>
+                        <div
+                          style={{
+                            borderRadius: "20px",
+                            width: "50px",
+                            height: "50px",
+                            backgroundColor: "white",
+                            // backgroundImage: `url(${detail?.data?.img})`,
+                            backgroundSize: "cover",
+                            backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
+                          }}
+                        />
+                        <Stgap />
+                        <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
+                      </div>
+                      <StContentWrap>
+                        <FontAwesomeIcon
+                          style={{
+                            fontSize: "25px",
+                            color: "white",
+                          }}
+                          // size="lg"
+                          icon={faShareFromSquare}
+                          onClick={() => {
+                            alert("공유기능 개발중!");
+                          }}
+                          cursor="pointer"
+                        />
+                        <Stgap />
+                        <FontAwesomeIcon
+                          style={{
+                            fontSize: "27px",
+                            color: "white",
+                          }}
+                          // size="lg"
+                          icon={faCommentDots}
+                          onClick={() => {
+                            enterChatRoomHandler();
+                          }}
+                          cursor="pointer"
+                        />
+                      </StContentWrap>
+                    </StHost>
+                    <div>
+                      <h3>{detail?.data?.title}</h3> {/* 제목 */}
+                    </div>
+                    <StContentWrap>
+                      <FontAwesomeIcon
+                        style={{
+                          color: "white",
+                        }}
+                        size="1x"
+                        icon={faLocationDot}
+                      />
+                      <div />
+                      <h4>{detail?.data?.cafe}</h4> {/* 장소 */}
+                    </StContentWrap>
+                    <StContentWrap>
+                      <FontAwesomeIcon
+                        style={{
+                          color: "white",
+                        }}
+                        size="1x"
+                        icon={faCalendar}
+                      />
+                      <div />
+                      <h4>{realStartTime + " ~ " + realEndTime}</h4>{" "}
+                      {/* 날짜 */}
+                    </StContentWrap>
+                    <StContentWrap>
+                      <FontAwesomeIcon
+                        style={{
+                          color: "white",
+                        }}
+                        size="1x"
+                        icon={faUserGroup}
+                      />
+                      <div />
+                      <h4>{detail?.data?.partyMember}명</h4> {/* 인원 */}
+                    </StContentWrap>
+                    {isHost ? (
+                      <StButtonWrap>
+                        <Stbutton
+                          onClick={() => {
+                            if (getCookie("accesstoken") !== null) {
+                              setOpen((open) => !open);
+                            } else {
+                              alert("로그인이 필요한 기능입니다.");
+                            }
+                          }}
+                        >
+                          예약현황 ({comments?.length}/
+                          {detail?.data?.partyMember - 1})
+                        </Stbutton>
+                        {!isClosed ? (
+                          <Stbutton1 onClick={closePartyHandler}>
+                            마감하기
+                          </Stbutton1>
+                        ) : (
+                          <Stbutton1 onClick={openPartyHandler}>
+                            마감취소
+                          </Stbutton1>
+                        )}
+                      </StButtonWrap>
+                    ) : (
+                      <Stbutton
+                        className="innerDiv"
+                        onClick={() => {
+                          if (getCookie("accesstoken") !== null) {
+                            setOpen((open) => !open);
+                          } else {
+                            alert("로그인이 필요한 기능입니다.");
+                          }
+                        }}
+                      >
+                        참가하기
+                      </Stbutton>
+                    )}
+                    {/* <KakaoMap key={comment._id} x={x} y={y} /> */}
+                    <StMap id="map">지도가 들어갑니다</StMap>
+                  </StContainer>
+                  <StCommentList></StCommentList>
+                </Wrap>
+                {/*상세페이지 끝-------------------------------------------------------- */}
 
-                      fontSize: "25px",
-                      color: "white",
-                    }}
-                    // size="lg"
-                    icon={faShareFromSquare}
-                    onClick={() => {
-                      alert("공유기능 개발중!");
-
-                    }}
-                    cursor="pointer"
-                  />
-                  <Stgap />
-                  <FontAwesomeIcon
-                    style={{
-
-                      fontSize: "27px",
-                      color: "white",
-                    }}
-                    // size="lg"
-
-                    icon={faCommentDots}
-                    onClick={() => {
-                      enterChatRoomHandler();
-                    }}
-                    cursor="pointer"
-                  />
-                </StContentWrap>
-              </StHost>
-              <div>
-                <h3>{detail?.data?.title}</h3> {/* 제목 */}
-              </div>
-              <StContentWrap>
-                <FontAwesomeIcon
-                  style={{
-                    color: "white",
-                  }}
-                  size="1x"
-                  icon={faLocationDot}
-                />
-                <div />
-                <h4>{detail?.data?.cafe}</h4> {/* 장소 */}
-              </StContentWrap>
-              <StContentWrap>
-                <FontAwesomeIcon
-                  style={{
-                    color: "white",
-                  }}
-                  size="1x"
-                  icon={faCalendar}
-                />
-                <div />
-                <h4>{realStartTime + " ~ " + realEndTime}</h4> {/* 날짜 */}
-              </StContentWrap>
-              <StContentWrap>
-                <FontAwesomeIcon
-                  style={{
-                    color: "white",
-                  }}
-                  size="1x"
-                  icon={faUserGroup}
-                />
-                <div />
-                <h4>{detail?.data?.partyMember}명</h4> {/* 인원 */}
-              </StContentWrap>
-              {isHost ? (
-                <StButtonWrap>
-
-                  <Stbutton
-                    onClick={() => {
-                      if (getCookie("accesstoken") !== null) {
+                {/*댓글 슬라이드 시작--------------------------------------------------------- */}
+                <ListWrap onClick={(e) => e.stopPropagation()} open={open}>
+                  <StCommentTitle>
+                    <FontAwesomeIcon
+                      style={{
+                        color: "white",
+                      }}
+                      size="1x"
+                      icon={faChevronLeft}
+                      onClick={() => {
                         setOpen((open) => !open);
-                      } else {
-                        alert("로그인이 필요한 기능입니다.");
-                      }
-                    }}
-                  >
-                    예약현황 ({comments?.length}/{detail?.data?.partyMember - 1}
-                    )
-                  </Stbutton>
-                  {!isClosed ? (
-                    <Stbutton1 onClick={closePartyHandler}>마감하기</Stbutton1>
+                      }}
+                    />
+                    <h3>{detail?.data?.title}</h3>
+                    {!isEdit ? (
+                      <h5 onClick={postEditHandler}>편집</h5>
+                    ) : (
+                      <h5 onClick={postEditHandler}>취소</h5>
+                    )}
+                  </StCommentTitle>
+                  {!isHost ? (
+                    <StCommentbull>
+                      <FontAwesomeIcon
+                        style={{
+                          color: "white",
+                          marginRight: "3%",
+                        }}
+                        size="1x"
+                        icon={faBullhorn}
+                      />
+                      파티를 희망하시는 분은 댓글로 신청해주세요!
+                    </StCommentbull>
                   ) : (
-                    <Stbutton1 onClick={openPartyHandler}>마감취소</Stbutton1>
+                    <></>
                   )}
-                </StButtonWrap>
-              ) : (
-                <Stbutton
-                  className="innerDiv"
-                  onClick={() => {
-                    if (getCookie("accesstoken") !== null) {
-                      setOpen((open) => !open);
-                    } else {
-                      alert("로그인이 필요한 기능입니다.");
-                    }
-                  }}
-                >
-                  참가하기
-                </Stbutton>
-              )}
-              <StMap id="map">지도가 들어갑니다</StMap>
-            </StContainer>
-            <StCommentList></StCommentList>
-          </Wrap>
-          {/*상세페이지 끝-------------------------------------------------------- */}
-
-          {/*댓글 슬라이드 시작--------------------------------------------------------- */}
-          <ListWrap onClick={(e) => e.stopPropagation()} open={open}>
-            <StCommentTitle>
-              <FontAwesomeIcon
-                style={{
-
-                  color: "white",
-
-                }}
-                size="1x"
-                icon={faChevronLeft}
-                onClick={() => {
-                  setOpen((open) => !open);
-                }}
-              />
-              <h3>{detail?.data?.title}</h3>
-              {!isEdit ? (
-                <h5 onClick={postEditHandler}>편집</h5>
-              ) : (
-                <h5 onClick={postEditHandler}>취소</h5>
-              )}
-            </StCommentTitle>
-            {!isHost ? (
-              <StCommentbull>
-                <FontAwesomeIcon
-                  style={{
-                    color: "white",
-                    marginRight: "3%",
-                  }}
-                  size="1x"
-                  icon={faBullhorn}
-                />
-                파티를 희망하시는 분은 댓글로 신청해주세요!
-              </StCommentbull>
-            ) : (
-              <></>
-            )}
-            <div>
-              {/* {comments?.map((comment) => {
+                  <div>
+                    {/* {comments?.map((comment) => {
             return <Comments key={comment.id} comments={comment} />;
           })} */}
 
-              {comments?.map((comment) => (
-                <Comments
-                  key={comment._id}
-                  comments={comment}
-                  isHost={isHost}
-                  nickName={nickName}
-                  postid={postid}
-                  detail={detail?.data}
-                  isPostEdit={isEdit}
-                />
-              ))}
+                    {comments?.map((comment) => (
+                      <Comments
+                        key={comment._id}
+                        comments={comment}
+                        isHost={isHost}
+                        nickName={nickName}
+                        postid={postid}
+                        detail={detail?.data}
+                        isPostEdit={isEdit}
+                      />
+                    ))}
 
-              {/* {comments.map((comment) => (
+                    {/* {comments.map((comment) => (
             <div key={comment.id}>
               <Comments comment={comment} /> : null}
             </div>
           ))} */}
-              {!isCommentAuthor && !isHost && open ? (
-                <Btnbox>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      commentOnsumitHandler(comment);
-                    }}
-                  >
-                    <input
-                      value={comment.comment}
-                      type="text"
-                      placeholder="신청 내용을 입력하세요"
-                      onChange={(e) => {
-                        const { value } = e.target;
-                        setComment({
-                          ...comment,
-                          comment: value,
-                        });
-                      }}
-                    />
-                    <button>
-                      <FontAwesomeIcon
-                        style={{
-                          color: "black",
-                        }}
-                        size="2x"
-                        icon={faCircleUp}
-                      />
-                    </button>
-                  </form>
-                </Btnbox>
-              ) : (
-                <></>
-              )}
-            </div>
-          </ListWrap>
-        </Wrapper>
-      </BackGroudModal>
-      <StBackGroundColor onClick={() => setModalOpen(false)} />
-    </StContainers>
+                    {!isCommentAuthor && !isHost && open ? (
+                      <Btnbox>
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            commentOnsumitHandler(comment);
+                          }}
+                        >
+                          <input
+                            value={comment.comment}
+                            type="text"
+                            placeholder="신청 내용을 입력하세요"
+                            onChange={(e) => {
+                              const { value } = e.target;
+                              setComment({
+                                ...comment,
+                                comment: value,
+                              });
+                            }}
+                          />
+                          <button>
+                            <FontAwesomeIcon
+                              style={{
+                                color: "black",
+                              }}
+                              size="2x"
+                              icon={faCircleUp}
+                            />
+                          </button>
+                        </form>
+                      </Btnbox>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </ListWrap>
+              </Wrapper>
+            </BackGroudModal>
+            <StBackGroundColor onClick={() => setModalOpen(false)} />
+          </>
+        )}
+      </StContainers>
+    </>
   );
 };
 
 export default DetailModal;
 
-const StButtonWrap = styled.div`
-  gap: 5px;
-  display: flex;
-`;
-
-const StCommentbull = styled.div`
-  margin: 0 3%;
-  padding: 3% 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #544c8a;
-  border-radius: 12px;
-`;
-
-const StCommentTitle = styled.div`
-  padding: 0 3%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  > h5 {
-    cursor: pointer;
-  }
-`;
-
-const Sth = styled.div`
-  z-index: 50;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 14%;
-  left: 89%;
-  color: white;
-  font-size: 20px;
+const StContainer = styled.div`
+  color: #d7d7d7;
+  padding: 5% 8%;
+  border: none;
+  border-radius: 16px;
+  background-color: #d7d7d7;
+  width: 85vw;
+  /* width: 340px; */
+  background-color: #343434;
+  box-shadow: 3px 5px 20px 2px #5b5b5b;
 `;
 
 const StContainers = styled.div`
@@ -477,16 +504,6 @@ const StContainers = styled.div`
   display: block;
   width: 100%;
   height: 100%;
-`;
-
-const StBackGroundColor = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 10;
 `;
 
 const BackGroudModal = styled.div`
@@ -508,10 +525,55 @@ const BackGroudModal = styled.div`
   display: block; */
 `;
 
+const StButtonWrap = styled.div`
+  gap: 5px;
+  display: flex;
+`;
+
+const StCommentbull = styled.div`
+  margin: 0 3%;
+  padding: 3% 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #343434;
+  border-radius: 12px;
+  font-size: 10px;
+`;
+
+const StCommentTitle = styled.div`
+  padding: 0 3%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > h5 {
+    cursor: pointer;
+  }
+`;
+
+const Sth = styled.div`
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  color: white;
+  font-size: 20px;
+  justify-content: flex-end;
+`;
+
+const StBackGroundColor = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+`;
+
 const ListWrap = styled.div`
   z-index: 235;
   width: 100%;
-  background-color: #2e294e;
+  background-color: black;
   color: white;
   height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
@@ -543,18 +605,6 @@ const Wrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const StContainer = styled.div`
-  color: #d7d7d7;
-  padding: 5% 8%;
-  border: none;
-  border-radius: 16px;
-  background-color: #d7d7d7;
-  width: 370px;
-  max-width: 500px;
-  background-color: #2e294e;
-  box-shadow: 3px 5px 20px 2px #5b5b5b;
 `;
 
 const StHost = styled.div`
@@ -590,10 +640,11 @@ const Stbutton = styled.button`
   border-radius: 15px;
   margin: 2% 2% 5% 0;
   border: none;
-  background-color: white;
+  background-color: #c72363;
   font-size: large;
   font-weight: bold;
   cursor: pointer;
+  color: white;
 `;
 
 const Stbutton1 = styled.button`
@@ -610,7 +661,7 @@ const Stbutton1 = styled.button`
 
 const StMap = styled.div`
   width: 100%;
-  height: 200px;
+  height: 25vh;
   border-radius: 15px;
   border: none;
   display: flex;

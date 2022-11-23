@@ -27,12 +27,11 @@ const StContainer = styled.div`
   font-weight: normal;
   color: white;
   padding: 0 10%;
-  background-color: #2e294e52;
   margin: 3% 3%;
   display: flex;
   align-items: center;
-  border: 2px solid #d6a4ff;
-  box-shadow: 0 5px 18px -7px #c47aff;
+  border: 2px solid #c72363;
+  /* box-shadow: 0 5px 18px -7px #c47aff; */
   border-radius: 10px;
   height: 100%;
   justify-content: space-between;
