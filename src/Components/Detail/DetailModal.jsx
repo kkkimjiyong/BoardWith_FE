@@ -5,12 +5,14 @@ import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faCalendar,
   faCommentDots,
   faCircleUp,
   faFaceSmile,
 } from "@fortawesome/free-regular-svg-icons";
+
 import {
   faLocationDot,
   faUserGroup,
@@ -180,9 +182,6 @@ export const DetailModal = ({
     }
   }, []);
 
-  // console.log(isHost);
-  // console.log(detail?.data);
-  // console.log(nickName);
 
   return (
     <StContainers onClick={() => setModalOpen(false)}>
@@ -224,6 +223,7 @@ export const DetailModal = ({
                 <StContentWrap>
                   <FontAwesomeIcon
                     style={{
+
                       fontSize: "25px",
                       color: "white",
                     }}
@@ -231,16 +231,19 @@ export const DetailModal = ({
                     icon={faShareFromSquare}
                     onClick={() => {
                       alert("공유기능 개발중!");
+
                     }}
                     cursor="pointer"
                   />
                   <Stgap />
                   <FontAwesomeIcon
                     style={{
+
                       fontSize: "27px",
                       color: "white",
                     }}
                     // size="lg"
+
                     icon={faCommentDots}
                     onClick={() => {
                       enterChatRoomHandler();
@@ -287,6 +290,7 @@ export const DetailModal = ({
               </StContentWrap>
               {isHost ? (
                 <StButtonWrap>
+
                   <Stbutton
                     onClick={() => {
                       if (getCookie("accesstoken") !== null) {
@@ -330,7 +334,9 @@ export const DetailModal = ({
             <StCommentTitle>
               <FontAwesomeIcon
                 style={{
+
                   color: "white",
+
                 }}
                 size="1x"
                 icon={faChevronLeft}
@@ -503,7 +509,7 @@ const BackGroudModal = styled.div`
 `;
 
 const ListWrap = styled.div`
-  z-index: 90;
+  z-index: 235;
   width: 100%;
   background-color: #2e294e;
   color: white;
