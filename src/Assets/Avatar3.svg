@@ -8,12 +8,16 @@
         stroke-width: 1.15px;
       }
 
-      .cls-1, .cls-3 {
-        fill: #fff;
+      .cls-1 {
+        fill: white;
+      }
+      .cls-3 {
+        fill: white;
       }
 
+<!-- cls-2가 귀,코-->
       .cls-2 {
-        fill: #231815;
+        fill: black;
       }
 
       .cls-3 {
