@@ -94,94 +94,90 @@ const MyPage = () => {
   useEffect(() => {
     // getReserved();
     // getConfirm();
+    if (!getCookie("accessToken")) alert("로그인이 필요한 페이지입니다!");
+    // window.location.replace("/");
+    navigate("/");
   }, []);
 
-  if (!getCookie("accessToken")) {
-    alert("로그인이 필요한 페이지입니다!");
-    window.location.replace("/");
-  } else {
-    return (
-      <Wrapper>
-        <MainHeader>
-          <Arrow className="head" onClick={() => navigate("/main")} />
-          <div className="headtxt">마이페이지</div>
-          <div onClick={() => logoutHandler("accessToken")}>로그아웃</div>
-        </MainHeader>
-        <AvatarCtn>아바타들어올자리</AvatarCtn>
-        <ProfileCtn>
+  return (
+    <Wrapper>
+      <MainHeader>
+        <Arrow className="head" onClick={() => navigate("/main")} />
+        <div className="headtxt">마이페이지</div>
+        <div onClick={() => logoutHandler("accessToken")}>로그아웃</div>
+      </MainHeader>
+      <AvatarCtn>아바타들어올자리</AvatarCtn>
+      <ProfileCtn>
+        {" "}
+        <EditBox onClick={() => alert("수정중")}>
+          <EditBtn>편집</EditBtn>
+        </EditBox>
+        <ProfileRow>
           {" "}
-          <EditBox onClick={() => alert("수정중")}>
-            <EditBtn>편집</EditBtn>
-          </EditBox>
-          <ProfileRow>
-            {" "}
-            <div>{user?.nickName}</div>{" "}
-          </ProfileRow>
-          <ProfileRow>
-            {user?.birth ? user?.birth : "없음"}/
-            {user?.visible ? `${user?.gender}` : "숨김"}/
-            {user?.address
-              ? `${user?.address?.split(" ")[0]} ${
-                  user?.address?.split(" ")[1]
-                }`
-              : "없음"}{" "}
-            {user?.visible ? (
-              <AiFillEye size="24" onClick={() => postVisible()} />
-            ) : (
-              <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-            )}
-          </ProfileRow>
-          <LikeGameCtn>
-            <LikeGameBox>
-              {}
-              <LikeGame>#달무티</LikeGame>
-              <LikeGame>#달무티</LikeGame>
-              <LikeGame>#달무티</LikeGame>
-            </LikeGameBox>
+          <div>{user?.nickName}</div>{" "}
+        </ProfileRow>
+        <ProfileRow>
+          {user?.birth ? user?.birth : "없음"}/
+          {user?.visible ? `${user?.gender}` : "숨김"}/
+          {user?.address
+            ? `${user?.address?.split(" ")[0]} ${user?.address?.split(" ")[1]}`
+            : "없음"}{" "}
+          {user?.visible ? (
+            <AiFillEye size="24" onClick={() => postVisible()} />
+          ) : (
+            <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
+          )}
+        </ProfileRow>
+        <LikeGameCtn>
+          <LikeGameBox>
+            {}
+            <LikeGame>#달무티</LikeGame>
+            <LikeGame>#달무티</LikeGame>
+            <LikeGame>#달무티</LikeGame>
+          </LikeGameBox>
 
-            {/* 맵돌려야지~ */}
-          </LikeGameCtn>
-          <MyPartyCtn>
-            <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
-              내가 속한 모임
-              <Arrow className={isOpen ? "open" : null} />
-            </MyPartyTitle>
-            {/* 맵돌려야지~ */}
-            {isOpen && (
-              <MyPartyBox>
-                <MyPartyItem>불금 달리실 분~</MyPartyItem>
-                <MyPartyItem>불금 달리실 분~</MyPartyItem>
-                <MyPartyItem>불금 달리실 분~</MyPartyItem>
-              </MyPartyBox>
-            )}
+          {/* 맵돌려야지~ */}
+        </LikeGameCtn>
+        <MyPartyCtn>
+          <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
+            내가 속한 모임
+            <Arrow className={isOpen ? "open" : null} />
+          </MyPartyTitle>
+          {/* 맵돌려야지~ */}
+          {isOpen && (
+            <MyPartyBox>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+              <MyPartyItem>불금 달리실 분~</MyPartyItem>
+            </MyPartyBox>
+          )}
 
-            <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
-              참여 신청 중인 모임
-              <Arrow className={isOpen1 ? "open" : null} />
-            </MyPartyTitle>
-            {isOpen1 && (
-              <MyPartyBox>
-                {reservedParty?.map((party) => {
-                  return <MyPartyItem>{party?.title}</MyPartyItem>;
-                })}
-              </MyPartyBox>
-            )}
-            <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
-              참여 확정 모임
-              <Arrow className={isOpen2 ? "open" : null} />
-            </MyPartyTitle>
-            {isOpen2 && (
-              <MyPartyBox>
-                {confirmParty?.map((party) => {
-                  return <MyPartyItem>{party?.title}</MyPartyItem>;
-                })}
-              </MyPartyBox>
-            )}
-          </MyPartyCtn>
-        </ProfileCtn>
-      </Wrapper>
-    );
-  }
+          <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
+            참여 신청 중인 모임
+            <Arrow className={isOpen1 ? "open" : null} />
+          </MyPartyTitle>
+          {isOpen1 && (
+            <MyPartyBox>
+              {reservedParty?.map((party) => {
+                return <MyPartyItem>{party?.title}</MyPartyItem>;
+              })}
+            </MyPartyBox>
+          )}
+          <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
+            참여 확정 모임
+            <Arrow className={isOpen2 ? "open" : null} />
+          </MyPartyTitle>
+          {isOpen2 && (
+            <MyPartyBox>
+              {confirmParty?.map((party) => {
+                return <MyPartyItem>{party?.title}</MyPartyItem>;
+              })}
+            </MyPartyBox>
+          )}
+        </MyPartyCtn>
+      </ProfileCtn>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`

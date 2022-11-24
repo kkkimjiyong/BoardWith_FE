@@ -9,7 +9,7 @@ import { BsPencil } from "react-icons/bs";
 const AvatarSelect = () => {
   //*초기 카테고리는 눈으로 고정
   const [selectCategory, SetSelectCategory] = useState("Eye");
-
+  const [select, setSelect] = useState();
   //? ----------------  드래그슬라이드 기능  ---------------------
   const dragRef = useRef(null);
   const [isDrag, setIsDrag] = useState(false);
@@ -26,9 +26,7 @@ const AvatarSelect = () => {
 
   const onDragMove = (e) => {
     if (isDrag) {
-      console.log("시작위치", startX);
       dragRef.current.scrollLeft = startX - e.pageX;
-      console.log("최종 스크롤위치", dragRef.current.scrollLeft);
     }
   };
 
@@ -39,9 +37,7 @@ const AvatarSelect = () => {
     return (a) => {
       if (!throttled) {
         throttled = true;
-        console.log(1);
         setTimeout(() => {
-          console.log(2);
           func(a);
           throttled = false;
         }, ms);
@@ -69,16 +65,25 @@ const AvatarSelect = () => {
     { Category: "Hair", Num: 2 },
   ];
 
+  const selectController = (Img) => {
+    setUserSelect({
+      ...userSelect,
+      [Img.Category]: Img.Num,
+    });
+    setSelect(Img.Num);
+  };
+
   return (
     <Wrap>
       <AvatarHeader>
+        <div></div>
         <div>캐릭터</div>
-        <BsPencil size="24" />
+        <BsPencil size="41%" className="postBtn" />
       </AvatarHeader>
-      <AvatarBox userSelect={userSelect} />
+      <AvatarBox userSelect={userSelect} select={select} />
       <PointBox>
         <ImCoinDollar />
-        포인트
+        1000
       </PointBox>
       <AvatarSelectCtn>
         <AvatarCategory>
@@ -119,29 +124,30 @@ const AvatarSelect = () => {
             {ImgList.map((Img) => {
               if (Img.Category == selectCategory)
                 return (
-                  <ImgItemCtn>
-                    <ImgItem
-                      onClick={() =>
-                        setUserSelect({
-                          ...userSelect,
-                          [Img.Category]: Img.Num,
-                        })
-                      }
-                    >
+                  <ImgItemCtn className={select == Img.Num && "selected"}>
+                    <ImgItem Img={Img} onClick={() => selectController(Img)}>
                       {Img.Category}_{Img.Num}
                     </ImgItem>
-                    포인트
+                    <div className="point">
+                      <ImCoinDollar />
+                      1000
+                    </div>
                   </ImgItemCtn>
                 );
             })}{" "}
           </AvatarItemListCtn>
 
           <AvatarBtnSet>
+            <ChangeBtn
+            //* 사진 다 집어넣으면 axios만 넣어주기
+            // onClick={() => postAvatar}
+            >
+              변경하기
+            </ChangeBtn>
             <ResetBtn>
-              <BiRefresh size="24" />
+              <BiRefresh size="35" onClick={() => setUserSelect(userAvatar)} />
               초기화
             </ResetBtn>
-            <ChangeBtn>변경하기</ChangeBtn>
           </AvatarBtnSet>
         </AvatarItemCtn>{" "}
       </AvatarSelectCtn>
@@ -150,6 +156,7 @@ const AvatarSelect = () => {
 };
 
 const Wrap = styled.div`
+  position: relative;
   margin: 0;
   width: 100%;
   height: 100vh;
@@ -160,55 +167,69 @@ const Wrap = styled.div`
 `;
 
 const AvatarHeader = styled.div`
+  position: relative;
   color: #2e294e;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 7vh;
-  background-color: #ddd;
-  padding: 0px 20px 0px 43%;
+  font-size: 1.5rem;
+  color: var(--white);
+  background-color: var(--black);
+  .postBtn {
+    position: absolute;
+    right: -15%;
+  }
 `;
 const PointBox = styled.div`
   position: absolute;
-  top: 80px;
-  left: 20px;
+  color: var(--white);
+  font-size: 1.5rem;
+  top: 10%;
+  left: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #ddd;
-  border-radius: 15px;
-  padding: 2px 30px;
+  border-radius: 50px;
+  padding: 2%;
+  background-color: var(--primary);
 `;
 
 const AvatarSelectCtn = styled.div`
   height: 50vh;
-  background-color: #ddd;
+  background-color: var(--black);
 `;
 
 const AvatarBtnSet = styled.div`
   width: 100%;
   gap: 20px;
-  padding: 25px 0px 60px 0px;
+  padding: 10% 0%;
   justify-content: center;
   display: flex;
   height: 30%;
 `;
+const ChangeBtn = styled.button`
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 50px;
+  width: 60%;
+  border: none;
+  color: var(--white);
+  background-color: var(--primary);
+`;
+
 const ResetBtn = styled.button`
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 500;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50px;
   width: 30%;
   border: none;
-`;
-const ChangeBtn = styled.button`
-  font-size: 20px;
-  font-weight: 600;
-  border-radius: 50px;
-  width: 60%;
-  border: none;
+  color: var(--white);
+  background-color: var(--gray);
 `;
 
 const AvatarCategory = styled.div`
@@ -226,9 +247,9 @@ const AvatarCategoryItem = styled.div`
   width: 30%;
   display: flex;
   justify-content: center;
-  border-bottom: 2px solid gray;
+  border-bottom: 2px solid var(--gray);
   &.selected {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--primary);
   }
 `;
 
@@ -236,16 +257,13 @@ const AvatarItemCtn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 0 20px;
   gap: 10px;
   width: 100%;
   height: 100%;
-  background-color: #ddd;
 `;
 
 const AvatarItemListCtn = styled.div`
   display: flex;
-  gap: 25px;
   padding: 10px 0px;
   height: 60%;
   overflow-x: scroll;
@@ -255,17 +273,29 @@ const AvatarItemListCtn = styled.div`
 `;
 
 const ImgItem = styled.div`
-  border: 2px solid black;
   border-radius: 30px;
   height: 100%;
   min-width: 45%;
   background-color: white;
 `;
 const ImgItemCtn = styled.div`
+  color: var(--white);
+  margin-left: 7%;
   border-radius: 30px;
   height: 90%;
   min-width: 45%;
-  background-color: white;
+  background-color: var(--white);
+  &.selected {
+    border: 7px solid var(--primary);
+  }
+  .point {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    font-size: 24px;
+    margin-top: 5%;
+  }
 `;
 
 export default AvatarSelect;

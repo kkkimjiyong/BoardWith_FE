@@ -28,6 +28,11 @@ const AvatarCtn = styled.div`
   align-items: center;
   height: 38vh;
   border: 2px solid black;
+  padding: 20%;
+  background-color: var(--white);
+  &.selected {
+    border: 2px solid var(--primary);
+  }
 `;
 
 const BackCtn = styled.div`

@@ -96,6 +96,8 @@ const SignUp = () => {
     console.log(errors);
   };
 
+  const checkSubmit = () => {};
+
   //* ---------------------  인증번호 관련 기능 -------------------
 
   const postPhone = async () => {
@@ -354,7 +356,7 @@ const SignUpWrap = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   color: white;
 `;
