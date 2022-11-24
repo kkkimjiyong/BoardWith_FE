@@ -88,6 +88,8 @@ function Form() {
       );
       console.log(payload);
       console.log(data);
+      alert("파티모집글 작성이 완료되었습니다.");
+      navigate("/main");
     } catch (error) {}
   };
 
@@ -240,6 +242,7 @@ function Form() {
               취소
             </Button>
             <Button
+
             // onClick={() => {
             //   onclickSubmitHandler();
             // }}

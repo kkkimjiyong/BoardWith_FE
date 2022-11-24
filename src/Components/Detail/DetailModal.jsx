@@ -112,11 +112,11 @@ export const DetailModal = ({
   //todo나중에 participant가 아니라, confirm으로 바뀔듯
   //채팅 입장 핸들러-----------------------------------------
   const enterChatRoomHandler = () => {
-    // if (detail.data.participant.includes(nickName)) {
-    navigate(`/chat/${postid}`);
-    // } else {
-    //   alert("확정된 이후 들어갈 수 있습니다.");
-    // }
+    if (detail.data.confirm.includes(nickName)) {
+      navigate(`/chat/${postid}`);
+    } else {
+      alert("확정된 이후 들어갈 수 있습니다.");
+    }
   };
 
   //useEffect 디테일 데이터 불러오기---------------------------------------
@@ -134,6 +134,7 @@ export const DetailModal = ({
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
   // console.log(detail?.data?.nickName);
   // console.log(nickName);
+
   useEffect(() => {
     // 파티장인지 확인
     if (detail?.data?.nickName === nickName) {
@@ -153,8 +154,8 @@ export const DetailModal = ({
         center: new kakao.maps.LatLng(y, x),
         level: 3,
       };
-      console.log(container);
-      console.log(options);
+      // console.log(container);
+      // console.log(options);
       //카카오맵 api 사용해서 지도 위에 마커 찍기
       const map = new kakao.maps.Map(container, options);
       const markerPosition = new kakao.maps.LatLng(y, x);
@@ -182,25 +183,6 @@ export const DetailModal = ({
       setIsClosed(false);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (loading === false) {
-  //     const container = document?.getElementById("map");
-  //     const options = {
-  //       center: new kakao.maps.LatLng(y, x),
-  //       level: 3,
-  //     };
-  //     console.log(container);
-  //     console.log(options);
-  //     //카카오맵 api 사용해서 지도 위에 마커 찍기
-  //     const map = new kakao.maps.Map(container, options);
-  //     const markerPosition = new kakao.maps.LatLng(y, x);
-  //     const marker = new kakao.maps.Marker({
-  //       position: markerPosition,
-  //     });
-  //     marker.setMap(map);
-  //   }
-  // }, []);
 
   useEffect(() => {
     // api();
