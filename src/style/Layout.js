@@ -12,6 +12,7 @@ const Layout = ({ children }) => {
 export default Layout;
 
 const Wrap = styled.div`
+  overflow-x: hidden;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -23,6 +24,7 @@ const Wrap = styled.div`
 
 const Container = styled.div`
   margin: 0;
+  overflow-x: hidden;
   width: 100vw;
   max-width: 640px;
   display: flex;

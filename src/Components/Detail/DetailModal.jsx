@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Loading from "../../style/Loading";
 
 import {
   faCalendar,
@@ -207,6 +208,7 @@ export const DetailModal = ({
     // setLoading(false);
     dummy();
   }, []);
+
   const api = async () => {
     try {
       setLoading(false);
@@ -216,7 +218,7 @@ export const DetailModal = ({
   const dummy = async () => {
     setLoading(true);
     console.log("시작", loading);
-    await delay(100);
+    await delay(300);
     console.log("끝", loading);
     setLoading(false);
   };
@@ -232,7 +234,9 @@ export const DetailModal = ({
     <>
       <StContainers onClick={() => setModalOpen(false)}>
         {loading ? (
-          <></>
+          <>
+            <Loading />
+          </>
         ) : (
           <>
             <BackGroudModal>
