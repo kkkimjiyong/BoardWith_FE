@@ -92,7 +92,9 @@ const Comments = ({
         setModalOpen(false);
       })
       .catch((error) => {
-        console.log("에러", error);
+        if (error.response.status === 401) {
+          alert("로그인이 필요합니다.");
+        }
       });
   };
   // console.log("confirmMember", detail.confirmMember[0]);
@@ -114,7 +116,10 @@ const Comments = ({
           setIsBanUser(true);
         })
         .catch((error) => {
-          console.log("에러", error);
+          if (error.response.status === 401) {
+            alert("로그인이 필요합니다.");
+          }
+          console.log("에러", error.response.status);
         });
     }
   };
@@ -206,7 +211,7 @@ const Comments = ({
                 {isHost && !isPartyAccept ? (
                   <StButton onClick={acceptingPartyHandler}>수락</StButton>
                 ) : (
-                  <></>
+                  <StButton onClick={acceptingPartyHandler}>취소</StButton>
                 )}
                 {isHost && isPostEdit ? (
                   <StButton2 onClick={kickPartyHandler}>강퇴</StButton2>
@@ -370,6 +375,7 @@ const StBanButton = styled.button`
   width: 20%;
   height: 50px;
   border-radius: 15px;
+
   border: none;
   font-size: large;
   font-weight: bold;

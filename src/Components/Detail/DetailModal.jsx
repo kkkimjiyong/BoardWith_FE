@@ -134,6 +134,7 @@ export const DetailModal = ({
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
   // console.log(detail?.data?.nickName);
   // console.log(nickName);
+
   useEffect(() => {
     // 파티장인지 확인
     if (detail?.data?.nickName === nickName) {
