@@ -158,7 +158,7 @@ const Comments = ({
       } else {
         setIsBanUser(false);
       }
-  });
+  }, comments);
   // console.log("detail", detail);
   // console.log("comments", comments);
 
@@ -341,7 +341,7 @@ export default Comments;
 const StButton = styled.button`
   background-color: var(--primary);
   margin: 0 3% 0 0;
-  width: 20%;
+  width: 80px;
   height: 50px;
   border-radius: 15px;
   font-size: large;
@@ -356,7 +356,7 @@ const StButton = styled.button`
 
 const StButton2 = styled.button`
   background-color: var(--primary);
-  width: 20%;
+  width: 80px;
   height: 50px;
   border-radius: 15px;
   font-size: large;
@@ -372,10 +372,9 @@ const StButton2 = styled.button`
 
 const StBanButton = styled.button`
   background-color: var(--primary);
-  width: 20%;
+  width: 80px;
   height: 50px;
   border-radius: 15px;
-
   border: none;
   font-size: large;
   font-weight: bold;
@@ -426,6 +425,7 @@ const Stspan = styled.span`
 `;
 
 const StText = styled.input`
+  color: white;
   height: 100%;
   width: 100%;
   background-color: transparent;
