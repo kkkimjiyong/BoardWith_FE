@@ -33,7 +33,7 @@ const MobileHeaderCtn = styled.div`
   position: fixed;
   z-index: 178;
   height: 5vh;
-  background-color: #2e294e;
+  background-color: var(--primary);
   display: flex;
   justify-content: space-between;
   align-items: center;

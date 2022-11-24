@@ -82,8 +82,6 @@ const StContainer = styled.div`
   height: 100%;
   > h2 {
     color: #fff;
-    text-shadow: -1px 0px #c72363, 0px 1px #c72363, 1px 0px #c72363,
-      0px -1px #c72363;
   }
   > div {
     width: 100%;

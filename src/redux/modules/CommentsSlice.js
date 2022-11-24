@@ -50,6 +50,9 @@ export const __deleteComment = createAsyncThunk(
       console.log("data", data);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
+      if (error.response.status === 401) {
+        alert("로그인이 필요합니다.");
+      }
       return thunkAPI.rejectWithValue(error);
     }
   }

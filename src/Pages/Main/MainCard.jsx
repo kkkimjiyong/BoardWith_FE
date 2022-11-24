@@ -182,7 +182,7 @@ const ItemWrap = styled.div`
     justify-content: center;
     padding: 4% 4%;
     flex-direction: column;
-    background-color: #2e294e;
+    background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;
     border-radius: 6px;
     margin-bottom: 5%;
