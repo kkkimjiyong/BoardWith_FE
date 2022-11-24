@@ -17,10 +17,10 @@ const GlobalStyle = createGlobalStyle`
 font-family: 'NanumSquareRound';    box-sizing: border-box;
   }
 
-  body {
+  body { 
     margin:0;
     overflow-x: hidden;
-font-family: 'NanumSquareRound';    font-weight: normal;
+    font-family: 'NanumSquareRound';    font-weight: normal;
     font-size: 17px;
     line-height: 24px;
     color: var(--gray-900);
