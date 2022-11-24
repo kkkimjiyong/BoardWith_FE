@@ -197,7 +197,7 @@ const MainHeader = styled.div`
   position: sticky;
   top: 0;
   width: 100%;
-  background-color: #2e294e;
+  background-color: var(--black);
   box-shadow: 0px 0.5px 15px 0.1px black;
   z-index: 999;
   color: white;

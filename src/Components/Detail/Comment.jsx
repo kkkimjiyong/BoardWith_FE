@@ -21,6 +21,10 @@ const Comments = ({
   postid,
   detail,
   isPostEdit,
+  ModalOpen,
+  setModalOpen,
+  open,
+  setOpen,
 }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
@@ -48,6 +52,7 @@ const Comments = ({
     if (comment.comment === "") {
       alert("수정할 내용을 입력해주세요");
     } else {
+      alert("수정을 완료하였습니다.");
       dispatch(__editComment({ comment, commentId }));
       setComment(initialState);
       setEdit(false);
@@ -66,6 +71,8 @@ const Comments = ({
     if (result) {
       console.log("comments", comments._id);
       dispatch(__deleteComment(comments._id));
+      setModalOpen((ModalOpen) => !ModalOpen);
+      alert("참여 신청을 취소했습니다.");
     } else {
       return;
     }
@@ -79,8 +86,10 @@ const Comments = ({
     postApi
       .acceptingParty({ postid: postid, nickName: nickName })
       .then((res) => {
+        alert("파티원 참가를 수락하였습니다.");
         console.log("성공", res);
         setIsPartyAccept(true);
+        setModalOpen(false);
       })
       .catch((error) => {
         console.log("에러", error);
@@ -93,15 +102,21 @@ const Comments = ({
   const kickPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
     console.log("nickName", nickName);
-    postApi
-      .kickingParty({ postid: postid, nickName: nickName })
-      .then((res) => {
-        console.log("성공", res);
-        setIsBanUser(true);
-      })
-      .catch((error) => {
-        console.log("에러", error);
-      });
+    const result = window.confirm(
+      "이 파티원을 파티에서 강제퇴장시키시겠습니다?"
+    );
+    if (result) {
+      postApi
+        .kickingParty({ postid: postid, nickName: nickName })
+        .then((res) => {
+          alert("파티원을 강제퇴장시켰습니다.");
+          console.log("성공", res);
+          setIsBanUser(true);
+        })
+        .catch((error) => {
+          console.log("에러", error);
+        });
+    }
   };
   //파티원 강퇴 취소 핸들러------------------------------------------------------------
 
@@ -111,6 +126,7 @@ const Comments = ({
     postApi
       .kickingPartyCancel({ postid: postid, nickName: nickName })
       .then((res) => {
+        alert("파티원 강제퇴장을 취소했습니다.");
         console.log("성공", res);
         setIsBanUser(false);
       })
@@ -201,7 +217,7 @@ const Comments = ({
                   <Sticon>
                     <FontAwesomeIcon
                       style={{
-                        color: "#919191",
+                        color: "var(--primary)",
                       }}
                       size="lg"
                       icon={faPenToSquare}
@@ -210,7 +226,7 @@ const Comments = ({
                     />
                     <FontAwesomeIcon
                       style={{
-                        color: "#919191",
+                        color: "var(--primary)",
                       }}
                       size="lg"
                       icon={faTrashCan}
@@ -237,7 +253,7 @@ const Comments = ({
                 ></StText>
                 <FontAwesomeIcon
                   style={{
-                    color: "#919191",
+                    color: "var(--primary)",
                     marginRight: "5px",
                   }}
                   size="lg"
@@ -247,7 +263,7 @@ const Comments = ({
                 />
                 <FontAwesomeIcon
                   style={{
-                    color: "#919191",
+                    color: "var(--primary)",
                     marginRight: "10px",
                   }}
                   size="lg"
@@ -318,7 +334,7 @@ const Comments = ({
 export default Comments;
 
 const StButton = styled.button`
-  background-color: #5893d4;
+  background-color: var(--primary);
   margin: 0 3% 0 0;
   width: 20%;
   height: 50px;
@@ -327,39 +343,38 @@ const StButton = styled.button`
   font-weight: bold;
   cursor: pointer;
   color: white;
-  border: 1px solid white;
+  border: none;
   &:active {
     scale: 95%;
   }
 `;
 
 const StButton2 = styled.button`
-  background-color: #f66b0e;
+  background-color: var(--primary);
   width: 20%;
   height: 50px;
   border-radius: 15px;
   font-size: large;
   font-weight: bold;
   cursor: pointer;
-  background-color: #ff6565;
   color: white;
-  border: 1px solid white;
+  border: none;
+
   &:active {
     scale: 95%;
   }
 `;
 
 const StBanButton = styled.button`
-  background-color: #f66b0e;
+  background-color: var(--primary);
   width: 20%;
   height: 50px;
   border-radius: 15px;
+  border: none;
   font-size: large;
   font-weight: bold;
   cursor: pointer;
-  background-color: #ff6565;
   color: white;
-  border: 1px solid white;
   &:active {
     scale: 95%;
   }
@@ -368,11 +383,12 @@ const StBanButton = styled.button`
 const CommentBox = styled.div`
   margin: 3% 3%;
   display: flex;
-  /* border: 2px solid #c72363; */
+  /* border: 2px solid var(--primary); */
   border-radius: 10px;
-  padding: 3% 0;
+  padding: 2% 3% 2% 0;
   height: 100%;
   background-color: #343434;
+  border: none;
 `;
 
 const StCommentBodyWrap = styled.div`
@@ -392,6 +408,7 @@ const StCommentBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  max-width: 90%;
 `;
 
 const Stspan = styled.span`

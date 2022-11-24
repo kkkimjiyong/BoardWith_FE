@@ -143,7 +143,6 @@ export const DetailModal = ({
     } else {
       setIsHost(false);
     }
-
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
     setX(detail?.data?.location?.x);
     setY(detail?.data?.location?.y);
@@ -420,10 +419,6 @@ export const DetailModal = ({
                     <></>
                   )}
                   <div>
-                    {/* {comments?.map((comment) => {
-            return <Comments key={comment.id} comments={comment} />;
-          })} */}
-
                     {comments?.map((comment) => (
                       <Comments
                         key={comment._id}
@@ -433,14 +428,13 @@ export const DetailModal = ({
                         postid={postid}
                         detail={detail?.data}
                         isPostEdit={isEdit}
+                        setModalOpen={setModalOpen}
+                        ModalOpen={ModalOpen}
+                        open={open}
+                        setOpen={setOpen}
                       />
                     ))}
 
-                    {/* {comments.map((comment) => (
-            <div key={comment.id}>
-              <Comments comment={comment} /> : null}
-            </div>
-          ))} */}
                     {!isCommentAuthor && !isHost && open ? (
                       <Btnbox>
                         <form
@@ -540,9 +534,9 @@ const StCommentbull = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #343434;
+  background-color: var(--gray);
   border-radius: 12px;
-  font-size: 10px;
+  font-size: 14px;
 `;
 
 const StCommentTitle = styled.div`
@@ -644,21 +638,22 @@ const Stbutton = styled.button`
   border-radius: 15px;
   margin: 2% 2% 5% 0;
   border: none;
-  background-color: #c72363;
-  font-size: large;
+  background-color: var(--primary);
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
   color: white;
 `;
 
 const Stbutton1 = styled.button`
+  background-color: var(--primary);
+  color: white;
   width: 40%;
   height: 45px;
   border-radius: 15px;
   margin: 2% 0 5% 0;
   border: none;
-  background-color: white;
-  font-size: large;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
 `;
@@ -679,11 +674,11 @@ const Stgap = styled.div`
 `;
 
 const Btnbox = styled.div`
-  background-color: #544c8a;
+  background-color: var(--primary);
   width: 100%;
   position: fixed;
   bottom: 0;
-  margin-bottom: 13%;
+  margin-bottom: 5vh;
   display: flex;
   justify-content: center;
   align-items: center;
