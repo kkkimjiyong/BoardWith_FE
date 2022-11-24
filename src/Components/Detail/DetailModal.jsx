@@ -112,11 +112,11 @@ export const DetailModal = ({
   //todo나중에 participant가 아니라, confirm으로 바뀔듯
   //채팅 입장 핸들러-----------------------------------------
   const enterChatRoomHandler = () => {
-    if (detail.data.confirm.includes(nickName)) {
-      navigate(`/chat/${postid}`);
-    } else {
-      alert("확정된 이후 들어갈 수 있습니다.");
-    }
+    // if (detail.data.confirm.includes(nickName)) {
+    navigate(`/chat/${postid}`);
+    // } else {
+    //   alert("확정된 이후 들어갈 수 있습니다.");
+    // }
   };
 
   //useEffect 디테일 데이터 불러오기---------------------------------------
