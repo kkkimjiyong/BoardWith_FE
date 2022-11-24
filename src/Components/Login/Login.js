@@ -43,7 +43,7 @@ const Login = () => {
   };
 
   return (
-    <LoginCtn>
+    <LoginCtn className="neonBox">
       <MainLogo className="logo" />
       {/* <Logo src={MyLogo} /> */}
       {/* {modalOpen && (
@@ -92,7 +92,7 @@ const LoginCtn = styled.form`
   justify-content: center;
   align-items: center;
   padding: 50px 20px;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   gap: 30px;
   border-radius: 10px;

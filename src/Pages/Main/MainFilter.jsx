@@ -18,8 +18,9 @@ const MainFilter = ({
   getData,
   setTargetMargin,
   targetMargin,
+  open,
+  setOpen,
 }) => {
-  const [open, setOpen] = useState();
   //시작 날짜 받기
   const onDateChange = (date) => {
     filtered.date = date;
@@ -45,6 +46,7 @@ const MainFilter = ({
       ...filtered,
     });
   };
+  console.log(open);
   //map 값 변환
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -139,12 +141,6 @@ const MainFilter = ({
 
   return (
     <Wrap open={open}>
-      <div
-        className="innerDiv"
-        onClick={() => {
-          setOpen((open) => !open);
-        }}
-      ></div>
       <div>
         <Contentbox>
           <ContentLabel>위치</ContentLabel>
@@ -234,7 +230,7 @@ const MainFilter = ({
 export default MainFilter;
 
 const MemberSlider = styled(Slider)({
-  color: "black",
+  color: "#c72363",
   height: 8,
   "& .MuiSlider-track": {
     border: "none",
@@ -242,8 +238,8 @@ const MemberSlider = styled(Slider)({
   "& .MuiSlider-thumb": {
     height: 15,
     width: 15,
-    backgroundColor: "black",
-    border: "2px solid currentColor",
+    backgroundColor: "#c72363",
+    border: "2px solid #c72363",
     "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
       boxShadow: "inherit",
     },
@@ -259,7 +255,7 @@ const MemberSlider = styled(Slider)({
     width: 32,
     height: 32,
     borderRadius: "50% 50% 50% 0",
-    backgroundColor: "black",
+    backgroundColor: "#c72363",
     transformOrigin: "bottom left",
     transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
     "&:before": { display: "none" },
@@ -273,38 +269,27 @@ const MemberSlider = styled(Slider)({
 });
 
 const Wrap = styled.div`
+  overflow-y: hidden;
   display: flex;
   flex-direction: column;
-  max-width: 820px;
+  max-width: 640px;
   padding: 10px;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   width: 100%;
-  background-color: white;
-  height: ${({ open }) => (open ? "600px" : "80px")};
-  width: 100vw;
-  background-color: #dddddd;
+  background-color: var(--gray);
+  color: var(--white);
+  height: ${({ open }) => (open ? "700px" : "0")};
 
   /* height: ${({ open }) => (open ? "500px" : "80px")}; */
 
   /* height: ${({ open }) => (open ? "500px" : "0px")}; */
 
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0%;
 
   transition: height 400ms ease-in-out;
-  .innerDiv {
-    position: absolute;
-    width: 30%;
-    left: 35%;
-    height: 10px;
-    border-radius: 40px;
-    background-color: black;
-    line-height: 30px;
-    color: black;
-    text-align: center;
-  }
 `;
 
 const Contentbox = styled.div`
@@ -323,7 +308,7 @@ const InputBox = styled.div`
 `;
 
 const ContentButton = styled.button`
-  background-color: lightgray;
+  background-color: var(--primary);
   color: white;
   font-size: 18px;
   width: 100%;

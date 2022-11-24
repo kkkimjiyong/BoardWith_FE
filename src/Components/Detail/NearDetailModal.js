@@ -257,7 +257,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
 export default NearDetailModal;
 
 const BackGroudModal = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -284,14 +284,13 @@ const Wrap = styled.div`
 `;
 
 const StContainer = styled.div`
-  color: #dddddd;
+  color: var(--white);
   padding: 5% 8%;
   border: none;
   border-radius: 16px;
-  background-color: #2e294e;
+  background-color: var(--gray);
   box-shadow: 3px 5px 20px 2px #5b5b5b;
-  width: 370px;
-  max-width: 500px;
+  min-width: 370px;
 `;
 
 const StHost = styled.div`

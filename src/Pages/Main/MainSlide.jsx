@@ -167,9 +167,11 @@ const Target = styled.div`
 `;
 
 const MainBox = styled.div`
-  width: 100vw;
+  position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
 `;
 
 const MainHeader = styled.div`
@@ -180,12 +182,13 @@ const MainHeader = styled.div`
   box-shadow: 0px 0.5px 15px 0.1px black;
   z-index: 10;
   color: white;
-  padding: 0% 5%;
+  padding: 2% 5%;
   height: 7vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
   .headtxt {
+    font-size: 24px;
     margin-left: 20px;
     color: #fff;
     text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
@@ -196,6 +199,21 @@ const MainHeader = styled.div`
 const MainListCtn = styled.div`
   width: 100%;
   padding: 3% 5% 0 5%;
+  overflow-y: hidden;
+  overflow-y: scroll;
+  //? -----모바일에서처럼 스크롤바 디자인---------------
+  @media only screen and (min-width: 1200px) {
+    ::-webkit-scrollbar {
+      width: 15px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #898989;
+      //스크롤바에 마진준것처럼 보이게
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 15px;
+    }
+  }
 `;
 
 const Rowbox = styled.div`
