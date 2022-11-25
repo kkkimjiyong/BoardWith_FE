@@ -237,7 +237,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       // 중복 initialization 방지
       // 카카오에서 제공하는 javascript key를 이용하여 initialize
       if (!kakao.isInitialized()) {
-        kakao.init("e0f77613161123ba2f51937a580b8e7c");
+        kakao.init(process.env.KAKAO_JSPKEY);
       }
 
       kakao.Link.sendDefault({

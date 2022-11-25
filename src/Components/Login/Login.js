@@ -28,12 +28,17 @@ const Login = () => {
       console.log(data.nickName);
       if (data.accessToken) {
         setCookie("accessToken", data.accessToken, { path: "/" });
+        setCookie("refreshToken", data.refresh_token, {
+          httpOnly: true,
+          sameSite: "strict",
+          path: "/",
+        });
         setCookie("nickName", data.nickName);
       }
       navigate("/main");
     } catch (error) {
       alert("다시 로그인해주세요");
-      console.log(error.response.data.message);
+      console.log(error);
     }
   };
 
