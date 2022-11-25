@@ -28,13 +28,9 @@ const expires = new Date();
       const { data } = await loginApi.postLogin(payload);
       console.log(data.nickName);
       if (data.accessToken) {
-        console.log("나 푸쉬됬어요2")
+        console.log("나 푸쉬됬어요3")
         setCookie("accessToken", data.accessToken, { path: "/" });
         setCookie("refreshToken", data.refresh_token, {
-           httpOnly: true,
-secure: true,
-sameSite: "none",
-          expires,
           path: "/",
         });
         setCookie("nickName", data.nickName);
