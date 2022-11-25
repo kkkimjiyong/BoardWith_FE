@@ -27,10 +27,10 @@ const Login = () => {
       const { data } = await loginApi.postLogin(payload);
       console.log(data.nickName);
       if (data.accessToken) {
+        console.log("나 푸쉬됬어요")
         setCookie("accessToken", data.accessToken, { path: "/" });
         setCookie("refreshToken", data.refresh_token, {
           httpOnly: true,
-          sameSite: "strict",
           path: "/",
         });
         setCookie("nickName", data.nickName);
