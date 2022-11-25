@@ -127,10 +127,10 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
     dispatch(__getComments(postid));
   }, []);
 
-  // ---------------시간 (나중에 리팩토링) ----------------
+  //? ---------------시간 (나중에 리팩토링) ----------------
   const moment = require("moment-timezone");
-  const startDate = detail?.time?.[0];
-  const endDate = detail?.time?.[1];
+  const startDate = detail?.data.time?.[0];
+  const endDate = detail?.data.time?.[1];
   const getStartTime = (startDate) => {
     var m = moment(startDate).tz("Asia/Seoul").locale("ko");
     return m.format("MM.DD (ddd) HH:mm");
@@ -200,16 +200,10 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
     dummy();
   }, []);
 
-  const api = async () => {
-    try {
-      setLoading(false);
-    } catch (e) {}
-  };
-
   const dummy = async () => {
     setLoading(true);
     console.log("시작", loading);
-    await delay(300);
+    await delay(1000);
     console.log("끝", loading);
     setLoading(false);
   };

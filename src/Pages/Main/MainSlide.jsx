@@ -19,10 +19,11 @@ const MainSlide = () => {
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const scrollHead = useRef();
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
-    window.scrollTo({
+    scrollHead.current.scrollTo({
       top: 0,
       behavior: "smooth",
     });
@@ -124,7 +125,7 @@ const MainSlide = () => {
             <BsPencil size={"24"} onClick={() => navigate("/form")} />
           </Rowbox>
         </MainHeader>
-        <MainListCtn>
+        <MainListCtn ref={scrollHead}>
           {items?.map((items, idx) => {
             if (items.participant.length < items.partyMember && !items.closed) {
               return (

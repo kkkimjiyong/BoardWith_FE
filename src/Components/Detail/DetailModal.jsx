@@ -30,13 +30,7 @@ import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
 const { kakao } = window;
-export const DetailModal = ({
-  postid,
-  setModalOpen,
-  ModalOpen,
-  realStartTime,
-  realEndTime,
-}) => {
+export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -53,6 +47,22 @@ export const DetailModal = ({
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
 
+  //? ---------------시간 (나중에 리팩토링) ----------------
+  const moment = require("moment-timezone");
+  const startDate = detail?.data.time?.[0];
+  const endDate = detail?.data.time?.[1];
+  const getStartTime = (startDate) => {
+    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
+    return m.format("MM.DD (ddd) HH:mm");
+  };
+  const getEndTime = (endDate) => {
+    var m = moment(endDate).tz("Asia/Seoul");
+    return m.format("HH:mm");
+  };
+  const realStartTime = getStartTime(startDate);
+  const realEndTime = getEndTime(endDate);
+  console.log(realStartTime, realEndTime);
+  console.log(startDate, endDate);
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
     !isEdit ? setIsEdit(true) : setIsEdit(false);
@@ -199,7 +209,7 @@ export const DetailModal = ({
   const dummy = async () => {
     setLoading(true);
     console.log("시작", loading);
-    await delay(300);
+    await delay(1000);
     console.log("끝", loading);
     setLoading(false);
   };
@@ -246,6 +256,7 @@ export const DetailModal = ({
   };
   console.log(postid);
   console.log(MainLogo);
+  console.log(detail?.data?.nickName);
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
@@ -278,7 +289,7 @@ export const DetailModal = ({
                       <div>
                         <div
                           onClick={() =>
-                            navigate(`/userpage/${comments?.nickName}`)
+                            navigate(`/userpage/${detail?.data?.nickName}`)
                           }
                           style={{
                             borderRadius: "20px",
@@ -530,7 +541,7 @@ const BackGroudModal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 42;
+  z-index: 998;
   /* position: fixed;
   left: 50%;
   top: 50vh;

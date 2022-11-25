@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { ReactComponent as LoadingLogo } from "../Assets/Loading.svg";
 
 const Loading = () => {
   return (
     <StContainer>
       <StModal>
         <LoadingText>잠시만 기다려 주세요.</LoadingText>
-        <FontAwesomeIcon
+        {/* <FontAwesomeIcon
           style={{
             color: "white",
           }}
           size="2x"
           icon={faSpinner}
           spin
-        />
+        /> */}
+        <LoadingLogo />
       </StModal>
     </StContainer>
   );
