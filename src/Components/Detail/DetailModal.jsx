@@ -21,6 +21,7 @@ import {
   faBullhorn,
   faShareFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
+
 import {
   __getComments,
   __postComments,
@@ -137,13 +138,8 @@ export const DetailModal = ({
 
   useEffect(() => {
     // 파티장인지 확인
-    if (detail?.data?.nickName === nickName) {
-      setIsHost(true);
-    } else if (detail?.data?.nickName !== nickName) {
-      setIsHost(false);
-    } else {
-      setIsHost(false);
-    }
+    detail?.data?.nickname === nickName ? setIsHost(true) : setIsHost(false);
+
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
     setX(detail?.data?.location?.x);
     setY(detail?.data?.location?.y);
@@ -165,12 +161,9 @@ export const DetailModal = ({
       marker.setMap(map);
     }
     //접속자가 댓글작성자인지 확인
-    for (let i = 0; i < comments?.length; i++) {
-      if (nickName === comments[i]?.nickName) {
-        //console.log(comments[i]?.nickName);
-        setIsCommentAuthor(true);
-      }
-    }
+    comments.forEach(
+      (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
+    );
   });
   // [postApi.getDetailId(postid)]
   useEffect(() => {
@@ -182,7 +175,7 @@ export const DetailModal = ({
     } else {
       setIsClosed(false);
     }
-  }, []);
+  });
 
   useEffect(() => {
     // api();
@@ -210,6 +203,8 @@ export const DetailModal = ({
       }, ms)
     );
   };
+
+  // console.log("detail", detail);
 
   return (
     <BackGroudModal>
@@ -331,8 +326,9 @@ export const DetailModal = ({
                             }
                           }}
                         >
-                          예약현황 ({comments?.length}/
-                          {detail?.data?.partyMember - 1})
+                          예약현황
+                          {/* 예약현황 ({comments?.length}/
+                          {detail?.data?.partyMember - 1}) */}
                         </Stbutton>
                         {!isClosed ? (
                           <Stbutton1 onClick={closePartyHandler}>
@@ -379,10 +375,16 @@ export const DetailModal = ({
                       }}
                     />
                     <h3>{detail?.data?.title}</h3>
-                    {!isEdit ? (
-                      <h5 onClick={postEditHandler}>편집</h5>
+                    {isHost ? (
+                      <>
+                        {!isEdit ? (
+                          <h5 onClick={postEditHandler}>편집</h5>
+                        ) : (
+                          <h5 onClick={postEditHandler}>취소</h5>
+                        )}
+                      </>
                     ) : (
-                      <h5 onClick={postEditHandler}>취소</h5>
+                      <div />
                     )}
                   </StCommentTitle>
                   {!isHost ? (
@@ -515,7 +517,7 @@ const StCommentbull = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--gray);
+  background-color: var(--primary);
   border-radius: 12px;
   font-size: 14px;
 `;
@@ -552,7 +554,7 @@ const StBackGroundColor = styled.div`
 const ListWrap = styled.div`
   z-index: 235;
   width: 100%;
-  background-color: black;
+  background-color: var(--black);
   color: white;
   height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
@@ -655,7 +657,9 @@ const Stgap = styled.div`
 `;
 
 const Btnbox = styled.div`
-  background-color: var(--primary);
+  border-top: 1px solid #5d5d5d;
+
+  background-color: var(--black);
   width: 100%;
   position: absolute;
   bottom: 0;

@@ -86,7 +86,7 @@ const Comments = ({
     postApi
       .acceptingParty({ postid: postid, nickName: nickName })
       .then((res) => {
-        alert("파티원 참가를 수락하였습니다.");
+        alert("파티원 참가 상태를 변경하였습니다.");
         console.log("성공", res);
         setIsPartyAccept(true);
         setModalOpen(false);
@@ -140,7 +140,7 @@ const Comments = ({
       });
   };
 
-  // console.log("detail", detail);
+  // console.log("comments", comments);
 
   useEffect(() => {
     //참가 확정 받은 유저인지 비교
@@ -158,15 +158,19 @@ const Comments = ({
       } else {
         setIsBanUser(false);
       }
-  }, comments);
+  });
   // console.log("detail", detail);
   // console.log("comments", comments);
+  // console.log("myPlace", comments?.myPlace);
+  // console.log(comments?.myPlace.length === 0);
 
   return (
     <>
+      {/* 강퇴 당한 유저가 아니라면 */}
       {!isBanUser ? (
         <>
           <CommentBox key={comment._id}>
+            {/* 편집버튼을 누르지 않았다면 */}
             {!isEdit ? (
               <StCommentBodyWrap>
                 <div>
@@ -198,8 +202,9 @@ const Comments = ({
                         <span>20대</span>
                         <span>&nbsp;/&nbsp;</span>
                         <span>{comments?.gender}</span>
-                        <span>&nbsp;/&nbsp;</span>
-                        <span>{comments?.myPlace}</span>
+                        {comments?.myPlace.length !== 0 && (
+                          <span>&nbsp;/&nbsp;{comments?.myPlace}</span>
+                        )}
                       </Stspan>
                       <div style={{ height: "6px" }} />
                       <Stspan style={{ fontSize: "20px" }}>
@@ -208,21 +213,26 @@ const Comments = ({
                     </StCommentBody>
                   </div>
                 </div>
-                {isHost && !isPartyAccept ? (
-                  <StButton onClick={acceptingPartyHandler}>수락</StButton>
-                ) : (
-                  <StButton onClick={acceptingPartyHandler}>취소</StButton>
+                {/* 파티장이라면 (글작성자) */}
+                {isHost && (
+                  <>
+                    {/* 게시글의 편집버튼을 누르면 */}
+                    {isPostEdit ? (
+                      <StButton2 onClick={kickPartyHandler}>강퇴</StButton2>
+                    ) : (
+                      <StButton onClick={acceptingPartyHandler}>
+                        {/* 파티에 확정을 받았다면 / 받지않았다면 */}
+                        {isPartyAccept ? "취소" : "수락"}
+                      </StButton>
+                    )}
+                  </>
                 )}
-                {isHost && isPostEdit ? (
-                  <StButton2 onClick={kickPartyHandler}>강퇴</StButton2>
-                ) : (
-                  <></>
-                )}
-                {nickName === comments?.nickName ? (
+                {/* 접속자 닉네임과 댓글작성자 닉네임이 같으면 */}
+                {nickName === comments?.nickName && (
                   <Sticon>
                     <FontAwesomeIcon
                       style={{
-                        color: "var(--primary)",
+                        color: "white",
                       }}
                       size="lg"
                       icon={faPenToSquare}
@@ -231,7 +241,7 @@ const Comments = ({
                     />
                     <FontAwesomeIcon
                       style={{
-                        color: "var(--primary)",
+                        color: "white",
                       }}
                       size="lg"
                       icon={faTrashCan}
@@ -239,8 +249,6 @@ const Comments = ({
                       onClick={() => onDelCommentHandler(comment.id)}
                     />
                   </Sticon>
-                ) : (
-                  <></>
                 )}
               </StCommentBodyWrap>
             ) : (
@@ -314,8 +322,9 @@ const Comments = ({
                         <span>20대</span>
                         <span>&nbsp;/&nbsp;</span>
                         <span>{comments?.gender}</span>
-                        <span>&nbsp;/&nbsp;</span>
-                        <span>{comments?.myPlace}</span>
+                        {comments?.myPlace.length !== 0 && (
+                          <span>&nbsp;/&nbsp;{comments?.myPlace}</span>
+                        )}
                       </Stspan>
                       <div style={{ height: "6px" }} />
                       <Stspan style={{ fontSize: "20px" }}>
@@ -340,7 +349,6 @@ export default Comments;
 
 const StButton = styled.button`
   background-color: var(--primary);
-  margin: 0 3% 0 0;
   width: 80px;
   height: 50px;
   border-radius: 15px;
@@ -413,7 +421,7 @@ const StCommentBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  max-width: 90%;
+  max-width: 100%;
 `;
 
 const Stspan = styled.span`
@@ -422,6 +430,7 @@ const Stspan = styled.span`
   width: 100%;
   text-align: center;
   align-items: center;
+  font-size: 14px;
 `;
 
 const StText = styled.input`
