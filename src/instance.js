@@ -4,8 +4,8 @@ import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
 const token = getCookie("accessToken");
 const refreshToken = getCookie("refreshToken");
 const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_SERVER,
-  baseURL: "https://www.iceflower.shop",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
+  // baseURL: "https://www.iceflower.shop",
   headers: {
     Authorization: token,
   },
@@ -20,9 +20,9 @@ instance.interceptors.response.use(
   async (error) => {
     const {
       config,
-      response: { status, data },
+      response: { data },
     } = error;
-    const prevRequest = error.config;
+    const prevRequest = config;
     if (data.message === "refresh가 일치하지 않습니다.") {
       try {
         prevRequest.headers = {

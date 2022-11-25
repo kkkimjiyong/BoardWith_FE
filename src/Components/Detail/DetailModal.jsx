@@ -237,7 +237,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       // 중복 initialization 방지
       // 카카오에서 제공하는 javascript key를 이용하여 initialize
       if (!kakao.isInitialized()) {
-        kakao.init(process.env.KAKAO_JSPKEY);
+        kakao.init(process.env.REACT_APP_KAKAO_JSPKEY);
       }
 
       kakao.Link.sendDefault({
@@ -254,9 +254,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       });
     }
   };
-  console.log(postid);
-  console.log(MainLogo);
-  console.log(detail?.data?.nickName);
+  console.log(process.env.REACT_APP_KAKAO_JSPKEY);
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
