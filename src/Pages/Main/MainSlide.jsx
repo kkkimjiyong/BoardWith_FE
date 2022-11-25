@@ -110,6 +110,8 @@ const MainSlide = () => {
     return () => observer && observer.disconnect();
   }, [target, nextPage]);
   //필터 만들 부분~!
+
+  console.log(neardata);
   useEffect(() => {
     setItems(items);
   }, []);
@@ -156,7 +158,9 @@ const MainSlide = () => {
       {NearModalOpen && (
         <NearDetailModal
           postid={neardata[0]?._id}
-          setNearModalOpen={setNearModalOpen}
+
+          setModalOpen={setNearModalOpen}
+
         />
       )}
     </>
