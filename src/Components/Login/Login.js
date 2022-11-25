@@ -19,7 +19,7 @@ const Login = () => {
   const [login, setLogin, onChangehandler] = useInput(initialState);
 
   const REST_API_KEY = "55dc07a0e4c564bac2630a91922eab90";
-  const REDIRECT_URI = "http://localhost:3000/signup/oauth";
+  const REDIRECT_URI = "https://boardwith.vercel.app/signup/oauth";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const postLogin = async (payload) => {
