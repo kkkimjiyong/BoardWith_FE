@@ -1,12 +1,44 @@
 import axios from "axios";
-import { getCookie } from "./hooks/CookieHook";
+import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
 
+const token = getCookie("accessToken");
+const refreshToken = getCookie("refreshToken");
 const instance = axios.create({
-  baseURL: "https://www.iceflower.shop/",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
+  // baseURL: "https://www.iceflower.shop",
   headers: {
-    Authorization: `${getCookie("accessToken")}`,
+    Authorization: token,
   },
 });
+
+//? ------------------------- axios interceptor  --------------------------
+
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const {
+      config,
+      response: { data },
+    } = error;
+    const prevRequest = config;
+    if (data.message === "refresh가 일치하지 않습니다.") {
+      try {
+        prevRequest.headers = {
+          "Content-Type": "application/json",
+          Authorization: token,
+          refresh: refreshToken,
+        };
+        return await axios(prevRequest);
+      } catch (err) {
+        console.log(err);
+        new Error(err);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const signUpApi = {
   postSingup: (userinfo) => instance.post("/users/signup", userinfo),
@@ -20,16 +52,17 @@ export const userApi = {
   getUser: () =>
     instance.get("/users", {
       headers: {
-        Authorization: `${getCookie("accessToken")}`,
+        Authorization: token,
       },
     }),
 
   editUser: (EditUser) =>
     instance.put("/users", EditUser, {
       headers: {
-        Authorization: `${getCookie("accessToken")}`,
+        Authorization: token,
       },
     }),
+  getOtherUser: (nickname) => instance.get(`/users/${nickname}`),
 };
 
 export const postApi = {
@@ -48,7 +81,6 @@ export const postApi = {
 
   kickingPartyCancel: (payload) =>
     instance.put(`/posts/cancelBan/${payload.postid}`, payload.nickName),
-
 };
 
 export const commentsApi = {
@@ -67,23 +99,11 @@ export const postsApi = {
   creatPost: (inputs) => {
     return instance.post(`/posts`, inputs, {
       headers: {
-        Authorization: `${getCookie("accessToken")}`,
+        Authorization: token,
       },
     });
   },
-  deletePost: (params) =>
-    instance.delete(
-      `/posts/${params}`
-      // {
-      //   headers: { Authorization: `Bearer ${token}` },
-      // }
-    ),
+  deletePost: (params) => instance.delete(`/posts/${params}`),
   updatePost: (payload) =>
-    instance.patch(
-      `/posts/${payload.postId}`,
-      payload.post
-      //  {
-      //   headers: { Authorization: `Bearer ${token}` },
-      // }
-    ),
+    instance.patch(`/posts/${payload.postId}`, payload.post),
 };

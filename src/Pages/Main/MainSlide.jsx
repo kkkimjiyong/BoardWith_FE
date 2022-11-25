@@ -19,10 +19,11 @@ const MainSlide = () => {
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const scrollHead = useRef();
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
-    window.scrollTo({
+    scrollHead.current.scrollTo({
       top: 0,
       behavior: "smooth",
     });
@@ -87,15 +88,17 @@ const MainSlide = () => {
       `https://www.iceflower.shop/posts/?skip=${page}`
     );
     setItems((prev) => prev.concat(response.data.data));
+    console.log(response.data.data.length);
+    setNextPage(response.data.data.length == 5);
     page += 5;
   };
-  console.log(ModalOpen);
   useEffect(() => {
     let observer;
-    if (target.current) {
+    if (target.current && nextPage !== 0) {
       const onIntersect = async ([entry], observer) => {
-        if (entry.isIntersecting && true) {
+        if (entry.isIntersecting && nextPage) {
           observer.unobserve(entry.target);
+          console.log(nextPage);
           await getData();
           observer.observe(entry.target);
         }
@@ -105,7 +108,7 @@ const MainSlide = () => {
     }
 
     return () => observer && observer.disconnect();
-  }, [target]);
+  }, [target, nextPage]);
   //필터 만들 부분~!
   useEffect(() => {
     setItems(items);
@@ -122,9 +125,9 @@ const MainSlide = () => {
             <BsPencil size={"24"} onClick={() => navigate("/form")} />
           </Rowbox>
         </MainHeader>
-        <MainListCtn>
+        <MainListCtn ref={scrollHead}>
           {items?.map((items, idx) => {
-            if (items.participant.length < items.partyMember) {
+            if (items.participant.length < items.partyMember && !items.closed) {
               return (
                 <Item
                   setModalOpen={setModalOpen}
@@ -152,7 +155,7 @@ const MainSlide = () => {
       {/* //! 가장 가까운 모임 보여주는 모달창 */}
       {NearModalOpen && (
         <NearDetailModal
-          postid={newcardData[0]?._id}
+          postid={neardata[0]?._id}
           setNearModalOpen={setNearModalOpen}
         />
       )}
@@ -198,7 +201,7 @@ const MainHeader = styled.div`
 
 const MainListCtn = styled.div`
   width: 100%;
-  padding: 3% 5% 0 5%;
+  padding: 3% 5% 5% 5%;
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------

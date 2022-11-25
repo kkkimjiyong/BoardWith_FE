@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { postApi } from "../../instance";
+import { useNavigate } from "react-router-dom";
 
 const Comments = ({
   comments,
@@ -30,6 +31,7 @@ const Comments = ({
   const [isEdit, setEdit] = useState(false);
   const [isPartyAccept, setIsPartyAccept] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
+  const navigate = useNavigate();
 
   const commentId = comments._id;
   //console.log("nickName", nickName);
@@ -177,6 +179,9 @@ const Comments = ({
                 <div>
                   <div>
                     <div
+                      onClick={() =>
+                        navigate(`/userpage/${comments?.nickName}`)
+                      }
                       style={{
                         border: "1px solid gray",
                         margin: "20px",

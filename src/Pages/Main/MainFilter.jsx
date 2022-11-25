@@ -46,7 +46,6 @@ const MainFilter = ({
       ...filtered,
     });
   };
-  console.log(open);
   //map 값 변환
   const onChange = (e) => {
     const { name, value } = e.target;

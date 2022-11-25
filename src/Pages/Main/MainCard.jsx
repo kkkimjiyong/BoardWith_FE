@@ -3,9 +3,7 @@ import styled from "styled-components";
 import { getDistance } from "geolib";
 import { useDispatch } from "react-redux";
 import { addDistance } from "../../redux/modules/postsSlice";
-import { memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import moment from "moment-timezone";
 import "moment/locale/ko";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
@@ -186,7 +184,7 @@ const ItemWrap = styled.div`
     background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;
     border-radius: 6px;
-    margin-bottom: 5%;
+    margin: 5% 0%;
     :hover {
       color: white;
       /* box-shadow: 5px 5px 10px 2px #d90368; */

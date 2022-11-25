@@ -51,6 +51,20 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
       alert("확정된 이후 들어갈 수 있습니다.");
     }
   };
+
+  const moment = require("moment-timezone");
+  const startDate = detail?.data.time?.[0];
+  const endDate = detail?.data.time?.[1];
+  const getStartTime = (startDate) => {
+    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
+    return m.format("MM.DD (ddd) HH:mm");
+  };
+  const getEndTime = (endDate) => {
+    var m = moment(endDate).tz("Asia/Seoul");
+    return m.format("HH:mm");
+  };
+  const realStartTime = getStartTime(startDate);
+  const realEndTime = getEndTime(endDate);
   //?--------------------디테일내용 불러오기---------------------
   useEffect(() => {
     // dispatch(__getPostslById(postid));
@@ -100,6 +114,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
             <StHost>
               <div>
                 <div
+                  onClick={() => navigate(`/userpage/${comments?.nickName}`)}
                   style={{
                     borderRadius: "10px",
                     width: "30px",
