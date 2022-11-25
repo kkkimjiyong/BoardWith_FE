@@ -31,7 +31,7 @@ font-family: 'NanumSquareRound';    box-sizing: border-box;
     font-size: 17px;
   }
   :root {
-    --primary: #c72363;
+    --primary: #C72363;
     --gray: #343434;
     --white: #FFFFFF;
     --black: #212121;
