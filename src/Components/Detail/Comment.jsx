@@ -39,6 +39,7 @@ const Comments = ({
   };
   const [comment, setComment] = useState(initialState);
   // console.log("comment", comments);
+  console.log("detail", detail);
 
   //댓글 수정 취소--------------------------------------------------------------
   const editCancel = () => {
@@ -158,7 +159,7 @@ const Comments = ({
       } else {
         setIsBanUser(false);
       }
-  });
+  }, [comments]);
   // console.log("detail", detail);
   // console.log("comments", comments);
   // console.log("myPlace", comments?.myPlace);
@@ -333,7 +334,9 @@ const Comments = ({
                     </StCommentBody>
                   </div>
                 </div>
-                <StBanButton onClick={kickPartyCancelHandler}>취소</StBanButton>
+                <StBanButton onClick={kickPartyCancelHandler}>
+                  {isPostEdit && "취소"}
+                </StBanButton>
               </StCommentBodyWrap>
             </CommentBox>
           ) : (
