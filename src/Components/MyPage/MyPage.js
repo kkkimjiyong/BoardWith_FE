@@ -11,6 +11,8 @@ import { BsPencil } from "react-icons/bs";
 import { BiUserMinus } from "react-icons/bi";
 import AvatarBox from "../Avatar/AvatarBox";
 import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
+import DetailModal from "../Detail/DetailModal";
+import MyPartyItem from "./MyPartyItem";
 
 const MyPage = () => {
   const [user, Setuser, onChange] = useInput();
@@ -19,6 +21,7 @@ const MyPage = () => {
   const [isOpen2, SetisOpen2] = useState(false);
   const [reservedParty, setReservedParty] = useState();
   const [confirmParty, setConfirmParty] = useState();
+  const [ModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const getUser = async () => {
@@ -47,6 +50,7 @@ const MyPage = () => {
   //? ------------------  로그아웃 -------------------
 
   const logoutHandler = (name) => {
+    alert("로그아웃 성공");
     removeCookie(name);
     navigate("/");
   };
@@ -65,8 +69,9 @@ const MyPage = () => {
       console.log(error);
     }
   };
-
+  //? --------------------  회원탈퇴  ---------------------
   const deletUserHandler = (name) => {
+    alert("탈퇴 성공");
     deleteUser();
     removeCookie(name);
     navigate("/");
@@ -100,6 +105,8 @@ const MyPage = () => {
       navigate("/");
     }
   }, []);
+
+  console.log(ModalOpen);
 
   return (
     <Wrapper>
@@ -150,7 +157,7 @@ const MyPage = () => {
             <Arrow className={isOpen ? "open" : null} />
           </MyPartyTitle>
           {/* 맵돌려야지~ */}
-          {isOpen && (
+          {/* {isOpen && (
             <MyPartyBox>
               <MyPartyItem>
                 불금 달리실 분~
@@ -165,7 +172,7 @@ const MyPage = () => {
                 <Arrow className="left" />
               </MyPartyItem>
             </MyPartyBox>
-          )}
+          )} */}
           <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
             참여 신청 중인 모임
             <Arrow className={isOpen1 ? "open" : null} />
@@ -173,11 +180,7 @@ const MyPage = () => {
           {isOpen1 && (
             <MyPartyBox>
               {reservedParty?.map((party) => {
-                return (
-                  <MyPartyItem>
-                    {party?.title} <Arrow className="left" />
-                  </MyPartyItem>
-                );
+                return <MyPartyItem party={party} />;
               })}
             </MyPartyBox>
           )}
@@ -188,15 +191,12 @@ const MyPage = () => {
           {isOpen2 && (
             <MyPartyBox>
               {confirmParty?.map((party) => {
-                return (
-                  <MyPartyItem>
-                    {party?.title} <Arrow className="left" />
-                  </MyPartyItem>
-                );
+                return <MyPartyItem party={party} />;
               })}
             </MyPartyBox>
           )}{" "}
           <EditBox>
+            {" "}
             <div className="logout" onClick={deletUserHandler}>
               회원탈퇴
             </div>
@@ -260,9 +260,10 @@ const EditBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 80px;
   color: #919191;
   :hover {
+    text-decoration: underline;
     cursor: pointer;
   }
 `;
@@ -295,6 +296,19 @@ const ProfileCtn = styled.div`
   gap: 30px;
   overflow-y: hidden;
   overflow-y: scroll;
+  //? -----모바일에서처럼 스크롤바 디자인---------------
+  @media only screen and (min-width: 1200px) {
+    ::-webkit-scrollbar {
+      width: 15px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #898989;
+      //스크롤바에 마진준것처럼 보이게
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 15px;
+    }
+  }
 `;
 
 const ProfileRow = styled.div`
@@ -354,16 +368,6 @@ const MyPartyBox = styled.div`
   flex-direction: column;
   width: 85%;
   max-height: 50%;
-`;
-
-const MyPartyItem = styled.div`
-  color: white;
-  background-color: var(--gray);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 20px;
-  padding: 2% 5%;
 `;
 
 const Arrow = styled.div`
