@@ -649,7 +649,7 @@ const StCommentbull = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--gray);
+  background-color: var(--primary);
   border-radius: 12px;
   font-size: 14px;
 `;
@@ -686,7 +686,7 @@ const StBackGroundColor = styled.div`
 const ListWrap = styled.div`
   z-index: 235;
   width: 100%;
-  background-color: black;
+  background-color: var(--black);
   color: white;
   height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
@@ -789,7 +789,8 @@ const Stgap = styled.div`
 `;
 
 const Btnbox = styled.div`
-  background-color: var(--primary);
+  border-top: 1px solid #5d5d5d;
+  background-color: var(--black);
   width: 100%;
   position: absolute;
   bottom: 0;
