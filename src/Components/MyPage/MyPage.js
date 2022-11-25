@@ -156,23 +156,6 @@ const MyPage = () => {
             내가 찜한 모임
             <Arrow className={isOpen ? "open" : null} />
           </MyPartyTitle>
-          {/* 맵돌려야지~ */}
-          {/* {isOpen && (
-            <MyPartyBox>
-              <MyPartyItem>
-                불금 달리실 분~
-                <Arrow className="left" />
-              </MyPartyItem>
-              <MyPartyItem>
-                불금 달리실 분~
-                <Arrow className="left" />
-              </MyPartyItem>{" "}
-              <MyPartyItem>
-                불금 달리실 분~
-                <Arrow className="left" />
-              </MyPartyItem>
-            </MyPartyBox>
-          )} */}
           <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
             참여 신청 중인 모임
             <Arrow className={isOpen1 ? "open" : null} />
@@ -180,7 +163,7 @@ const MyPage = () => {
           {isOpen1 && (
             <MyPartyBox>
               {reservedParty?.map((party) => {
-                return <MyPartyItem party={party} />;
+                if (!party.closed) return <MyPartyItem party={party} />;
               })}
             </MyPartyBox>
           )}
@@ -191,7 +174,7 @@ const MyPage = () => {
           {isOpen2 && (
             <MyPartyBox>
               {confirmParty?.map((party) => {
-                return <MyPartyItem party={party} />;
+                if (!party.closed) return <MyPartyItem party={party} />;
               })}
             </MyPartyBox>
           )}{" "}
