@@ -125,7 +125,9 @@ const MyPage = () => {
         <ProfileRow>
           {user?.age ? `${user?.age} 살` : "없음"}/
           {user?.visible ? `${user?.gender}` : "숨김"}/
-          {user?.myPlace ? `${user?.myPlace[0]} ${user?.myPlace[1]}` : "없음"}{" "}
+          {user?.myPlace.length
+            ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+            : "없음"}{" "}
           {user?.visible ? (
             <AiFillEye size="24" onClick={() => postVisible()} />
           ) : (
@@ -260,7 +262,6 @@ const EditBox = styled.div`
   align-items: center;
   gap: 20px;
   color: #919191;
-
   :hover {
     cursor: pointer;
   }

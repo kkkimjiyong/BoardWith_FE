@@ -42,7 +42,7 @@ const OtherUserPage = () => {
     removeCookie(name);
     navigate("/");
   };
-
+  console.log(Boolean(user?.myPlace));
   //? ------------------  로그아웃 -------------------
 
   const deleteUser = async () => {
@@ -100,7 +100,9 @@ const OtherUserPage = () => {
         <ProfileRow>
           {user?.age ? `${user?.age} 살` : "없음"}/
           {user?.visible ? `${user?.gender}` : "숨김"}/
-          {user?.myPlace ? `${user?.myPlace[0]} ${user?.myPlace[1]}` : "없음"}{" "}
+          {user?.myPlace.length
+            ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+            : "없음"}{" "}
         </ProfileRow>
         <LikeGameCtn>
           <LikeGameBox>

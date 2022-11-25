@@ -246,6 +246,7 @@ export const DetailModal = ({
   };
   console.log(postid);
   console.log(MainLogo);
+  console.log(detail?.data?.nickName);
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
@@ -278,7 +279,7 @@ export const DetailModal = ({
                       <div>
                         <div
                           onClick={() =>
-                            navigate(`/userpage/${comments?.nickName}`)
+                            navigate(`/userpage/${detail?.data?.nickName}`)
                           }
                           style={{
                             borderRadius: "20px",
