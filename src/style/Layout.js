@@ -51,7 +51,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-left: 2px dashed var(--primary);
+    border-left: 2px dashed var(--primary);
   border-right: 2px dashed var(--primary);
   @media only screen and (min-width: 1200px) {
     margin-left: 25%;
