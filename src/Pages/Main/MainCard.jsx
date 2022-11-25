@@ -74,7 +74,12 @@ const Item = ({ number, item, Myaddress }) => {
 
   return (
     <ItemWrap>
-      <div className="ItemWrap" onClick={() => setModalOpen(true)}>
+      <div
+        className="ItemWrap"
+        onClick={() =>
+          item.closed === 0 ? setModalOpen(true) : setModalOpen(false)
+        }
+      >
         <div className="ItemWrap-Body-SpaceBetween">
           <ItemProfile>
             {" "}
@@ -91,6 +96,7 @@ const Item = ({ number, item, Myaddress }) => {
             />
             <div>{item?.nickName}</div>
           </ItemProfile>
+
           {starMark ? (
             <div>
               <FontAwesomeIcon

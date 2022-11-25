@@ -11,6 +11,7 @@ import { BiCurrentLocation } from "react-icons/bi";
 import { BsPencil } from "react-icons/bs";
 import { FiFilter } from "react-icons/fi";
 import { DetailModal } from "../../Components/Detail/DetailModal";
+import Form from "./Form";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const MainSlide = () => {
   const [targetMargin, setTargetMargin] = useState(0);
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
+  const [formModalOpen, setFormModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const scrollHead = useRef();
 
@@ -122,7 +124,6 @@ const MainSlide = () => {
           <div className="headtxt">파티모집</div>
           <Rowbox>
             <FiFilter size={"24"} onClick={() => setOpen(!open)} />
-            <BsPencil size={"24"} onClick={() => navigate("/form")} />
           </Rowbox>
         </MainHeader>
         <MainListCtn ref={scrollHead}>
@@ -143,6 +144,9 @@ const MainSlide = () => {
           <Target ref={target}>This is Target.</Target>{" "}
         </MainListCtn>
       </MainBox>{" "}
+      <FormButton onClick={() => setFormModalOpen(true)}>
+        <BsPencil size={"24"} />
+      </FormButton>
       <MainFilter
         targetMargin={targetMargin}
         setTargetMargin={setTargetMargin}
@@ -159,6 +163,8 @@ const MainSlide = () => {
           setNearModalOpen={setNearModalOpen}
         />
       )}
+      {/* 게시글 폼페이지 모달창 */}
+      {formModalOpen && <Form setFormModalOpen={setFormModalOpen} />}
     </>
   );
 };
@@ -222,4 +228,15 @@ const MainListCtn = styled.div`
 const Rowbox = styled.div`
   display: flex;
   gap: 10px;
+`;
+const FormButton = styled.button`
+  position: fixed;
+  bottom: 10%;
+  left: 80%;
+  background-color: #2e294e;
+  box-shadow: 0px 0.5px 15px 0.1px white;
+  color: white;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
 `;

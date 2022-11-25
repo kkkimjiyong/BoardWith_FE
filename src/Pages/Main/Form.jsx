@@ -20,18 +20,22 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
 import { timeSelect } from "../../tools/select";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const { kakao } = window;
-function Form() {
+function Form({ setFormModalOpen }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();
+  const [ModalOpen, setModalOpen] = useState(false);
+
   //카카오 Map API
   var geocoder = new kakao.maps.services.Geocoder();
 
   const formSchema = yup.object({
     title: yup.string().required("제목을 입력해주세요 😰"),
-    content: yup.string(),
+    content: yup.string().max(25, "내용은 25자 이내로 입력해주세요"),
     location: yup.string(),
     cafe: yup.string(),
     date: yup.string(),
@@ -40,13 +44,6 @@ function Form() {
   });
 
   const onSubmit = (data) => {
-    // console.log("submit", {
-    //   ...data,
-    //   location: location,
-    //   map: data.cafe.split(" ")[1],
-    //   time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
-    // });
-
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
 
@@ -58,9 +55,18 @@ function Form() {
     startTime.setHours(data.startTime.split(":")[0]);
     endTime.setHours(data.endTime.split(":")[0]);
 
-    console.log(startTime.toISOString());
-    console.log(endTime.toISOString());
-
+    // console.log(startTime.toISOString());
+    // console.log(endTime.toISOString());
+    console.log("submit", {
+      title: data.title,
+      content: data.content,
+      partyMember: data.partyMember,
+      date: "임시",
+      cafe: data.cafe,
+      location: location,
+      map: data.cafe.split(" ")[1],
+      time: [startTime.toISOString(), endTime.toISOString()],
+    });
     creatPost({
       title: data.title,
       content: data.content,
@@ -107,8 +113,8 @@ function Form() {
     defaultValues: { partyMember: "10" },
   });
 
-  console.log(location);
-  console.log(errors);
+  // console.log(location);
+  // console.log(errors);
   //사용자가 검색한 값을 좌표값으로 넘겨준다.
   var callback = function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
@@ -130,11 +136,26 @@ function Form() {
   };
 
   const postCode = ReactDaumPost(postConfig);
-  console.log(watch());
+  // console.log(watch());
 
   return (
-    <Layout>
+    <BackGroudModal>
+      {/* <Layout> */}
       <Wrap>
+        <div>
+          <Sth onClick={() => setFormModalOpen(false)}>
+            <FontAwesomeIcon
+              style={{
+                color: "black",
+              }}
+              size="1x"
+              icon={faX}
+              cursor="pointer"
+            />
+          </Sth>{" "}
+          <FormHeader>새로운 파티</FormHeader>
+        </div>
+
         <Formbox onSubmit={handleSubmit(onSubmit)}>
           <Inputbox>
             <FlexBox>
@@ -143,7 +164,16 @@ function Form() {
             </FlexBox>
             <FlexBox>
               <LabelBox>내용</LabelBox>
-              <InputBox {...register("content")} />
+              <TextareaBox
+                style={{
+                  height: "80px",
+                }}
+                maxLength={50}
+                {...register("content")}
+              />
+              {errors.content && (
+                <small role="alert">{errors.content.message}</small>
+              )}
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
@@ -227,33 +257,12 @@ function Form() {
             <DaumPostBox></DaumPostBox>
           </Inputbox>{" "}
           <Buttonbox>
-            <Button
-              onClick={() => {
-                reset();
-              }}
-            >
-              초기화하기
-            </Button>
-            <Button
-              onClick={() => {
-                navigate("/main");
-              }}
-            >
-              취소
-            </Button>
-            <Button
-
-            // onClick={() => {
-            //   onclickSubmitHandler();
-            // }}
-            // disabled={inputs.content === "" || inputs.title === ""}
-            >
-              작성완료
-            </Button>
+            <Button>작성완료</Button>
           </Buttonbox>
         </Formbox>
       </Wrap>
-    </Layout>
+      {/* </Layout> */}
+    </BackGroudModal>
   );
 }
 export default Form;
@@ -299,9 +308,10 @@ const MemberSlider = styled(Slider)({
 
 const Wrap = styled.div`
   width: 100%;
+  height: 100vh;
   margin: 30px auto;
-  border-radius: 15px;
-  background-color: gray;
+  background-color: white;
+  z-index: 999;
 `;
 
 const Formbox = styled.form`
@@ -316,7 +326,7 @@ const Formbox = styled.form`
 const LabelBox = styled.label`
   margin-bottom: 10px;
   font-weight: 800;
-  font-size: larger;
+  font-size: medium;
 `;
 
 const Inputbox = styled.div`
@@ -326,16 +336,28 @@ const Inputbox = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
+  margin-top: 10px;
 `;
 
 const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  :first-child {
+    margin-top: 30px;
+  }
 `;
 
 const InputBox = styled.input`
-  padding: 20px;
+  padding: 10px;
+  background: ghostwhite;
+  border-radius: 10px;
+  border: 1px solid #666;
+  background-color: white;
+`;
+
+const TextareaBox = styled.textarea`
+  padding: 10px;
   background: ghostwhite;
   border-radius: 10px;
   border: 1px solid #666;
@@ -345,15 +367,18 @@ const InputBox = styled.input`
 const Buttonbox = styled.div`
   width: 100%;
   display: inline-flex;
+  background-color: lightgray;
+  padding: 10px;
 `;
 const Button = styled.button`
-  width: 30%;
+  width: 90%;
   display: flex;
 
+  background-color: white;
   justify-content: center;
   margin: 0 auto;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   border: none;
 `;
 
@@ -369,4 +394,63 @@ const TimeSelect = styled.select`
   :first-child {
     margin-right: 4%;
   }
+`;
+
+const StContainers = styled.div`
+  position: fixed;
+  z-index: 20;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 100%;
+`;
+const StBackGroundColor = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+`;
+
+const BackGroudModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  /* position: fixed;
+  left: 50%;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  z-index: 42;
+  display: block; */
+`;
+const Sth = styled.div`
+  z-index: 50;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 4%;
+  left: 9%;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 10px;
+`;
+const FormHeader = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
 `;

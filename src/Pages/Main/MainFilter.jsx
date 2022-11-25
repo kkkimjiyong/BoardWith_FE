@@ -82,7 +82,6 @@ const MainFilter = ({
     { value: "중구", label: "중구" },
     { value: "중랑구", label: "중랑구" },
   ];
-  // console.log("timefilter", new Date("1970-01-01"));
   const [filtered, setFiltered] = useState({
     time: [new Date("1970-01-01"), new Date("9999-12-31")],
     date: new Date(),
