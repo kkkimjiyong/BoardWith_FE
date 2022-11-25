@@ -126,7 +126,7 @@ const MainSlide = () => {
         </MainHeader>
         <MainListCtn>
           {items?.map((items, idx) => {
-            if (items.participant.length < items.partyMember) {
+            if (items.participant.length < items.partyMember && !items.closed) {
               return (
                 <Item
                   setModalOpen={setModalOpen}
@@ -200,7 +200,7 @@ const MainHeader = styled.div`
 
 const MainListCtn = styled.div`
   width: 100%;
-  padding: 3% 5% 0 5%;
+  padding: 3% 5% 5% 5%;
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------

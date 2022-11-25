@@ -47,8 +47,8 @@ const ChatNickName = styled.div`
 `;
 
 const ChatMessageBox = styled.div`
-  border: 2px solid #dddddd;
-  border-radius: 15px;
+  background-color: var(--gray);
+  border-radius: 10px;
   padding: 5px 20px;
 `;
 
