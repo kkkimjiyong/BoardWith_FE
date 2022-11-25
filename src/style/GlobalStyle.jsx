@@ -27,7 +27,6 @@ font-family: 'NanumSquareRound';    box-sizing: border-box;
     display: block;
   }
 
-
   input {
     font-size: 17px;
   }

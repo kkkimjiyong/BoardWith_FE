@@ -81,6 +81,7 @@ const FindId = () => {
 };
 
 const SignUpWrap = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -91,7 +92,7 @@ const SignUpWrap = styled.div`
   color: white;
 `;
 const SignUpHeader = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   font-size: 1.5rem;
   font-weight: 400;

@@ -175,6 +175,7 @@ const Item = ({ number, item, Myaddress }) => {
 
 const ItemWrap = styled.div`
   .ItemWrap {
+    position: ;
     color: #d7d7d7;
     width: 100%;
     height: 100%;

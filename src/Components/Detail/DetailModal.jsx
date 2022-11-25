@@ -212,7 +212,7 @@ export const DetailModal = ({
   };
 
   return (
-    <>
+    <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
         {loading ? (
           <>
@@ -459,7 +459,7 @@ export const DetailModal = ({
           </>
         )}
       </StContainers>
-    </>
+    </BackGroudModal>
   );
 };
 
@@ -471,14 +471,13 @@ const StContainer = styled.div`
   border: none;
   border-radius: 16px;
   background-color: #d7d7d7;
-  width: 85vw;
+  width: 370px;
   /* width: 340px; */
   background-color: #343434;
   box-shadow: 3px 5px 20px 2px #5b5b5b;
 `;
 
 const StContainers = styled.div`
-  position: fixed;
   z-index: 20;
   box-sizing: border-box;
   display: block;
@@ -487,7 +486,7 @@ const StContainers = styled.div`
 `;
 
 const BackGroudModal = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -561,7 +560,7 @@ const ListWrap = styled.div`
   left: 0;
   transition: height 400ms ease-in-out;
   .innerDiv {
-    position: fixed;
+    position: absolute;
     width: 100%;
     background-color: #d7d7d7;
     height: 30px;
@@ -573,7 +572,7 @@ const ListWrap = styled.div`
 `;
 
 const Wrapper = styled.div`
-  position: fixed;
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -658,7 +657,7 @@ const Stgap = styled.div`
 const Btnbox = styled.div`
   background-color: var(--primary);
   width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   margin-bottom: 5vh;
   display: flex;
