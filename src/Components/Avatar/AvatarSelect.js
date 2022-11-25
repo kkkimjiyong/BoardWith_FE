@@ -126,7 +126,7 @@ const AvatarSelect = () => {
                 return (
                   <ImgItemCtn className={select == Img.Num && "selected"}>
                     <ImgItem Img={Img} onClick={() => selectController(Img)}>
-                      {Img.Category}_{Img.Num}
+                      {/* {Img.Category}_{Img.Num} */}
                     </ImgItem>
                     <div className="point">
                       <ImCoinDollar />

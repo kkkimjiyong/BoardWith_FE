@@ -47,7 +47,7 @@ const Container = styled.div`
   overflow-x: hidden;
   width: 100%;
   height: 100vh;
-  max-width: 640px;
+  max-width: 540px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -87,15 +87,17 @@ const MainSlide = () => {
       `https://www.iceflower.shop/posts/?skip=${page}`
     );
     setItems((prev) => prev.concat(response.data.data));
+    console.log(response.data.data.length);
+    setNextPage(response.data.data.length == 5);
     page += 5;
   };
-  console.log(ModalOpen);
   useEffect(() => {
     let observer;
-    if (target.current) {
+    if (target.current && nextPage !== 0) {
       const onIntersect = async ([entry], observer) => {
-        if (entry.isIntersecting && true) {
+        if (entry.isIntersecting && nextPage) {
           observer.unobserve(entry.target);
+          console.log(nextPage);
           await getData();
           observer.observe(entry.target);
         }
@@ -105,7 +107,7 @@ const MainSlide = () => {
     }
 
     return () => observer && observer.disconnect();
-  }, [target]);
+  }, [target, nextPage]);
   //필터 만들 부분~!
   useEffect(() => {
     setItems(items);

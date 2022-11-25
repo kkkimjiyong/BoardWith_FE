@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
 
 const AvatarBox = ({ userSelect }) => {
   const [Face, setFace] = useState(1);
   console.log(userSelect);
-  const { Eye, Hair, Mouth, Back } = userSelect;
-  console.log(Mouth);
+  useEffect(() => {}, []);
+  if (userSelect) {
+    const { Eye, Hair, Mouth, Back } = userSelect;
+  }
+
   return (
     <AvatarCtn>
       <Avatar />
