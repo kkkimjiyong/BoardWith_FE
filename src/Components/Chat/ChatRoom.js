@@ -14,7 +14,7 @@ import moment from "moment-timezone";
 import "moment/locale/ko";
 import { BiAlignRight } from "react-icons/bi";
 import { AiOutlineNotification } from "react-icons/ai";
-
+import { FaArrowAltCircleUp } from "react-icons/fa";
 const ChatRoom = () => {
   // const socket = io("https://www.iceflower.shop/");
   const socket = io("https://www.iceflower.shop/");
@@ -64,7 +64,7 @@ const ChatRoom = () => {
       console.log(error);
     }
   };
-  console.log(user);
+  console.log(chatArr);
   useEffect(() => {
     getUser();
     getChat();
@@ -85,8 +85,7 @@ const ChatRoom = () => {
       message: message.message,
       room: roomid,
     });
-
-    setMessage({ message: "" });
+    // setMessage({ message: "" });
   };
 
   const roomsubmit = (user) => {
@@ -122,7 +121,6 @@ const ChatRoom = () => {
     socket.on("roomUsers", (msg) => {
       setUsers(msg.nickName);
     });
-
     socket.on("message", (message) => {
       setChatArr((chatArr) => [...chatArr, message]);
     });
@@ -165,12 +163,12 @@ const ChatRoom = () => {
           <div className="headtxt">{detail?.title}</div>
 
           <BiAlignRight size="24" onClick={() => SetisEdit(!isEdit)} />
-        </ChatHeader>{" "}
+        </ChatHeader>
         <RoomInfoHeader onClick={() => setIsOpen(!isOpen)}>
           <div className="infotitle">
             <AiOutlineNotification size="20" />
             파티 정보
-          </div>{" "}
+          </div>
           <Arrow className={isOpen && "UpArrow"} />
         </RoomInfoHeader>
         {isOpen && (
@@ -203,11 +201,17 @@ const ChatRoom = () => {
         </ChatCtn>{" "}
         <ChatInputBox onSubmit={onSubmitHandler}>
           <ChatInput
+            placeholder="메시지를 입력하세요"
             value={message?.message}
             name="message"
             onChange={onChange}
           />
-          <ChatBtn>전송</ChatBtn>
+          <FaArrowAltCircleUp
+            // onClick={onSubmitHandler}
+            color="white"
+            size="30"
+            className="sendBtn"
+          />
         </ChatInputBox>
       </Wrapper>
     </>
@@ -246,13 +250,16 @@ const RoomInfo = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 20px 10px 20px;
-  background-color: #ddd;
+  background-color: var(--primary);
+  color: var(--white);
+
   gap: 20px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
 `;
 
 const RoomInfoHeader = styled.div`
+  color: var(--white);
   z-index: 10;
   display: flex;
   position: absolute;
@@ -261,7 +268,7 @@ const RoomInfoHeader = styled.div`
   height: 5%;
   align-items: center;
   justify-content: space-between;
-  background-color: #ddd;
+  background-color: var(--primary);
   padding: 0px 30px;
   border-radius: 15px;
   .infotitle {
@@ -279,13 +286,14 @@ const RoomBoxTitle = styled.div`
 `;
 
 const RoomBtn = styled.div`
+  color: var(--white);
   width: 100%;
   border-radius: 10px;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background-color: #e34079;
 `;
 
 const Arrow = styled.div`
@@ -312,6 +320,7 @@ const UserWrap = styled.div`
   width: ${({ isEdit }) => (isEdit ? "100%" : "0px")};
   z-index: 998;
   position: absolute;
+  right: 0;
   height: 95vh;
   background-color: rgba(0, 0, 0, 0.4); ;
 `;
@@ -320,7 +329,7 @@ const UserCtn = styled.div`
   z-index: 90;
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: absolute;
   width: ${({ isEdit }) => (isEdit ? "70%" : "0px")};
   height: 95vh;
   padding: 20% 0%;
@@ -340,8 +349,8 @@ const UserList = styled.div`
 `;
 const UserBox = styled.div`
   padding: 10px 20px;
-  color: #2e294e;
-  background-color: #dddddd;
+  color: var(--white);
+  background-color: var(--gray);
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -356,6 +365,19 @@ const ChatCtn = styled.div`
   padding: 40px 10px;
   overflow: hidden;
   overflow-y: scroll;
+  //? -----모바일에서처럼 스크롤바 디자인---------------
+  @media only screen and (min-width: 1200px) {
+    ::-webkit-scrollbar {
+      width: 15px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #898989;
+      //스크롤바에 마진준것처럼 보이게
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 15px;
+    }
+  }
 `;
 
 const ChatInputBox = styled.form`
@@ -364,19 +386,21 @@ const ChatInputBox = styled.form`
   align-items: center;
   width: 100%;
   padding: 10px 0px;
-  gap: 20px;
-  background-color: #ddd;
+  border-top: 2px solid var(--gray);
+  .sendBtn {
+    position: absolute;
+    right: 17%;
+  }
 `;
 
 const ChatInput = styled.input`
   color: #ddd;
-  margin-left: 10%;
   border: none;
   border-radius: 20px;
   padding: 0px 20px;
   width: 70%;
   height: 40px;
-  background-color: #2e294e;
+  background-color: var(--gray);
 `;
 
 const ChatBtn = styled.button`

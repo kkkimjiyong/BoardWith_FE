@@ -144,7 +144,7 @@ const MyPage = () => {
         </LikeGameCtn>
         <MyPartyCtn>
           <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
-            내가 속한 모임
+            내가 찜한 모임
             <Arrow className={isOpen ? "open" : null} />
           </MyPartyTitle>
           {/* 맵돌려야지~ */}
@@ -171,7 +171,11 @@ const MyPage = () => {
           {isOpen1 && (
             <MyPartyBox>
               {reservedParty?.map((party) => {
-                return <MyPartyItem>{party?.title}</MyPartyItem>;
+                return (
+                  <MyPartyItem>
+                    {party?.title} <Arrow className="left" />
+                  </MyPartyItem>
+                );
               })}
             </MyPartyBox>
           )}
@@ -182,13 +186,17 @@ const MyPage = () => {
           {isOpen2 && (
             <MyPartyBox>
               {confirmParty?.map((party) => {
-                return <MyPartyItem>{party?.title}</MyPartyItem>;
+                return (
+                  <MyPartyItem>
+                    {party?.title} <Arrow className="left" />
+                  </MyPartyItem>
+                );
               })}
             </MyPartyBox>
           )}{" "}
-          <EditBox onClick={() => alert("수정중")}>
+          <EditBox>
             <div className="logout" onClick={deletUserHandler}>
-              로그아웃
+              회원탈퇴
             </div>
             <ImExit size="30" onClick={() => logoutHandler("accessToken")} />
           </EditBox>
@@ -252,6 +260,7 @@ const EditBox = styled.div`
   align-items: center;
   gap: 20px;
   color: #919191;
+
   :hover {
     cursor: pointer;
   }
@@ -351,6 +360,7 @@ const MyPartyItem = styled.div`
   background-color: var(--gray);
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: 20px;
   padding: 2% 5%;
 `;
@@ -361,7 +371,6 @@ const Arrow = styled.div`
   border-top-color: var(--white);
   transform: rotate(90deg);
   &.left {
-    margin-top: 7px;
     transform: rotate(270deg);
   }
   &.open {

@@ -186,7 +186,7 @@ const ItemWrap = styled.div`
     background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;
     border-radius: 6px;
-    margin-bottom: 5%;
+    margin: 5% 0%;
     :hover {
       color: white;
       /* box-shadow: 5px 5px 10px 2px #d90368; */
