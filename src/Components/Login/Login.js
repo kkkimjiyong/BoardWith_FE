@@ -34,7 +34,7 @@ const expires = new Date();
            httpOnly: true,
 secure: true,
 sameSite: "none",
-          expires
+          expires,
           path: "/",
         });
         setCookie("nickName", data.nickName);
