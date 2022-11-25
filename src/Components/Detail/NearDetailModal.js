@@ -100,6 +100,7 @@ export const NearDetailModal = ({ postid, setNearModalOpen }) => {
             <StHost>
               <div>
                 <div
+                  onClick={() => navigate(`/userpage/${comments?.nickName}`)}
                   style={{
                     borderRadius: "10px",
                     width: "30px",

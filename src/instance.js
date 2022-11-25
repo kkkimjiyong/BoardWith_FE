@@ -30,6 +30,7 @@ export const userApi = {
         Authorization: `${getCookie("accessToken")}`,
       },
     }),
+  getOtherUser: (nickname) => instance.get(`/users/${nickname}`),
 };
 
 export const postApi = {
@@ -48,7 +49,6 @@ export const postApi = {
 
   kickingPartyCancel: (payload) =>
     instance.put(`/posts/cancelBan/${payload.postid}`, payload.nickName),
-
 };
 
 export const commentsApi = {

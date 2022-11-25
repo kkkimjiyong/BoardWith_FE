@@ -16,6 +16,10 @@ import AvatarPage from "../Pages/AvatarPage";
 import FindPage from "../Pages/FindPage";
 import PracPage from "../Pages/PracPage";
 import RankingPage from "../Pages/RankingPage";
+import OtherUserPage from "../Pages/UserPage";
+import UserPage from "../Pages/UserPage";
+import DetailModal from "../Components/Detail/DetailModal";
+import SharePage from "../Pages/SharePage";
 
 const Router = () => {
   return (
@@ -26,11 +30,12 @@ const Router = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup/oauth" element={<KaKaoLogin />} />
         <Route path="/mypage" element={<Mypage />} />
+        <Route path="/userpage/:nickname" element={<UserPage />} />
         <Route path="/myparty" element={<MyPartyPage />} />
         <Route path="/editpage" element={<Editpage />} />
         <Route path="/form" element={<Form />} />
         <Route path="/chat/:roomid" element={<ChatPage />} />
-        <Route path="/posts/:postid" element={<DetailPage />} />
+        <Route path="/posts/:postid" element={<SharePage />} />
         <Route path="/avatar" element={<AvatarPage />} />
         <Route path="/find/:id" element={<FindPage />} />
         <Route path="/prac" element={<PracPage />} />
