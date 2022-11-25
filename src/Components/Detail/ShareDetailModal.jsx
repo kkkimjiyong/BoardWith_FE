@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { json, useNavigate } from "react-router-dom";
+import { json, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "../../style/Loading";
-import MainLogo from "../../Assets/LayoutLogo.png";
+
 import {
   faCalendar,
   faCommentDots,
@@ -30,13 +30,7 @@ import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
 const { kakao } = window;
-export const DetailModal = ({
-  postid,
-  setModalOpen,
-  ModalOpen,
-  realStartTime,
-  realEndTime,
-}) => {
+export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -52,6 +46,8 @@ export const DetailModal = ({
   const [y, setY] = useState();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
+  const { postid } = useParams();
+  console.log(postid);
 
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
@@ -131,6 +127,20 @@ export const DetailModal = ({
     dispatch(__getComments(postid));
   }, []);
 
+  // ---------------시간 (나중에 리팩토링) ----------------
+  const moment = require("moment-timezone");
+  const startDate = detail?.time?.[0];
+  const endDate = detail?.time?.[1];
+  const getStartTime = (startDate) => {
+    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
+    return m.format("MM.DD (ddd) HH:mm");
+  };
+  const getEndTime = (endDate) => {
+    var m = moment(endDate).tz("Asia/Seoul");
+    return m.format("HH:mm");
+  };
+  const realStartTime = getStartTime(startDate);
+  const realEndTime = getEndTime(endDate);
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
   // console.log(detail?.data?.nickName);
   // console.log(nickName);
@@ -210,45 +220,10 @@ export const DetailModal = ({
       }, ms)
     );
   };
-  // //!----------------카카오공유하기 ---------------------
-  useEffect(() => {
-    // 카카오톡 sdk 추가
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => document.body.removeChild(script);
-  }, []);
-
-  const shareToKatalk = () => {
-    // kakao sdk script 부른 후 window.Kakao로 접근
-    if (window.Kakao) {
-      const kakao = window.Kakao;
-      // 중복 initialization 방지
-      // 카카오에서 제공하는 javascript key를 이용하여 initialize
-      if (!kakao.isInitialized()) {
-        kakao.init("e0f77613161123ba2f51937a580b8e7c");
-      }
-
-      kakao.Link.sendDefault({
-        objectType: "feed",
-        content: {
-          title: detail?.data?.title,
-          description: detail?.data?.cafe,
-          imageUrl: MainLogo,
-          link: {
-            mobileWebUrl: `https://boardwith.vercel.app/posts/${detail?.data?.postId}`,
-            webUrl: `https://boardwith.vercel.app/posts/${detail?.data?.postId}`,
-          },
-        },
-      });
-    }
-  };
-  console.log(detail?.data?.postid);
 
   return (
     <BackGroudModal>
-      <StContainers onClick={() => setModalOpen(false)}>
+      <StContainers onClick={() => navigate("/main")}>
         {loading ? (
           <>
             <Loading />
@@ -264,7 +239,7 @@ export const DetailModal = ({
                         ""
                       ) : (
                         <FontAwesomeIcon
-                          onClick={() => setModalOpen(false)}
+                          onClick={() => navigate("/main")}
                           style={{
                             color: "white",
                           }}
@@ -301,7 +276,9 @@ export const DetailModal = ({
                           }}
                           // size="lg"
                           icon={faShareFromSquare}
-                          onClick={shareToKatalk}
+                          onClick={() => {
+                            alert("공유기능 개발중!");
+                          }}
                           cursor="pointer"
                         />
                         <Stgap />
@@ -499,7 +476,7 @@ export const DetailModal = ({
   );
 };
 
-export default DetailModal;
+export default ShareDetailModal;
 
 const StContainer = styled.div`
   color: #d7d7d7;
