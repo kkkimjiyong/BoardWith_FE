@@ -85,7 +85,7 @@ const ChatRoom = () => {
       message: message.message,
       room: roomid,
     });
-    // setMessage({ message: "" });
+   setMessage({ message: "" });
   };
 
   const roomsubmit = (user) => {
