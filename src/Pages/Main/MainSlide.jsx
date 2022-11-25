@@ -8,10 +8,11 @@ import MainFilter from "./MainFilter";
 import { useRef } from "react";
 import { NearDetailModal } from "../../Components/Detail/NearDetailModal";
 import { BiCurrentLocation } from "react-icons/bi";
-import { BsPencil } from "react-icons/bs";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FiFilter } from "react-icons/fi";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import Form from "./Form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -80,10 +81,11 @@ const MainSlide = () => {
 
   const [items, setItems] = useState([]);
   // console.log("items", items);
+  // console.log("items", items);
   const [nextPage, setNextPage] = useState(true);
   let page = 0;
 
-  const target = useRef();
+  const [target, setTarget] = useState(null);
 
   const getData = async () => {
     const response = await axios.get(
@@ -93,28 +95,30 @@ const MainSlide = () => {
     console.log(response.data.data.length);
     setNextPage(response.data.data.length == 5);
     page += 5;
+    return response.data.data.length;
   };
-  useEffect(() => {
-    let observer;
-    if (target.current && nextPage !== 0) {
-      const onIntersect = async ([entry], observer) => {
-        if (entry.isIntersecting && nextPage) {
-          observer.unobserve(entry.target);
-          console.log(nextPage);
-          await getData();
-          observer.observe(entry.target);
-        }
-      };
-      observer = new IntersectionObserver(onIntersect, { threshold: 0.1 }); // 추가된 부분
-      observer.observe(target.current);
-    }
 
-    return () => observer && observer.disconnect();
-  }, [target, nextPage]);
-  //필터 만들 부분~!
+  const onIntersect = async ([entry], observer) => {
+    observer.unobserve(entry.target);
+    let itemLength = await getData();
+    console.log(itemLength);
+    if (itemLength == 5) {
+      console.log("reobserve!!!!!!");
+      observer.observe(entry.target);
+    } else {
+      console.log("stop observe!!!!!!");
+    }
+  };
+
+  let observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
+  let observed = false;
   useEffect(() => {
-    setItems(items);
-  }, []);
+    if (target && !observed) {
+      observer.observe(target);
+      observed = true;
+    }
+  }, [target]);
+
   return (
     <>
       {" "}
@@ -141,12 +145,18 @@ const MainSlide = () => {
               <div>마감되었습니다</div>;
             }
           })}
-          <Target ref={target}>This is Target.</Target>{" "}
-        </MainListCtn>
+          <Target ref={setTarget}>This is Target.</Target>{" "}
+        </MainListCtn>{" "}
+        <FormButton onClick={() => setFormModalOpen(true)}>
+          <FontAwesomeIcon
+            style={{
+              color: "white",
+            }}
+            size="2x"
+            icon={faPenToSquare}
+          />
+        </FormButton>
       </MainBox>{" "}
-      <FormButton onClick={() => setFormModalOpen(true)}>
-        <BsPencil size={"24"} />
-      </FormButton>
       <MainFilter
         targetMargin={targetMargin}
         setTargetMargin={setTargetMargin}
@@ -207,7 +217,7 @@ const MainHeader = styled.div`
 
 const MainListCtn = styled.div`
   width: 100%;
-  padding: 3% 5% 5% 5%;
+  padding: 3% 5% 0 5%;
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
@@ -230,13 +240,13 @@ const Rowbox = styled.div`
   gap: 10px;
 `;
 const FormButton = styled.button`
-  position: fixed;
+  position: relative;
   bottom: 10%;
   left: 80%;
-  background-color: #2e294e;
-  box-shadow: 0px 0.5px 15px 0.1px white;
+  background-color: var(--primary);
+  border: none;
   color: white;
-  height: 50px;
-  width: 50px;
+  height: 120px;
+  width: 60px;
   border-radius: 50%;
 `;

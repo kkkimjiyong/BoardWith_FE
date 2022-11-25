@@ -11,6 +11,7 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
 import { date } from "yup";
+import axios from "axios";
 
 const MainFilter = ({
   items,
@@ -23,9 +24,17 @@ const MainFilter = ({
 }) => {
   //시작 날짜 받기
   const onDateChange = (date) => {
+    filtered.time[0].setFullYear(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+    filtered.time[1].setFullYear(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
     filtered.date = date;
-    filtered.time[0].setFullYear(date.getYear());
-    filtered.time[1].setFullYear(date.getYear());
     setFiltered({
       ...filtered,
     });
@@ -54,7 +63,6 @@ const MainFilter = ({
       [name]: value,
     });
   };
-
   const seoulGu = [
     { value: "강남구", label: "강남구" },
     { value: "강동구", label: "강동구" },
@@ -82,29 +90,31 @@ const MainFilter = ({
     { value: "중구", label: "중구" },
     { value: "중랑구", label: "중랑구" },
   ];
+
   const [filtered, setFiltered] = useState({
-    time: [new Date("1970-01-01"), new Date("9999-12-31")],
+    time: [new Date("1970-01-01 00:00:00"), new Date("9999-12-31 23:00:00")],
     date: new Date(),
-    partyMember: [2, 4],
-    map: "구",
+    partyMember: [1, 10],
+    map: "강남구",
   });
 
-  const filteredItems = items?.filter(
-    (item) =>
-      filtered.time[0] <= new Date(item.time) &&
-      new Date(item.time) <= filtered.time[1] &&
-      filtered.partyMember[0] <= item.partyMember &&
-      item.partyMember <= filtered.partyMember[1]
-    // item.map.includes(filtered.map)
-  );
+  // const filteredItems = items?.filter(
+  //   (item) =>
+  //     filtered.time[0] <= new Date(item.time) &&
+  //     new Date(item.time) <= filtered.time[1] &&
+  //     filtered.partyMember[0] <= item.partyMember &&
+  //     item.partyMember <= filtered.partyMember[1]
+  // item.map.includes(filtered.map)
+  // );
   // console.log(items);
   //필터 선택하기
-  const filterhandler = () => {
-    setItems(filteredItems);
-    if (filteredItems.length < 5) {
-      setTargetMargin((5 - filteredItems.length) * 200);
-    }
-  };
+  // const filterhandler = () => {
+  //   setItems(filteredItems);
+  //   if (filteredItems.length < 5) {
+  //     setTargetMargin((5 - filteredItems.length) * 200);
+  //   }
+  // };
+  console.log("filtered", filtered);
 
   //양방향 인원 체크
   function valuetext(value) {
@@ -113,7 +123,7 @@ const MainFilter = ({
 
   const minDistance = 1;
 
-  const [value2, setValue2] = useState([3, 6]);
+  const [value2, setValue2] = useState([1, 10]);
 
   const handleChange2 = (event, newValue, activeThumb) => {
     if (!Array.isArray(newValue)) {
@@ -135,6 +145,14 @@ const MainFilter = ({
         partyMember: newValue,
       });
     }
+  };
+  const getFiltered = async () => {
+    const response = await axios.post(
+      `https://www.iceflower.shop/posts/filterPosts`,
+      filtered
+    );
+    console.log(response.data);
+    setItems(response.data);
   };
 
   return (
@@ -160,7 +178,7 @@ const MainFilter = ({
 
           <ContentLabel>날짜</ContentLabel>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <MobileDatePicker
+            <DatePicker
               name="time"
               inputFormat={"yyyy-MM-dd"}
               mask={"____-__-__"}
@@ -218,7 +236,7 @@ const MainFilter = ({
             />
           </InputBox>
 
-          <ContentButton onClick={filterhandler}>파티보기</ContentButton>
+          <ContentButton onClick={getFiltered}>파티보기</ContentButton>
         </Contentbox>
       </div>
     </Wrap>
@@ -227,10 +245,21 @@ const MainFilter = ({
 
 export default MainFilter;
 
+const DatePicker = styled(MobileDatePicker)(({ theme }) => ({
+  "& input": {
+    padding: "15px",
+    color: "white",
+    borderRadius: "10px",
+    border: "1px solid white",
+  },
+}));
+
 const MemberSlider = styled(Slider)({
   color: "#c72363",
   height: 8,
   "& .MuiSlider-track": {
+    backgroundColor: "var(--primary)",
+
     border: "none",
   },
   "& .MuiSlider-thumb": {
@@ -291,7 +320,6 @@ const Wrap = styled.div`
 `;
 
 const Contentbox = styled.div`
-  border: 1px solid black;
   margin-top: 20px;
   display: flex;
   justify-content: center;
@@ -320,10 +348,12 @@ const ContentButton = styled.button`
 `;
 
 const ContentLabel = styled.label`
-  font-weight: 800;
+  font-weight: 200;
 `;
 
 const LocationSelect = styled.select`
+  background-color: #484848;
+  color: white;
   width: 100%;
   padding: 10px;
   border-radius: 10px;
@@ -332,15 +362,17 @@ const LocationSelect = styled.select`
   }
 `;
 
-const DateSelect = styled.div`
-  .react-datepicker {
-    display: block;
-    width: 100%;
-    border-radius: 10px;
-  }
-`;
+// const DateSelect = styled.div`
+//   .react-datepicker {
+//     display: block;
+//     width: 100%;
+//     border-radius: 10px;
+//   }
+// `;
 
 const TimeSelect = styled.select`
+  background-color: #484848;
+  color: white;
   width: 48%;
   padding: 10px;
   border-radius: 10px;
