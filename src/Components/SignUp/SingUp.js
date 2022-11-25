@@ -106,6 +106,9 @@ const SignUp = () => {
         phoneNumber: user.phoneNumber,
       });
       console.log(data);
+      if (data) {
+        alert("인증번호 전송!");
+      }
     } catch (error) {
       console.log(error);
       alert(error.message);

@@ -20,6 +20,7 @@ import {
   faChevronLeft,
   faBullhorn,
   faShareFromSquare,
+  faCrown,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   __getComments,
@@ -34,6 +35,19 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
+  const commentInitialState = {
+    comment: "",
+    createdAt: "",
+    gender: "",
+    myPlace: [],
+    nickName: "",
+    postId: "",
+    updatedAt: "",
+    userId: "",
+    __v: "",
+    _id: "",
+  };
+
   const [comment, setComment] = useState(initialState);
   const [isHost, setIsHost] = useState(false);
   const [nickName, setNickName] = useState();
@@ -46,6 +60,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
   const [y, setY] = useState();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
+  const [isBanUser, setIsBanUser] = useState(false);
+
+  // 수정
+  const [blacklist, setBlacklist] = useState();
+  const [blacklists, setBlacklists] = useState([]);
 
   //? ---------------시간 (나중에 리팩토링) ----------------
   const moment = require("moment-timezone");
@@ -147,13 +166,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
 
   useEffect(() => {
     // 파티장인지 확인
-    if (detail?.data?.nickName === nickName) {
-      setIsHost(true);
-    } else if (detail?.data?.nickName !== nickName) {
-      setIsHost(false);
-    } else {
-      setIsHost(false);
-    }
+    detail?.data?.nickName === nickName ? setIsHost(true) : setIsHost(false);
+
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
     setX(detail?.data?.location?.x);
     setY(detail?.data?.location?.y);
@@ -174,15 +188,40 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       });
       marker.setMap(map);
     }
-    //접속자가 댓글작성자인지 확인
-    for (let i = 0; i < comments?.length; i++) {
-      if (nickName === comments[i]?.nickName) {
-        //console.log(comments[i]?.nickName);
-        setIsCommentAuthor(true);
+    //접속자가 밴 유저인지 확인
+
+    // detail?.data?.banUser?.forEach(
+    //   (banUser) => comments?.nickName === banUser && setIsBanUser(true)
+    // );
+
+    // 만약 10명
+    for (let i = 0; i < detail?.data?.banUser?.length; i++) {
+      for (let i = 0; i < comments?.length; i++) {
+        if (detail?.data?.banUser[i] === comments[i].nickName) {
+          // setIsBanUser(true);
+          //console.log("하이하이 : ", comments[i]);
+          // 블랙리스트인 애들 객체에 저장
+          // 블랙리스트인 애들이 이제 여기에서 분류 되는거니까
+          // 10명중에 4명이 블랙리스트면 4번 타겠지?
+          // 그러면 얘네들만 객체에 따로 담으면 될듯?
+          setBlacklist(comments[i]);
+          setBlacklists(comments[i]);
+          //setBlacklists((blacklist) => [blacklist, comments[i]]);
+        }
       }
     }
-  });
+
+    //for (let i = 0; i < blacklist.length)
+    console.log("blacklist", blacklist); // 무조건 1개 있어야해
+    console.log("blacklists", blacklists); // 2개 다 있어야해
+
+    //접속자가 댓글작성자인지 확인
+    comments?.forEach(
+      (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
+    );
+  }, [postApi.getDetailId(postid)]);
   // [postApi.getDetailId(postid)]
+
   useEffect(() => {
     //파티 마감 상태
     if (detail?.data?.closed === 0) {
@@ -193,6 +232,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       setIsClosed(false);
     }
   }, []);
+
+  // console.log(isHost);
 
   useEffect(() => {
     // api();
@@ -291,8 +332,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                           }
                           style={{
                             borderRadius: "20px",
-                            width: "50px",
-                            height: "50px",
+                            width: "40px",
+                            height: "40px",
                             backgroundColor: "white",
                             // backgroundImage: `url(${detail?.data?.img})`,
                             backgroundSize: "cover",
@@ -300,6 +341,14 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                           }}
                         />
                         <Stgap />
+                        <FontAwesomeIcon
+                          style={{
+                            color: "white",
+                            marginRight: "5px",
+                          }}
+                          size="1x"
+                          icon={faCrown}
+                        />
                         <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
                       </div>
                       <StContentWrap>
@@ -330,6 +379,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                     </StHost>
                     <div>
                       <h3>{detail?.data?.title}</h3> {/* 제목 */}
+                    </div>
+                    <div>
+                      <h4>{detail?.data?.content}</h4> {/* 제목 */}
                     </div>
                     <StContentWrap>
                       <FontAwesomeIcon
@@ -446,21 +498,56 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                     <></>
                   )}
                   <div>
-                    {comments?.map((comment) => (
-                      <Comments
-                        key={comment._id}
-                        comments={comment}
-                        isHost={isHost}
-                        nickName={nickName}
-                        postid={postid}
-                        detail={detail?.data}
-                        isPostEdit={isEdit}
-                        setModalOpen={setModalOpen}
-                        ModalOpen={ModalOpen}
-                        open={open}
-                        setOpen={setOpen}
-                      />
-                    ))}
+                    {!isBanUser && (
+                      <>
+                        {comments?.map((comment) => (
+                          <Comments
+                            key={comment._id}
+                            comments={comment}
+                            isHost={isHost}
+                            nickName={nickName}
+                            postid={postid}
+                            detail={detail?.data}
+                            isPostEdit={isEdit}
+                            setModalOpen={setModalOpen}
+                            ModalOpen={ModalOpen}
+                            open={open}
+                            setOpen={setOpen}
+                          />
+                        ))}
+                      </>
+                    )}
+                    {/* {isEdit && (
+                      <>
+                        <p
+                          style={{
+                            marginLeft: "20px",
+                            marginTop: "40px",
+                          }}
+                        >
+                          블랙리스트
+                        </p>
+                        {isBanUser && (
+                          <>
+                            {comments?.map((comment) => (
+                              <Comments
+                                key={comment._id}
+                                comments={comment}
+                                isHost={isHost}
+                                nickName={nickName}
+                                postid={postid}
+                                detail={detail?.data}
+                                isPostEdit={isEdit}
+                                setModalOpen={setModalOpen}
+                                ModalOpen={ModalOpen}
+                                open={open}
+                                setOpen={setOpen}
+                              />
+                            ))}
+                          </>
+                        )}
+                      </>
+                    )} */}
 
                     {!isCommentAuthor && !isHost && open ? (
                       <Btnbox>
@@ -516,10 +603,12 @@ const StContainer = styled.div`
   border: none;
   border-radius: 16px;
   background-color: #d7d7d7;
-  width: 370px;
+  min-width: 370px;
   /* width: 340px; */
+  width: 90vw;
+  max-width: 600px;
   background-color: #343434;
-  box-shadow: 3px 5px 20px 2px #5b5b5b;
+  //box-shadow: 3px 5px 20px 2px #5b5b5b;
 `;
 
 const StContainers = styled.div`
@@ -560,7 +649,7 @@ const StCommentbull = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--gray);
+  background-color: var(--primary);
   border-radius: 12px;
   font-size: 14px;
 `;
@@ -597,7 +686,7 @@ const StBackGroundColor = styled.div`
 const ListWrap = styled.div`
   z-index: 235;
   width: 100%;
-  background-color: black;
+  background-color: var(--black);
   color: white;
   height: ${({ open }) => (open ? "100%" : "0")};
   position: absolute;
@@ -700,7 +789,8 @@ const Stgap = styled.div`
 `;
 
 const Btnbox = styled.div`
-  background-color: var(--primary);
+  border-top: 1px solid #5d5d5d;
+  background-color: var(--black);
   width: 100%;
   position: absolute;
   bottom: 0;

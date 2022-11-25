@@ -107,8 +107,11 @@ const MainSlide = () => {
     }
   };
 
+
   let observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
   let observed = false;
+
+
   useEffect(() => {
     if (target && !observed) {
       observer.observe(target);
@@ -166,8 +169,10 @@ const MainSlide = () => {
       {/* //! 가장 가까운 모임 보여주는 모달창 */}
       {NearModalOpen && (
         <NearDetailModal
-          postid={newcardData[0]?._id}
-          setNearModalOpen={setNearModalOpen}
+          postid={neardata[0]?._id}
+
+          setModalOpen={setNearModalOpen}
+
         />
       )}
       {/* 게시글 폼페이지 모달창 */}
