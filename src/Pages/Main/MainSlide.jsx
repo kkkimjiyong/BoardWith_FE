@@ -158,7 +158,9 @@ const MainSlide = () => {
       {NearModalOpen && (
         <NearDetailModal
           postid={neardata[0]?._id}
+
           setModalOpen={setNearModalOpen}
+
         />
       )}
     </>
