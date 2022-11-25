@@ -155,7 +155,7 @@ const MainSlide = () => {
       {/* //! 가장 가까운 모임 보여주는 모달창 */}
       {NearModalOpen && (
         <NearDetailModal
-          postid={newcardData[0]?._id}
+          postid={neardata[0]?._id}
           setNearModalOpen={setNearModalOpen}
         />
       )}
