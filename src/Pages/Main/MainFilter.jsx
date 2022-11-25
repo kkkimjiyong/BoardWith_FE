@@ -114,7 +114,6 @@ const MainFilter = ({
   //     setTargetMargin((5 - filteredItems.length) * 200);
   //   }
   // };
-  console.log("filtered", filtered);
 
   //양방향 인원 체크
   function valuetext(value) {
@@ -153,6 +152,7 @@ const MainFilter = ({
     );
     console.log(response.data);
     setItems(response.data);
+    setOpen(!open);
   };
 
   return (

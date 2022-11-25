@@ -80,8 +80,7 @@ const MainSlide = () => {
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
-  // console.log("items", items);
-  // console.log("items", items);
+  console.log("items", items);
   const [nextPage, setNextPage] = useState(true);
   let page = 0;
 
@@ -92,8 +91,6 @@ const MainSlide = () => {
       `https://www.iceflower.shop/posts/?skip=${page}`
     );
     setItems((prev) => prev.concat(response.data.data));
-    console.log(response.data.data.length);
-    setNextPage(response.data.data.length == 5);
     page += 5;
     return response.data.data.length;
   };
@@ -145,7 +142,7 @@ const MainSlide = () => {
               <div>마감되었습니다</div>;
             }
           })}
-          <Target ref={setTarget}>This is Target.</Target>{" "}
+          <Target ref={setTarget}>target? </Target>{" "}
         </MainListCtn>{" "}
         <FormButton onClick={() => setFormModalOpen(true)}>
           <FontAwesomeIcon
@@ -183,11 +180,13 @@ export default MainSlide;
 
 const Target = styled.div`
   /* height: 100px; */
+  color: var(--black);
 `;
 
 const MainBox = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
@@ -240,13 +239,13 @@ const Rowbox = styled.div`
   gap: 10px;
 `;
 const FormButton = styled.button`
-  position: relative;
+  position: absolute;
   bottom: 10%;
   left: 80%;
   background-color: var(--primary);
   border: none;
   color: white;
-  height: 120px;
+  height: 60px;
   width: 60px;
   border-radius: 50%;
 `;

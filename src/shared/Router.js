@@ -20,6 +20,7 @@ import OtherUserPage from "../Pages/UserPage";
 import UserPage from "../Pages/UserPage";
 import DetailModal from "../Components/Detail/DetailModal";
 import SharePage from "../Pages/SharePage";
+import Search from "../Pages/Main/Search";
 
 const Router = () => {
   return (
@@ -40,6 +41,7 @@ const Router = () => {
         <Route path="/find/:id" element={<FindPage />} />
         <Route path="/prac" element={<PracPage />} />
         <Route path="/rank" element={<RankingPage />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </BrowserRouter>
   );

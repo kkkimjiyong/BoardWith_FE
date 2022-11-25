@@ -92,10 +92,10 @@ function Form({ setFormModalOpen }) {
           },
         }
       );
-      console.log(payload);
-      console.log(data);
+      console.log("formpayload", payload);
+      console.log("formdata", data);
       alert("파티모집글 작성이 완료되었습니다.");
-      navigate("/main");
+      setFormModalOpen(false);
     } catch (error) {}
   };
 
@@ -264,14 +264,7 @@ function Form({ setFormModalOpen }) {
               <DaumPostBox></DaumPostBox>
             </Inputbox>{" "}
             <Buttonbox>
-              <Button
-                onClick={() => {
-                  alert("게시글이 작성되었습니다.");
-                  setFormModalOpen(false);
-                }}
-              >
-                작성완료
-              </Button>
+              <Button>작성완료</Button>
             </Buttonbox>
           </Formbox>
         </Wrap>

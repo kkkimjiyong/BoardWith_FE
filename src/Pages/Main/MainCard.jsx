@@ -11,6 +11,8 @@ import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import ProfileAvatarBox from "../../Components/Avatar/ProfileAvatarBox";
+import axios from "axios";
+import { getCookie } from "../../hooks/CookieHook";
 
 const Item = ({ number, item, Myaddress }) => {
   const navigate = useNavigate();
@@ -67,9 +69,24 @@ const Item = ({ number, item, Myaddress }) => {
 
   //북마크(별) 색깔 변환
   const [starMark, setStarMark] = useState(true);
+  const bookMarking = async () => {
+    try {
+      const { data } = await axios.put(
+        `https://www.iceflower.shop/posts/bookmark/${item._id}`,
+        {
+          headers: {
+            Authorization: `${getCookie("accessToken")}`,
+          },
+        }
+      );
+      console.log(data);
+    } catch (error) {}
+  };
+
   const bookMark = (event) => {
     event.stopPropagation();
     setStarMark(!starMark);
+    bookMarking();
   };
 
   return (
@@ -179,7 +196,6 @@ const Item = ({ number, item, Myaddress }) => {
 
 const ItemWrap = styled.div`
   .ItemWrap {
-    position: ;
     color: #d7d7d7;
     width: 100%;
     height: 100%;
