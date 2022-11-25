@@ -237,14 +237,14 @@ export const DetailModal = ({
           description: detail?.data?.cafe,
           imageUrl: "https://i.ibb.co/4YJj0x9/image.png",
           link: {
-            mobileWebUrl: `https://boardwith.vercel.app/posts/${detail?.data?.postId}`,
-            webUrl: `https://boardwith.vercel.app/posts/${detail?.data?.postId}`,
+            mobileWebUrl: `https://boardwith.vercel.app/posts/${postid}`,
+            webUrl: `https://boardwith.vercel.app/posts/${postid}`,
           },
         },
       });
     }
   };
-  console.log(detail?.data?.postid);
+  console.log(postid);
   console.log(MainLogo);
   return (
     <BackGroudModal>
