@@ -20,18 +20,22 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
 import { timeSelect } from "../../tools/select";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const { kakao } = window;
-function Form() {
+function Form({ setFormModalOpen }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();
+  const [ModalOpen, setModalOpen] = useState(false);
+
   //카카오 Map API
   var geocoder = new kakao.maps.services.Geocoder();
 
   const formSchema = yup.object({
     title: yup.string().required("제목을 입력해주세요 😰"),
-    content: yup.string(),
+    content: yup.string().max(25, "내용은 25자 이내로 입력해주세요"),
     location: yup.string(),
     cafe: yup.string(),
     date: yup.string(),
@@ -40,13 +44,6 @@ function Form() {
   });
 
   const onSubmit = (data) => {
-    // console.log("submit", {
-    //   ...data,
-    //   location: location,
-    //   map: data.cafe.split(" ")[1],
-    //   time: [data.time.value[0].getTime(), data.time.value[1].getTime()],
-    // });
-
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
 
@@ -58,9 +55,18 @@ function Form() {
     startTime.setHours(data.startTime.split(":")[0]);
     endTime.setHours(data.endTime.split(":")[0]);
 
-    console.log(startTime.toISOString());
-    console.log(endTime.toISOString());
-
+    // console.log(startTime.toISOString());
+    // console.log(endTime.toISOString());
+    console.log("submit", {
+      title: data.title,
+      content: data.content,
+      partyMember: data.partyMember,
+      date: "임시",
+      cafe: data.cafe,
+      location: location,
+      map: data.cafe.split(" ")[1],
+      time: [startTime.toISOString(), endTime.toISOString()],
+    });
     creatPost({
       title: data.title,
       content: data.content,
@@ -86,10 +92,10 @@ function Form() {
           },
         }
       );
-      console.log(payload);
-      console.log(data);
+      console.log("formpayload", payload);
+      console.log("formdata", data);
       alert("파티모집글 작성이 완료되었습니다.");
-      navigate("/main");
+      setFormModalOpen(false);
     } catch (error) {}
   };
 
@@ -107,8 +113,8 @@ function Form() {
     defaultValues: { partyMember: "10" },
   });
 
-  console.log(location);
-  console.log(errors);
+  // console.log(location);
+  // console.log(errors);
   //사용자가 검색한 값을 좌표값으로 넘겨준다.
   var callback = function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
@@ -130,144 +136,165 @@ function Form() {
   };
 
   const postCode = ReactDaumPost(postConfig);
-  console.log(watch());
+  // console.log(watch());
 
   return (
-    <Layout>
-      <Wrap>
-        <Formbox onSubmit={handleSubmit(onSubmit)}>
-          <Inputbox>
-            <FlexBox>
-              <LabelBox>제목</LabelBox>
-              <InputBox {...register("title")} />
-            </FlexBox>
-            <FlexBox>
-              <LabelBox>내용</LabelBox>
-              <InputBox {...register("content")} />
-            </FlexBox>
-            <FlexBox>
-              <LabelBox>날짜</LabelBox>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <BackGroudModal>
+      <Layout>
+        <Wrap>
+          <div>
+            <Sth onClick={() => setFormModalOpen(false)}>
+              <FontAwesomeIcon
+                style={{
+                  color: "white",
+                }}
+                size="1x"
+                icon={faX}
+                cursor="pointer"
+              />
+            </Sth>{" "}
+            <FormHeader>새로운 파티</FormHeader>
+          </div>
+
+          <Formbox onSubmit={handleSubmit(onSubmit)}>
+            <Inputbox>
+              <FlexBox>
+                <LabelBox>파티명</LabelBox>
+                <InputBox {...register("title")} />
+              </FlexBox>
+              <FlexBox>
+                <LabelBox>내용</LabelBox>
+                <TextareaBox
+                  style={{
+                    height: "80px",
+                  }}
+                  maxLength={50}
+                  {...register("content")}
+                />
+                {errors.content && (
+                  <small role="alert">{errors.content.message}</small>
+                )}
+              </FlexBox>
+              <FlexBox>
+                <LabelBox>날짜</LabelBox>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Controller
+                    control={control}
+                    name="fullday"
+                    render={({ field: { onChange, value } }) => (
+                      <DatePicker
+                        inputFormat={"yyyy-MM-dd"}
+                        mask={"____-__-__"}
+                        value={value}
+                        onChange={onChange}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            inputProps={{
+                              ...params.inputProps,
+                              placeholder: "tt.mm.jjjj",
+                            }}
+                          />
+                        )}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </FlexBox>{" "}
+              <FlexBox>
+                <LabelBox>시간</LabelBox>
+                <div>
+                  <TimeSelect
+                    name="startTime"
+                    size={1}
+                    defaultValue={timeSelect[0].value}
+                    {...register("startTime")}
+                  >
+                    {timeSelect.map((time) => {
+                      return (
+                        <option key={time.label} value={time.value}>
+                          {time.label}
+                        </option>
+                      );
+                    })}
+                  </TimeSelect>
+                  <TimeSelect
+                    name="endTime"
+                    size={1}
+                    // onChange={onChange}
+                    defaultValue={timeSelect[23].value}
+                    {...register("endTime")}
+                  >
+                    {timeSelect.map((time) => {
+                      return (
+                        <option key={time.label} value={time.value}>
+                          {time.label}
+                        </option>
+                      );
+                    })}
+                  </TimeSelect>
+                </div>
+              </FlexBox>
+              <FlexBox>
+                <LabelBox>인원</LabelBox>
+
                 <Controller
                   control={control}
-                  name="fullday"
-                  render={({ field: { onChange, value } }) => (
-                    <MobileDatePicker
-                      inputFormat={"yyyy-MM-dd"}
-                      mask={"____-__-__"}
-                      value={value}
-                      onChange={onChange}
-                      renderInput={(params) => <TextField {...params} />}
+                  name="partyMember"
+                  render={({ field: { onChange } }) => (
+                    <MemberSlider
+                      defaultValue={10}
+                      onChange={(e) => {
+                        onChange(e.target.value);
+                      }}
+                      valueLabelDisplay="on"
+                      // getAriaValueText={valuetext}
+                      disableSwap
+                      min={1}
+                      max={10}
+                      sx={{ color: "var(--gray)" }}
                     />
                   )}
                 />
-              </LocalizationProvider>
-            </FlexBox>{" "}
-            <FlexBox>
-              <LabelBox>시간</LabelBox>
-              <div>
-                <TimeSelect
-                  name="startTime"
-                  size={1}
-                  defaultValue={timeSelect[0].value}
-                  {...register("startTime")}
-                >
-                  {timeSelect.map((time) => {
-                    return (
-                      <option key={time.label} value={time.value}>
-                        {time.label}
-                      </option>
-                    );
-                  })}
-                </TimeSelect>
-                <TimeSelect
-                  name="endTime"
-                  size={1}
-                  // onChange={onChange}
-                  defaultValue={timeSelect[23].value}
-                  {...register("endTime")}
-                >
-                  {timeSelect.map((time) => {
-                    return (
-                      <option key={time.label} value={time.value}>
-                        {time.label}
-                      </option>
-                    );
-                  })}
-                </TimeSelect>
-              </div>
-            </FlexBox>
-            <FlexBox>
-              <LabelBox>인원</LabelBox>
-
-              <Controller
-                control={control}
-                name="partyMember"
-                render={({ field: { onChange } }) => (
-                  <MemberSlider
-                    defaultValue={10}
-                    onChange={(e) => {
-                      onChange(e.target.value);
-                    }}
-                    valueLabelDisplay="on"
-                    // getAriaValueText={valuetext}
-                    disableSwap
-                    min={1}
-                    max={10}
-                    marks
-                    sx={{ color: "black" }}
-                  />
-                )}
-              />
-            </FlexBox>
-            <FlexBox>
-              <LabelBox>지도</LabelBox>
-              <InputBox onClick={postCode} {...register("cafe")} />
-            </FlexBox>{" "}
-            <DaumPostBox></DaumPostBox>
-          </Inputbox>{" "}
-          <Buttonbox>
-            <Button
-              onClick={() => {
-                reset();
-              }}
-            >
-              초기화하기
-            </Button>
-            <Button
-              onClick={() => {
-                navigate("/main");
-              }}
-            >
-              취소
-            </Button>
-            <Button
-
-            // onClick={() => {
-            //   onclickSubmitHandler();
-            // }}
-            // disabled={inputs.content === "" || inputs.title === ""}
-            >
-              작성완료
-            </Button>
-          </Buttonbox>
-        </Formbox>
-      </Wrap>
-    </Layout>
+              </FlexBox>
+              <FlexBox>
+                <LabelBox>지도</LabelBox>
+                <InputBox onClick={postCode} {...register("cafe")} />
+              </FlexBox>{" "}
+              <DaumPostBox></DaumPostBox>
+            </Inputbox>{" "}
+            <Buttonbox>
+              <Button>작성완료</Button>
+            </Buttonbox>
+          </Formbox>
+        </Wrap>
+      </Layout>
+    </BackGroudModal>
   );
 }
 export default Form;
+
+const DatePicker = styled(MobileDatePicker)(({ theme }) => ({
+  "& input": {
+    padding: "15px",
+    color: "white",
+    backgroundColor: "var(--gray)",
+    borderRadius: "10px",
+  },
+}));
 
 const MemberSlider = styled(Slider)({
   color: "black",
   height: 8,
   "& .MuiSlider-track": {
+    backgroundColor: "var(--primary)",
+
     border: "none",
   },
   "& .MuiSlider-thumb": {
     height: 15,
     width: 15,
-    backgroundColor: "black",
+    backgroundColor: "var(--primary)",
     border: "2px solid currentColor",
     "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
       boxShadow: "inherit",
@@ -284,7 +311,7 @@ const MemberSlider = styled(Slider)({
     width: 32,
     height: 32,
     borderRadius: "50% 50% 50% 0",
-    backgroundColor: "black",
+    backgroundColor: "var(--primary)",
     transformOrigin: "bottom left",
     transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
     "&:before": { display: "none" },
@@ -298,10 +325,11 @@ const MemberSlider = styled(Slider)({
 });
 
 const Wrap = styled.div`
-  width: 100%;
+  width: 90%;
+  height: 100vh;
   margin: 30px auto;
-  border-radius: 15px;
-  background-color: gray;
+  background-color: #212121;
+  z-index: 999;
 `;
 
 const Formbox = styled.form`
@@ -314,9 +342,10 @@ const Formbox = styled.form`
 `;
 
 const LabelBox = styled.label`
+  color: white;
   margin-bottom: 10px;
-  font-weight: 800;
-  font-size: larger;
+  font-weight: 200;
+  font-size: medium;
 `;
 
 const Inputbox = styled.div`
@@ -326,35 +355,54 @@ const Inputbox = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
+  margin-top: 10px;
 `;
 
 const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  :first-child {
+    margin-top: 30px;
+  }
 `;
 
 const InputBox = styled.input`
-  padding: 20px;
+  padding: 10px;
   background: ghostwhite;
   border-radius: 10px;
-  border: 1px solid #666;
-  background-color: white;
+  border: none;
+  color: white;
+  background-color: #343434;
+`;
+
+const TextareaBox = styled.textarea`
+  padding: 10px;
+  background: ghostwhite;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  background-color: #343434;
+  resize: none;
 `;
 
 const Buttonbox = styled.div`
   width: 100%;
   display: inline-flex;
+  padding: 10px;
 `;
 const Button = styled.button`
-  width: 30%;
+  width: 100%;
   display: flex;
-
+  background-color: var(--primary);
+  color: white;
   justify-content: center;
   margin: 0 auto;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   border: none;
+  font-size: 18px;
 `;
 
 const DaumPostBox = styled.div`
@@ -363,10 +411,73 @@ const DaumPostBox = styled.div`
   width: 400px;
 `;
 const TimeSelect = styled.select`
+  color: white;
+  background-color: #343434;
+  border: none;
   width: 48%;
-  padding: 10px;
+  padding: 15px;
   border-radius: 10px;
   :first-child {
     margin-right: 4%;
   }
+`;
+
+const StContainers = styled.div`
+  position: fixed;
+  z-index: 20;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 100%;
+`;
+const StBackGroundColor = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+`;
+
+const BackGroudModal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  /* position: fixed;
+  left: 50%;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  z-index: 42;
+  display: block; */
+`;
+const Sth = styled.div`
+  z-index: 50;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 4%;
+  left: -43%;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 10px;
+`;
+const FormHeader = styled.div`
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
 `;
