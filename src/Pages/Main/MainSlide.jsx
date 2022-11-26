@@ -8,9 +8,11 @@ import MainFilter from "./MainFilter";
 import { useRef } from "react";
 import { NearDetailModal } from "../../Components/Detail/NearDetailModal";
 import { BiCurrentLocation } from "react-icons/bi";
-import { BsPencil } from "react-icons/bs";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FiFilter } from "react-icons/fi";
 import { DetailModal } from "../../Components/Detail/DetailModal";
+import Form from "./Form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ const MainSlide = () => {
   const [targetMargin, setTargetMargin] = useState(0);
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
+  const [formModalOpen, setFormModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const scrollHead = useRef();
 
@@ -77,42 +80,45 @@ const MainSlide = () => {
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
-  // console.log("items", items);
+  console.log("items", items);
   const [nextPage, setNextPage] = useState(true);
   let page = 0;
 
-  const target = useRef();
+  const [target, setTarget] = useState(null);
 
   const getData = async () => {
     const response = await axios.get(
       `https://www.iceflower.shop/posts/?skip=${page}`
     );
     setItems((prev) => prev.concat(response.data.data));
-    console.log(response.data.data.length);
-    setNextPage(response.data.data.length == 5);
     page += 5;
+    return response.data.data.length;
   };
-  useEffect(() => {
-    let observer;
-    if (target.current && nextPage !== 0) {
-      const onIntersect = async ([entry], observer) => {
-        if (entry.isIntersecting && nextPage) {
-          observer.unobserve(entry.target);
-          console.log(nextPage);
-          await getData();
-          observer.observe(entry.target);
-        }
-      };
-      observer = new IntersectionObserver(onIntersect, { threshold: 0.1 }); // 추가된 부분
-      observer.observe(target.current);
-    }
 
-    return () => observer && observer.disconnect();
-  }, [target, nextPage]);
-  //필터 만들 부분~!
+  const onIntersect = async ([entry], observer) => {
+    observer.unobserve(entry.target);
+    let itemLength = await getData();
+    console.log(itemLength);
+    if (itemLength == 5) {
+      console.log("reobserve!!!!!!");
+      observer.observe(entry.target);
+    } else {
+      console.log("stop observe!!!!!!");
+    }
+  };
+
+
+  let observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
+  let observed = false;
+
+
   useEffect(() => {
-    setItems(items);
-  }, []);
+    if (target && !observed) {
+      observer.observe(target);
+      observed = true;
+    }
+  }, [target]);
+
   return (
     <>
       {" "}
@@ -122,7 +128,6 @@ const MainSlide = () => {
           <div className="headtxt">파티모집</div>
           <Rowbox>
             <FiFilter size={"24"} onClick={() => setOpen(!open)} />
-            <BsPencil size={"24"} onClick={() => navigate("/form")} />
           </Rowbox>
         </MainHeader>
         <MainListCtn ref={scrollHead}>
@@ -140,8 +145,17 @@ const MainSlide = () => {
               <div>마감되었습니다</div>;
             }
           })}
-          <Target ref={target}>This is Target.</Target>{" "}
-        </MainListCtn>
+          <Target ref={setTarget}>target? </Target>{" "}
+        </MainListCtn>{" "}
+        <FormButton onClick={() => setFormModalOpen(true)}>
+          <FontAwesomeIcon
+            style={{
+              color: "white",
+            }}
+            size="2x"
+            icon={faPenToSquare}
+          />
+        </FormButton>
       </MainBox>{" "}
       <MainFilter
         targetMargin={targetMargin}
@@ -156,9 +170,13 @@ const MainSlide = () => {
       {NearModalOpen && (
         <NearDetailModal
           postid={neardata[0]?._id}
-          setNearModalOpen={setNearModalOpen}
+
+          setModalOpen={setNearModalOpen}
+
         />
       )}
+      {/* 게시글 폼페이지 모달창 */}
+      {formModalOpen && <Form setFormModalOpen={setFormModalOpen} />}
     </>
   );
 };
@@ -167,11 +185,13 @@ export default MainSlide;
 
 const Target = styled.div`
   /* height: 100px; */
+  color: var(--black);
 `;
 
 const MainBox = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
@@ -201,7 +221,7 @@ const MainHeader = styled.div`
 
 const MainListCtn = styled.div`
   width: 100%;
-  padding: 3% 5% 5% 5%;
+  padding: 3% 5% 0 5%;
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
@@ -222,4 +242,15 @@ const MainListCtn = styled.div`
 const Rowbox = styled.div`
   display: flex;
   gap: 10px;
+`;
+const FormButton = styled.button`
+  position: absolute;
+  bottom: 10%;
+  left: 80%;
+  background-color: var(--primary);
+  border: none;
+  color: white;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
 `;

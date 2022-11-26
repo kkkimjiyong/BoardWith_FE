@@ -12,7 +12,7 @@ const MobileHeader = () => {
   return (
     <MobileHeaderCtn>
       {" "}
-      <GoSearch size="80%" color="white" onClick={() => alert("개발중")} />
+      <GoSearch size="80%" color="white" onClick={() => navigate("/search")} />
       <img className="logo" src={Avatar} onClick={() => navigate("/avatar")} />
       <CgHome size="80%" color="white" onClick={() => navigate("/main")} />
       <GoGraph size="80%" color="white" onClick={() => navigate("/rank")} />
