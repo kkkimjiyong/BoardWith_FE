@@ -134,16 +134,32 @@ function Form() {
 
   return (
     <Layout>
+      <LabelBox
+        style={{
+          marginTop: "          5vh",
+          textAlign: "center",
+          color: "white",
+        }}
+      >
+        새로운 파티
+      </LabelBox>
+
       <Wrap>
         <Formbox onSubmit={handleSubmit(onSubmit)}>
           <Inputbox>
             <FlexBox>
               <LabelBox>제목</LabelBox>
-              <InputBox {...register("title")} />
+              <InputBox
+                placeholder="파티명을 입력해주세요"
+                {...register("title")}
+              />
             </FlexBox>
             <FlexBox>
               <LabelBox>내용</LabelBox>
-              <InputBox {...register("content")} />
+              <InputBox
+                placeholder="파티명에 대해 간략하게 작성해 주세요"
+                {...register("content")}
+              />
             </FlexBox>
             <FlexBox>
               <LabelBox>날짜</LabelBox>
@@ -301,7 +317,8 @@ const Wrap = styled.div`
   width: 100%;
   margin: 30px auto;
   border-radius: 15px;
-  background-color: gray;
+  background-color: var(--black);
+  color: white;
 `;
 
 const Formbox = styled.form`
@@ -337,9 +354,9 @@ const FlexBox = styled.div`
 const InputBox = styled.input`
   padding: 20px;
   background: ghostwhite;
-  border-radius: 10px;
-  border: 1px solid #666;
-  background-color: white;
+  border-radius: 20px;
+  border: 2px solid #666;
+  background-color: transparent;
 `;
 
 const Buttonbox = styled.div`
@@ -349,11 +366,12 @@ const Buttonbox = styled.div`
 const Button = styled.button`
   width: 30%;
   display: flex;
-
+  background-color: var(--primary);
+  color: white;
   justify-content: center;
   margin: 0 auto;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
   border: none;
 `;
 

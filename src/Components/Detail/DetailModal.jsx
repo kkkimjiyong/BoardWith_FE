@@ -606,7 +606,7 @@ const StContainer = styled.div`
   min-width: 370px;
   /* width: 340px; */
   width: 90vw;
-  max-width: 600px;
+  max-width: 500px;
   background-color: #343434;
   //box-shadow: 3px 5px 20px 2px #5b5b5b;
 `;
