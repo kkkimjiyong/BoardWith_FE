@@ -5,10 +5,7 @@ import useInput from "../../hooks/UseInput";
 import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { ImExit } from "react-icons/im";
-import { BsPencil } from "react-icons/bs";
-import { BiUserMinus } from "react-icons/bi";
+import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import AvatarBox from "../Avatar/AvatarBox";
 import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
 

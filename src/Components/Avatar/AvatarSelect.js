@@ -2,9 +2,9 @@ import { style } from "@mui/system";
 import React, { useRef, useState } from "react";
 import AvatarBox from "./AvatarBox";
 import styled from "styled-components";
-import { BiRefresh } from "react-icons/bi";
-import { ImCoinDollar } from "react-icons/im";
-import { BsPencil } from "react-icons/bs";
+import { BiRefresh } from "@react-icons/all-files/bi/BiRefresh";
+import { ImCoinDollar } from "@react-icons/all-files/im/ImCoinDollar";
+import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 
 const AvatarSelect = () => {
   //*초기 카테고리는 눈으로 고정

@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import Main from "../Pages/Main/Main";
+import Main from "../Pages/Main/Main";
 import SignUpPage from "../Pages/SignUpPage";
 import LoginPage from "../Pages/LoginPage";
-// import Mypage from "../Pages/Mypage";
+import Mypage from "../Pages/Mypage";
 import Form from "../Pages/Main/Form";
 import KaKaoLogin from "../Components/Login/KaKaoLogin";
 import ChatPage from "../Pages/ChatPage";
 import Editpage from "../Pages/Editpage";
-// import AvatarPage from "../Pages/AvatarPage";
+import AvatarPage from "../Pages/AvatarPage";
 import FindPage from "../Pages/FindPage";
 import PracPage from "../Pages/PracPage";
 import RankingPage from "../Pages/RankingPage";
@@ -18,9 +18,9 @@ import Search from "../Pages/Main/Search";
 import { Suspense, lazy } from "react";
 import Loading from "../style/Loading";
 
-const Main = lazy(() => import("../Pages/Main/Main"));
-const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
-const Mypage = lazy(() => import("../Pages/Mypage"));
+// const Main = lazy(() => import("../Pages/Main/Main"));
+// const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
+// const Mypage = lazy(() => import("../Pages/Mypage"));
 
 const Router = () => {
   return (
