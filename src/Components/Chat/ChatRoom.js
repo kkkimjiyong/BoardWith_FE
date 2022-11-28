@@ -12,9 +12,9 @@ import { setCookie } from "../../hooks/CookieHook";
 import { postApi } from "../../instance";
 import moment from "moment-timezone";
 import "moment/locale/ko";
-import { BiAlignRight } from "react-icons/bi";
-import { AiOutlineNotification } from "react-icons/ai";
-import { FaArrowAltCircleUp } from "react-icons/fa";
+import { BiAlignRight } from "@react-icons/all-files/bi/BiAlignRight";
+import { AiOutlineNotification } from "@react-icons/all-files/ai/AiOutlineNotification";
+import { FaArrowAltCircleUp } from "@react-icons/all-files/fa/FaArrowAltCircleUp";
 const ChatRoom = () => {
   // const socket = io("https://www.iceflower.shop/");
   const socket = io("https://www.iceflower.shop/");
@@ -85,7 +85,7 @@ const ChatRoom = () => {
       message: message.message,
       room: roomid,
     });
-   setMessage({ message: "" });
+    setMessage({ message: "" });
   };
 
   const roomsubmit = (user) => {

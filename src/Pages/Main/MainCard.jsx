@@ -186,8 +186,6 @@ const Item = ({ number, item, Myaddress }) => {
           postid={item._id}
           ModalOpen={ModalOpen}
           setModalOpen={setModalOpen}
-          realStartTime={realStartTime}
-          realEndTime={realEndTime}
         />
       )}
     </ItemWrap>

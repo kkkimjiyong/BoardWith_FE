@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@mui/material": "^5.10.14",
     "@mui/x-date-pickers": "^5.0.8",
+    "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.9.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -28,7 +29,6 @@
     "react-daumpost-hook": "^1.1.4",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.3",
-    "react-icons": "^4.6.0",
     "react-kakao-maps-sdk": "^1.1.5",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
@@ -66,6 +66,7 @@
     ]
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0"
+    "babel-eslint": "^10.1.0",
+    "webpack-bundle-analyzer": "^4.7.0"
   }
 }

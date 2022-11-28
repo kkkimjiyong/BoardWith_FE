@@ -5,13 +5,11 @@ import useInput from "../../hooks/UseInput";
 import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { ImExit } from "react-icons/im";
-import { BsPencil } from "react-icons/bs";
-import { BiUserMinus } from "react-icons/bi";
-import AvatarBox from "../Avatar/AvatarBox";
+import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
+import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
+import { ImExit } from "@react-icons/all-files/im/ImExit";
+import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
-import DetailModal from "../Detail/DetailModal";
 import MyPartyItem from "./MyPartyItem";
 
 const MyPage = () => {

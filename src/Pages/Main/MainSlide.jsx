@@ -6,10 +6,9 @@ import Item from "../Main/MainCard";
 import axios from "axios";
 import MainFilter from "./MainFilter";
 import { useRef } from "react";
-import { NearDetailModal } from "../../Components/Detail/NearDetailModal";
-import { BiCurrentLocation } from "react-icons/bi";
+import { BiCurrentLocation } from "@react-icons/all-files/bi/BiCurrentLocation";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { FiFilter } from "react-icons/fi";
+import { FiFilter } from "@react-icons/all-files/fi/FiFilter";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -107,10 +106,8 @@ const MainSlide = () => {
     }
   };
 
-
   let observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
   let observed = false;
-
 
   useEffect(() => {
     if (target && !observed) {
@@ -168,11 +165,9 @@ const MainSlide = () => {
       />{" "}
       {/* //! 가장 가까운 모임 보여주는 모달창 */}
       {NearModalOpen && (
-        <NearDetailModal
+        <DetailModal
           postid={neardata[0]?._id}
-
           setModalOpen={setNearModalOpen}
-
         />
       )}
       {/* 게시글 폼페이지 모달창 */}

@@ -47,7 +47,6 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
   const { postid } = useParams();
-  console.log(postid);
 
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
