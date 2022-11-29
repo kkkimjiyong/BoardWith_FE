@@ -5,37 +5,31 @@ import { getCookie } from "../../hooks/CookieHook";
 import { useState } from "react";
 import Item from "./MainCard";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "./Skeleton";
+import { postsApi } from "../../instance";
 
 const Search = () => {
   const navigate = useNavigate();
   const [keyWord, setKeyWord] = useState("");
   const [titleSearch, setTitleSearch] = useState([]);
   const [nicknameSearch, setNicknameSearch] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const creatTitlePost = async () => {
+    setLoading(true);
     try {
-      const { data } = await axios.get(
-        `https://www.iceflower.shop/posts/searchTitle/${keyWord}`,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
+      const { data } = await postsApi.getSearchTitle(keyWord);
+
       setTitleSearch(data.data);
+      setLoading(false);
     } catch (error) {}
   };
   const creatNicknamePost = async () => {
+    setLoading(true);
     try {
-      const { data } = await axios.get(
-        `https://www.iceflower.shop/posts/searchNickname/${keyWord}`,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
+      const { data } = await postsApi.getSearchNickname(keyWord);
       setNicknameSearch(data.data);
+      setLoading(false);
     } catch (error) {}
   };
 
@@ -63,8 +57,9 @@ const Search = () => {
         onChange={onChange}
         onKeyPress={onKeyPress}
         value={keyWord}
-      ></SearchInput>
+      ></SearchInput>{" "}
       <MainListCtn>
+        {" "}
         {titleSearch?.map((items, idx) => {
           if (items.participant.length < items.partyMember && !items.closed) {
             return (
@@ -92,7 +87,10 @@ const Search = () => {
           } else {
             <div>마감되었습니다</div>;
           }
-        })}
+        })}{" "}
+        {loading ? <Skeleton /> : null}
+        {loading ? <Skeleton /> : null}
+        {loading ? <Skeleton /> : null}
       </MainListCtn>
     </Layout>
   );

@@ -114,8 +114,14 @@ export const commentsApi = {
 };
 
 export const postsApi = {
-  getPosts: () => {
-    return instance.get("/posts");
+  getPosts: (payload) => {
+    return instance.get(`/posts/?skip=${payload}`);
+  },
+  getSearchTitle: (payload) => {
+    return instance.get(`posts/searchTitle/${payload}`);
+  },
+  getSearchNickname: (payload) => {
+    return instance.get(`posts/searchNickname/${payload}`);
   },
   creatPost: (inputs) => {
     return instance.post(`/posts`, inputs, {

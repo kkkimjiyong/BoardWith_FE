@@ -14,10 +14,11 @@ import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DailyCheck from "../../Components/DailyCheck";
 import { getCookie } from "../../hooks/CookieHook";
+import { Skeleton } from "@mui/material";
+import { postsApi } from "../../instance";
 
 const MainSlide = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [targetMargin, setTargetMargin] = useState(0);
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
@@ -25,6 +26,7 @@ const MainSlide = () => {
   const [open, setOpen] = useState(false);
   const [selfCheck, setSelfCheck] = useState(true);
   const scrollHead = useRef();
+  const [loading, setLoading] = useState(true);
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
@@ -89,12 +91,15 @@ const MainSlide = () => {
   const [target, setTarget] = useState(null);
 
   const getData = async () => {
-    const response = await axios.get(
-      `https://www.iceflower.shop/posts/?skip=${page}`
-    );
-    setItems((prev) => prev.concat(response.data.data));
-    page += 5;
-    return response.data.data.length;
+    setLoading(true);
+    try {
+      const response = await postsApi.getPosts(page);
+
+      setItems((prev) => prev.concat(response.data.data));
+      page += 5;
+      setLoading(false);
+      return response.data.data.length;
+    } catch (error) {}
   };
 
   const onIntersect = async ([entry], observer) => {
@@ -119,6 +124,20 @@ const MainSlide = () => {
       observed = true;
     }
   }, [target]);
+
+  const bookMarked = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://www.iceflower.shop/posts/bookmark/${getCookie("nickName")}`,
+        {
+          headers: {
+            Authorization: `${getCookie("accessToken")}`,
+          },
+        }
+      );
+      console.log("bookmark", data);
+    } catch (error) {}
+  };
 
   return (
     <>
@@ -146,6 +165,9 @@ const MainSlide = () => {
               ></Item>
             );
           })}
+          {loading ? <Skeleton /> : null}
+          {loading ? <Skeleton /> : null}
+          {loading ? <Skeleton /> : null}
           <Target ref={setTarget}>target? </Target>{" "}
         </MainListCtn>{" "}
         <FormButton onClick={() => setFormModalOpen(true)}>
