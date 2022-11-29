@@ -27,19 +27,6 @@ const MyPage = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        enabled: false,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-      },
-    },
-  });
-
-  console.log(queryClient);
-  console.log(queryClient.getQueryData("getUser"));
-
   //? -----------------  API  -----------------------
 
   const getUser = async () => {
@@ -66,6 +53,8 @@ const MyPage = () => {
   const { status, data, error } = useQuery(["getUser"], () => getUser(), {
     staleTime: Infinity,
   });
+
+  console.log(data);
 
   const EditUser = async () => {
     try {

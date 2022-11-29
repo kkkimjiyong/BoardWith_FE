@@ -15,6 +15,8 @@ const DailyCheck = ({ setSelfCheck, selfCheck }) => {
     } catch (error) {}
   };
 
+  // const dailyCheck
+
   useEffect(() => {
     getUser();
   }, []);
@@ -81,7 +83,7 @@ const CheckBox = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: var(--gray);
+  /* background-color: var(--gray); */
 `;
 
 const CheckCtn = styled.div`
@@ -93,7 +95,8 @@ const CheckCtn = styled.div`
   align-items: center;
   flex-wrap: wrap;
   padding: 0% 5%;
-  background-color: aqua;
+  background-color: var(--gray);
+  box-shadow: 1px 2px 10px 0px var(--primary);
 `;
 
 const ContentBox = styled.div`
