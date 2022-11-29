@@ -2,14 +2,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
 
-const token = getCookie("accessToken");
-const refreshToken = getCookie("refreshToken");
-
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BACK_SERVER,
   // baseURL: "https://www.iceflower.shop",
   headers: {
-    Authorization: token,
+    Authorization: getCookie("accessToken"),
   },
 });
 
@@ -17,7 +14,6 @@ const instance = axios.create({
 
 instance.interceptors.response.use(
   (response) => {
-    console.log(response);
     return response;
   },
   async (error) => {
@@ -26,7 +22,6 @@ instance.interceptors.response.use(
       config,
       response: { data },
     } = error;
-    const navigate = useNavigate();
     const prevRequest = config;
     console.log(config);
     if (data.code === 419) {
@@ -35,7 +30,7 @@ instance.interceptors.response.use(
         const { data } = await axios.post(
           `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
           {
-            refresh_token: refreshToken,
+            refresh_token: getCookie("refreshToken"),
           }
         );
         console.log(data);
@@ -78,7 +73,7 @@ export const userApi = {
   editUser: (EditUser) =>
     instance.put("/users", EditUser, {
       headers: {
-        Authorization: token,
+        Authorization: getCookie("accessToken"),
       },
     }),
 
@@ -125,7 +120,7 @@ export const postsApi = {
   creatPost: (inputs) => {
     return instance.post(`/posts`, inputs, {
       headers: {
-        Authorization: token,
+        Authorization: getCookie("accessToken"),
       },
     });
   },

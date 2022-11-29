@@ -7,24 +7,24 @@ import GlobalStyle from "./style/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  },
-});
+// const queryClient = new QueryClient({
+//   defaultOptions: {
+//     queries: {
+//       refetchOnWindowFocus: false,
+//       refetchOnMount: false,
+//     },
+//   },
+// });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
-      <ReactQueryDevtools initialIsOpen={true} />
-      <GlobalStyle />
-      <App />
-    </Provider>
-  </QueryClientProvider>
+  // <QueryClientProvider client={queryClient}>
+  <Provider store={store}>
+    {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+    <GlobalStyle />
+    <App />
+  </Provider>
+  // </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
