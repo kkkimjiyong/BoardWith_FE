@@ -30,8 +30,23 @@ import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
+import { useQuery } from "react-query";
+
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
+  // const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList, {
+  //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
+  //   retry: 0, // 실패시 재호출 몇번 할지
+  //   onSuccess: (data) => {
+  //     // 성공시 호출
+  //     console.log(data);
+  //   },
+  //   onError: (e) => {
+  //     // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
+  //     console.log(e.message);
+  //   },
+  // });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -194,22 +209,22 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
     //   (banUser) => comments?.nickName === banUser && setIsBanUser(true)
     // );
 
-    // 만약 10명
-    for (let i = 0; i < detail?.data?.banUser?.length; i++) {
-      for (let i = 0; i < comments?.length; i++) {
-        if (detail?.data?.banUser[i] === comments[i].nickName) {
-          // setIsBanUser(true);
-          //console.log("하이하이 : ", comments[i]);
-          // 블랙리스트인 애들 객체에 저장
-          // 블랙리스트인 애들이 이제 여기에서 분류 되는거니까
-          // 10명중에 4명이 블랙리스트면 4번 타겠지?
-          // 그러면 얘네들만 객체에 따로 담으면 될듯?
-          setBlacklist(comments[i]);
-          setBlacklists(comments[i]);
-          //setBlacklists((blacklist) => [blacklist, comments[i]]);
-        }
-      }
-    }
+    // // 만약 10명
+    // for (let i = 0; i < detail?.data?.banUser?.length; i++) {
+    //   for (let i = 0; i < comments?.length; i++) {
+    //     if (detail?.data?.banUser[i] === comments[i].nickName) {
+    //       // setIsBanUser(true);
+    //       //console.log("하이하이 : ", comments[i]);
+    //       // 블랙리스트인 애들 객체에 저장
+    //       // 블랙리스트인 애들이 이제 여기에서 분류 되는거니까
+    //       // 10명중에 4명이 블랙리스트면 4번 타겠지?
+    //       // 그러면 얘네들만 객체에 따로 담으면 될듯?
+    //       setBlacklist(comments[i]);
+    //       setBlacklists(comments[i]);
+    //       //setBlacklists((blacklist) => [blacklist, comments[i]]);
+    //     }
+    //   }
+    // }
 
     //for (let i = 0; i < blacklist.length)
     console.log("blacklist", blacklist); // 무조건 1개 있어야해

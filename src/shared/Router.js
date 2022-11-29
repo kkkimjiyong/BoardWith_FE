@@ -21,7 +21,7 @@ import UserPage from "../Pages/UserPage";
 import DetailModal from "../Components/Detail/DetailModal";
 import SharePage from "../Pages/SharePage";
 import Search from "../Pages/Main/Search";
-
+import LoginGoogle from "../Components/Login/GoogleLogin";
 const Router = () => {
   return (
     <BrowserRouter>
@@ -30,6 +30,7 @@ const Router = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup/oauth" element={<KaKaoLogin />} />
+        <Route path="/signup/google" element={<LoginGoogle />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/userpage/:nickname" element={<UserPage />} />
         <Route path="/myparty" element={<MyPartyPage />} />

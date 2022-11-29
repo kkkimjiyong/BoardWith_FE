@@ -17,18 +17,22 @@ const Login = () => {
     password: "",
   };
   const [login, setLogin, onChangehandler] = useInput(initialState);
-const expires = new Date();
-  
+  const expires = new Date();
+
+  const GOOGLE_CLIENT_ID =
+    "601009542517-255ebev9elhpvn2mp5kn653q51832dk4.apps.googleusercontent.com";
+  const GOOGLE_REDIRECT_URI = "http://localhost:3000/signup/google";
   const REST_API_KEY = "55dc07a0e4c564bac2630a91922eab90";
   const REDIRECT_URI = "https://boardwith.vercel.app/signup/oauth";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const GOOGLE_LOGIN_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
 
   const postLogin = async (payload) => {
     try {
       const { data } = await loginApi.postLogin(payload);
       console.log(data.nickName);
       if (data.accessToken) {
-        console.log("나 푸쉬됬어요3")
+        console.log("나 푸쉬됬어요3");
         setCookie("accessToken", data.accessToken, { path: "/" });
         setCookie("refreshToken", data.refresh_token, {
           path: "/",
@@ -76,6 +80,7 @@ const expires = new Date();
         <LoginBtn onClick={() => onSubmitHandler()}>로그인</LoginBtn>
       </BtnSet>{" "}
       <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
+      <LoginGoogle href={GOOGLE_LOGIN_URL}>Google 로그인</LoginGoogle>
       <BottomTxt>
         <div className="txtbox" onClick={() => navigate("/signup")}>
           회원가입
@@ -158,6 +163,23 @@ const KaKaoLogin = styled.a`
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: 0px 3px 10px 0px black;
+`;
+
+const LoginGoogle = styled.a`
+  color: black;
+  padding-left: 10px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: white;
+  width: 87%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: 0px 3px 10px 0px black;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  text-decoration: none;
 `;
 
 const BottomTxt = styled.div`
