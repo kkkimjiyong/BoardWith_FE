@@ -112,7 +112,7 @@ const KaKaoLogin = () => {
   const [signup, setSignup, onChange] = useInput(initialState);
   const onSubmitHandler = () => {
     if (signup.nickName) {
-      postKaKaoCode(signup);
+      postKaKaoUser(signup);
       navigate("/main");
     } else {
       alert("다시 입력해주세요!");
