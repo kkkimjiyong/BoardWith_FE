@@ -78,9 +78,7 @@ const OtherUserPage = () => {
       <MainHeader>
         <Arrow className="head" onClick={() => navigate("/main")} />
         <div className="headtxt">{user?.nickName}님</div>
-        <RowBox>
-          <BsPencil size="30" onClick={() => alert("수정중")} />
-        </RowBox>
+        <div></div>
       </MainHeader>
       {/* 범용성있게 아바타박스를 만든 뒤, 추가하자 */}
       {/* <AvatarBox userSelect={user?.userAvater} /> */}
