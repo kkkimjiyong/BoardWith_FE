@@ -7,14 +7,20 @@ import GlobalStyle from "./style/GlobalStyle";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <QueryClientProvider client={queryClient}>
-    {/* devtools */}
-    {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     <Provider store={store}>
+      <ReactQueryDevtools initialIsOpen={true} />
       <GlobalStyle />
       <App />
     </Provider>

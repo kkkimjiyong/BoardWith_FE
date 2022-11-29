@@ -6,13 +6,14 @@ import Item from "../Main/MainCard";
 import axios from "axios";
 import MainFilter from "./MainFilter";
 import { useRef } from "react";
-import { NearDetailModal } from "../../Components/Detail/NearDetailModal";
-import { BiCurrentLocation } from "react-icons/bi";
+import { BiCurrentLocation } from "@react-icons/all-files/bi/BiCurrentLocation";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { FiFilter } from "react-icons/fi";
+import { FiFilter } from "@react-icons/all-files/fi/FiFilter";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DailyCheck from "../../Components/DailyCheck";
+import { getCookie } from "../../hooks/CookieHook";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const MainSlide = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const [formModalOpen, setFormModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [selfCheck, setSelfCheck] = useState(true);
   const scrollHead = useRef();
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
@@ -107,10 +109,8 @@ const MainSlide = () => {
     }
   };
 
-
   let observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
   let observed = false;
-
 
   useEffect(() => {
     if (target && !observed) {
@@ -121,7 +121,10 @@ const MainSlide = () => {
 
   return (
     <>
-      {" "}
+      {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
+      {selfCheck && (
+        <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
+      )}
       <MainBox className="Scroll">
         <MainHeader onClick={() => scrollToTop()}>
           <BiCurrentLocation size={"30"} onClick={() => nearFilterHandler()} />
@@ -168,11 +171,9 @@ const MainSlide = () => {
       />{" "}
       {/* //! 가장 가까운 모임 보여주는 모달창 */}
       {NearModalOpen && (
-        <NearDetailModal
+        <DetailModal
           postid={neardata[0]?._id}
-
           setModalOpen={setNearModalOpen}
-
         />
       )}
       {/* 게시글 폼페이지 모달창 */}

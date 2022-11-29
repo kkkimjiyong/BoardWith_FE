@@ -8,16 +8,36 @@ import { useState } from "react";
 import Layout from "../../style/Layout";
 import ReactDaumPost from "react-daumpost-hook";
 import useInput from "../../hooks/UseInput";
+import Loading from "../../style/Loading";
 
 const KaKaoLogin = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-  //* ------------------- 카카오 인가코드 받고, 서버로 넘겨주기 -----------------
   let href = window.location.href;
   //href값에서 code값만 거내오면 된다.
   console.log(href);
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code");
+
+  const isKaKao = async () => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/kakao/isKakao",
+        { code }
+      );
+      if (data.accessToken) {
+        setCookie("accessToken", data.accessToken, { path: "/" });
+        setCookie("refreshToken", data.refresh_token, { path: "/" });
+        navigate("/");
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //* ------------------- 카카오 인가코드 받고, 서버로 넘겨주기 -----------------
 
   //이 코드를 백엔드로 보내주면됨
   console.log(code);
@@ -26,11 +46,16 @@ const KaKaoLogin = () => {
     try {
       const { data } = await axios.post(
         "https://www.iceflower.shop/kakao/callback",
-        { ...signup, code, myPlace: signup.address.split(" ").slice(0, 2) }
+        {
+          ...signup,
+          myPlace: signup.address.split(" ").slice(0, 2),
+          userId: 2543236151,
+        }
       );
       console.log(data.accessToken);
       if (data.accessToken)
         setCookie("accessToken", data.accessToken, { path: "/" });
+      setCookie("refreshToken", data.refresh_token, { path: "/" });
       setCookie("kakao", true, { path: "/" });
     } catch (error) {
       console.log(error);
@@ -104,8 +129,13 @@ const KaKaoLogin = () => {
     },
   };
   const postCode = ReactDaumPost(postConfig);
-  if (getCookie("kakao")) {
-    window.location.replace("/main");
+
+  useEffect(() => {
+    isKaKao();
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
   } else {
     return (
       <Layout>
@@ -178,7 +208,8 @@ const KaKaoLogin = () => {
               />
             </TagBox>
           </WholeBox>
-          <NextBtn onClick={onSubmitHandler}>완료</NextBtn>
+          {/* <NextBtn onClick={onSubmitHandler}>완료</NextBtn> */}
+          <NextBtn onClick={isKaKao}>완료</NextBtn>
         </Wrap>
       </Layout>
     );

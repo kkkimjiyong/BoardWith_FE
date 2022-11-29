@@ -3,31 +3,46 @@ import { userApi } from "../../instance";
 import styled from "styled-components";
 import useInput from "../../hooks/UseInput";
 import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
+import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
+import { ImExit } from "@react-icons/all-files/im/ImExit";
 import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
-import AvatarBox from "../Avatar/AvatarBox";
 import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
+import MyPartyItem from "./MyPartyItem";
 
-const OtherUserPage = () => {
-  const { nickname } = useParams();
+const EditUser = () => {
   const [user, Setuser, onChange] = useInput();
   const [isOpen, SetisOpen] = useState(false);
   const [isOpen1, SetisOpen1] = useState(false);
   const [isOpen2, SetisOpen2] = useState(false);
   const [reservedParty, setReservedParty] = useState();
   const [confirmParty, setConfirmParty] = useState();
+  const [likeGame, setLikeGame] = useState();
+  const [ModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  console.log(nickname);
+
   const getUser = async () => {
     try {
-      const { data } = await userApi.getOtherUser(nickname);
-      console.log(data);
-      Setuser(data.lookOtherUser);
+      const { data } = await userApi.getUser();
+      setLikeGame(data.findUser.likeGame);
+      if (data.myNewToken) {
+        setCookie("accessToken", data.myNewToken);
+        Setuser(data.findUser);
+        setReservedParty(data.partyReserved);
+        setConfirmParty(data.partyGo);
+      } else {
+        Setuser(data.findUser);
+        setReservedParty(data.partyReserved);
+        setConfirmParty(data.partyGo);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(likeGame.length);
 
   useEffect(() => {
     getUser();
@@ -36,10 +51,11 @@ const OtherUserPage = () => {
   //? ------------------  로그아웃 -------------------
 
   const logoutHandler = (name) => {
+    alert("로그아웃 성공");
     removeCookie(name);
     navigate("/");
   };
-  console.log(Boolean(user?.myPlace));
+
   //? ------------------  로그아웃 -------------------
 
   const deleteUser = async () => {
@@ -54,14 +70,32 @@ const OtherUserPage = () => {
       console.log(error);
     }
   };
-
+  //? --------------------  회원탈퇴  ---------------------
   const deletUserHandler = (name) => {
+    alert("탈퇴 성공");
     deleteUser();
     removeCookie(name);
     navigate("/");
   };
 
   //? ----------------- 성별 보이게 안보이게 api --------------------------
+  const postVisible = async () => {
+    try {
+      const { data } = await axios.put(
+        `https://www.iceflower.shop/users`,
+        { visible: !user.visible },
+        {
+          headers: {
+            Authorization: `${getCookie("accessToken")}`,
+          },
+        }
+      );
+      Setuser({ ...user, visible: data.visible });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     // getReserved();
@@ -73,11 +107,13 @@ const OtherUserPage = () => {
     }
   }, []);
 
+  console.log(ModalOpen);
+
   return (
     <Wrapper>
       <MainHeader>
         <Arrow className="head" onClick={() => navigate("/main")} />
-        <div className="headtxt">{user?.nickName}님</div>
+        <div className="headtxt">마이페이지</div>
         <RowBox>
           <BsPencil size="30" onClick={() => alert("수정중")} />
         </RowBox>
@@ -100,17 +136,54 @@ const OtherUserPage = () => {
           {user?.myPlace.length
             ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
             : "없음"}{" "}
+          {user?.visible ? (
+            <AiFillEye size="24" onClick={() => postVisible()} />
+          ) : (
+            <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
+          )}
         </ProfileRow>
         <LikeGameCtn>
           <LikeGameBox>
-            {}
-            <LikeGame>#달무티</LikeGame>
-            <LikeGame>#달무티</LikeGame>
-            <LikeGame>#달무티</LikeGame>
+            {likeGame?.map((game) => {
+              return <LikeGame>{game}</LikeGame>;
+            })}
           </LikeGameBox>
-
-          {/* 맵돌려야지~ */}
         </LikeGameCtn>
+        <MyPartyCtn>
+          <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
+            내가 찜한 모임
+            <Arrow className={isOpen ? "open" : null} />
+          </MyPartyTitle>
+          <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
+            참여 신청 중인 모임
+            <Arrow className={isOpen1 ? "open" : null} />
+          </MyPartyTitle>
+          {isOpen1 && (
+            <MyPartyBox>
+              {reservedParty?.map((party) => {
+                if (!party.closed) return <MyPartyItem party={party} />;
+              })}
+            </MyPartyBox>
+          )}
+          <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
+            참여 확정 모임
+            <Arrow className={isOpen2 ? "open" : null} />
+          </MyPartyTitle>
+          {isOpen2 && (
+            <MyPartyBox>
+              {confirmParty?.map((party) => {
+                if (!party.closed) return <MyPartyItem party={party} />;
+              })}
+            </MyPartyBox>
+          )}{" "}
+          <EditBox>
+            {" "}
+            <div className="logout" onClick={deletUserHandler}>
+              회원탈퇴
+            </div>
+            <ImExit size="30" onClick={() => logoutHandler("accessToken")} />
+          </EditBox>
+        </MyPartyCtn>{" "}
       </ProfileCtn>{" "}
     </Wrapper>
   );
@@ -168,9 +241,10 @@ const EditBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 80px;
   color: #919191;
   :hover {
+    text-decoration: underline;
     cursor: pointer;
   }
 `;
@@ -203,6 +277,19 @@ const ProfileCtn = styled.div`
   gap: 30px;
   overflow-y: hidden;
   overflow-y: scroll;
+  //? -----모바일에서처럼 스크롤바 디자인---------------
+  @media only screen and (min-width: 1200px) {
+    ::-webkit-scrollbar {
+      width: 15px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #898989;
+      //스크롤바에 마진준것처럼 보이게
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 15px;
+    }
+  }
 `;
 
 const ProfileRow = styled.div`
@@ -264,22 +351,12 @@ const MyPartyBox = styled.div`
   max-height: 50%;
 `;
 
-const MyPartyItem = styled.div`
-  color: white;
-  background-color: var(--gray);
-  display: flex;
-  justify-content: space-between;
-  border-radius: 20px;
-  padding: 2% 5%;
-`;
-
 const Arrow = styled.div`
   display: inline-block;
   border: 7px solid transparent;
   border-top-color: var(--white);
   transform: rotate(90deg);
   &.left {
-    margin-top: 7px;
     transform: rotate(270deg);
   }
   &.open {
@@ -291,4 +368,4 @@ const Arrow = styled.div`
   }
 `;
 
-export default OtherUserPage;
+export default EditUser;

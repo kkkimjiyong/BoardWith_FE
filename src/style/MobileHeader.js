@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CgProfile } from "react-icons/cg";
-import { CgHome } from "react-icons/cg";
-import { GoGraph, GoSearch } from "react-icons/go";
+import { CgProfile } from "@react-icons/all-files/cg/CgProfile";
+import { CgHome } from "@react-icons/all-files/cg/CgHome";
+import { GoGraph } from "@react-icons/all-files/go/GoGraph";
+import { GoSearch } from "@react-icons/all-files/go/GoSearch";
 import Avatar from "../Assets/HeaderAvatar.png";
 
 const MobileHeader = () => {
@@ -13,9 +13,14 @@ const MobileHeader = () => {
     <MobileHeaderCtn>
       {" "}
       <GoSearch size="80%" color="white" onClick={() => navigate("/search")} />
-      <img className="logo" src={Avatar} onClick={() => navigate("/avatar")} />
-      <CgHome size="80%" color="white" onClick={() => navigate("/main")} />
       <GoGraph size="80%" color="white" onClick={() => navigate("/rank")} />
+      <CgHome size="80%" color="white" onClick={() => navigate("/main")} />
+      <img
+        className="logo"
+        src={Avatar}
+        alt={"avatarshop"}
+        onClick={() => navigate("/avatar")}
+      />
       <CgProfile size="80%" color="white" onClick={() => navigate("/mypage")} />
     </MobileHeaderCtn>
   );
@@ -35,8 +40,8 @@ const MobileHeaderCtn = styled.div`
   box-shadow: 1px 1px 15px 3px black;
   /* background-color: #9747ff; */
   .logo {
-    width: 8%;
-    margin: 0 5%;
+    width: 7%;
+    margin: 0 6%;
   }
 `;
 

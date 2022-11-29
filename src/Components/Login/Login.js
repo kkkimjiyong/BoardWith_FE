@@ -23,7 +23,7 @@ const Login = () => {
     "601009542517-255ebev9elhpvn2mp5kn653q51832dk4.apps.googleusercontent.com";
   const GOOGLE_REDIRECT_URI = "http://localhost:3000/signup/google";
   const REST_API_KEY = "55dc07a0e4c564bac2630a91922eab90";
-  const REDIRECT_URI = "https://boardwith.vercel.app/signup/oauth";
+  const REDIRECT_URI = "http://localhost:3000/signup/oauth";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   const GOOGLE_LOGIN_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
 

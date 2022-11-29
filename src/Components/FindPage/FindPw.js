@@ -76,18 +76,18 @@ const FindPw = () => {
       <RowBox>
         <ColumnBox>
           <SignUpInput
+            placeholder="아이디를 입력해주세요"
             value={findUser.userId}
             name="userId"
             onChange={onChange}
           />
           {/* <small role="alert">dk</small> */}
         </ColumnBox>
-
-        <VerfiyBtn onClick={() => console.log(1)}>아이디</VerfiyBtn>
       </RowBox>
       <RowBox>
         <ColumnBox>
           <SignUpInput
+            placeholder="전화번호를 입력해주세요"
             value={findUser.phoneNumber}
             name="phoneNumber"
             onChange={onChange}
@@ -100,6 +100,7 @@ const FindPw = () => {
       <RowBox>
         <ColumnBox>
           <SignUpInput
+            placeholder="인증번호를 입력해주세요"
             value={findUser.verifyCode}
             name="verifyCode"
             onChange={onChange}
@@ -112,6 +113,7 @@ const FindPw = () => {
       <RowBox>
         <ColumnBox>
           <SignUpInput
+            placeholder="바꾸자하는 비밀번호"
             value={findUser.password}
             name="password"
             onChange={onChange}
@@ -151,7 +153,7 @@ const SignUpHeader = styled.div`
 const SignUpInput = styled.input`
   color: white;
   display: block;
-  width: 90%;
+  width: 100%;
   padding: 0 20px;
   margin-bottom: 5px;
   height: 40px;
@@ -169,17 +171,18 @@ const VerfiyBtn = styled.div`
   display: flex;
   justify-content: center;
   font-size: 15px;
-  color: #2e294e;
-  width: 35%;
-  background-color: #ddd;
+  color: var(--white);
+  width: 25%;
+  background-color: var(--primary);
   border-radius: 15px;
   padding: 5px 10px;
+  margin-left: 15%;
 `;
 
 const RowBox = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   &.column {
     align-items: flex-start;

@@ -5,39 +5,72 @@ import useInput from "../../hooks/UseInput";
 import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { ImExit } from "react-icons/im";
-import { BsPencil } from "react-icons/bs";
-import { BiUserMinus } from "react-icons/bi";
-import AvatarBox from "../Avatar/AvatarBox";
+import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
+import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
+import { ImExit } from "@react-icons/all-files/im/ImExit";
+import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
-import DetailModal from "../Detail/DetailModal";
+import ReactDaumPost from "react-daumpost-hook";
+import { useRef } from "react";
 import MyPartyItem from "./MyPartyItem";
+import { QueryClient, useQuery } from "react-query";
 
 const MyPage = () => {
   const [user, Setuser, onChange] = useInput();
   const [isOpen, SetisOpen] = useState(false);
   const [isOpen1, SetisOpen1] = useState(false);
   const [isOpen2, SetisOpen2] = useState(false);
+  const [isEdit, SetisEdit] = useState(false);
   const [reservedParty, setReservedParty] = useState();
   const [confirmParty, setConfirmParty] = useState();
+  const [likeGame, setLikeGame] = useState();
   const [ModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        enabled: false,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+      },
+    },
+  });
+
+  console.log(queryClient);
+  console.log(queryClient.getQueryData("getUser"));
+
+  //? -----------------  API  -----------------------
 
   const getUser = async () => {
     try {
       const { data } = await userApi.getUser();
       console.log(data);
+
       if (data.myNewToken) {
         setCookie("accessToken", data.myNewToken);
         Setuser(data.findUser);
         setReservedParty(data.partyReserved);
         setConfirmParty(data.partyGo);
       } else {
+        setLikeGame(data.findUser.likeGame);
         Setuser(data.findUser);
         setReservedParty(data.partyReserved);
         setConfirmParty(data.partyGo);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {}, []);
+  const { status, data, error } = useQuery(["getUser"], () => getUser(), {
+    staleTime: Infinity,
+  });
+
+  const EditUser = async () => {
+    try {
+      const { data } = await userApi.editUser(user);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +88,7 @@ const MyPage = () => {
     navigate("/");
   };
 
-  //? ------------------  로그아웃 -------------------
+  //? --------------------  회원탈퇴  ---------------------
 
   const deleteUser = async () => {
     try {
@@ -69,7 +102,7 @@ const MyPage = () => {
       console.log(error);
     }
   };
-  //? --------------------  회원탈퇴  ---------------------
+
   const deletUserHandler = (name) => {
     alert("탈퇴 성공");
     deleteUser();
@@ -96,6 +129,21 @@ const MyPage = () => {
     }
   };
 
+  //? --------------------- 다음포스트  --------------------------
+
+  const ref = useRef(null);
+
+  const postConfig = {
+    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
+    onComplete: (data) => {
+      // 데이터를 받아와서 set해주는 부분
+      Setuser({ ...user, myPlace: data.address });
+      // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
+      ref.current.style.display = "none";
+    },
+  };
+  const postCode = ReactDaumPost(postConfig);
+
   useEffect(() => {
     // getReserved();
     // getConfirm();
@@ -108,13 +156,18 @@ const MyPage = () => {
 
   console.log(ModalOpen);
 
+  const editHandler = () => {
+    EditUser();
+    SetisEdit(false);
+  };
+
   return (
     <Wrapper>
       <MainHeader>
         <Arrow className="head" onClick={() => navigate("/main")} />
         <div className="headtxt">마이페이지</div>
         <RowBox>
-          <BsPencil size="30" onClick={() => alert("수정중")} />
+          <BsPencil size="30" onClick={() => SetisEdit(true)} />
         </RowBox>
       </MainHeader>
       {/* 범용성있게 아바타박스를 만든 뒤, 추가하자 */}
@@ -125,32 +178,58 @@ const MyPage = () => {
       </AvatarCtn>
       <ProfileCtn>
         {" "}
-        <ProfileRow>
+        <ProfileRow className="Topbox">
           {" "}
           <div>{user?.nickName}</div>{" "}
+          {isEdit && <button onClick={editHandler}>완료</button>}
         </ProfileRow>
-        <ProfileRow>
-          {user?.age ? `${user?.age} 살` : "없음"}/
-          {user?.visible ? `${user?.gender}` : "숨김"}/
-          {user?.myPlace.length
-            ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-            : "없음"}{" "}
-          {user?.visible ? (
-            <AiFillEye size="24" onClick={() => postVisible()} />
-          ) : (
-            <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-          )}
-        </ProfileRow>
-        <LikeGameCtn>
-          <LikeGameBox>
-            {}
-            <LikeGame>#달무티</LikeGame>
-            <LikeGame>#달무티</LikeGame>
-            <LikeGame>#달무티</LikeGame>
-          </LikeGameBox>
-
-          {/* 맵돌려야지~ */}
-        </LikeGameCtn>
+        {!isEdit && (
+          <>
+            <ProfileRow>
+              {user?.age ? `${user?.age} 살` : "없음"}/
+              {user?.visible ? `${user?.gender}` : "숨김"}/
+              {user?.myPlace.length
+                ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+                : "없음"}{" "}
+              {user?.visible ? (
+                <AiFillEye size="24" onClick={() => postVisible()} />
+              ) : (
+                <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
+              )}
+            </ProfileRow>
+            <LikeGameCtn>
+              <LikeGameBox>
+                {likeGame?.map((game) => {
+                  return <LikeGame>{game}</LikeGame>;
+                })}
+              </LikeGameBox>
+            </LikeGameCtn>
+          </>
+        )}
+        {isEdit && (
+          <ProfileInputBox>
+            {" "}
+            <ProfileInput
+              name="age"
+              value={user?.age}
+              placeholder={user?.age}
+              onChange={onChange}
+            />
+            <ProfileInput
+              name="gender"
+              value={user?.gender}
+              placeholder={user?.gender}
+              onChange={onChange}
+            />
+            <ProfileInput
+              name="address"
+              onClick={postCode}
+              // value={user?.myPlace}
+              placeholder={"클릭하여 주소변경"}
+            />
+            <DaumPostBox ref={ref}></DaumPostBox>
+          </ProfileInputBox>
+        )}
         <MyPartyCtn>
           <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
             내가 찜한 모임
@@ -251,6 +330,23 @@ const EditBox = styled.div`
   }
 `;
 
+const ProfileInputBox = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 10px 0px;
+  width: 100%;
+`;
+
+const ProfileInput = styled.input`
+  padding: 2.5%;
+  margin: 0% 2%;
+  width: 30%;
+  border: none;
+  border-radius: 10px;
+`;
+
+const DaumPostBox = styled.div``;
+
 const EditBtn = styled.div`
   display: flex;
   justify-content: center;
@@ -301,6 +397,9 @@ const ProfileRow = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
+  &.Topbox {
+    justify-content: space-between;
+  }
 `;
 
 const LikeGameCtn = styled.div`
