@@ -14,7 +14,7 @@ import ProfileAvatarBox from "../../Components/Avatar/ProfileAvatarBox";
 import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 
-const Item = ({ number, item, Myaddress }) => {
+const Item = ({ number, item, Myaddress, closed }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [ModalOpen, setModalOpen] = useState();
@@ -93,10 +93,8 @@ const Item = ({ number, item, Myaddress }) => {
   return (
     <ItemWrap>
       <div
-        className="ItemWrap"
-        onClick={() =>
-          item.closed === 0 ? setModalOpen(true) : setModalOpen(false)
-        }
+        className={!closed ? "ItemWrap" : "ClosedItemWrap"}
+        onClick={() => setModalOpen(true)}
       >
         <div className="ItemWrap-Body-SpaceBetween">
           <ItemProfile>
@@ -168,13 +166,23 @@ const Item = ({ number, item, Myaddress }) => {
                   {/* {new Date(startDate)} */}
                 </div>
               </div>
-              <StatusBox>
-                {" "}
-                <div
-                  className={"status" + memberStatus.indexOf(statusIndicator())}
-                ></div>{" "}
-                <div className="statusTxt">{statusIndicator()}</div>
-              </StatusBox>
+              {!closed ? (
+                <StatusBox>
+                  {" "}
+                  <div
+                    className={
+                      "status" + memberStatus.indexOf(statusIndicator())
+                    }
+                  ></div>{" "}
+                  <div className="statusTxt">{statusIndicator()}</div>
+                </StatusBox>
+              ) : (
+                <StatusBox>
+                  {" "}
+                  <div className="closedstatus"></div>{" "}
+                  <div className="statusTxt">마감</div>
+                </StatusBox>
+              )}
             </div>
           </div>
         </div>
@@ -182,6 +190,7 @@ const Item = ({ number, item, Myaddress }) => {
       {/*! 리스트에서 보여주는 디테일모달창  */}
       {ModalOpen && (
         <DetailModal
+          closed={closed}
           postid={item._id}
           ModalOpen={ModalOpen}
           setModalOpen={setModalOpen}
@@ -206,6 +215,24 @@ const ItemWrap = styled.div`
     margin: 5% 0%;
     :hover {
       color: white;
+      /* box-shadow: 5px 5px 10px 2px #d90368; */
+    }
+  }
+  .ClosedItemWrap {
+    color: #8a8a8a;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 4% 4%;
+    flex-direction: column;
+    background-color: var(--black);
+    box-shadow: 3px 10px 10px 1px black;
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+    margin: 5% 0%;
+    :hover {
+      color: var(--gray);
       /* box-shadow: 5px 5px 10px 2px #d90368; */
     }
   }
@@ -321,6 +348,16 @@ const StatusBox = styled.div`
     margin-left: 5%;
     font-size: 12px;
     color: #aeaeae;
+  }
+  .closedstatus {
+    width: 10px;
+    height: 10px;
+    display: flex;
+    border-radius: 50%;
+    background-color: var(--primary);
+    white-space: nowrap;
+    justify-content: center;
+    padding: 0.5%;
   }
 `;
 

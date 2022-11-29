@@ -33,7 +33,7 @@ import { getCookie } from "../../hooks/CookieHook";
 import { useQuery } from "react-query";
 
 const { kakao } = window;
-export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
+export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   // const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList, {
   //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
   //   retry: 0, // 실패시 재호출 몇번 할지
@@ -203,6 +203,21 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       });
       marker.setMap(map);
     }
+
+    //?-------------- 하  ------------------[]
+
+    const closeHandler = () => {
+      if (closed) {
+        if (getCookie("accesstoken") !== null) {
+          setOpen((open) => !open);
+        } else {
+          alert("로그인이 필요한 기능입니다.");
+        }
+      } else {
+        alert("마감된 모임입니다!");
+      }
+    };
+
     //접속자가 밴 유저인지 확인
 
     // detail?.data?.banUser?.forEach(
@@ -446,7 +461,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                           예약현황 ({comments?.length}/
                           {detail?.data?.partyMember - 1})
                         </Stbutton>
-                        {!isClosed ? (
+                        {!closed ? (
                           <Stbutton1 onClick={closePartyHandler}>
                             마감하기
                           </Stbutton1>
@@ -458,12 +473,17 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                       </StButtonWrap>
                     ) : (
                       <Stbutton
+                        // disabled={closed}
                         className="innerDiv"
                         onClick={() => {
-                          if (getCookie("accesstoken") !== null) {
-                            setOpen((open) => !open);
+                          if (!closed) {
+                            if (getCookie("accesstoken") !== null) {
+                              setOpen((open) => !open);
+                            } else {
+                              alert("로그인이 필요한 기능입니다.");
+                            }
                           } else {
-                            alert("로그인이 필요한 기능입니다.");
+                            alert("마감된 모임입니다!");
                           }
                         }}
                       >

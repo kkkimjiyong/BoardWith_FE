@@ -22,9 +22,10 @@ import { TextField } from "@mui/material";
 import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { postsApi } from "../../instance";
 
 const { kakao } = window;
-function Form({ setFormModalOpen }) {
+function Form({ setFormModalOpen, setItems }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();
@@ -83,17 +84,10 @@ function Form({ setFormModalOpen }) {
 
   const creatPost = async (payload) => {
     try {
-      const { data } = await axios.post(
-        "https://www.iceflower.shop/posts",
-        payload,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
+      const { data } = await postsApi.creatPost(payload);
       console.log("formpayload", payload);
       console.log("formdata", data);
+      setItems((prev) => prev.concat(data.createPost));
       alert("파티모집글 작성이 완료되었습니다.");
       setFormModalOpen(false);
     } catch (error) {}
@@ -102,10 +96,8 @@ function Form({ setFormModalOpen }) {
   const {
     control,
     register,
-    watch,
     setValue,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -261,7 +253,7 @@ function Form({ setFormModalOpen }) {
                 <LabelBox>지도</LabelBox>
                 <InputBox onClick={postCode} {...register("cafe")} />
               </FlexBox>{" "}
-              <DaumPostBox></DaumPostBox>
+              <DaumPostBox ref={ref}></DaumPostBox>
             </Inputbox>{" "}
             <Buttonbox>
               <Button>작성완료</Button>
