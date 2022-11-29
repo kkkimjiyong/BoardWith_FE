@@ -27,19 +27,6 @@ const MyPage = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        enabled: false,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-      },
-    },
-  });
-
-  console.log(queryClient);
-  console.log(queryClient.getQueryData("getUser"));
-
   //? -----------------  API  -----------------------
 
   const getUser = async () => {
@@ -47,25 +34,14 @@ const MyPage = () => {
       const { data } = await userApi.getUser();
       console.log(data);
 
-      if (data.myNewToken) {
-        setCookie("accessToken", data.myNewToken);
-        Setuser(data.findUser);
-        setReservedParty(data.partyReserved);
-        setConfirmParty(data.partyGo);
-      } else {
-        setLikeGame(data.findUser.likeGame);
-        Setuser(data.findUser);
-        setReservedParty(data.partyReserved);
-        setConfirmParty(data.partyGo);
-      }
+      setLikeGame(data.findUser.likeGame);
+      Setuser(data.findUser);
+      setReservedParty(data.partyReserved);
+      setConfirmParty(data.partyGo);
     } catch (error) {
       console.log(error);
     }
   };
-  useEffect(() => {}, []);
-  const { status, data, error } = useQuery(["getUser"], () => getUser(), {
-    staleTime: Infinity,
-  });
 
   const EditUser = async () => {
     try {
@@ -84,7 +60,8 @@ const MyPage = () => {
 
   const logoutHandler = (name) => {
     alert("로그아웃 성공");
-    removeCookie(name);
+    removeCookie("accessToken");
+    removeCookie("refreshToken");
     navigate("/");
   };
 
