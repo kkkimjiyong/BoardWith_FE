@@ -50,6 +50,9 @@ const boxAnimation = keyframes`
   `;
 
 const ItemWrap = styled.div`
+  /* background-color: var(--gray);
+  z-index: 999;
+  position: absolute; */
   .ItemWrap {
     color: #d7d7d7;
     width: 100%;

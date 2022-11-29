@@ -21,7 +21,9 @@ const Search = () => {
       const { data } = await postsApi.getSearchTitle(keyWord);
 
       setTitleSearch(data.data);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     } catch (error) {}
   };
   const creatNicknamePost = async () => {
@@ -29,7 +31,9 @@ const Search = () => {
     try {
       const { data } = await postsApi.getSearchNickname(keyWord);
       setNicknameSearch(data.data);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     } catch (error) {}
   };
 
@@ -60,6 +64,9 @@ const Search = () => {
       ></SearchInput>{" "}
       <MainListCtn>
         {" "}
+        {loading ? <Skeleton /> : null}
+        {loading ? <Skeleton /> : null}
+        {loading ? <Skeleton /> : null}
         {titleSearch?.map((items, idx) => {
           if (items.participant.length < items.partyMember && !items.closed) {
             return (
@@ -88,9 +95,6 @@ const Search = () => {
             <div>마감되었습니다</div>;
           }
         })}{" "}
-        {loading ? <Skeleton /> : null}
-        {loading ? <Skeleton /> : null}
-        {loading ? <Skeleton /> : null}
       </MainListCtn>
     </Layout>
   );

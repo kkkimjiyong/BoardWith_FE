@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_BACK_SERVER,
-  // baseURL: "https://www.iceflower.shop",
+  // baseURL: process.env.REACT_APP_BACK_SERVER,
+  baseURL: "https://www.iceflower.shop",
   headers: {
     Authorization: getCookie("accessToken"),
   },
