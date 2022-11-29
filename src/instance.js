@@ -15,9 +15,11 @@ const instance = axios.create({
 
 instance.interceptors.response.use(
   (response) => {
+    console.log(response);
     return response;
   },
   async (error) => {
+    console.log(error);
     const {
       config,
       response: { data },

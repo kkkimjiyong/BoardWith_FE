@@ -12,6 +12,7 @@ import { FiFilter } from "@react-icons/all-files/fi/FiFilter";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DailyCheck from "../../Components/DailyCheck";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const MainSlide = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const [formModalOpen, setFormModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [selfCheck, setSelfCheck] = useState(true);
   const scrollHead = useRef();
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
@@ -118,7 +120,9 @@ const MainSlide = () => {
 
   return (
     <>
-      {" "}
+      {selfCheck && (
+        <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
+      )}
       <MainBox className="Scroll">
         <MainHeader onClick={() => scrollToTop()}>
           <BiCurrentLocation size={"30"} onClick={() => nearFilterHandler()} />
