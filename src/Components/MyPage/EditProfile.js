@@ -3,8 +3,6 @@ import { userApi } from "../../instance";
 import styled from "styled-components";
 import useInput from "../../hooks/UseInput";
 import { getCookie, setCookie } from "../../hooks/CookieHook";
-import male from "../../Assets/free-icon-female-2404482.png";
-import female from "../../Assets/free-icon-gender-symbol-5272547.png";
 import { useNavigate } from "react-router-dom";
 import LoginNotif from "../../Pages/LoginNotif";
 import ReactDaumPost from "react-daumpost-hook";
@@ -43,16 +41,10 @@ const MyPage = () => {
 
   const postEditUser = () => {
     try {
-      
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
 
-
-  const editSubmitHandler = () => {
-
-  }
+  const editSubmitHandler = () => {};
 
   const postConfig = {
     //팝업창으로 사용시 해당 파라메터를 없애면 된다.
@@ -73,9 +65,7 @@ const MyPage = () => {
         <ProfileCtn>
           {" "}
           <EditBox onClick={() => navigate("/editpage")}>
-            <EditBtn
-            onClick={() => {}}
-            >편집</EditBtn>
+            <EditBtn onClick={() => {}}>편집</EditBtn>
           </EditBox>
           <ProfileBox
             style={{
@@ -86,10 +76,6 @@ const MyPage = () => {
           <ProfileName>
             {" "}
             <div>{user?.nickName}</div>{" "}
-            <GenderImg
-              src={user?.gender === "female" ? female : male}
-              alt="React"
-            />
           </ProfileName>
           <ProfileInputBox>
             {" "}

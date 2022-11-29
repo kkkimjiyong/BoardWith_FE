@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import ReactDaumPost from "react-daumpost-hook";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRef } from "react";
-import { parsePath, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signUpApi } from "../../instance.js";
 import { useState } from "react";
-import { getCookie } from "../../hooks/CookieHook.js";
 import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 
@@ -52,8 +51,10 @@ const SignUp = () => {
     try {
       const data = await signUpApi.postSingup(payload);
       console.log(data);
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      console.log(error.data.err);
+      alert(error.data.err);
     }
   };
 
@@ -84,7 +85,7 @@ const SignUp = () => {
       myPlace: data.address.split(" ").slice(0, 2),
       phoneNumber: user.phoneNumber,
     });
-    navigate("/");
+
     //선호지역은 자동적으로 나의 집주소에서 구단위 까지만으로 적용
     postSignUp({
       ...data,
@@ -98,7 +99,19 @@ const SignUp = () => {
 
   const checkSubmit = () => {};
 
+  console.log(user.phoneNumber.slice(0, 3));
   //* ---------------------  인증번호 관련 기능 -------------------
+
+  const postVerify = async () => {
+    if (
+      user.phoneNumber.length === 11 &&
+      user.phoneNumber.slice(0, 3) === "010"
+    ) {
+      postPhone();
+    } else {
+      alert("전화번호를 다시 입력해주세요!");
+    }
+  };
 
   const postPhone = async () => {
     try {
@@ -114,7 +127,7 @@ const SignUp = () => {
       alert(error.message);
     }
   };
-  const postVerify = async () => {
+  const postVerifyCode = async () => {
     try {
       const { data } = await axios.post(
         "https://www.iceflower.shop/sms/verify",
@@ -270,7 +283,7 @@ const SignUp = () => {
                 value={user.phoneNumber}
                 name="phoneNumber"
               />
-              <VerfiyBtn onClick={() => postPhone()}>인증번호 받기</VerfiyBtn>
+              <VerfiyBtn onClick={postVerify}>인증번호 받기</VerfiyBtn>
             </RowBox>
 
             <SignUpInput
@@ -280,7 +293,7 @@ const SignUp = () => {
               name="verifyCode"
             />
 
-            <NextBtn onClick={() => postVerify()}>다음</NextBtn>
+            <NextBtn onClick={() => postVerifyCode()}>다음</NextBtn>
           </SignUpCtn>
         )}
 
@@ -399,9 +412,11 @@ const RowBox = styled.div`
 
 const VerfiyBtn = styled.div`
   font-size: 15px;
-  color: #2e294e;
+  color: var(--white);
   width: 35%;
-  background-color: #ddd;
+  background-color: var(--primary);
+  display: flex;
+  justify-content: center;
   border-radius: 15px;
   padding: 5px 10px;
 `;
@@ -440,7 +455,7 @@ const NextBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: var(--white);
   position: fixed;
   bottom: 50px;
   font-weight: 600;
@@ -451,14 +466,14 @@ const NextBtn = styled.div`
   border-radius: 20px;
   box-shadow: 0px 3px 3px 0px gray;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--primary);
   :hover {
     background-color: gray;
   }
 `;
 
 const WholeBox = styled.div`
-  width: 67%;
+  width: 90%;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -485,7 +500,7 @@ const TagItem = styled.div`
   justify-content: space-between;
   margin: 5px;
   padding: 5px;
-  background-color: #a766ff;
+  background-color: var(--primary);
   border-radius: 5px;
   color: white;
   font-size: 13px;
@@ -493,12 +508,17 @@ const TagItem = styled.div`
 
 const Text = styled.span``;
 
-const TagButton = styled.button``;
+const TagButton = styled.button`
+  background-color: transparent;
+  text-shadow: 0px 1px 1px 0px var(--black);
+  border: none;
+  color: var(--red);
+`;
 
 const TagInput = styled.input`
   color: white;
   display: inline-flex;
-  min-width: 150px;
+  min-width: 200px;
   background: transparent;
   border: none;
   outline: none;
