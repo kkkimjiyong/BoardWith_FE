@@ -13,6 +13,7 @@ import { DetailModal } from "../../Components/Detail/DetailModal";
 import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DailyCheck from "../../Components/DailyCheck";
+import { getCookie } from "../../hooks/CookieHook";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -120,6 +121,7 @@ const MainSlide = () => {
 
   return (
     <>
+      {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
       {selfCheck && (
         <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
       )}

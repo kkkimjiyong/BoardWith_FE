@@ -15,7 +15,6 @@ const instance = axios.create({
 
 instance.interceptors.response.use(
   (response) => {
-    console.log(response);
     return response;
   },
   async (error) => {
@@ -25,6 +24,7 @@ instance.interceptors.response.use(
       response: { data },
     } = error;
     const prevRequest = config;
+    console.log(config);
     if (data.message === "refresh가 일치하지 않습니다.") {
       try {
         prevRequest.headers = {
@@ -54,7 +54,7 @@ export const userApi = {
   getUser: () =>
     instance.get("/users", {
       headers: {
-        Authorization: token,
+        Authorization: getCookie("accessToken"),
       },
     }),
 

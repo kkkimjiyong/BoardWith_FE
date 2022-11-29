@@ -142,19 +142,21 @@ const ChatRoom = () => {
           }}
         >
           <UserCtn onClick={(e) => e.stopPropagation()} isEdit={isEdit}>
-            {users?.map((user) => {
-              return (
-                <UserBox>
-                  <div>{user}</div>
-                  <button
-                    onClick={() => {
-                      ban(user);
-                    }}
-                  >
-                    밴
-                  </button>
-                </UserBox>
-              );
+            <DrawerHead>{detail?.title}</DrawerHead>
+            {users?.map((user, index) => {
+              if (user)
+                return (
+                  <UserBox>
+                    <div>{user}</div>
+                    <UserBtn
+                      onClick={() => {
+                        ban(user);
+                      }}
+                    >
+                      밴
+                    </UserBtn>
+                  </UserBox>
+                );
             })}
           </UserCtn>
         </UserWrap>
@@ -220,7 +222,7 @@ const ChatRoom = () => {
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 95vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -241,6 +243,13 @@ const ChatHeader = styled.div`
     text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
       0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
   }
+`;
+
+const DrawerHead = styled.div`
+  color: var(--white);
+  margin: 0% 5%;
+  padding: 5% 0%;
+  border-bottom: 1px solid #484848;
 `;
 
 const RoomInfo = styled.div`
@@ -321,7 +330,7 @@ const UserWrap = styled.div`
   z-index: 998;
   position: absolute;
   right: 0;
-  height: 95vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.4); ;
 `;
 
@@ -331,21 +340,12 @@ const UserCtn = styled.div`
   flex-direction: column;
   position: absolute;
   width: ${({ isEdit }) => (isEdit ? "70%" : "0px")};
-  height: 95vh;
+  height: 100%;
   padding: 20% 0%;
   right: 0px;
-  background-color: #dddddd;
+  background-color: var(--gray);
   transition: width 400ms ease-in-out;
-`;
-const UserList = styled.div`
-  height: 100%;
   overflow: hidden;
-  overflow-y: scroll;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: white;
-  z-index: 99;
 `;
 const UserBox = styled.div`
   padding: 10px 20px;
