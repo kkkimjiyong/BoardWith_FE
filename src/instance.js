@@ -1,13 +1,12 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
 
-const token = getCookie("accessToken");
-const refreshToken = getCookie("refreshToken");
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BACK_SERVER,
   // baseURL: "https://www.iceflower.shop",
   headers: {
-    Authorization: token,
+    Authorization: getCookie("accessToken"),
   },
 });
 
@@ -25,16 +24,29 @@ instance.interceptors.response.use(
     } = error;
     const prevRequest = config;
     console.log(config);
-    if (data.message === "refresh가 일치하지 않습니다.") {
+    if (data.code === 419) {
       try {
+        console.log("여기 419 떳어요!!");
+        const { data } = await axios.post(
+          `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
+          {
+            refresh_token: getCookie("refreshToken"),
+          }
+        );
+        console.log(data);
+
         prevRequest.headers = {
           "Content-Type": "application/json",
-          Authorization: token,
-          refresh: refreshToken,
+          Authorization: `Bearer ${data.accessToken}`,
         };
         return await axios(prevRequest);
       } catch (err) {
         console.log(err);
+        if (err.response.data.code === 420) {
+          console.log("여기 420이에요!!!");
+          alert("로그인을 다시 해주세요");
+          window.location.replace("/");
+        }
         new Error(err);
       }
     }
@@ -61,7 +73,14 @@ export const userApi = {
   editUser: (EditUser) =>
     instance.put("/users", EditUser, {
       headers: {
-        Authorization: token,
+        Authorization: getCookie("accessToken"),
+      },
+    }),
+
+  dailyUser: () =>
+    instance.put("/users/check", {
+      headers: {
+        Authorization: getCookie("accessToken"),
       },
     }),
   getOtherUser: (nickname) => instance.get(`/users/${nickname}`),
@@ -101,7 +120,7 @@ export const postsApi = {
   creatPost: (inputs) => {
     return instance.post(`/posts`, inputs, {
       headers: {
-        Authorization: token,
+        Authorization: getCookie("accessToken"),
       },
     });
   },

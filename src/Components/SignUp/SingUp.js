@@ -51,6 +51,7 @@ const SignUp = () => {
     try {
       const data = await signUpApi.postSingup(payload);
       console.log(data);
+      alert("회원가입을 축하드립니다!");
       navigate("/");
     } catch (error) {
       console.log(error.data.err);
