@@ -28,7 +28,7 @@ font-family: 'NanumSquareRound';    box-sizing: border-box;
   }
 
   input {
-    font-size: 17px;
+    font-size: 14px;
   }
   :root {
     --primary: #C72363;

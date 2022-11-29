@@ -171,10 +171,8 @@ const Item = ({ number, item, Myaddress }) => {
                 {" "}
                 <div
                   className={"status" + memberStatus.indexOf(statusIndicator())}
-                >
-                  {memberStatus.indexOf(statusIndicator()) === 3 && "마감"}{" "}
-                  {/* {statusIndicator()} */}
-                </div>
+                ></div>{" "}
+                <div className="statusTxt">{statusIndicator()}</div>
               </StatusBox>
             </div>
           </div>
@@ -266,50 +264,62 @@ const ItemWrap = styled.div`
 
 const StatusBox = styled.div`
   color: #2e294e;
-  width: 25%;
-  height: 20px;
-  border: 1px solid #dddddd;
+  width: 20%;
+  height: 30px;
+  border: 1px solid #5c5c5c;
+  padding: 5px 0px;
   border-radius: 20px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   .status0 {
+    width: 10px;
+    height: 10px;
     display: flex;
-    border-radius: 130px;
+    border-radius: 50%;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 40%;
     justify-content: center;
     padding: 0.5%;
     background-color: #05ff5b;
   }
   .status1 {
+    width: 10px;
+    height: 10px;
     display: flex;
-    border-radius: 130px;
+    border-radius: 50%;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 60%;
     justify-content: center;
     padding: 0.5%;
     background-color: #dafe6d;
   }
   .status2 {
+    width: 10px;
+    height: 10px;
     display: flex;
-    border-radius: 130px;
+    border-radius: 50%;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 100%;
     justify-content: center;
     padding: 0.5%;
     background-color: red;
   }
   .status3 {
+    width: 10px;
+    height: 10px;
     display: flex;
-    border-radius: 130px;
+    border-radius: 50%;
     background-color: #e2e5e7;
     white-space: nowrap;
-    width: 100%;
     justify-content: center;
     padding: 0.5%;
     background-color: gainsboro;
+  }
+  .statusTxt {
+    margin-left: 5%;
+    font-size: 12px;
+    color: #aeaeae;
   }
 `;
 

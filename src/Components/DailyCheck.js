@@ -1,10 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { userApi } from "../instance";
 
 const DailyCheck = ({ setSelfCheck, selfCheck }) => {
   const checkHandler = () => {
     setSelfCheck(false);
   };
+
+  const getUser = async () => {
+    try {
+      const { data } = await userApi.getUser();
+      console.log(data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   console.log(selfCheck);
 
