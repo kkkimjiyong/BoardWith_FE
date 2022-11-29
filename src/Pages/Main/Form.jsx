@@ -96,13 +96,15 @@ function Form({ setFormModalOpen, setItems }) {
   const {
     control,
     register,
+    watch,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(formSchema),
-    defaultValues: { partyMember: "10" },
+    defaultValues: { fullday: new Date(), partyMember: "10" },
   });
 
   // console.log(location);
@@ -120,15 +122,15 @@ function Form({ setFormModalOpen, setItems }) {
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
       setValue("cafe", data.address);
-      //받은 데이터를 좌표값으로 바꿔주는 함수도 실행
-      geocoder.addressSearch(data.address, callback);
       // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
       ref.current.style.display = "none";
+      //받은 데이터를 좌표값으로 바꿔주는 함수도 실행
+      geocoder.addressSearch(data.address, callback);
     },
   };
 
   const postCode = ReactDaumPost(postConfig);
-  // console.log(watch());
+  console.log(watch());
 
   return (
     <BackGroudModal>
@@ -184,7 +186,7 @@ function Form({ setFormModalOpen, setItems }) {
                             {...params}
                             inputProps={{
                               ...params.inputProps,
-                              placeholder: "tt.mm.jjjj",
+                              placeholder: new Date(),
                             }}
                           />
                         )}
