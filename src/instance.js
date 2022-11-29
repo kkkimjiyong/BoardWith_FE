@@ -92,7 +92,7 @@ export const postApi = {
   editDetail: (payload) => instance.post(`/posts/${payload}`),
   delDetail: (payload) => instance.post(`/posts/${payload}`),
   closeParty: (payload) =>
-    instance.put(`/posts/closeParty/${payload}`, payload),
+    instance.put(`/posts/closeParty/${payload}`, { postId: payload }),
   openParty: (payload) =>
     instance.put(`/posts/reopenParty/${payload.postid}`, payload.time),
   acceptingParty: (payload) =>

@@ -131,7 +131,7 @@ const ChatRoom = () => {
         body: msg,
       });
     });
-  }, []);
+  });
   return (
     <>
       <Wrapper>
