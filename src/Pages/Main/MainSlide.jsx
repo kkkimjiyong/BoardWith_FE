@@ -117,7 +117,7 @@ const MainSlide = () => {
       observer.observe(target);
       observed = true;
     }
-  }, [target]);
+  }, [target, setFormModalOpen]);
 
   return (
     <>

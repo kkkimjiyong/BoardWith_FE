@@ -72,10 +72,11 @@ const Item = ({ number, item, Myaddress }) => {
   const bookMarking = async () => {
     try {
       const { data } = await axios.put(
-        `https://www.iceflower.shop/posts/bookmark/${item._id}`,
+        `https://www.iceflower.shop/posts/bookmark/bookmark`,
+        { postId: item._id },
         {
           headers: {
-            Authorization: `${getCookie("accessToken")}`,
+            Authorization: getCookie("accessToken"),
           },
         }
       );

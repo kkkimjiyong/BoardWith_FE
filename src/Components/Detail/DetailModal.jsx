@@ -276,7 +276,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       }, ms)
     );
   };
-  // //!----------------카카오공유하기 ---------------------
+  //!----------------카카오공유하기 ---------------------
   useEffect(() => {
     // 카카오톡 sdk 추가
     const script = document.createElement("script");
