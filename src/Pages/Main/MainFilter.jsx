@@ -156,94 +156,118 @@ const MainFilter = ({
   };
 
   return (
-    <Wrap open={open}>
-      <div>
-        <Contentbox>
-          <ContentLabel>위치</ContentLabel>
-          <LocationSelect
-            name="map"
-            size={1}
-            onChange={onChange}
-            defaultValue={seoulGu[0]}
-            placeholder="지역"
-          >
-            {seoulGu.map((location) => {
-              return (
-                <option key={location.label} value={location.value}>
-                  {location.label}
-                </option>
-              );
-            })}
-          </LocationSelect>
-
-          <ContentLabel>날짜</ContentLabel>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              name="time"
-              inputFormat={"yyyy-MM-dd"}
-              mask={"____-__-__"}
-              onChange={onDateChange}
-              value={filtered.date}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
-
-          <ContentLabel>시간</ContentLabel>
-          <div>
-            <TimeSelect
-              name="time"
+    <BackGroudModal onClick={() => setOpen(!open)} open={open}>
+      {" "}
+      <Wrap open={open}>
+        <div>
+          <Contentbox>
+            <ContentLabel>위치</ContentLabel>
+            <LocationSelect
+              name="map"
               size={1}
-              onChange={onTimeChange1}
-              defaultValue={timeSelect[0].label}
+              onChange={onChange}
+              defaultValue={seoulGu[0]}
+              placeholder="지역"
             >
-              {timeSelect.map((time) => {
+              {seoulGu.map((location) => {
                 return (
-                  <option key={time.label} value={time.value}>
-                    {time.label}
+                  <option key={location.label} value={location.value}>
+                    {location.label}
                   </option>
                 );
               })}
-            </TimeSelect>
-            <TimeSelect
-              name="time"
-              size={1}
-              onChange={onTimeChange2}
-              defaultValue={timeSelect[23].label}
-            >
-              {timeSelect.map((time) => {
-                return (
-                  <option key={time.label} value={time.value}>
-                    {time.label}
-                  </option>
-                );
-              })}
-            </TimeSelect>
-          </div>
+            </LocationSelect>
 
-          <ContentLabel>인원</ContentLabel>
+            <ContentLabel>날짜</ContentLabel>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                name="time"
+                inputFormat={"yyyy-MM-dd"}
+                mask={"____-__-__"}
+                onChange={onDateChange}
+                value={filtered.date}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
-          <InputBox>
-            <MemberSlider
-              style={{ marginTop: "50px", color: "black" }}
-              getAriaLabel={() => "Minimum distance shift"}
-              value={value2}
-              onChange={handleChange2}
-              valueLabelDisplay="on"
-              getAriaValueText={valuetext}
-              disableSwap
-              min={1}
-              max={10}
-            />
-          </InputBox>
+            <ContentLabel>시간</ContentLabel>
+            <div>
+              <TimeSelect
+                name="time"
+                size={1}
+                onChange={onTimeChange1}
+                defaultValue={timeSelect[0].label}
+              >
+                {timeSelect.map((time) => {
+                  return (
+                    <option key={time.label} value={time.value}>
+                      {time.label}
+                    </option>
+                  );
+                })}
+              </TimeSelect>
+              <TimeSelect
+                name="time"
+                size={1}
+                onChange={onTimeChange2}
+                defaultValue={timeSelect[23].label}
+              >
+                {timeSelect.map((time) => {
+                  return (
+                    <option key={time.label} value={time.value}>
+                      {time.label}
+                    </option>
+                  );
+                })}
+              </TimeSelect>
+            </div>
 
-          <ContentButton onClick={getFiltered}>파티보기</ContentButton>
-        </Contentbox>
-      </div>
-    </Wrap>
+            <ContentLabel>인원</ContentLabel>
+
+            <InputBox>
+              <MemberSlider
+                style={{ marginTop: "50px", color: "black" }}
+                getAriaLabel={() => "Minimum distance shift"}
+                value={value2}
+                onChange={handleChange2}
+                valueLabelDisplay="on"
+                getAriaValueText={valuetext}
+                disableSwap
+                min={1}
+                max={10}
+              />
+            </InputBox>
+
+            <ContentButton onClick={getFiltered}>파티보기</ContentButton>
+          </Contentbox>
+        </div>
+      </Wrap>
+    </BackGroudModal>
   );
 };
 
 export default MainFilter;
+
+const BackGroudModal = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: ${({ open }) => (open ? "100%" : "0")};
+  /* position: fixed;
+left: 50%;
+top: 50vh;
+transform: translate(-50%, -50%);
+border-radius: 12px;
+z-index: 42;
+display: block; */
+`;
 
 const DatePicker = styled(MobileDatePicker)(({ theme }) => ({
   "& input": {
