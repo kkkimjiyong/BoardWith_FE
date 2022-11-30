@@ -82,8 +82,8 @@ const MainSlide = () => {
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
-  console.log("items", items);
   const [nextPage, setNextPage] = useState(true);
+  console.log("items", items);
   let page = 0;
 
   const [target, setTarget] = useState(null);
@@ -101,15 +101,16 @@ const MainSlide = () => {
     observer.unobserve(entry.target);
     let itemLength = await getData();
     console.log(itemLength);
-    if (itemLength == 5) {
+    if (itemLength === 5) {
       console.log("reobserve!!!!!!");
       observer.observe(entry.target);
     } else {
       console.log("stop observe!!!!!!");
+      observer.unobserve(entry.target);
     }
   };
 
-  let observer = new IntersectionObserver(onIntersect, { threshold: 0.1 });
+  let observer = new IntersectionObserver(onIntersect, { threshold: 1 });
   let observed = false;
 
   useEffect(() => {
@@ -184,8 +185,8 @@ const MainSlide = () => {
 export default MainSlide;
 
 const Target = styled.div`
-  /* height: 100px; */
-  color: var(--black);
+  height: 100px;
+  color: var(--white);
 `;
 
 const MainBox = styled.div`

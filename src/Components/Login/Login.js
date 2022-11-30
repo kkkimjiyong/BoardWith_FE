@@ -45,10 +45,6 @@ const Login = () => {
           path: "/",
           httpOnly: true,
         });
-        setCookie("123456", "1443", {
-          path: "/",
-          httpOnly: true,
-        });
         setCookie("nickName", data.nickName);
       }
 

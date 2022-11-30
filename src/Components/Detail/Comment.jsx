@@ -98,7 +98,6 @@ const Comments = ({
           setIsPartyAccept(false);
           alert("참가 수락을 취소하였습니다.");
         }
-
         // setModalOpen(false);
       })
       .catch((error) => {
@@ -168,7 +167,7 @@ const Comments = ({
       } else {
         setIsBanUser(false);
       }
-  }, [comments, setIsPartyAccept]);
+  }, [comments, isPartyAccept]);
   // console.log("detail", detail);
   // console.log("comments", comments);
   // console.log("myPlace", comments?.myPlace);

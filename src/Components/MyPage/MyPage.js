@@ -13,7 +13,7 @@ import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
 import ReactDaumPost from "react-daumpost-hook";
 import { useRef } from "react";
 import MyPartyItem from "./MyPartyItem";
-import { QueryClient, useQuery } from "react-query";
+import { postsApi } from "../../instance";
 
 const MyPage = () => {
   const [user, Setuser, onChange] = useInput();
@@ -52,10 +52,21 @@ const MyPage = () => {
     }
   };
 
+  //? ------------------  삭제 포스트 =========================
+
+  const deletHandler = async (id) => {
+    try {
+      const { data } = await postsApi.deletePost(id);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getUser();
   }, []);
   // console.log({ visible: !user.visible });
+
   //? ------------------  로그아웃 -------------------
 
   const logoutHandler = (name) => {
@@ -142,11 +153,9 @@ const MyPage = () => {
         <Arrow className="head" onClick={() => navigate("/main")} />
         <div className="headtxt">마이페이지</div>
         <RowBox>
-          <BsPencil size="30" onClick={() => SetisEdit(true)} />
+          <div onClick={() => SetisEdit(true)}>편집</div>
         </RowBox>
       </MainHeader>
-      {/* 범용성있게 아바타박스를 만든 뒤, 추가하자 */}
-      {/* <AvatarBox userSelect={user?.userAvater} /> */}
       <AvatarCtn>
         {" "}
         <Avatar />
@@ -217,7 +226,10 @@ const MyPage = () => {
           {isOpen1 && (
             <MyPartyBox>
               {reservedParty?.map((party) => {
-                if (!party.closed) return <MyPartyItem party={party} />;
+                if (!party.closed)
+                  return (
+                    <MyPartyItem deletHandler={deletHandler} party={party} />
+                  );
               })}
             </MyPartyBox>
           )}
@@ -228,18 +240,25 @@ const MyPage = () => {
           {isOpen2 && (
             <MyPartyBox>
               {confirmParty?.map((party) => {
-                if (!party.closed) return <MyPartyItem party={party} />;
+                if (!party.closed)
+                  return (
+                    <MyPartyItem deletHandler={deletHandler} party={party} />
+                  );
               })}
             </MyPartyBox>
           )}{" "}
-          <EditBox>
-            {" "}
-            <div className="logout" onClick={deletUserHandler}>
-              회원탈퇴
-            </div>
-            <ImExit size="30" onClick={() => logoutHandler("accessToken")} />
-          </EditBox>
         </MyPartyCtn>{" "}
+        <EditBox>
+          {" "}
+          <div className="delete" onClick={deletUserHandler}>
+            회원탈퇴
+          </div>
+          <ImExit
+            className="logout"
+            size="30"
+            onClick={() => logoutHandler("accessToken")}
+          />
+        </EditBox>
       </ProfileCtn>{" "}
     </Wrapper>
   );
@@ -261,7 +280,7 @@ const MainHeader = styled.div`
   width: 100%;
   background-color: var(--black);
   box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 999;
+  z-index: 100;
   color: white;
   padding: 3.5% 2% 3.5% 2%;
   display: flex;
@@ -292,16 +311,25 @@ const AvatarCtn = styled.div`
 
 const EditBox = styled.div`
   width: 100%;
-  height: 30%;
-  padding: 10px 10% 10px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 5%;
   gap: 80px;
   color: #919191;
-  :hover {
-    text-decoration: underline;
-    cursor: pointer;
+  .delete {
+    padding-right: 12%;
+    border-right: 2px solid #919191;
+    :hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+  .logout {
+    margin-right: 8%;
+    :hover {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -322,19 +350,6 @@ const ProfileInput = styled.input`
 
 const DaumPostBox = styled.div``;
 
-const EditBtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3rem;
-  width: 5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  :hover {
-    box-shadow: 0px 2px 2px 0px gray;
-  }
-`;
-
 const ProfileCtn = styled.div`
   width: 100%;
   display: flex;
@@ -347,6 +362,7 @@ const ProfileCtn = styled.div`
   height: 100%;
   padding-top: 5%;
   padding-left: 10%;
+  padding-bottom: 15%;
   gap: 30px;
   overflow-y: hidden;
   overflow-y: scroll;
@@ -382,7 +398,6 @@ const LikeGameCtn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 15vh;
   gap: 10px;
 `;
 
@@ -404,7 +419,6 @@ const MyPartyCtn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 100%;
   gap: 30px;
 `;
 

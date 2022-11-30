@@ -54,7 +54,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [open, setOpen] = useState(false);
   const { comments } = useSelector((state) => state.comments.comments);
   const [isCommentAuthor, setIsCommentAuthor] = useState(false);
-  const [isClosed, setIsClosed] = useState(false);
+  const [isClosed, setIsClosed] = useState(closed);
   const [isEdit, setIsEdit] = useState(false);
   const [x, setX] = useState();
   const [y, setY] = useState();
@@ -152,15 +152,18 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   //useEffect 디테일 데이터 불러오기---------------------------------------
   useEffect(() => {
     userApi.getUser().then((res) => {
+      console.log("몇번이나 눌리는겨?");
       setNickName(res.data.findUser.nickName);
     });
     postApi.getDetailId(postid).then((res) => {
+      console.log("몇번이나 눌리는겨?");
+
       setDetail(res.data);
     });
     dispatch(__getComments(postid));
-  }, [setIsClosed]);
+  }, [isClosed, isPartyAccept]);
 
-  console.log(closed);
+  console.log(isClosed);
 
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
   // console.log(detail?.data?.nickName);
@@ -446,7 +449,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         // disabled={closed}
                         className="innerDiv"
                         onClick={() => {
-                          if (!closed) {
+                          if (!isClosed) {
                             if (getCookie("accesstoken") !== null) {
                               setOpen((open) => !open);
                             } else {
