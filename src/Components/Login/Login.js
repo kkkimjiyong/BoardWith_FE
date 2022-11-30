@@ -33,7 +33,7 @@ const Login = () => {
       console.log(data.nickName);
       if (data.accessToken) {
         console.log("나 푸쉬됬어요3");
-        setCookie("accessToken", data.accessToken, { path: "/"  httpOnly:true,});
+        setCookie("accessToken", data.accessToken, { path: "/" , httpOnly:true,});
         setCookie("refreshToken", data.refresh_token, {
           path: "/",
           httpOnly:true,
