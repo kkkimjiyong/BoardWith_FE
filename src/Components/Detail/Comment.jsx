@@ -41,7 +41,7 @@ const Comments = ({
   };
   const [comment, setComment] = useState(initialState);
   // console.log("comment", comments);
-  console.log("detail", detail);
+  // console.log("detail", detail);
 
   //댓글 수정 취소--------------------------------------------------------------
   const editCancel = () => {
@@ -89,10 +89,16 @@ const Comments = ({
     postApi
       .acceptingParty({ postid: postid, nickName: nickName })
       .then((res) => {
-        alert("파티원 참가 상태를 변경하였습니다.");
         console.log("성공", res);
-        setIsPartyAccept(true);
-        setModalOpen(false);
+        if (isPartyAccept === false) {
+          setIsPartyAccept(true);
+          alert("참가를 수락하였습니다.");
+        } else {
+          setIsPartyAccept(false);
+          alert("참가 수락을 취소하였습니다.");
+        }
+
+        // setModalOpen(false);
       })
       .catch((error) => {
         if (error.response.status === 401) {

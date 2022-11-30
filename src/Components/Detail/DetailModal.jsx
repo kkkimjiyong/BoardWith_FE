@@ -95,8 +95,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   };
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
-  console.log(realStartTime, realEndTime);
-  console.log(startDate, endDate);
+  // console.log(realStartTime, realEndTime);
+  // console.log(startDate, endDate);
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
     !isEdit ? setIsEdit(true) : setIsEdit(false);
@@ -218,29 +218,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
       }
     };
 
-    //접속자가 밴 유저인지 확인
-
-    // detail?.data?.banUser?.forEach(
-    //   (banUser) => comments?.nickName === banUser && setIsBanUser(true)
-    // );
-
-    // // 만약 10명
-    // for (let i = 0; i < detail?.data?.banUser?.length; i++) {
-    //   for (let i = 0; i < comments?.length; i++) {
-    //     if (detail?.data?.banUser[i] === comments[i].nickName) {
-    //       // setIsBanUser(true);
-    //       //console.log("하이하이 : ", comments[i]);
-    //       // 블랙리스트인 애들 객체에 저장
-    //       // 블랙리스트인 애들이 이제 여기에서 분류 되는거니까
-    //       // 10명중에 4명이 블랙리스트면 4번 타겠지?
-    //       // 그러면 얘네들만 객체에 따로 담으면 될듯?
-    //       setBlacklist(comments[i]);
-    //       setBlacklists(comments[i]);
-    //       //setBlacklists((blacklist) => [blacklist, comments[i]]);
-    //     }
-    //   }
-    // }
-
     //for (let i = 0; i < blacklist.length)
     console.log("blacklist", blacklist); // 무조건 1개 있어야해
     console.log("blacklists", blacklists); // 2개 다 있어야해
@@ -325,7 +302,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
       });
     }
   };
-  console.log(process.env.REACT_APP_KAKAO_JSPKEY);
+
+  console.log("detail".detail); // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
@@ -518,10 +496,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       }}
                     />
                     <h3>{detail?.data?.title}</h3>
-                    {!isEdit ? (
-                      <h5 onClick={postEditHandler}>편집</h5>
+                    {isHost ? (
+                      <h5 onClick={postEditHandler}>
+                        {!isEdit ? "편집" : "취소"}
+                      </h5>
                     ) : (
-                      <h5 onClick={postEditHandler}>취소</h5>
+                      <div />
                     )}
                   </StCommentTitle>
                   {!isHost ? (
