@@ -133,4 +133,5 @@ export const postsApi = {
   deletePost: (params) => instance.delete(`/posts/${params}`),
   updatePost: (payload) =>
     instance.patch(`/posts/${payload.postId}`, payload.post),
+  bookMarkPost: (payload) => instance.put(`/posts/bookmark/bookmark`, payload),
 };

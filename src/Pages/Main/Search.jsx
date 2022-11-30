@@ -64,37 +64,42 @@ const Search = () => {
       ></SearchInput>{" "}
       <MainListCtn>
         {" "}
-        {loading ? <Skeleton /> : null}
-        {loading ? <Skeleton /> : null}
-        {loading ? <Skeleton /> : null}
-        {titleSearch?.map((items, idx) => {
-          if (items.participant.length < items.partyMember && !items.closed) {
-            return (
-              <Item
-                //   setModalOpen={setModalOpen}
-                key={idx}
-                item={items}
-                //   Myaddress={Myaddress}
-              ></Item>
-            );
-          } else {
-            <div>마감되었습니다</div>;
-          }
-        })}
-        {nicknameSearch?.map((items, idx) => {
-          if (items.participant.length < items.partyMember && !items.closed) {
-            return (
-              <Item
-                //   setModalOpen={setModalOpen}
-                key={idx}
-                item={items}
-                //   Myaddress={Myaddress}
-              ></Item>
-            );
-          } else {
-            <div>마감되었습니다</div>;
-          }
-        })}{" "}
+        {loading ? (
+          <Skeleton />
+        ) : (
+          titleSearch?.map((items, idx) => {
+            if (items.participant.length < items.partyMember && !items.closed) {
+              return (
+                <Item
+                  //   setModalOpen={setModalOpen}
+                  key={idx}
+                  item={items}
+                  //   Myaddress={Myaddress}
+                ></Item>
+              );
+            } else {
+              <div>마감되었습니다</div>;
+            }
+          })
+        )}
+        {loading ? (
+          <Skeleton />
+        ) : (
+          nicknameSearch?.map((items, idx) => {
+            if (items.participant.length < items.partyMember && !items.closed) {
+              return (
+                <Item
+                  //   setModalOpen={setModalOpen}
+                  key={idx}
+                  item={items}
+                  //   Myaddress={Myaddress}
+                ></Item>
+              );
+            } else {
+              <div>마감되었습니다</div>;
+            }
+          })
+        )}{" "}
       </MainListCtn>
     </Layout>
   );

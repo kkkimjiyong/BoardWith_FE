@@ -103,6 +103,9 @@ const MainSlide = () => {
   };
 
   const onIntersect = async ([entry], observer) => {
+    if (!entry.isIntersecting) {
+      return;
+    }
     observer.unobserve(entry.target);
     let itemLength = await getData();
     console.log(itemLength);
@@ -165,9 +168,6 @@ const MainSlide = () => {
               ></Item>
             );
           })}
-          {loading ? <Skeleton /> : null}
-          {loading ? <Skeleton /> : null}
-          {loading ? <Skeleton /> : null}
           <Target ref={setTarget}>target? </Target>{" "}
         </MainListCtn>{" "}
         <FormButton onClick={() => setFormModalOpen(true)}>

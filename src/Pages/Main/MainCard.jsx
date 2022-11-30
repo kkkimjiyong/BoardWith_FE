@@ -13,6 +13,7 @@ import { DetailModal } from "../../Components/Detail/DetailModal";
 import ProfileAvatarBox from "../../Components/Avatar/ProfileAvatarBox";
 import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
+import { postsApi } from "../../instance";
 
 const Item = ({ number, item, Myaddress, closed }) => {
   const navigate = useNavigate();
@@ -71,15 +72,8 @@ const Item = ({ number, item, Myaddress, closed }) => {
   const [starMark, setStarMark] = useState(true);
   const bookMarking = async () => {
     try {
-      const { data } = await axios.put(
-        `https://www.iceflower.shop/posts/bookmark/bookmark`,
-        { postId: item._id },
-        {
-          headers: {
-            Authorization: getCookie("accessToken"),
-          },
-        }
-      );
+      const { data } = await postsApi.bookMarkPost({ postId: item._id });
+
       console.log(data);
     } catch (error) {}
   };
