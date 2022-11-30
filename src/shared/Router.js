@@ -18,6 +18,9 @@ import Search from "../Pages/Main/Search";
 import { Suspense, lazy } from "react";
 import Loading from "../style/Loading";
 import LoginGoogle from "../Components/Login/GoogleLogin";
+import SignUp1 from "../Components/SignUp/SignUp1";
+import SignUp2 from "../Components/SignUp/SingUp2";
+import SignUp3 from "../Components/SignUp/SignUp3";
 
 // const Main = lazy(() => import("../Pages/Main/Main"));
 // const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
@@ -30,6 +33,9 @@ const Router = () => {
         <Routes>
           <Route path="/main" element={<Main />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/signup1" element={<SignUp1 />} />
+          <Route path="/signup2" element={<SignUp2 />} />
+          <Route path="/signup3" element={<SignUp3 />} />
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup/oauth" element={<KaKaoLogin />} />
           <Route path="/signup/google" element={<LoginGoogle />} />

@@ -7,6 +7,7 @@ import { setCookie } from "../../hooks/CookieHook";
 import NotifModal from "../../tools/NotifModal";
 import { ReactComponent as MainLogo } from "../../Assets/MyLogo.svg";
 import MyLogo from "../../Assets/MainLogo.png";
+import cookie from "react-cookies";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,12 +34,24 @@ const Login = () => {
       console.log(data.nickName);
       if (data.accessToken) {
         console.log("나 푸쉬됬어요3");
-        setCookie("accessToken", data.accessToken, { path: "/" });
+        setCookie("accessToken", data.accessToken, {
+          path: "/",
+        });
         setCookie("refreshToken", data.refresh_token, {
           path: "/",
         });
         setCookie("nickName", data.nickName);
+        setCookie("123", "123", {
+          path: "/",
+          httpOnly: true,
+        });
+        setCookie("123456", "1443", {
+          path: "/",
+          httpOnly: true,
+        });
+        setCookie("nickName", data.nickName);
       }
+
       navigate("/main");
     } catch (error) {
       alert("다시 로그인해주세요");

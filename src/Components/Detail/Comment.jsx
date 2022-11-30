@@ -26,10 +26,11 @@ const Comments = ({
   setModalOpen,
   open,
   setOpen,
+  isPartyAccept,
+  setIsPartyAccept,
 }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
-  const [isPartyAccept, setIsPartyAccept] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
   const navigate = useNavigate();
 
@@ -167,7 +168,7 @@ const Comments = ({
       } else {
         setIsBanUser(false);
       }
-  }, [comments]);
+  }, [comments, setIsPartyAccept]);
   // console.log("detail", detail);
   // console.log("comments", comments);
   // console.log("myPlace", comments?.myPlace);
