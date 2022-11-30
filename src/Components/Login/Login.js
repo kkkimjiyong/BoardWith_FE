@@ -40,7 +40,7 @@ const Login = () => {
         });
         setCookie("nickName", data.nickName,{ httpOnly:true});
       }
-    setCookie("123","123,{ httpOnly:true});
+    setCookie("123","123",{ httpOnly:true});
       }
       navigate("/main");
     } catch (error) {
