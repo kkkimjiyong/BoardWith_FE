@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_BACK_SERVER,
-  // baseURL: "https://www.iceflower.shop",
+  // baseURL: process.env.REACT_APP_BACK_SERVER,
+  baseURL: "https://www.iceflower.shop",
   headers: {
     Authorization: getCookie("accessToken"),
   },
@@ -114,8 +114,14 @@ export const commentsApi = {
 };
 
 export const postsApi = {
-  getPosts: () => {
-    return instance.get("/posts");
+  getPosts: (payload) => {
+    return instance.get(`/posts/?skip=${payload}`);
+  },
+  getSearchTitle: (payload) => {
+    return instance.get(`posts/searchTitle/${payload}`);
+  },
+  getSearchNickname: (payload) => {
+    return instance.get(`posts/searchNickname/${payload}`);
   },
   creatPost: (inputs) => {
     return instance.post(`/posts`, inputs, {
@@ -127,4 +133,5 @@ export const postsApi = {
   deletePost: (params) => instance.delete(`/posts/${params}`),
   updatePost: (payload) =>
     instance.patch(`/posts/${payload.postId}`, payload.post),
+  bookMarkPost: (payload) => instance.put(`/posts/bookmark/bookmark`, payload),
 };
