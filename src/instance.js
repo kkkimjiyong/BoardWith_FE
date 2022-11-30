@@ -34,7 +34,7 @@ instance.interceptors.response.use(
           }
         );
         console.log(data);
-
+        setCookie("accessToken", `Bearer ${data.accessToken}`);
         prevRequest.headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.accessToken}`,

@@ -30,8 +30,6 @@ import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
-import { useQuery } from "react-query";
-
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const dispatch = useDispatch();
@@ -49,6 +47,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
   const [isBanUser, setIsBanUser] = useState(false);
+  const [isPartyAccept, setIsPartyAccept] = useState(false);
 
   // 수정
   const [blacklist, setBlacklist] = useState();
@@ -70,7 +69,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const realEndTime = getEndTime(endDate);
   // console.log(realStartTime, realEndTime);
   // console.log(startDate, endDate);
-  
+
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
     !isEdit ? setIsEdit(true) : setIsEdit(false);
@@ -417,10 +416,10 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
                         <Stbutton1
                           onClick={
-                            !closed ? closePartyHandler : openPartyHandler
+                            !isClosed ? closePartyHandler : openPartyHandler
                           }
                         >
-                          {!closed ? "마감하기" : "마감취소"}{" "}
+                          {!isClosed ? "마감하기" : "마감취소"}{" "}
                         </Stbutton1>
                       </StButtonWrap>
                     ) : (
@@ -479,6 +478,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <>
                         {comments?.map((comment) => (
                           <Comments
+                            setIsPartyAccept={setIsPartyAccept}
+                            isPartyAccept={isPartyAccept}
                             key={comment._id}
                             comments={comment}
                             isHost={isHost}
