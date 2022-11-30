@@ -34,35 +34,9 @@ import { useQuery } from "react-query";
 
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
-  // const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList, {
-  //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-  //   retry: 0, // 실패시 재호출 몇번 할지
-  //   onSuccess: (data) => {
-  //     // 성공시 호출
-  //     console.log(data);
-  //   },
-  //   onError: (e) => {
-  //     // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
-  //     console.log(e.message);
-  //   },
-  // });
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
-  const commentInitialState = {
-    comment: "",
-    createdAt: "",
-    gender: "",
-    myPlace: [],
-    nickName: "",
-    postId: "",
-    updatedAt: "",
-    userId: "",
-    __v: "",
-    _id: "",
-  };
-
   const [comment, setComment] = useState(initialState);
   const [isHost, setIsHost] = useState(false);
   const [nickName, setNickName] = useState();
@@ -71,8 +45,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [isCommentAuthor, setIsCommentAuthor] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [x, setX] = useState();
-  const [y, setY] = useState();
+  const [location, setLocation] = useState({ x: "", y: "" });
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
   const [isBanUser, setIsBanUser] = useState(false);
@@ -83,8 +56,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
   //? ---------------시간 (나중에 리팩토링) ----------------
   const moment = require("moment-timezone");
-  const startDate = detail?.data.time?.[0];
-  const endDate = detail?.data.time?.[1];
+  const startDate = detail?.data?.time?.[0];
+  const endDate = detail?.data?.time?.[1];
   const getStartTime = (startDate) => {
     var m = moment(startDate).tz("Asia/Seoul").locale("ko");
     return m.format("MM.DD (ddd) HH:mm");
@@ -95,8 +68,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   };
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
-  console.log(realStartTime, realEndTime);
-  console.log(startDate, endDate);
+  // console.log(realStartTime, realEndTime);
+  // console.log(startDate, endDate);
+  
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
     !isEdit ? setIsEdit(true) : setIsEdit(false);
@@ -156,132 +130,52 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   //todo나중에 participant가 아니라, confirm으로 바뀔듯
   //채팅 입장 핸들러-----------------------------------------
   const enterChatRoomHandler = () => {
-    if (detail.data.confirmMember.includes(nickName)) {
+    if (detail?.data?.confirmMember.includes(nickName)) {
       navigate(`/chat/${postid}`);
     } else {
       alert("확정된 이후 들어갈 수 있습니다.");
     }
   };
-
-  //useEffect 디테일 데이터 불러오기---------------------------------------
-  useEffect(() => {
-    userApi.getUser().then((res) => {
-      setNickName(res.data.findUser.nickName);
-    });
-
-    postApi.getDetailId(postid).then((res) => {
-      setDetail(res.data);
-    });
-    dispatch(__getComments(postid));
-  }, []);
-
-  //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
-  // console.log(detail?.data?.nickName);
-  // console.log(nickName);
-
-  useEffect(() => {
-    // 파티장인지 확인
-    detail?.data?.nickName === nickName ? setIsHost(true) : setIsHost(false);
-
-    //받은 게시글 데이터에서 위치의 위도, 경도 저장
-    setX(detail?.data?.location?.x);
-    setY(detail?.data?.location?.y);
-    // 카카오맵 api 사용해서 지도 띄우기
-    if (loading === false) {
-      const container = document?.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(y, x),
-        level: 3,
-      };
-      // console.log(container);
-      // console.log(options);
-      //카카오맵 api 사용해서 지도 위에 마커 찍기
-      const map = new kakao.maps.Map(container, options);
-      const markerPosition = new kakao.maps.LatLng(y, x);
-      const marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
-      marker.setMap(map);
-    }
-
-    //?-------------- 하  ------------------[]
-
-    const closeHandler = () => {
-      if (closed) {
-        if (getCookie("accesstoken") !== null) {
-          setOpen((open) => !open);
-        } else {
-          alert("로그인이 필요한 기능입니다.");
-        }
-      } else {
-        alert("마감된 모임입니다!");
-      }
-    };
-
-    //접속자가 밴 유저인지 확인
-
-    // detail?.data?.banUser?.forEach(
-    //   (banUser) => comments?.nickName === banUser && setIsBanUser(true)
-    // );
-
-    // // 만약 10명
-    // for (let i = 0; i < detail?.data?.banUser?.length; i++) {
-    //   for (let i = 0; i < comments?.length; i++) {
-    //     if (detail?.data?.banUser[i] === comments[i].nickName) {
-    //       // setIsBanUser(true);
-    //       //console.log("하이하이 : ", comments[i]);
-    //       // 블랙리스트인 애들 객체에 저장
-    //       // 블랙리스트인 애들이 이제 여기에서 분류 되는거니까
-    //       // 10명중에 4명이 블랙리스트면 4번 타겠지?
-    //       // 그러면 얘네들만 객체에 따로 담으면 될듯?
-    //       setBlacklist(comments[i]);
-    //       setBlacklists(comments[i]);
-    //       //setBlacklists((blacklist) => [blacklist, comments[i]]);
-    //     }
-    //   }
-    // }
-
-    //for (let i = 0; i < blacklist.length)
-    console.log("blacklist", blacklist); // 무조건 1개 있어야해
-    console.log("blacklists", blacklists); // 2개 다 있어야해
-
+  const isCommentAuthorFun = () => {
     //접속자가 댓글작성자인지 확인
     comments?.forEach(
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
     );
-  }, [postApi.getDetailId(postid)]);
-  // [postApi.getDetailId(postid)]
-
-  useEffect(() => {
-    //파티 마감 상태
-    if (detail?.data?.closed === 0) {
-      setIsClosed(false);
-    } else if (detail?.data?.closed === 1) {
-      setIsClosed(true);
-    } else {
-      setIsClosed(false);
-    }
-  }, []);
-
-  // console.log(isHost);
-
-  useEffect(() => {
-    // api();
-    // setLoading(false);
-    dummy();
-  }, []);
-
-  const api = async () => {
-    try {
-      setLoading(false);
-    } catch (e) {}
   };
 
-  const dummy = async () => {
+  const setMap = () => {
+    // 카카오맵 api 사용해서 지도 띄우기
+    const container = document?.getElementById("map");
+    const options = {
+      center: new kakao.maps.LatLng(location.y, location.x),
+      level: 3,
+    };
+    //카카오맵 api 사용해서 지도 위에 마커 찍기
+    const map = new kakao.maps.Map(container, options);
+    const markerPosition = new kakao.maps.LatLng(location.y, location.x);
+    const marker = new kakao.maps.Marker({
+      position: markerPosition,
+    });
+    marker.setMap(map);
+  };
+
+  const isPartyClosed = () => {
+    //파티 마감 상태
+    if (detail?.data?.closed === 0) return setIsClosed(false);
+    if (detail?.data?.closed === 1) return setIsClosed(true);
+    else return setIsClosed(false);
+  };
+
+  const isHostFun = () => {
+    // 파티장인지 확인\
+    detail?.data?.nickName === nickName ? setIsHost(true) : setIsHost(false);
+  };
+
+  const dummyLoad = async () => {
     setLoading(true);
-    console.log("시작", loading);
+    console.log("로딩시작", loading);
     await delay(1000);
-    console.log("끝", loading);
+    console.log("로딩끝", loading);
     setLoading(false);
   };
   const delay = (ms) => {
@@ -291,15 +185,19 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
       }, ms)
     );
   };
-  //!----------------카카오공유하기 ---------------------
-  useEffect(() => {
-    // 카카오톡 sdk 추가
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => document.body.removeChild(script);
-  }, []);
+
+  const closeHandler = () => {
+    if (isClosed === false) {
+      if (getCookie("accesstoken") !== null) {
+        setOpen((open) => !open);
+      } else {
+        alert("로그인이 필요한 기능입니다.");
+      }
+    } else {
+      alert("마감된 모임입니다!");
+      return navigate("/main");
+    }
+  };
 
   const shareToKatalk = () => {
     // kakao sdk script 부른 후 window.Kakao로 접근
@@ -325,7 +223,54 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
       });
     }
   };
-  console.log(process.env.REACT_APP_KAKAO_JSPKEY);
+
+  //useEffect 디테일 데이터 불러오기---------------------------------------
+  useEffect(() => {
+    userApi.getUser().then((res) => {
+      setNickName(res?.data?.findUser?.nickName);
+    });
+
+    postApi.getDetailId(postid).then((res) => {
+      setDetail(res?.data);
+    });
+    dispatch(__getComments(postid));
+  }, []);
+
+  // console.log(detail?.data?.nickName);
+  // console.log(nickName);
+
+  useEffect(() => {
+    //useEffect 디테일 데이터 불러와지고 실행될 부분---------------------
+    setLocation({ x: detail?.data?.location?.x, y: detail?.data?.location?.y }); //받은 게시글 데이터에서 위치의 위도, 경도 저장
+    isHostFun(); //파티장인지
+    isCommentAuthorFun(); //댓글 작성자인지
+    isPartyClosed(); //파티마감인지
+    if (loading === false) {
+      //로딩 끝나면 맵 띄우기
+      setMap();
+    }
+  }, [postApi.getDetailId(postid)]);
+  //[postApi.getDetailId(postid)]
+
+  // console.log(isHost);
+
+  useEffect(() => {
+    dummyLoad();
+  }, []);
+
+  // console.log("closed", isClosed);
+
+  //!----------------카카오공유하기 ---------------------
+  useEffect(() => {
+    // 카카오톡 sdk 추가
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
+
+  // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
@@ -482,17 +427,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <Stbutton
                         // disabled={closed}
                         className="innerDiv"
-                        onClick={() => {
-                          if (!closed) {
-                            if (getCookie("accesstoken") !== null) {
-                              setOpen((open) => !open);
-                            } else {
-                              alert("로그인이 필요한 기능입니다.");
-                            }
-                          } else {
-                            alert("마감된 모임입니다!");
-                          }
-                        }}
+                        onClick={closeHandler}
                       >
                         참가하기
                       </Stbutton>
