@@ -199,8 +199,6 @@ const ProfileCtn = styled.div`
   padding-top: 5%;
   padding-left: 10%;
   gap: 30px;
-  overflow-y: hidden;
-  overflow-y: scroll;
 `;
 
 const ProfileRow = styled.div`
@@ -232,43 +230,6 @@ const LikeGame = styled.div`
   font-size: 14px;
   border-radius: 30px;
   background-color: var(--primary);
-`;
-
-const MyPartyCtn = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 100%;
-  gap: 30px;
-`;
-
-const MyPartyTitle = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 2%;
-  gap: 10px;
-  :active {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-`;
-
-const MyPartyBox = styled.div`
-  gap: 10px;
-  display: flex;
-  flex-direction: column;
-  width: 85%;
-  max-height: 50%;
-`;
-
-const MyPartyItem = styled.div`
-  color: white;
-  background-color: var(--gray);
-  display: flex;
-  justify-content: space-between;
-  border-radius: 20px;
-  padding: 2% 5%;
 `;
 
 const Arrow = styled.div`

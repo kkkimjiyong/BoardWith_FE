@@ -55,10 +55,13 @@ const KaKaoLogin = () => {
         }
       );
       console.log(data.accessToken);
-      if (data.accessToken)
+      if (data.accessToken) {
         setCookie("accessToken", data.accessToken, { path: "/" });
-      setCookie("refreshToken", data.refresh_token, { path: "/" });
-      setCookie("kakao", true, { path: "/" });
+        setCookie("refreshToken", data.refresh_token, { path: "/" });
+        setCookie("kakao", true, { path: "/" });
+      } else {
+        alert("다시 가입부탁드립니다!");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -210,8 +213,8 @@ const KaKaoLogin = () => {
               />
             </TagBox>
           </WholeBox>
-          {/* <NextBtn onClick={onSubmitHandler}>완료</NextBtn> */}
-          <NextBtn onClick={postKaKaoUser}>완료</NextBtn>
+          <NextBtn onClick={onSubmitHandler}>완료</NextBtn>
+          {/* <NextBtn onClick={postKaKaoUser}>완료</NextBtn> */}
         </Wrap>
       </Layout>
     );

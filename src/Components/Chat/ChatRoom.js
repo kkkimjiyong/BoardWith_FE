@@ -39,7 +39,7 @@ const ChatRoom = () => {
     return m.format("MM.DD (ddd) HH:mm");
   };
   const RoomTime = getStartTime(detail?.time[0]);
-
+  console.log(users);
   // axios로 채팅db가져오기
   const getChat = async () => {
     try {
@@ -119,7 +119,7 @@ const ChatRoom = () => {
     // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
 
     socket.on("roomUsers", (msg) => {
-      setUsers(msg.nickName);
+      setUsers([...users, msg.nickName]);
     });
     socket.on("message", (message) => {
       setChatArr((chatArr) => [...chatArr, message]);

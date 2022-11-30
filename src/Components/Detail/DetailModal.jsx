@@ -408,7 +408,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       </StContentWrap>
                     </StHost>
                     <div>
-                      <h3>{detail?.data?.title}</h3> {/* 제목 */}
+                      <h2>{detail?.data?.title}</h2> {/* 제목 */}
                     </div>
                     <div>
                       <h4>{detail?.data?.content}</h4> {/* 제목 */}
@@ -422,7 +422,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         icon={faLocationDot}
                       />
                       <div />
-                      <h4>{detail?.data?.cafe}</h4> {/* 장소 */}
+                      <h5>{detail?.data?.cafe}</h5> {/* 장소 */}
                     </StContentWrap>
                     <StContentWrap>
                       <FontAwesomeIcon
@@ -433,7 +433,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         icon={faCalendar}
                       />
                       <div />
-                      <h4>{realStartTime + " ~ " + realEndTime}</h4>{" "}
+                      <h5>{realStartTime + " ~ " + realEndTime}</h5>{" "}
                       {/* 날짜 */}
                     </StContentWrap>
                     <StContentWrap>
@@ -445,7 +445,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         icon={faUserGroup}
                       />
                       <div />
-                      <h4>{detail?.data?.partyMember}명</h4> {/* 인원 */}
+                      <h5>{detail?.data?.partyMember}명</h5> {/* 인원 */}
                     </StContentWrap>
                     {isHost ? (
                       <StButtonWrap>
@@ -458,10 +458,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             }
                           }}
                         >
-                          예약현황 ({comments?.length}/
-                          {detail?.data?.partyMember - 1})
+                          예약현황 ( {comments?.length} 명 )
                         </Stbutton>
-                        {!closed ? (
+                        {/* {!closed ? (
                           <Stbutton1 onClick={closePartyHandler}>
                             마감하기
                           </Stbutton1>
@@ -469,7 +468,15 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                           <Stbutton1 onClick={openPartyHandler}>
                             마감취소
                           </Stbutton1>
-                        )}
+                        )} */}
+
+                        <Stbutton1
+                          onClick={
+                            !closed ? closePartyHandler : openPartyHandler
+                          }
+                        >
+                          {!closed ? "마감하기" : "마감취소"}{" "}
+                        </Stbutton1>
                       </StButtonWrap>
                     ) : (
                       <Stbutton
@@ -737,7 +744,21 @@ const ListWrap = styled.div`
     color: white;
     text-align: center;
   }
-  overflow: scroll;
+  overflow-y: hidden;
+  overflow-y: scroll;
+  //? -----모바일에서처럼 스크롤바 디자인---------------
+  @media only screen and (min-width: 1200px) {
+    ::-webkit-scrollbar {
+      width: 15px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #898989;
+      //스크롤바에 마진준것처럼 보이게
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 15px;
+    }
+  }
 `;
 
 const Wrapper = styled.div`

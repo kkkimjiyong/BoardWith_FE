@@ -380,7 +380,6 @@ const StButton2 = styled.button`
   cursor: pointer;
   color: white;
   border: none;
-
   &:active {
     scale: 95%;
   }
