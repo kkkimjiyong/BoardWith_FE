@@ -7,6 +7,7 @@ const initialState = {
   isLoading: false,
   error: null,
   post: {},
+  user: {},
 };
 //게시글 불러오기
 export const acyncGetPosts = createAsyncThunk(
@@ -63,9 +64,13 @@ export const acyncDeletePosts = createAsyncThunk(
 const PostsSlice = createSlice({
   name: "posts",
   initialState,
+  //? 김지용이 쓰는 중.
   reducers: {
     addDistance: (state, action) => {
       state.distance.push(action.payload);
+    },
+    addUserData: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
     },
   },
   extraReducers: {
@@ -112,5 +117,5 @@ const PostsSlice = createSlice({
   },
 });
 
-export const { addDistance } = PostsSlice.actions;
+export const { addDistance, addUserData } = PostsSlice.actions;
 export default PostsSlice.reducer;

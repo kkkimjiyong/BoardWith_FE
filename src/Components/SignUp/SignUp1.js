@@ -11,9 +11,12 @@ import { useState } from "react";
 import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 import Layout from "../../style/Layout.js";
+import { useDispatch } from "react-redux";
+import { addUserData } from "../../redux/modules/postsSlice.js";
 
 const SignUp1 = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({
@@ -45,6 +48,7 @@ const SignUp1 = () => {
   //submit 핸들러
   const onSubmit = (data) => {
     console.log(data);
+    dispatch(addUserData(data));
     navigate("/signup2");
   };
 

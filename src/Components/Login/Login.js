@@ -8,6 +8,7 @@ import NotifModal from "../../tools/NotifModal";
 import { ReactComponent as MainLogo } from "../../Assets/MyLogo.svg";
 import MyLogo from "../../Assets/MainLogo.png";
 import cookie from "react-cookies";
+import NaverLogin from "../../Components/Login/NaverLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,10 +43,6 @@ const Login = () => {
         });
         setCookie("nickName", data.nickName);
         setCookie("123", "123", {
-          path: "/",
-          httpOnly: true,
-        });
-        setCookie("123456", "1443", {
           path: "/",
           httpOnly: true,
         });
@@ -92,6 +89,7 @@ const Login = () => {
       <BtnSet>
         <LoginBtn onClick={() => onSubmitHandler()}>로그인</LoginBtn>
       </BtnSet>{" "}
+      <NaverLogin></NaverLogin>
       <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
       <LoginGoogle href={GOOGLE_LOGIN_URL}>Google 로그인</LoginGoogle>
       <BottomTxt>

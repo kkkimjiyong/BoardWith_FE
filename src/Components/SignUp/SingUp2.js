@@ -11,11 +11,14 @@ import { useState } from "react";
 import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 import Layout from "../../style/Layout.js";
+import { useDispatch } from "react-redux";
+import { addUserData } from "../../redux/modules/postsSlice.js";
 
 const SignUp2 = () => {
   const initialState = { phoneNumber: "", verifyCode: "" };
   const [user, setUser, onChange] = useInput(initialState);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //* ---------------------  인증번호 관련 기능 -------------------
 
@@ -37,6 +40,11 @@ const SignUp2 = () => {
       });
       console.log(data);
       if (data) {
+        dispatch(
+          addUserData({
+            phoneNumber: user.phoneNumber,
+          })
+        );
         alert("인증번호 전송!");
       }
     } catch (error) {
