@@ -131,8 +131,6 @@ const MyPage = () => {
     }
   }, []);
 
-  console.log(ModalOpen);
-
   const editHandler = () => {
     EditUser();
     SetisEdit(false);
@@ -157,7 +155,7 @@ const MyPage = () => {
         {" "}
         <ProfileRow className="Topbox">
           {" "}
-          <div>{user?.nickName}</div>{" "}
+          <div>{user?.nickName} 님</div>{" "}
           {isEdit && <button onClick={editHandler}>완료</button>}
         </ProfileRow>
         {!isEdit && (
@@ -177,7 +175,7 @@ const MyPage = () => {
             <LikeGameCtn>
               <LikeGameBox>
                 {likeGame?.map((game) => {
-                  return <LikeGame>{game}</LikeGame>;
+                  if (likeGame.length >= 2) return <LikeGame>{game}</LikeGame>;
                 })}
               </LikeGameBox>
             </LikeGameCtn>

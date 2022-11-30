@@ -135,18 +135,15 @@ const MainSlide = () => {
         </MainHeader>
         <MainListCtn ref={scrollHead}>
           {items?.map((items, idx) => {
-            if (items.participant.length < items.partyMember && !items.closed) {
-              return (
-                <Item
-                  setModalOpen={setModalOpen}
-                  key={idx}
-                  item={items}
-                  Myaddress={Myaddress}
-                ></Item>
-              );
-            } else {
-              <div>마감되었습니다</div>;
-            }
+            return (
+              <Item
+                closed={items.closed}
+                setModalOpen={setModalOpen}
+                key={idx}
+                item={items}
+                Myaddress={Myaddress}
+              ></Item>
+            );
           })}
           <Target ref={setTarget}>target? </Target>{" "}
         </MainListCtn>{" "}
@@ -177,7 +174,9 @@ const MainSlide = () => {
         />
       )}
       {/* 게시글 폼페이지 모달창 */}
-      {formModalOpen && <Form setFormModalOpen={setFormModalOpen} />}
+      {formModalOpen && (
+        <Form setItems={setItems} setFormModalOpen={setFormModalOpen} />
+      )}
     </>
   );
 };

@@ -22,9 +22,10 @@ import { TextField } from "@mui/material";
 import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { postsApi } from "../../instance";
 
 const { kakao } = window;
-function Form({ setFormModalOpen }) {
+function Form({ setFormModalOpen, setItems }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();
@@ -83,17 +84,10 @@ function Form({ setFormModalOpen }) {
 
   const creatPost = async (payload) => {
     try {
-      const { data } = await axios.post(
-        "https://www.iceflower.shop/posts",
-        payload,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
+      const { data } = await postsApi.creatPost(payload);
       console.log("formpayload", payload);
       console.log("formdata", data);
+      setItems((prev) => prev.concat(data.createPost));
       alert("파티모집글 작성이 완료되었습니다.");
       setFormModalOpen(false);
     } catch (error) {}
@@ -110,7 +104,7 @@ function Form({ setFormModalOpen }) {
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(formSchema),
-    defaultValues: { partyMember: "10" },
+    defaultValues: { fullday: new Date(), partyMember: "10" },
   });
 
   // console.log(location);
@@ -128,15 +122,15 @@ function Form({ setFormModalOpen }) {
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
       setValue("cafe", data.address);
-      //받은 데이터를 좌표값으로 바꿔주는 함수도 실행
-      geocoder.addressSearch(data.address, callback);
       // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
       ref.current.style.display = "none";
+      //받은 데이터를 좌표값으로 바꿔주는 함수도 실행
+      geocoder.addressSearch(data.address, callback);
     },
   };
 
   const postCode = ReactDaumPost(postConfig);
-  // console.log(watch());
+  console.log(watch());
 
   return (
     <BackGroudModal>
@@ -192,7 +186,7 @@ function Form({ setFormModalOpen }) {
                             {...params}
                             inputProps={{
                               ...params.inputProps,
-                              placeholder: "tt.mm.jjjj",
+                              placeholder: new Date(),
                             }}
                           />
                         )}
@@ -261,7 +255,7 @@ function Form({ setFormModalOpen }) {
                 <LabelBox>지도</LabelBox>
                 <InputBox onClick={postCode} {...register("cafe")} />
               </FlexBox>{" "}
-              <DaumPostBox></DaumPostBox>
+              <DaumPostBox ref={ref}></DaumPostBox>
             </Inputbox>{" "}
             <Buttonbox>
               <Button>작성완료</Button>

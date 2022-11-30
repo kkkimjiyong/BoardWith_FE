@@ -33,7 +33,7 @@ import { getCookie } from "../../hooks/CookieHook";
 import { useQuery } from "react-query";
 
 const { kakao } = window;
-export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
+export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   // const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList, {
   //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
   //   retry: 0, // 실패시 재호출 몇번 할지
@@ -203,6 +203,21 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       });
       marker.setMap(map);
     }
+
+    //?-------------- 하  ------------------[]
+
+    const closeHandler = () => {
+      if (closed) {
+        if (getCookie("accesstoken") !== null) {
+          setOpen((open) => !open);
+        } else {
+          alert("로그인이 필요한 기능입니다.");
+        }
+      } else {
+        alert("마감된 모임입니다!");
+      }
+    };
+
     //접속자가 밴 유저인지 확인
 
     // detail?.data?.banUser?.forEach(
@@ -276,7 +291,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
       }, ms)
     );
   };
-  // //!----------------카카오공유하기 ---------------------
+  //!----------------카카오공유하기 ---------------------
   useEffect(() => {
     // 카카오톡 sdk 추가
     const script = document.createElement("script");
@@ -393,7 +408,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                       </StContentWrap>
                     </StHost>
                     <div>
-                      <h3>{detail?.data?.title}</h3> {/* 제목 */}
+                      <h2>{detail?.data?.title}</h2> {/* 제목 */}
                     </div>
                     <div>
                       <h4>{detail?.data?.content}</h4> {/* 제목 */}
@@ -407,7 +422,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                         icon={faLocationDot}
                       />
                       <div />
-                      <h4>{detail?.data?.cafe}</h4> {/* 장소 */}
+                      <h5>{detail?.data?.cafe}</h5> {/* 장소 */}
                     </StContentWrap>
                     <StContentWrap>
                       <FontAwesomeIcon
@@ -418,7 +433,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                         icon={faCalendar}
                       />
                       <div />
-                      <h4>{realStartTime + " ~ " + realEndTime}</h4>{" "}
+                      <h5>{realStartTime + " ~ " + realEndTime}</h5>{" "}
                       {/* 날짜 */}
                     </StContentWrap>
                     <StContentWrap>
@@ -430,7 +445,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                         icon={faUserGroup}
                       />
                       <div />
-                      <h4>{detail?.data?.partyMember}명</h4> {/* 인원 */}
+                      <h5>{detail?.data?.partyMember}명</h5> {/* 인원 */}
                     </StContentWrap>
                     {isHost ? (
                       <StButtonWrap>
@@ -443,10 +458,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                             }
                           }}
                         >
-                          예약현황 ({comments?.length}/
-                          {detail?.data?.partyMember - 1})
+                          예약현황 ( {comments?.length} 명 )
                         </Stbutton>
-                        {!isClosed ? (
+                        {/* {!closed ? (
                           <Stbutton1 onClick={closePartyHandler}>
                             마감하기
                           </Stbutton1>
@@ -454,16 +468,29 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen }) => {
                           <Stbutton1 onClick={openPartyHandler}>
                             마감취소
                           </Stbutton1>
-                        )}
+                        )} */}
+
+                        <Stbutton1
+                          onClick={
+                            !closed ? closePartyHandler : openPartyHandler
+                          }
+                        >
+                          {!closed ? "마감하기" : "마감취소"}{" "}
+                        </Stbutton1>
                       </StButtonWrap>
                     ) : (
                       <Stbutton
+                        // disabled={closed}
                         className="innerDiv"
                         onClick={() => {
-                          if (getCookie("accesstoken") !== null) {
-                            setOpen((open) => !open);
+                          if (!closed) {
+                            if (getCookie("accesstoken") !== null) {
+                              setOpen((open) => !open);
+                            } else {
+                              alert("로그인이 필요한 기능입니다.");
+                            }
                           } else {
-                            alert("로그인이 필요한 기능입니다.");
+                            alert("마감된 모임입니다!");
                           }
                         }}
                       >
@@ -717,7 +744,21 @@ const ListWrap = styled.div`
     color: white;
     text-align: center;
   }
-  overflow: scroll;
+  overflow-y: hidden;
+  overflow-y: scroll;
+  //? -----모바일에서처럼 스크롤바 디자인---------------
+  @media only screen and (min-width: 1200px) {
+    ::-webkit-scrollbar {
+      width: 15px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #898989;
+      //스크롤바에 마진준것처럼 보이게
+      background-clip: padding-box;
+      border: 4px solid transparent;
+      border-radius: 15px;
+    }
+  }
 `;
 
 const Wrapper = styled.div`

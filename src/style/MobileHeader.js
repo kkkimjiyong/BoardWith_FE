@@ -21,14 +21,14 @@ const MobileHeader = () => {
         alt={"avatarshop"}
         onClick={() => navigate("/avatar")}
       />
-      <CgProfile size="80%" color="white" onClick={() => navigate("/mypage")} />
+      <CgProfile size="90%" color="white" onClick={() => navigate("/mypage")} />
     </MobileHeaderCtn>
   );
 };
 
 const MobileHeaderCtn = styled.div`
   position: absolute;
-  z-index: 2;
+  z-index: 30;
   height: 6vh;
   background-color: var(--black);
   display: flex;
@@ -40,7 +40,7 @@ const MobileHeaderCtn = styled.div`
   box-shadow: 1px 1px 15px 3px black;
   /* background-color: #9747ff; */
   .logo {
-    width: 7%;
+    width: 6%;
     margin: 0 6%;
   }
 `;

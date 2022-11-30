@@ -13,6 +13,7 @@ import Loading from "../../style/Loading";
 const KaKaoLogin = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState();
 
   let href = window.location.href;
   //href값에서 code값만 거내오면 된다.
@@ -32,6 +33,7 @@ const KaKaoLogin = () => {
         navigate("/");
       }
       setIsLoading(false);
+      setUserId(data.userId);
     } catch (error) {
       console.log(error);
     }
@@ -42,21 +44,24 @@ const KaKaoLogin = () => {
   //이 코드를 백엔드로 보내주면됨
   console.log(code);
 
-  const postKaKaoCode = async (signup) => {
+  const postKaKaoUser = async (signup) => {
     try {
       const { data } = await axios.post(
         "https://www.iceflower.shop/kakao/callback",
         {
           ...signup,
           myPlace: signup.address.split(" ").slice(0, 2),
-          userId: 2543236151,
+          userId: userId,
         }
       );
       console.log(data.accessToken);
-      if (data.accessToken)
+      if (data.accessToken) {
         setCookie("accessToken", data.accessToken, { path: "/" });
-      setCookie("refreshToken", data.refresh_token, { path: "/" });
-      setCookie("kakao", true, { path: "/" });
+        setCookie("refreshToken", data.refresh_token, { path: "/" });
+        setCookie("kakao", true, { path: "/" });
+      } else {
+        alert("다시 가입부탁드립니다!");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +115,7 @@ const KaKaoLogin = () => {
   const [signup, setSignup, onChange] = useInput(initialState);
   const onSubmitHandler = () => {
     if (signup.nickName) {
-      postKaKaoCode(signup);
+      postKaKaoUser(signup);
       navigate("/main");
     } else {
       alert("다시 입력해주세요!");
@@ -208,8 +213,8 @@ const KaKaoLogin = () => {
               />
             </TagBox>
           </WholeBox>
-          {/* <NextBtn onClick={onSubmitHandler}>완료</NextBtn> */}
-          <NextBtn onClick={isKaKao}>완료</NextBtn>
+          <NextBtn onClick={onSubmitHandler}>완료</NextBtn>
+          {/* <NextBtn onClick={postKaKaoUser}>완료</NextBtn> */}
         </Wrap>
       </Layout>
     );
