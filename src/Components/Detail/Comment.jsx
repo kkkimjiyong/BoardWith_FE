@@ -92,7 +92,7 @@ const Comments = ({
       .then((res) => {
         alert("파티원 참가 상태를 변경하였습니다.");
         console.log("성공", res);
-        setIsPartyAccept(true);
+        setIsPartyAccept(!isPartyAccept);
         // setModalOpen(false);
       })
       .catch((error) => {
@@ -162,7 +162,7 @@ const Comments = ({
       } else {
         setIsBanUser(false);
       }
-  }, [comments, setIsPartyAccept]);
+  }, [comments, isPartyAccept]);
   // console.log("detail", detail);
   // console.log("comments", comments);
   // console.log("myPlace", comments?.myPlace);
