@@ -26,10 +26,11 @@ const Comments = ({
   setModalOpen,
   open,
   setOpen,
+  isPartyAccept,
+  setIsPartyAccept,
 }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
-  const [isPartyAccept, setIsPartyAccept] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
   const navigate = useNavigate();
 
@@ -92,7 +93,7 @@ const Comments = ({
         alert("파티원 참가 상태를 변경하였습니다.");
         console.log("성공", res);
         setIsPartyAccept(true);
-        setModalOpen(false);
+        // setModalOpen(false);
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -161,7 +162,7 @@ const Comments = ({
       } else {
         setIsBanUser(false);
       }
-  }, [comments]);
+  }, [comments, setIsPartyAccept]);
   // console.log("detail", detail);
   // console.log("comments", comments);
   // console.log("myPlace", comments?.myPlace);
