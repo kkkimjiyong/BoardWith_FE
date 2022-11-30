@@ -12,10 +12,6 @@ import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 
 const SignUp = () => {
-  const [next, setNext] = useState(0);
-  const initialState = { phoneNumber: "", verifyCode: "" };
-  const [user, setUser, onChange] = useInput(initialState);
-
   const navigate = useNavigate();
 
   //yup을 이용한 유효섬겅증방식
@@ -25,47 +21,17 @@ const SignUp = () => {
       .required("아이디를 입력해주세요")
       .min(4, "최소 4자 이상 가능합니다")
       .max(15, "최대 15자 까지만 가능합니다"),
-    password: yup
-      .string()
-      .required("영문, 숫자포함 8자리를 입력해주세요.")
-      .min(8, "최소 8자 이상 가능합니다")
-      .max(15, "최대 15자 까지만 가능합니다")
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,15}$/,
-        "영문 숫자포함 8자리를 입력해주세요."
-      ),
-    confirm: yup
-      .string()
-      .oneOf([yup.ref("password")], "비밀번호가 다릅니다.")
-      .required("영문, 숫자포함 8자리를 입력해주세요."),
     nickName: yup
       .string()
       .required("닉네임을 입력해주세요")
       .min(2, "최소 2자 이상 가능합니다")
       .max(8, "최대 8자 까지만 가능합니다"),
-    myPlace: yup.string(),
-    //   .required("선호지역을 입력해주세요")
   });
-
-  const postSignUp = async (payload) => {
-    try {
-      const data = await signUpApi.postSingup(payload);
-      console.log(data);
-      alert("회원가입을 축하드립니다!");
-      navigate("/");
-    } catch (error) {
-      console.log(error.data.err);
-      alert(error.data.err);
-    }
-  };
 
   //useForm 설정
   const {
     register,
-    setValue,
-    watch,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -73,297 +39,33 @@ const SignUp = () => {
     resolver: yupResolver(formSchema),
   });
 
-  const ref = useRef(null);
-  console.log(errors);
-  //submit 핸들러
   const onSubmit = (data) => {
     console.log(data);
-    reset();
-    console.log({
-      ...data,
-      age: data.age,
-      likeGame: tagList,
-      myPlace: data.address.split(" ").slice(0, 2),
-      phoneNumber: user.phoneNumber,
-    });
-
-    //선호지역은 자동적으로 나의 집주소에서 구단위 까지만으로 적용
-    postSignUp({
-      ...data,
-      age: data.age,
-      likeGame: tagList,
-      myPlace: data.address.split(" ").slice(0, 2),
-      phoneNumber: user.phoneNumber,
-    });
-    console.log(errors);
-  };
-
-  const checkSubmit = () => {};
-
-  console.log(user.phoneNumber.slice(0, 3));
-  //* ---------------------  인증번호 관련 기능 -------------------
-
-  const postVerify = async () => {
-    if (
-      user.phoneNumber.length === 11 &&
-      user.phoneNumber.slice(0, 3) === "010"
-    ) {
-      postPhone();
-    } else {
-      alert("전화번호를 다시 입력해주세요!");
-    }
-  };
-
-  const postPhone = async () => {
-    try {
-      const { data } = await axios.post("https://www.iceflower.shop/sms/send", {
-        phoneNumber: user.phoneNumber,
-      });
-      console.log(data);
-      if (data) {
-        alert("인증번호 전송!");
-      }
-    } catch (error) {
-      console.log(error);
-      alert(error.message);
-    }
-  };
-  const postVerifyCode = async () => {
-    try {
-      const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/verify",
-        user
-      );
-      if (data == "success") {
-        alert("인증성공!");
-        setNext(3);
-      } else {
-        alert("틀려요!");
-      }
-    } catch (error) {
-      console.log(error);
-      alert("틀려요!");
-    }
-  };
-
-  const verifyCodeHandler = () => {};
-
-  //* --------------------  다음 주소창  ----------------------------
-
-  const postConfig = {
-    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
-    onComplete: (data) => {
-      // 데이터를 받아와서 set해주는 부분
-      setValue("address", data.address);
-      // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
-      ref.current.style.display = "none";
-    },
-  };
-  const postCode = ReactDaumPost(postConfig);
-
-  //* --------------------  선호게임 태그인풋창  ---------------------------
-
-  const [tagItem, setTagItem] = useState("");
-  const [tagList, setTagList] = useState([]);
-
-  const onKeyPress = (e) => {
-    console.log(e);
-    if (e.target.value.length !== 0 && e.charCode === 13) {
-      submitTagItem();
-      console.log("enter");
-    }
-  };
-
-  const submitTagItem = () => {
-    console.log(tagItem);
-    let updatedTagList = [...tagList];
-    updatedTagList.push(`#${tagItem.trim()}`);
-    setTagList(updatedTagList);
-    setTagItem("");
-    console.log(updatedTagList);
-  };
-
-  const deleteTagItem = (e) => {
-    console.log(tagList);
-    console.log(e.target.parentElement.firstChild.innerText);
-    const deleteTagItem = e.target.parentElement.firstChild.innerText;
-    const filteredTagList = tagList.filter(
-      (tagItem) => tagItem !== deleteTagItem
-    );
-    setTagList(filteredTagList);
-  };
-
-  //* ---------------------  빈칸 따로 정의  ---------------------------
-  console.log();
-
-  const nextHandler = (Num) => {
-    // 첫번째 페이지회원가입 간단한 유효성 (그냥 페이지만 못넘어가게)
-    if (Num == 1) {
-      if (errors.userId || errors.nickName) {
-        console.log(errors);
-        alert("다시 확인해주세요!");
-      } else {
-        setNext(Num);
-      }
-    } else if (Num == 2) {
-      if (errors.password || errors.confirm) {
-        console.log(errors);
-        alert("다시 확인해주세요!");
-      } else {
-        setNext(Num);
-      }
-    }
+    navigate("/signup1");
   };
 
   return (
     <>
       <SignUpWrap>
-        {/* 회원가입 첫 페이지 */}
-
-        {next === 0 && (
-          <SignUpCtn>
-            {" "}
-            <SignUpHeader>
-              <Arrow onClick={() => navigate("/")} />
-              <div>회원가입</div>
-            </SignUpHeader>
-            <h3>
-              아이디와 닉네임을 <br /> 입력해주세요
-            </h3>{" "}
-            <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
-            {errors.userId && (
-              <AlertError role="alert">{errors.userId.message}</AlertError>
-            )}
-            <SignUpInput placeholder="닉네임" {...register("nickName")} />
-            {errors.nickName && (
-              <AlertError role="alert">{errors.nickName.message}</AlertError>
-            )}
-            <NextBtn onClick={() => nextHandler(1)}>다음</NextBtn>
-          </SignUpCtn>
-        )}
-        {next === 1 && (
-          <SignUpCtn>
-            <SignUpHeader>
-              <Arrow onClick={() => setNext(0)} />
-              <div>회원가입</div>
-            </SignUpHeader>
-            <h3>비밀번호를 입력해주세요</h3>
-            <SignUpInput
-              placeholder="비밀번호"
-              type="password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <AlertError role="alert">{errors.password.message}</AlertError>
-            )}
-
-            <SignUpInput
-              placeholder="비밀번호확인"
-              type="password"
-              {...register("confirm")}
-            />
-            {errors.confirm && (
-              <AlertError role="alert">{errors.confirm.message}</AlertError>
-            )}
-
-            <NextBtn onClick={() => nextHandler(2)}>다음</NextBtn>
-          </SignUpCtn>
-        )}
-        {next === 2 && (
-          <SignUpCtn>
-            <SignUpHeader>
-              <Arrow onClick={() => setNext(1)} />
-              <div>회원가입</div>
-            </SignUpHeader>
-            <h3>본인인증 해주세요</h3>
-            <RowBox>
-              {" "}
-              <SignUpInput
-                placeholder="전화번호를 입력해주세요."
-                onChange={onChange}
-                value={user.phoneNumber}
-                name="phoneNumber"
-              />
-              <VerfiyBtn onClick={postVerify}>인증번호 받기</VerfiyBtn>
-            </RowBox>
-
-            <SignUpInput
-              placeholder="인증번호를 입력해주세요."
-              onChange={onChange}
-              value={user.verifyCode}
-              name="verifyCode"
-            />
-
-            <NextBtn onClick={() => postVerifyCode()}>다음</NextBtn>
-          </SignUpCtn>
-        )}
-
-        {next === 3 && (
-          <>
-            <SignUpCtn>
-              <SignUpHeader>
-                <Arrow onClick={() => setNext(2)} />
-                <div>회원가입</div>
-              </SignUpHeader>
-              <RowBox className="column">
-                <h3>추가정보를 입력해주세요</h3> <div>성별</div>
-              </RowBox>
-
-              <RowBox>
-                <label htmlFor="male">남자</label>
-                <InputBirth
-                  id="male"
-                  type="radio"
-                  value={"male"}
-                  {...register("gender")}
-                ></InputBirth>
-
-                <label htmlFor="female">여자</label>
-                <InputBirth
-                  id="female"
-                  type="radio"
-                  value={"female"}
-                  {...register("gender")}
-                ></InputBirth>
-              </RowBox>
-              <SignUpInput
-                className="Birth1"
-                placeholder="나이를 입력해주세요"
-                {...register("age")}
-              />
-              <SignUpInput
-                placeholder="클릭하면, 주소창이 뜹니다."
-                type="text"
-                onClick={postCode}
-                {...register("address")}
-              />
-              <DaumPostBox ref={ref}></DaumPostBox>
-            </SignUpCtn>
-
-            {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
-            <WholeBox>
-              <TagBox>
-                {tagList.map((tagItem, index) => {
-                  return (
-                    <TagItem key={index}>
-                      <Text>{tagItem}</Text>
-                      <TagButton onClick={deleteTagItem}>X</TagButton>
-                    </TagItem>
-                  );
-                })}
-                <TagInput
-                  type="text"
-                  placeholder="엔터로 태그를 만들어주세요."
-                  tabIndex={2}
-                  onChange={(e) => setTagItem(e.target.value)}
-                  value={tagItem}
-                  onKeyPress={onKeyPress}
-                />
-              </TagBox>
-            </WholeBox>
-            <NextBtn onClick={handleSubmit(onSubmit)}>완료</NextBtn>
-          </>
-        )}
+        <SignUpCtn>
+          {" "}
+          <SignUpHeader>
+            <Arrow onClick={() => navigate("/")} />
+            <div>회원가입</div>
+          </SignUpHeader>
+          <h3>
+            아이디와 닉네임을 <br /> 입력해주세요
+          </h3>{" "}
+          <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
+          {errors.userId && (
+            <AlertError role="alert">{errors.userId.message}</AlertError>
+          )}
+          <SignUpInput placeholder="닉네임" {...register("nickName")} />
+          {errors.nickName && (
+            <AlertError role="alert">{errors.nickName.message}</AlertError>
+          )}
+          <NextBtn onClick={handleSubmit(onSubmit)}>다음</NextBtn>
+        </SignUpCtn>
       </SignUpWrap>{" "}
     </>
   );
@@ -519,7 +221,7 @@ const TagButton = styled.button`
 const TagInput = styled.input`
   color: white;
   display: inline-flex;
-  min-width: 200px;
+  min-width: 250px;
   background: transparent;
   border: none;
   outline: none;

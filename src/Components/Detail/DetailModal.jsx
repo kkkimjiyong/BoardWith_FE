@@ -30,23 +30,8 @@ import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 
-import { useQuery } from "react-query";
-
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
-  // const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList, {
-  //   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-  //   retry: 0, // 실패시 재호출 몇번 할지
-  //   onSuccess: (data) => {
-  //     // 성공시 호출
-  //     console.log(data);
-  //   },
-  //   onError: (e) => {
-  //     // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
-  //     console.log(e.message);
-  //   },
-  // });
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -76,6 +61,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
   const [isBanUser, setIsBanUser] = useState(false);
+  const [isPartyAccept, setIsPartyAccept] = useState(false);
 
   // 수정
   const [blacklist, setBlacklist] = useState();
@@ -95,8 +81,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   };
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
-  console.log(realStartTime, realEndTime);
-  console.log(startDate, endDate);
+
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
     !isEdit ? setIsEdit(true) : setIsEdit(false);
@@ -168,12 +153,13 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     userApi.getUser().then((res) => {
       setNickName(res.data.findUser.nickName);
     });
-
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
     });
     dispatch(__getComments(postid));
-  }, []);
+  }, [setIsClosed]);
+
+  console.log(closed);
 
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
   // console.log(detail?.data?.nickName);
@@ -206,45 +192,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
     //?-------------- 하  ------------------[]
 
-    const closeHandler = () => {
-      if (closed) {
-        if (getCookie("accesstoken") !== null) {
-          setOpen((open) => !open);
-        } else {
-          alert("로그인이 필요한 기능입니다.");
-        }
-      } else {
-        alert("마감된 모임입니다!");
-      }
-    };
-
-    //접속자가 밴 유저인지 확인
-
-    // detail?.data?.banUser?.forEach(
-    //   (banUser) => comments?.nickName === banUser && setIsBanUser(true)
-    // );
-
-    // // 만약 10명
-    // for (let i = 0; i < detail?.data?.banUser?.length; i++) {
-    //   for (let i = 0; i < comments?.length; i++) {
-    //     if (detail?.data?.banUser[i] === comments[i].nickName) {
-    //       // setIsBanUser(true);
-    //       //console.log("하이하이 : ", comments[i]);
-    //       // 블랙리스트인 애들 객체에 저장
-    //       // 블랙리스트인 애들이 이제 여기에서 분류 되는거니까
-    //       // 10명중에 4명이 블랙리스트면 4번 타겠지?
-    //       // 그러면 얘네들만 객체에 따로 담으면 될듯?
-    //       setBlacklist(comments[i]);
-    //       setBlacklists(comments[i]);
-    //       //setBlacklists((blacklist) => [blacklist, comments[i]]);
-    //     }
-    //   }
-    // }
-
-    //for (let i = 0; i < blacklist.length)
-    console.log("blacklist", blacklist); // 무조건 1개 있어야해
-    console.log("blacklists", blacklists); // 2개 다 있어야해
-
     //접속자가 댓글작성자인지 확인
     comments?.forEach(
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
@@ -266,8 +213,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   // console.log(isHost);
 
   useEffect(() => {
-    // api();
-    // setLoading(false);
     dummy();
   }, []);
 
@@ -325,7 +270,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
       });
     }
   };
-  console.log(process.env.REACT_APP_KAKAO_JSPKEY);
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
@@ -472,10 +416,10 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
                         <Stbutton1
                           onClick={
-                            !closed ? closePartyHandler : openPartyHandler
+                            !isClosed ? closePartyHandler : openPartyHandler
                           }
                         >
-                          {!closed ? "마감하기" : "마감취소"}{" "}
+                          {!isClosed ? "마감하기" : "마감취소"}{" "}
                         </Stbutton1>
                       </StButtonWrap>
                     ) : (
@@ -544,6 +488,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <>
                         {comments?.map((comment) => (
                           <Comments
+                            setIsPartyAccept={setIsPartyAccept}
+                            isPartyAccept={isPartyAccept}
                             key={comment._id}
                             comments={comment}
                             isHost={isHost}
