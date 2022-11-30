@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "../../style/Layout";
+import BanComments from "./BanComment";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "../../style/Loading";
-import MainLogo from "../../Assets/LayoutLogo.png";
+import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 import {
   faCalendar,
   faCommentDots,
@@ -29,25 +29,13 @@ import {
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
+import moment from "moment-timezone";
 
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
-  const commentInitialState = {
-    comment: "",
-    createdAt: "",
-    gender: "",
-    myPlace: [],
-    nickName: "",
-    postId: "",
-    updatedAt: "",
-    userId: "",
-    __v: "",
-    _id: "",
-  };
-
   const [comment, setComment] = useState(initialState);
   const [isHost, setIsHost] = useState(false);
   const [nickName, setNickName] = useState();
@@ -60,15 +48,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [y, setY] = useState();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
-  const [isBanUser, setIsBanUser] = useState(false);
   const [isPartyAccept, setIsPartyAccept] = useState(false);
+  const [isCommentBan, setIsCommentBan] = useState([]);
 
   // 수정
-  const [blacklist, setBlacklist] = useState();
-  const [blacklists, setBlacklists] = useState([]);
 
   //? ---------------시간 (나중에 리팩토링) ----------------
-  const moment = require("moment-timezone");
   const startDate = detail?.data.time?.[0];
   const endDate = detail?.data.time?.[1];
   const getStartTime = (startDate) => {
@@ -208,16 +193,14 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
       }
     };
 
-    //for (let i = 0; i < blacklist.length)
-    console.log("blacklist", blacklist); // 무조건 1개 있어야해
-    console.log("blacklists", blacklists); // 2개 다 있어야해
-
     //접속자가 댓글작성자인지 확인
     comments?.forEach(
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
     );
   }, [postApi.getDetailId(postid)]);
-  // [postApi.getDetailId(postid)]
+
+  console.log("comments", comments);
+  console.log("isCommentBan", isCommentBan);
 
   useEffect(() => {
     //파티 마감 상태
@@ -233,6 +216,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   // console.log(isHost);
 
   useEffect(() => {
+    setLoading(false);
     dummy();
   }, []);
 
@@ -291,7 +275,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     }
   };
 
-  console.log("detail".detail); // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
+  // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
+  console.log("detail", detail?.data);
+
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
@@ -331,11 +317,18 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             width: "40px",
                             height: "40px",
                             backgroundColor: "white",
-                            // backgroundImage: `url(${detail?.data?.img})`,
                             backgroundSize: "cover",
-                            backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
                           }}
-                        />
+                        >
+                          <ProfileAvatarBox
+                            userSelect={{
+                              Eye: detail?.data?.userAvater?.Eye,
+                              Hair: detail?.data?.userAvater?.Hair,
+                              Mouth: detail?.data?.userAvater?.Mouth,
+                              Back: detail?.data?.userAvater?.Eye,
+                            }}
+                          />
+                        </div>
                         <Stgap />
                         <FontAwesomeIcon
                           style={{
@@ -411,7 +404,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         icon={faUserGroup}
                       />
                       <div />
-                      <h5>{detail?.data?.partyMember}명</h5> {/* 인원 */}
+                      <h5>
+                        {detail?.data?.confirmMember?.length}/
+                        {detail?.data?.partyMember}명
+                      </h5>{" "}
+                      {/* 인원 */}
                     </StContentWrap>
                     {isHost ? (
                       <StButtonWrap>
@@ -424,7 +421,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             }
                           }}
                         >
-                          예약현황 ( {comments?.length} 명 )
+                          예약현황 ( {detail?.data?.participant?.length} 명 )
                         </Stbutton>
                         {/* {!closed ? (
                           <Stbutton1 onClick={closePartyHandler}>
@@ -441,7 +438,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             !isClosed ? closePartyHandler : openPartyHandler
                           }
                         >
-                          {!isClosed ? "마감하기" : "마감취소"}{" "}
+                          {!isClosed ? "마감하기" : "마감취소"}
                         </Stbutton1>
                       </StButtonWrap>
                     ) : (
@@ -508,16 +505,35 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                     <></>
                   )}
                   <div>
-                    {!isBanUser && (
+                    {comments?.map((comment) => (
+                      <Comments
+                        key={comment._id}
+                        comments={comment}
+                        isHost={isHost}
+                        nickName={nickName}
+                        postid={postid}
+                        detail={detail?.data}
+                        isPostEdit={isEdit}
+                        setModalOpen={setModalOpen}
+                        ModalOpen={ModalOpen}
+                        open={open}
+                        setOpen={setOpen}
+                      />
+                    ))}
+                    {isEdit && (
                       <>
+                        <p
+                          style={{
+                            marginLeft: "20px",
+                            marginTop: "40px",
+                          }}
+                        >
+                          블랙리스트
+                        </p>
                         {comments?.map((comment) => (
-                          <Comments
-                            setIsPartyAccept={setIsPartyAccept}
-                            isPartyAccept={isPartyAccept}
+                          <BanComments
                             key={comment._id}
                             comments={comment}
-                            isHost={isHost}
-                            nickName={nickName}
                             postid={postid}
                             detail={detail?.data}
                             isPostEdit={isEdit}
@@ -529,37 +545,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         ))}
                       </>
                     )}
-                    {/* {isEdit && (
-                      <>
-                        <p
-                          style={{
-                            marginLeft: "20px",
-                            marginTop: "40px",
-                          }}
-                        >
-                          블랙리스트
-                        </p>
-                        {isBanUser && (
-                          <>
-                            {comments?.map((comment) => (
-                              <Comments
-                                key={comment._id}
-                                comments={comment}
-                                isHost={isHost}
-                                nickName={nickName}
-                                postid={postid}
-                                detail={detail?.data}
-                                isPostEdit={isEdit}
-                                setModalOpen={setModalOpen}
-                                ModalOpen={ModalOpen}
-                                open={open}
-                                setOpen={setOpen}
-                              />
-                            ))}
-                          </>
-                        )}
-                      </>
-                    )} */}
 
                     {!isCommentAuthor && !isHost && open ? (
                       <Btnbox>
