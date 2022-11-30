@@ -14,6 +14,7 @@ import {
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { postApi } from "../../instance";
 import { useNavigate } from "react-router-dom";
+import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 
 const Comments = ({
   comments,
@@ -26,13 +27,12 @@ const Comments = ({
   setModalOpen,
   open,
   setOpen,
-  isPartyAccept,
-  setIsPartyAccept,
 }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
   const navigate = useNavigate();
+  const [isPartyAccept, setIsPartyAccept] = useState(false);
 
   const commentId = comments._id;
   //console.log("nickName", nickName);
@@ -150,7 +150,7 @@ const Comments = ({
       });
   };
 
-  // console.log("comments", comments);
+  console.log("comments", comments);
 
   useEffect(() => {
     //참가 확정 받은 유저인지 비교
@@ -160,6 +160,7 @@ const Comments = ({
       } else {
         setIsPartyAccept(false);
       }
+
     //밴 유저인지 비교
     for (let i = 0; i < detail?.banUser?.length; i++)
       if (comments?.nickName === detail?.banUser[i]) {
@@ -173,6 +174,7 @@ const Comments = ({
   // console.log("comments", comments);
   // console.log("myPlace", comments?.myPlace);
   // console.log(comments?.myPlace.length === 0);
+  console.log("isPartyAccept", isPartyAccept);
 
   return (
     <>
@@ -185,22 +187,20 @@ const Comments = ({
               <StCommentBodyWrap>
                 <div>
                   <div>
-                    <div
+                    <StAvatar
                       onClick={() =>
                         navigate(`/userpage/${comments?.nickName}`)
                       }
-                      style={{
-                        border: "1px solid gray",
-                        margin: "20px",
-                        borderRadius: "50%",
-                        width: "70px",
-                        height: "70px",
-                        backgroundColor: "white",
-                        // backgroundImage: `url(${detail?.data?.img})`,
-                        backgroundSize: "cover",
-                        backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
-                      }}
-                    />
+                    >
+                      <ProfileAvatarBox
+                        userSelect={{
+                          Eye: comment?.userAvater?.Eye,
+                          Hair: comment?.userAvater?.Hair,
+                          Mouth: comment?.userAvater?.Mouth,
+                          Back: comment?.userAvater?.Back,
+                        }}
+                      />
+                    </StAvatar>
                   </div>
                   <div>
                     <StCommentBody>
@@ -216,7 +216,7 @@ const Comments = ({
                         <span>&nbsp;/&nbsp;</span>
                         <span>{comments?.gender}</span>
                         {comments?.myPlace.length !== 0 && (
-                          <span>&nbsp;/&nbsp;{comments?.myPlace}</span>
+                          <span>&nbsp;/&nbsp;{comments?.myPlace[0]}</span>
                         )}
                       </Stspan>
                       <div style={{ height: "6px" }} />
@@ -303,56 +303,57 @@ const Comments = ({
         </>
       ) : (
         <>
-          {isPostEdit ? (
-            <CommentBox key={comment._id}>
-              <StCommentBodyWrap>
-                <div>
-                  <div>
-                    <div
-                      style={{
-                        border: "1px solid gray",
-                        margin: "20px",
-                        borderRadius: "50%",
-                        width: "70px",
-                        height: "70px",
-                        backgroundColor: "white",
-                        // backgroundImage: `url(${detail?.data?.img})`,
-                        backgroundSize: "cover",
-                        backgroundImage: `url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999)`,
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <StCommentBody>
-                      <Stspan
-                        style={{
-                          fontSize: "17px",
-                        }}
-                      >
-                        {comments?.nickName}
-                      </Stspan>
-                      <Stspan>
-                        <span>20대</span>
-                        <span>&nbsp;/&nbsp;</span>
-                        <span>{comments?.gender}</span>
-                        {comments?.myPlace.length !== 0 && (
-                          <span>&nbsp;/&nbsp;{comments?.myPlace}</span>
-                        )}
-                      </Stspan>
-                      <div style={{ height: "6px" }} />
-                      <Stspan style={{ fontSize: "20px" }}>
-                        {comments?.comment}
-                      </Stspan>
-                    </StCommentBody>
-                  </div>
-                </div>
-                <StBanButton onClick={kickPartyCancelHandler}>
-                  {isPostEdit && "취소"}
-                </StBanButton>
-              </StCommentBodyWrap>
-            </CommentBox>
-          ) : (
-            <></>
+          {isPostEdit && (
+            <>
+              {!isBanUser && (
+                <>
+                  <CommentBox key={comment._id}>
+                    <StCommentBodyWrap>
+                      <div>
+                        <div>
+                          <StAvatar>
+                            <ProfileAvatarBox
+                              userSelect={{
+                                Eye: comment?.userAvater?.Eye,
+                                Hair: comment?.userAvater?.Hair,
+                                Mouth: comment?.userAvater?.Mouth,
+                                Back: comment?.userAvater?.Back,
+                              }}
+                            />
+                          </StAvatar>
+                        </div>
+                        <div>
+                          <StCommentBody>
+                            <Stspan
+                              style={{
+                                fontSize: "17px",
+                              }}
+                            >
+                              {comments?.nickName}
+                            </Stspan>
+                            <Stspan>
+                              <span>20대</span>
+                              <span>&nbsp;/&nbsp;</span>
+                              <span>{comments?.gender}</span>
+                              {comments?.myPlace.length !== 0 && (
+                                <span>&nbsp;/&nbsp;{comments?.myPlace[0]}</span>
+                              )}
+                            </Stspan>
+                            <div style={{ height: "6px" }} />
+                            <Stspan style={{ fontSize: "20px" }}>
+                              {comments?.comment}
+                            </Stspan>
+                          </StCommentBody>
+                        </div>
+                      </div>
+                      <StBanButton onClick={kickPartyCancelHandler}>
+                        {isPostEdit && "취소"}
+                      </StBanButton>
+                    </StCommentBodyWrap>
+                  </CommentBox>
+                </>
+              )}
+            </>
           )}
         </>
       )}
@@ -385,7 +386,7 @@ const StButton2 = styled.button`
   font-size: large;
   font-weight: bold;
   cursor: pointer;
-  color: white;
+  color: var(--black);
   border: none;
   &:active {
     scale: 95%;
@@ -464,4 +465,16 @@ const Sticon = styled.div`
   justify-content: center;
   margin-right: 10px;
   gap: 5px;
+`;
+
+const StAvatar = styled.div`
+  display: flex;
+  border: 1px solid gray;
+  margin: 20px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
 `;
