@@ -24,6 +24,7 @@
     "moment-timezone": "^0.5.39",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
+        "react-cookies": "^0.1.1",
     "react-datepicker": "^4.8.0",
     "react-daum-postcode": "^3.1.1",
     "react-daumpost-hook": "^1.1.4",
