@@ -37,7 +37,7 @@ const KaKaoLogin = () => {
   const isGoogle = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/google/isGoogle",
+        "https://www.iceflower.shop/social/google/isGoogle",
         { code }
       );
       // console.log("data", data);
@@ -63,7 +63,7 @@ const KaKaoLogin = () => {
   const postKaKaoUser = async (signup) => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/google/callback",
+        "https://www.iceflower.shop/social/google/callback",
         signup
       );
       console.log(data.accessToken);

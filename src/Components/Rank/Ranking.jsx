@@ -16,8 +16,8 @@ const Ranking = () => {
   useEffect(() => {
     rankApi.getRank().then((res) => {
       setRank(res.data.data);
+      setTimeout(() => setLoading(false), 500);
     });
-    setLoading(false);
   }, []);
   console.log();
   return (
