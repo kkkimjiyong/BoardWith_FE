@@ -14,7 +14,7 @@ viewBox="0 0 180 50">
         stroke-linejoin: round;
         stroke-dasharray: 160;
         stroke-dashoffset: 160;
-        animation: ani 2s linear infinite;
+        animation: ani 2s linear alternate infinite;
         filter:url(#f1)
       }
 @keyframes ani {
