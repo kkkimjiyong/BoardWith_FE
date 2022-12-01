@@ -81,7 +81,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   };
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
-
+  // console.log(realStartTime, realEndTime);
+  // console.log(startDate, endDate);
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
     !isEdit ? setIsEdit(true) : setIsEdit(false);
@@ -195,6 +196,22 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
     //?-------------- 하  ------------------[]
 
+    const closeHandler = () => {
+      if (closed) {
+        if (getCookie("accesstoken") !== null) {
+          setOpen((open) => !open);
+        } else {
+          alert("로그인이 필요한 기능입니다.");
+        }
+      } else {
+        alert("마감된 모임입니다!");
+      }
+    };
+
+    //for (let i = 0; i < blacklist.length)
+    console.log("blacklist", blacklist); // 무조건 1개 있어야해
+    console.log("blacklists", blacklists); // 2개 다 있어야해
+
     //접속자가 댓글작성자인지 확인
     comments?.forEach(
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
@@ -273,6 +290,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
       });
     }
   };
+
+  console.log("detail".detail); // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
   return (
     <BackGroudModal>
       <StContainers onClick={() => setModalOpen(false)}>
@@ -465,10 +484,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       }}
                     />
                     <h3>{detail?.data?.title}</h3>
-                    {!isEdit ? (
-                      <h5 onClick={postEditHandler}>편집</h5>
+                    {isHost ? (
+                      <h5 onClick={postEditHandler}>
+                        {!isEdit ? "편집" : "취소"}
+                      </h5>
                     ) : (
-                      <h5 onClick={postEditHandler}>취소</h5>
+                      <div />
                     )}
                   </StCommentTitle>
                   {!isHost ? (
