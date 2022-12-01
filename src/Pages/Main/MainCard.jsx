@@ -93,7 +93,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
   return (
     <Wrap>
       <div
-        className={!closed ? "ClosedItemWrap" : "ClosedItemWrap"}
+        className={!closed ? "ItemWrap" : "ClosedItemWrap"}
         onClick={() => setModalOpen(true)}
       >
         <ItemWrapBodySpaceBetween>
