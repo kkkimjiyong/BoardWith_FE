@@ -208,6 +208,8 @@ const ItemWrap = styled.div`
     display: flex;
     justify-content: center;
     padding: 4% 4%;
+    overflow-x: hidden;
+    word-break: break-all;
     flex-direction: column;
     background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;
