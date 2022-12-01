@@ -9,7 +9,7 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
     try {
       const { data } = await userApi.editUser({ tutorial: true });
       console.log(data);
-      setIsTutorial(false);
+      setIsTutorial(true);
       setSelfCheck(true);
     } catch (error) {
       console.log(error);
