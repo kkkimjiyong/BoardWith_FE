@@ -14,8 +14,9 @@ import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DailyCheck from "../../Components/DailyCheck";
 import { getCookie } from "../../hooks/CookieHook";
+import { postsApi, userApi } from "../../instance";
+import { useInView } from "react-intersection-observer";
 import { Skeleton } from "@mui/material";
-import { postsApi } from "../../instance";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const MainSlide = () => {
   const [formModalOpen, setFormModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [selfCheck, setSelfCheck] = useState(true);
+  const [userBook, setUserBook] = useState();
   const scrollHead = useRef();
   const [loading, setLoading] = useState(true);
 
@@ -80,53 +82,78 @@ const MainSlide = () => {
       alert("위치 허용을 누르셔야 이용가능합니다!");
     }
   };
+  //? --------------- get User --------------------
+  const getUser = async () => {
+    try {
+      const { data } = await userApi.getUser();
+      console.log(data.findUser.bookmarkData);
+      setUserBook(data.findUser.bookmarkData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
 
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
-  const [nextPage, setNextPage] = useState(true);
-  console.log("items", items);
-  let page = 0;
-
+  const [hasNextPage, setHasNextPage] = useState(true);
+  let page = useRef(0);
+  console.log(page);
   const [target, setTarget] = useState(null);
 
   const getData = async () => {
     setLoading(true);
     try {
-      const response = await postsApi.getPosts(page);
-
+      const response = await postsApi.getPosts(page.current);
       setItems((prev) => prev.concat(response.data.data));
-      page += 5;
+      setHasNextPage(response.data.data.length == 5);
       setLoading(false);
-      return response.data.data.length;
+      page.current += 5;
     } catch (error) {}
   };
 
-  const onIntersect = async ([entry], observer) => {
-    if (!entry.isIntersecting) {
-      return;
-    }
-    observer.unobserve(entry.target);
-    let itemLength = await getData();
-    console.log(itemLength);
-    if (itemLength === 5) {
-      console.log("reobserve!!!!!!");
-      observer.observe(entry.target);
-    } else {
-      console.log("stop observe!!!!!!");
-      observer.unobserve(entry.target);
-    }
-  };
-
-  let observer = new IntersectionObserver(onIntersect, { threshold: 1 });
-  let observed = false;
+  const { ref, inView } = useInView({
+    // 라이브러리 옵션
+    //threshold는 ref타겟의 모습이 0~1만큼의 모습이 보이면 inview가 작동하는 값
+    threshold: 0.1,
+  });
 
   useEffect(() => {
-    if (target && !observed) {
-      observer.observe(target);
-      observed = true;
+    //ref타켓이 보이고, 다음페이지가 있으면 데이터get요청
+    if (inView && hasNextPage) {
+      // console.log(1);
+      getData();
     }
-  }, [target]);
+  }, [hasNextPage, inView]);
+
+  // const onIntersect = async ([entry], observer) => {
+  //   if (!entry.isIntersecting) {
+  //     return;
+  //   }
+  //   observer.unobserve(entry.target);
+  //   let itemLength = await getData();
+  //   console.log(itemLength);
+  //   if (itemLength === 5) {
+  //     console.log("reobserve!!!!!!");
+  //     observer.observe(entry.target);
+  //   } else {
+  //     console.log("stop observe!!!!!!");
+  //     observer.unobserve(entry.target);
+  //   }
+  // };
+
+  // let observer = new IntersectionObserver(onIntersect, { threshold: 1 });
+  // let observed = false;
+
+  // useEffect(() => {
+  //   if (target && !observed) {
+  //     observer.observe(target);
+  //     observed = true;
+  //   }
+  // }, [target]);
 
   const bookMarked = async () => {
     try {
@@ -168,7 +195,7 @@ const MainSlide = () => {
               ></Item>
             );
           })}
-          <Target ref={setTarget}>target? </Target>{" "}
+          <Target ref={ref}>target? </Target>{" "}
         </MainListCtn>{" "}
         <FormButton onClick={() => setFormModalOpen(true)}>
           <FontAwesomeIcon
