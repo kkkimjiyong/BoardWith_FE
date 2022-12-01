@@ -5,37 +5,35 @@ import { getCookie } from "../../hooks/CookieHook";
 import { useState } from "react";
 import Item from "./MainCard";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "./Skeleton";
+import { postsApi } from "../../instance";
 
 const Search = () => {
   const navigate = useNavigate();
   const [keyWord, setKeyWord] = useState("");
   const [titleSearch, setTitleSearch] = useState([]);
   const [nicknameSearch, setNicknameSearch] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const creatTitlePost = async () => {
+    setLoading(true);
     try {
-      const { data } = await axios.get(
-        `https://www.iceflower.shop/posts/searchTitle/${keyWord}`,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
+      const { data } = await postsApi.getSearchTitle(keyWord);
+
       setTitleSearch(data.data);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     } catch (error) {}
   };
   const creatNicknamePost = async () => {
+    setLoading(true);
     try {
-      const { data } = await axios.get(
-        `https://www.iceflower.shop/posts/searchNickname/${keyWord}`,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
+      const { data } = await postsApi.getSearchNickname(keyWord);
       setNicknameSearch(data.data);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     } catch (error) {}
   };
 
@@ -63,36 +61,45 @@ const Search = () => {
         onChange={onChange}
         onKeyPress={onKeyPress}
         value={keyWord}
-      ></SearchInput>
+      ></SearchInput>{" "}
       <MainListCtn>
-        {titleSearch?.map((items, idx) => {
-          if (items.participant.length < items.partyMember && !items.closed) {
-            return (
-              <Item
-                //   setModalOpen={setModalOpen}
-                key={idx}
-                item={items}
-                //   Myaddress={Myaddress}
-              ></Item>
-            );
-          } else {
-            <div>마감되었습니다</div>;
-          }
-        })}
-        {nicknameSearch?.map((items, idx) => {
-          if (items.participant.length < items.partyMember && !items.closed) {
-            return (
-              <Item
-                //   setModalOpen={setModalOpen}
-                key={idx}
-                item={items}
-                //   Myaddress={Myaddress}
-              ></Item>
-            );
-          } else {
-            <div>마감되었습니다</div>;
-          }
-        })}
+        {" "}
+        {loading ? (
+          <Skeleton />
+        ) : (
+          titleSearch?.map((items, idx) => {
+            if (items.participant.length < items.partyMember && !items.closed) {
+              return (
+                <Item
+                  //   setModalOpen={setModalOpen}
+                  key={idx}
+                  item={items}
+                  //   Myaddress={Myaddress}
+                ></Item>
+              );
+            } else {
+              <div>마감되었습니다</div>;
+            }
+          })
+        )}
+        {loading ? (
+          <Skeleton />
+        ) : (
+          nicknameSearch?.map((items, idx) => {
+            if (items.participant.length < items.partyMember && !items.closed) {
+              return (
+                <Item
+                  //   setModalOpen={setModalOpen}
+                  key={idx}
+                  item={items}
+                  //   Myaddress={Myaddress}
+                ></Item>
+              );
+            } else {
+              <div>마감되었습니다</div>;
+            }
+          })
+        )}{" "}
       </MainListCtn>
     </Layout>
   );
