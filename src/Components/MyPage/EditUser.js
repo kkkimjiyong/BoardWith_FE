@@ -5,219 +5,84 @@ import useInput from "../../hooks/UseInput";
 import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
-import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
-import { ImExit } from "@react-icons/all-files/im/ImExit";
 import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
-import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
-import MyPartyItem from "./MyPartyItem";
+import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
+import { useRef } from "react";
+import ReactDaumPost from "react-daumpost-hook";
 
-const EditUser = () => {
-  const [user, Setuser, onChange] = useInput();
-  const [isOpen, SetisOpen] = useState(false);
-  const [isOpen1, SetisOpen1] = useState(false);
-  const [isOpen2, SetisOpen2] = useState(false);
-  const [reservedParty, setReservedParty] = useState();
-  const [confirmParty, setConfirmParty] = useState();
-  const [likeGame, setLikeGame] = useState();
+const EditUser = ({ setOpenEdit, openEdit, user, Setuser, onChange }) => {
   const [ModalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  console.log(user);
+  //? --------------------- 다음포스트  --------------------------
 
-  const getUser = async () => {
-    try {
-      const { data } = await userApi.getUser();
-      setLikeGame(data.findUser.likeGame);
-      if (data.myNewToken) {
-        setCookie("accessToken", data.myNewToken);
-        Setuser(data.findUser);
-        setReservedParty(data.partyReserved);
-        setConfirmParty(data.partyGo);
-      } else {
-        Setuser(data.findUser);
-        setReservedParty(data.partyReserved);
-        setConfirmParty(data.partyGo);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const ref = useRef(null);
+
+  const postConfig = {
+    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
+    onComplete: (data) => {
+      // 데이터를 받아와서 set해주는 부분
+      Setuser({ ...user, myPlace: data.address });
+      // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
+      ref.current.style.display = "none";
+    },
   };
-
-  console.log(likeGame.length);
-
-  useEffect(() => {
-    getUser();
-  }, []);
-  // console.log({ visible: !user.visible });
-  //? ------------------  로그아웃 -------------------
-
-  const logoutHandler = (name) => {
-    alert("로그아웃 성공");
-    removeCookie(name);
-    navigate("/");
-  };
-
-  //? ------------------  로그아웃 -------------------
-
-  const deleteUser = async () => {
-    try {
-      const { data } = await axios.delete("https://www.iceflower.shop/users", {
-        headers: {
-          Authorization: `${getCookie("accessToken")}`,
-        },
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  //? --------------------  회원탈퇴  ---------------------
-  const deletUserHandler = (name) => {
-    alert("탈퇴 성공");
-    deleteUser();
-    removeCookie(name);
-    navigate("/");
-  };
-
-  //? ----------------- 성별 보이게 안보이게 api --------------------------
-  const postVisible = async () => {
-    try {
-      const { data } = await axios.put(
-        `https://www.iceflower.shop/users`,
-        { visible: !user.visible },
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
-      Setuser({ ...user, visible: data.visible });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    // getReserved();
-    // getConfirm();
-    if (!getCookie("accessToken")) {
-      alert("로그인이 필요한 페이지입니다!");
-      // window.location.replace("/");
-      navigate("/");
-    }
-  }, []);
-
-  console.log(ModalOpen);
+  const postCode = ReactDaumPost(postConfig);
 
   return (
-    <Wrapper>
-      <MainHeader>
-        <Arrow className="head" onClick={() => navigate("/main")} />
-        <div className="headtxt">마이페이지</div>
-        <RowBox>
-          <BsPencil size="30" onClick={() => alert("수정중")} />
-        </RowBox>
-      </MainHeader>
-      {/* 범용성있게 아바타박스를 만든 뒤, 추가하자 */}
-      {/* <AvatarBox userSelect={user?.userAvater} /> */}
-      <AvatarCtn>
+    <Wrapper openEdit={openEdit}>
+      <EditTxt>닉네임</EditTxt>
+      <EditInput value={user.nickName} name="nickName" onChange={onChange} />
+      <EditTxt>내 정보</EditTxt>
+      <EditBox>
+        <div> 나이, 성별, 지역</div>
+        <ToggleBox open={open}>
+          <div onClick={() => setOpen(!open)} className="circleBtn" />
+        </ToggleBox>
+      </EditBox>
+      <EditTxt className="info">
         {" "}
-        <Avatar />
-      </AvatarCtn>
-      <ProfileCtn>
+        앱에서 다른 사용자에게 나의 나이, 성별, 지역 정보를 노출할 수 있습니다.
+      </EditTxt>
+      <EditTxt>나이</EditTxt>
+
+      <EditInput
+        value={user.age}
+        name="age"
+        onChange={onChange}
+        type="selectbox"
+      />
+      <EditTxt>성별</EditTxt>
+
+      <EditSelect value={user.gender} name="gender" onChange={onChange}>
+        <Option value="female">여자</Option>
+        <Option value="male">남자</Option>
+      </EditSelect>
+      <EditTxt>지역</EditTxt>
+
+      <EditBox onClick={postCode}>
         {" "}
-        <ProfileRow>
-          {" "}
-          <div>{user?.nickName}</div>{" "}
-        </ProfileRow>
-        <ProfileRow>
-          {user?.age ? `${user?.age} 살` : "없음"}/
-          {user?.visible ? `${user?.gender}` : "숨김"}/
-          {user?.myPlace.length
-            ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-            : "없음"}{" "}
-          {user?.visible ? (
-            <AiFillEye size="24" onClick={() => postVisible()} />
-          ) : (
-            <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-          )}
-        </ProfileRow>
-        <LikeGameCtn>
-          <LikeGameBox>
-            {likeGame?.map((game) => {
-              return <LikeGame>{game}</LikeGame>;
-            })}
-          </LikeGameBox>
-        </LikeGameCtn>
-        <MyPartyCtn>
-          <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
-            내가 찜한 모임
-            <Arrow className={isOpen ? "open" : null} />
-          </MyPartyTitle>
-          <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
-            참여 신청 중인 모임
-            <Arrow className={isOpen1 ? "open" : null} />
-          </MyPartyTitle>
-          {isOpen1 && (
-            <MyPartyBox>
-              {reservedParty?.map((party) => {
-                if (!party.closed) return <MyPartyItem party={party} />;
-              })}
-            </MyPartyBox>
-          )}
-          <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
-            참여 확정 모임
-            <Arrow className={isOpen2 ? "open" : null} />
-          </MyPartyTitle>
-          {isOpen2 && (
-            <MyPartyBox>
-              {confirmParty?.map((party) => {
-                if (!party.closed) return <MyPartyItem party={party} />;
-              })}
-            </MyPartyBox>
-          )}{" "}
-          <EditBox>
-            {" "}
-            <div className="logout" onClick={deletUserHandler}>
-              회원탈퇴
-            </div>
-            <ImExit size="30" onClick={() => logoutHandler("accessToken")} />
-          </EditBox>
-        </MyPartyCtn>{" "}
-      </ProfileCtn>{" "}
+        {user.myPlace[0]} {user.myPlace[1]}
+      </EditBox>
+
+      <div ref={ref}></div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  z-index: 12;
+  bottom: ${({ openEdit }) => (openEdit ? "0%" : "-20%")};
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
-  background-color: var(--white);
-`;
-
-const MainHeader = styled.div`
-  position: sticky;
-  top: 0;
-  width: 100%;
+  height: ${({ openEdit }) => (openEdit ? "100%" : "0%")};
+  padding: 0% 5%;
   background-color: var(--black);
-  box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 999;
-  color: white;
-  padding: 3.5% 2% 3.5% 2%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 100px;
-  .headtxt {
-    margin-left: 10px;
-    color: #fff;
-    text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
-      0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
-  }
+  transition: all 1s ease-in-out;
 `;
 
 const RowBox = styled.div`
@@ -225,130 +90,78 @@ const RowBox = styled.div`
   gap: 20px;
 `;
 
-const AvatarCtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30%;
+const EditInput = styled.input`
   width: 100%;
-  padding: 20%;
+  height: 50px;
+  background-color: var(--gray);
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  padding: 0% 5%;
+  color: var(--white);
+`;
+
+const EditSelect = styled.select`
+  font-size: 16px;
+  width: 100%;
+  height: 50px;
+  background-color: var(--gray);
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  padding: 0% 5%;
+  color: var(--white);
+`;
+
+const Option = styled.option`
+  height: 30px;
 `;
 
 const EditBox = styled.div`
   width: 100%;
-  height: 30%;
-  padding: 10px 10% 10px 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 80px;
-  color: #919191;
-  :hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-`;
-
-const EditBtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3rem;
-  width: 5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  :hover {
-    box-shadow: 0px 2px 2px 0px gray;
-  }
-`;
-
-const ProfileCtn = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #484848;
+  height: 50px;
+  background-color: var(--gray);
   color: var(--white);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  height: 100%;
-  padding-top: 5%;
-  padding-left: 10%;
-  gap: 30px;
-  overflow-y: hidden;
-  overflow-y: scroll;
-  //? -----모바일에서처럼 스크롤바 디자인---------------
-  @media only screen and (min-width: 1200px) {
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #898989;
-      //스크롤바에 마진준것처럼 보이게
-      background-clip: padding-box;
-      border: 4px solid transparent;
-      border-radius: 15px;
-    }
-  }
-`;
-
-const ProfileRow = styled.div`
-  width: 100%;
-  padding: 0px 10px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 3%;
+  padding: 0% 5%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
-`;
-
-const LikeGameCtn = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 15vh;
-  gap: 10px;
-`;
-
-const LikeGameBox = styled.div`
-  display: flex;
-  justify-content: left;
-  gap: 15px;
-`;
-
-const LikeGame = styled.div`
-  padding: 5px 15px;
-  font-size: 14px;
-  border-radius: 30px;
-  background-color: var(--primary);
-`;
-
-const MyPartyCtn = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 100%;
-  gap: 30px;
-`;
-
-const MyPartyTitle = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 2%;
-  gap: 10px;
-  :active {
+  :hover {
     cursor: pointer;
-    text-decoration: underline;
   }
 `;
 
-const MyPartyBox = styled.div`
-  gap: 10px;
+const EditTxt = styled.div`
+  color: #7a7a7a;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 6%;
+  padding: 0% 5%;
+  &.info {
+    font-size: 14px;
+    margin-top: 2%;
+  }
+`;
+
+const ToggleBox = styled.div`
+  width: 15%;
+  height: 60%;
+  border-radius: 30px;
+  background-color: ${({ open }) => (open ? "#c72363" : "#5c5c5c")};
   display: flex;
-  flex-direction: column;
-  width: 85%;
-  max-height: 50%;
+  transition: all 1s;
+  justify-content: ${({ open }) => (open ? "flex-end" : "flex-start")};
+  align-items: center;
+  padding: 0% 1%;
+  .circleBtn {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--white);
+  }
 `;
 
 const Arrow = styled.div`

@@ -27,7 +27,7 @@ const MainSlide = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const [formModalOpen, setFormModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isTutorial, setIsTutorial] = useState(true);
+  const [isTutorial, setIsTutorial] = useState(false);
   const [selfCheck, setSelfCheck] = useState(false);
   const [userBook, setUserBook] = useState();
   const scrollHead = useRef();
@@ -92,6 +92,7 @@ const MainSlide = () => {
       console.log(data.findUser.bookmarkData);
       setUserBook(data.findUser.bookmarkData);
       setIsTutorial(data.findUser.tutorial);
+      setSelfCheck(data.findUser.loginCheck);
     } catch (error) {
       console.log(error);
     }
@@ -109,12 +110,10 @@ const MainSlide = () => {
   const [target, setTarget] = useState(null);
 
   const getData = async () => {
-    setLoading(true);
     try {
       const response = await postsApi.getPosts(page.current);
       setItems((prev) => prev.concat(response.data.data));
       setHasNextPage(response.data.data.length == 5);
-      setLoading(false);
       page.current += 5;
     } catch (error) {}
   };
@@ -178,12 +177,12 @@ const MainSlide = () => {
     return (
       <>
         {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
-        {selfCheck && (
+        {!selfCheck && (
           <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
         )}
-        {isTutorial && (
+        {/* {!isTutorial && (
           <Tutorial setSelfCheck={setSelfCheck} setIsTutorial={setIsTutorial} />
-        )}
+        )} */}
         <MainBox className="Scroll">
           <MainHeader onClick={() => scrollToTop()}>
             <BiCurrentLocation
@@ -274,7 +273,7 @@ const MainHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   .headtxt {
-    font-size: 24px;
+    font-size: 22px;
     margin-left: 20px;
     color: #fff;
     text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,

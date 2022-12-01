@@ -6,21 +6,20 @@ import LayoutLogo from "../Assets/LayoutLogo.png";
 
 const DailyCheck = ({ setSelfCheck, selfCheck }) => {
   const checkHandler = () => {
-    setSelfCheck(false);
+    setSelfCheck(true);
+    editUser();
   };
 
-  const getUser = async () => {
+  const editUser = async () => {
     try {
-      const { data } = await userApi.getUser();
+      const { data } = await userApi.dailyUser();
       console.log(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // const dailyCheck
-
-  useEffect(() => {
-    getUser();
-  }, []);
 
   console.log(selfCheck);
 
