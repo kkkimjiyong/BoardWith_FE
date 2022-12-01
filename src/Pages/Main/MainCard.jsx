@@ -91,8 +91,10 @@ const Item = ({ number, item, Myaddress, closed }) => {
         onClick={() => setModalOpen(true)}
       >
         <div className="ItemWrap-Body-SpaceBetween">
+          {" "}
           <ItemProfile>
             {" "}
+            <ProfileAvatarBox userSelect={item?.userAvater} />
             {/* <div
               style={{
                 borderRadius: "10px",
@@ -101,10 +103,8 @@ const Item = ({ number, item, Myaddress, closed }) => {
                 height: "30px",
               }}
             ></div> */}
-            <ProfileAvatarBox userSelect={item?.userAvater} />
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
-
           {starMark ? (
             <div>
               <FontAwesomeIcon
@@ -357,11 +357,11 @@ const StatusBox = styled.div`
 
 const ItemProfile = styled.div`
   font-size: 16px;
-  width: 30%;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
   .nickNameTxt {
+    margin-left: 3%;
   }
 `;
 
