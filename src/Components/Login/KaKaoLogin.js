@@ -36,7 +36,7 @@ const KaKaoLogin = () => {
   const isKaKao = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/kakao/isKakao",
+        "https://www.iceflower.shop/social/kakao/isKakao",
         { code }
       );
       if (data.accessToken) {
@@ -61,7 +61,7 @@ const KaKaoLogin = () => {
   const postKaKaoUser = async (signup) => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/kakao/callback",
+        "https://www.iceflower.shop/social/kakao/callback",
         signup
       );
       console.log(data.accessToken);
