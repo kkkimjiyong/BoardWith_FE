@@ -87,13 +87,12 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
   };
   console.log();
   return (
-    <ItemWrap>
+    <Wrap>
       <div
-        className={!closed ? "ItemWrap" : "ClosedItemWrap"}
+        className={!closed ? "ClosedItemWrap" : "ClosedItemWrap"}
         onClick={() => setModalOpen(true)}
       >
-        <div className="ItemWrap-Body-SpaceBetween">
-          {" "}
+        <ItemWrapBodySpaceBetween>
           <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
             <AvatarBox
               userSelect={item?.userAvatar}
@@ -121,11 +120,11 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
               <FontAwesomeIcon size="2x" onClick={bookMark} icon={faSplotch} />
             </div>
           )}
-        </div>
-        <div className="ItemWrap-Body">
+        </ItemWrapBodySpaceBetween>
+        <ItemWrapBody>
           <div>
-            <div className="ItemWrap-Top ">{item?.title}</div>
-            <div className="ItemWrap-Body-Flex">
+            <ItemWrapTop>{item?.title}</ItemWrapTop>
+            <ItemWrapBodyFlex>
               <FontAwesomeIcon
                 style={{
                   color: "#ddd",
@@ -133,10 +132,10 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
                 size="1x"
                 icon={faCalendar}
               />{" "}
-              <div className="ItemWrap-Body-Title ">{item?.cafe}</div>
-            </div>
+              <ItemWrapBodyTitle>{item?.cafe}</ItemWrapBodyTitle>
+            </ItemWrapBodyFlex>
 
-            <div className="ItemWrap-Body-Flex2">
+            <ItemWrapBodyFlex2>
               <div
                 style={{
                   width: "100%",
@@ -174,9 +173,9 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
                   <div className="statusTxt">마감</div>
                 </StatusBox>
               )}
-            </div>
+            </ItemWrapBodyFlex2>
           </div>
-        </div>
+        </ItemWrapBody>
       </div>
       {/*! 리스트에서 보여주는 디테일모달창  */}
       {ModalOpen && (
@@ -187,11 +186,11 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
           setModalOpen={setModalOpen}
         />
       )}
-    </ItemWrap>
+    </Wrap>
   );
 };
 
-const ItemWrap = styled.div`
+const Wrap = styled.div`
   .ItemWrap {
     color: #d7d7d7;
     width: 100%;
@@ -209,6 +208,7 @@ const ItemWrap = styled.div`
       /* box-shadow: 5px 5px 10px 2px #d90368; */
     }
   }
+
   .ClosedItemWrap {
     color: #8a8a8a;
     width: 100%;
@@ -227,60 +227,64 @@ const ItemWrap = styled.div`
       /* box-shadow: 5px 5px 10px 2px #d90368; */
     }
   }
+`;
 
-  .ItemWrap-Top {
-    display: flex;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    /* background-color: #e2e5e7; */
-    overflow-x: hidden;
-    word-break: break-all;
-    font-size: 1.2rem;
-    text-align: left;
-    align-items: center;
-    margin-bottom: 2%;
-    padding: 5px 0px;
-  }
-  .ItemWrap-Body-SpaceBetween {
-    display: flex;
-    justify-content: space-between;
-  }
-  .ItemWrap-Body-Flex {
-    gap: 5px;
-    display: flex;
-    align-items: center;
-    margin-top: 2%;
-  }
-  .ItemWrap-Body-Flex2 {
-    display: flex;
-    align-items: center;
-    margin-top: 2%;
-    justify-content: space-between;
-  }
+const ItemWrapTop = styled.div`
+  display: flex;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  /* background-color: #e2e5e7; */
+  overflow-x: hidden;
+  word-break: break-all;
+  font-size: 1.2rem;
+  text-align: left;
+  align-items: center;
+  margin-bottom: 2%;
+  padding: 5px 0px;
+`;
 
-  .ItemWrap-Body {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    text-align: left;
-    margin-top: 3%;
-  }
+const ItemWrapBodySpaceBetween = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
-  .ItemWrap-Body-Title {
-    font-size: 14px;
-    border-radius: 4px;
-    margin-left: 2%;
-    position: relative;
-    /* background-color: #e2e5e7; */
-  }
-  .ItemWrap-Body-Wanted {
-    display: flex;
-    border-radius: 130px;
-    background-color: #e2e5e7;
-    white-space: nowrap;
-    width: 30%;
-    justify-content: center;
-    padding: 0.5%;
-  }
+const ItemWrapBodyFlex = styled.div`
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  margin-top: 2%;
+`;
+
+const ItemWrapBodyFlex2 = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 2%;
+  justify-content: space-between;
+`;
+
+const ItemWrapBody = styled.div`
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  text-align: left;
+  margin-top: 3%;
+`;
+
+const ItemWrapBodyTitle = styled.div`
+  font-size: 14px;
+  border-radius: 4px;
+  margin-left: 2%;
+  position: relative;
+  /* background-color: #e2e5e7; */
+`;
+
+const ItemWrapBodyWanted = styled.div`
+  display: flex;
+  border-radius: 130px;
+  background-color: #e2e5e7;
+  white-space: nowrap;
+  width: 30%;
+  justify-content: center;
+  padding: 0.5%;
 `;
 
 const StatusBox = styled.div`
