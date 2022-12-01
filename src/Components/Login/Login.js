@@ -169,7 +169,6 @@ const KaKaoLogin = styled.a`
 
 const LoginGoogle = styled.a`
   color: black;
-  padding-left: 10px;
   height: 50px;
   border-radius: 10px;
   background-color: white;

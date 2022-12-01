@@ -52,7 +52,8 @@ const MyPage = () => {
   const EditUser = async () => {
     try {
       const { data } = await userApi.editUser(user);
-      console.log(data);
+      console.log(data.findUserData);
+      Setuser(data.findUserData);
     } catch (error) {
       console.log(error);
     }
@@ -116,8 +117,8 @@ const MyPage = () => {
           },
         }
       );
-      Setuser({ ...user, visible: data.visible });
-      console.log(data);
+      console.log(data.findUserData);
+      Setuser(data.findUserData);
     } catch (error) {
       console.log(error);
     }
@@ -152,6 +153,8 @@ const MyPage = () => {
     EditUser();
     SetisEdit(false);
   };
+
+  console.log(user);
 
   if (isLoading) {
     return <Loading />;
@@ -273,7 +276,7 @@ const MyPage = () => {
             <div
               className="txtbox-noborder"
               onClick={() =>
-                window.open("https://forms.gle/jyY181dmMz3mCBWq8", "_blank")
+                window.open("https://forms.gle/83os3kHzPNmC22fTA", "_blank")
               }
             >
               고객문의
