@@ -100,6 +100,7 @@ const Login = () => {
 };
 
 const LoginCtn = styled.form`
+  margin-top: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -113,13 +114,6 @@ const LoginCtn = styled.form`
   .logo {
     margin-bottom: 20%;
   }
-`;
-
-const LoginTitle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
 `;
 
 const LoginInput = styled.input`
@@ -142,8 +136,10 @@ const BtnSet = styled.div`
 `;
 
 const LoginBtn = styled.div`
-  color: black;
-  font-size: 14px;
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 5%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -151,7 +147,7 @@ const LoginBtn = styled.div`
   width: 100%;
   cursor: pointer;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--primary);
   box-shadow: 0px 3px 10px 0px black;
 `;
 
@@ -188,6 +184,7 @@ const SocialLoginBox = styled.div`
   width: 100%;
   padding: 0 10%;
   display: flex;
+  margin-top: 5%;
   justify-content: space-around;
   .naver {
     width: 30px;
@@ -195,6 +192,7 @@ const SocialLoginBox = styled.div`
 `;
 
 const BottomTxt = styled.div`
+  margin-top: 5%;
   font-size: 12px;
   width: 100%;
   display: flex;
