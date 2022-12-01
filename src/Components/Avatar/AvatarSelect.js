@@ -13,7 +13,7 @@ import Loading from "../../style/Loading";
 const AvatarSelect = () => {
   //*초기 카테고리는 눈으로 고정
   const [selectCategory, SetSelectCategory] = useState("Eye");
-  const [select, setSelect] = useState();
+  const [select, setSelect] = useState({ Eye: 1, Mouth: 1, Hair: 1, Back: 1 });
   //? ----------------  드래그슬라이드 기능  ---------------------
   const dragRef = useRef(null);
   const [isDrag, setIsDrag] = useState(false);
@@ -61,7 +61,9 @@ const AvatarSelect = () => {
   const postAvatar = async () => {
     try {
       const { data } = await userApi.editUser({ userAvater: userSelect });
-      console.log(data);
+      console.log(data.findUserData.userAvater);
+      setUserSelect(data.findUserData.userAvater);
+      setInitialUserSelect(data.findUserData.userAvater);
     } catch (error) {
       console.log(error);
     }
@@ -91,9 +93,9 @@ const AvatarSelect = () => {
       ...userSelect,
       [Img.Category]: Img.Num,
     });
-    setSelect(Img.Num);
+    setSelect({ Num: Img.Num, Category: Img.Category });
   };
-
+  console.log(select);
   //! --------------  포인트차감 로직  --------------------
   // const { Eye, Mouth, Back, Hair } = userSelect;
   // const { newEye, newMouth, newBack, newHair } = initialuserSelect;
@@ -154,10 +156,17 @@ const AvatarSelect = () => {
               {ImgList.map((Img) => {
                 if (Img.Category == selectCategory)
                   return (
-                    <ImgItemCtn className={select == Img.Num && "selected"}>
-                      <ImgItem Img={Img} onClick={() => selectController(Img)}>
-                        {/* {Img.Category}_{Img.Num} */}
-                      </ImgItem>
+                    <ImgItemCtn
+                      className={
+                        select.Num == Img.Num &&
+                        select.Category == Img.Category &&
+                        "selected"
+                      }
+                    >
+                      <ImgItem
+                        src={`/avatar/${Img.Category}/${Img.Category}${Img.Num}.svg`}
+                        onClick={() => selectController(Img)}
+                      />
                       <div className="point">
                         <ImCoinDollar />
                         1000
@@ -297,7 +306,7 @@ const AvatarItemCtn = styled.div`
 
 const AvatarItemListCtn = styled.div`
   display: flex;
-  padding: 10px 0px;
+  padding: 16px 0px;
   height: 60%;
   overflow-x: scroll;
   ::-webkit-scrollbar {
@@ -305,10 +314,9 @@ const AvatarItemListCtn = styled.div`
   }
 `;
 
-const ImgItem = styled.div`
+const ImgItem = styled.img`
   border-radius: 30px;
   height: 100%;
-  min-width: 45%;
   background-color: white;
 `;
 const ImgItemCtn = styled.div`
@@ -316,7 +324,6 @@ const ImgItemCtn = styled.div`
   margin-left: 7%;
   border-radius: 30px;
   height: 90%;
-  min-width: 45%;
   background-color: var(--white);
   &.selected {
     border: 7px solid var(--primary);
