@@ -13,13 +13,11 @@ import NaverLogin from "../../Components/Login/NaverLogin";
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState();
-  const [modalOpen, setModalOpen] = useState(false);
   const initialState = {
     userId: "",
     password: "",
   };
   const [login, setLogin, onChangehandler] = useInput(initialState);
-  const expires = new Date();
 
   const GOOGLE_CLIENT_ID =
     "601009542517-255ebev9elhpvn2mp5kn653q51832dk4.apps.googleusercontent.com";
@@ -64,15 +62,6 @@ const Login = () => {
   return (
     <LoginCtn className="neonBox">
       <MainLogo className="logo" />
-      {/* <Logo src={MyLogo} /> */}
-      {/* {modalOpen && (
-        <NotifModal
-          setModalOpen={setModalOpen}
-          modalOpen={modalOpen}
-          content={"다시 로그인해주세요"}
-        />
-      )} */}
-      {/* <a href="/main">일단그냥둘러볼래</a> */}
       <LoginInput
         value={login.userId}
         name="userId"

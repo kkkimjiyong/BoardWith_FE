@@ -22,13 +22,13 @@ const Item = ({ number, item, Myaddress, closed }) => {
   //?---------------30%까지는 여유, 60&까지는 보통, 100%미만까지는 마감임박------------
   const memberStatus = ["여유", "보통", "마감임박", "마감"];
   const statusIndicator = () => {
-    if (item?.participant.length / item?.partyMember <= 0.3) {
+    if (item?.confirmMember.length / item?.partyMember <= 0.3) {
       return memberStatus[0];
     }
-    if (item?.participant.length / item?.partyMember <= 0.6) {
+    if (item?.confirmMember.length / item?.partyMember <= 0.6) {
       return memberStatus[1];
     }
-    if (item?.participant.length / item?.partyMember < 1) {
+    if (item?.confirmMember.length / item?.partyMember < 1) {
       return memberStatus[2];
     } else {
       return memberStatus[3];
@@ -202,6 +202,8 @@ const ItemWrap = styled.div`
     display: flex;
     justify-content: center;
     padding: 4% 4%;
+    overflow-x: hidden;
+    word-break: break-all;
     flex-direction: column;
     background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;

@@ -9,7 +9,7 @@ import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
 import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
 import { ImExit } from "@react-icons/all-files/im/ImExit";
 import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
-import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
+import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 import MyPartyItem from "./MyPartyItem";
 
 const EditUser = () => {

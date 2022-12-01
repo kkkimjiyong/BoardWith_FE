@@ -1,10 +1,13 @@
 import { style } from "@mui/system";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AvatarBox from "./AvatarBox";
 import styled from "styled-components";
 import { BiRefresh } from "@react-icons/all-files/bi/BiRefresh";
 import { ImCoinDollar } from "@react-icons/all-files/im/ImCoinDollar";
 import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
+import { ImgList } from "./AvatarList";
+import axios from "axios";
+import { userApi } from "../../instance";
 
 const AvatarSelect = () => {
   //*초기 카테고리는 눈으로 고정
@@ -14,6 +17,10 @@ const AvatarSelect = () => {
   const dragRef = useRef(null);
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState();
+  const [point, setPoint] = useState();
+  const [userSelect, setUserSelect] = useState();
+  const [initialuserSelect, setInitialUserSelect] = useState();
+
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDrag(true);
@@ -47,23 +54,33 @@ const AvatarSelect = () => {
 
   const onThrottleDragMove = throttle(onDragMove, 50);
 
-  //! 이런식으로 user avatar가 db에 저장되면 된다!
-  const userAvatar = { Eye: 1, Hair: 1, Mouth: 1, Back: 1 };
+  //? ------------------아바타 API  ----------------------
 
-  const [userSelect, setUserSelect] = useState(userAvatar);
-  const ImgList = [
-    { Category: "Eye", Num: 1 },
-    { Category: "Mouth", Num: 1 },
-    { Category: "Mouth", Num: 2 },
-    { Category: "Mouth", Num: 3 },
-    { Category: "Mouth", Num: 4 },
-    { Category: "Mouth", Num: 5 },
-    { Category: "Mouth", Num: 6 },
-    { Category: "Eye", Num: 3 },
-    { Category: "Back", Num: 4 },
-    { Category: "Eye", Num: 1 },
-    { Category: "Hair", Num: 2 },
-  ];
+  const postAvatar = async () => {
+    try {
+      const { data } = await userApi.editUser({ userAvater: userSelect });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getUser = async () => {
+    try {
+      const { data } = await userApi.getUser();
+      setUserSelect(data.findUser.userAvater);
+      setInitialUserSelect(data.findUser.userAvater);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  console.log(userSelect);
+
+  //! 이런식으로 user avatar가 db에 저장되면 된다!
 
   const selectController = (Img) => {
     setUserSelect({
@@ -72,6 +89,13 @@ const AvatarSelect = () => {
     });
     setSelect(Img.Num);
   };
+
+  //! --------------  포인트차감 로직  --------------------
+  // const { Eye, Mouth, Back, Hair } = userSelect;
+  // const { newEye, newMouth, newBack, newHair } = initialuserSelect;
+  // if (Eye !== newEye) {
+  //   setPoint((prev) => prev + 1000);
+  // }
 
   return (
     <Wrap>
@@ -139,13 +163,13 @@ const AvatarSelect = () => {
 
           <AvatarBtnSet>
             <ChangeBtn
-            //* 사진 다 집어넣으면 axios만 넣어주기
-            // onClick={() => postAvatar}
+              //* 사진 다 집어넣으면 axios만 넣어주기
+              onClick={postAvatar}
             >
               변경하기
             </ChangeBtn>
-            <ResetBtn>
-              <BiRefresh size="35" onClick={() => setUserSelect(userAvatar)} />
+            <ResetBtn onClick={() => setUserSelect(initialuserSelect)}>
+              <BiRefresh size="35" />
               초기화
             </ResetBtn>
           </AvatarBtnSet>
@@ -167,6 +191,7 @@ const Wrap = styled.div`
 `;
 
 const AvatarHeader = styled.div`
+  z-index: 10;
   position: relative;
   color: #2e294e;
   display: flex;
@@ -197,6 +222,7 @@ const PointBox = styled.div`
 `;
 
 const AvatarSelectCtn = styled.div`
+  z-index: 10;
   height: 50vh;
   background-color: var(--black);
 `;
