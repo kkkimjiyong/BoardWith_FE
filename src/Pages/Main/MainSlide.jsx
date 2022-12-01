@@ -124,7 +124,6 @@ const MainSlide = () => {
   useEffect(() => {
     //ref타켓이 보이고, 다음페이지가 있으면 데이터get요청
     if (inView && hasNextPage) {
-      // console.log(1);
       getData();
     }
   }, [hasNextPage, inView]);

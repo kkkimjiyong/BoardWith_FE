@@ -8,6 +8,7 @@ import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import { ImgList } from "./AvatarList";
 import axios from "axios";
 import { userApi } from "../../instance";
+import Loading from "../../style/Loading";
 
 const AvatarSelect = () => {
   //*초기 카테고리는 눈으로 고정
@@ -20,6 +21,7 @@ const AvatarSelect = () => {
   const [point, setPoint] = useState();
   const [userSelect, setUserSelect] = useState();
   const [initialuserSelect, setInitialUserSelect] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const onDragStart = (e) => {
     e.preventDefault();
@@ -69,6 +71,8 @@ const AvatarSelect = () => {
       const { data } = await userApi.getUser();
       setUserSelect(data.findUser.userAvater);
       setInitialUserSelect(data.findUser.userAvater);
+
+      setTimeout(() => setIsLoading(false), 1500);
     } catch (error) {
       console.log(error);
     }
@@ -96,87 +100,90 @@ const AvatarSelect = () => {
   // if (Eye !== newEye) {
   //   setPoint((prev) => prev + 1000);
   // }
-
-  return (
-    <Wrap>
-      <AvatarHeader>
-        <div></div>
-        <div>캐릭터</div>
-        <BsPencil size="41%" className="postBtn" />
-      </AvatarHeader>
-      <AvatarBox userSelect={userSelect} select={select} />
-      <PointBox>
-        <ImCoinDollar />
-        1000
-      </PointBox>
-      <AvatarSelectCtn>
-        <AvatarCategory>
-          <AvatarCategoryItem
-            className={selectCategory === "Eye" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Eye")}
-          >
-            눈
-          </AvatarCategoryItem>
-          <AvatarCategoryItem
-            className={selectCategory === "Mouth" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Mouth")}
-          >
-            입
-          </AvatarCategoryItem>
-          <AvatarCategoryItem
-            className={selectCategory === "Hair" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Hair")}
-          >
-            머리
-          </AvatarCategoryItem>
-          <AvatarCategoryItem
-            className={selectCategory === "Back" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Back")}
-          >
-            배경
-          </AvatarCategoryItem>
-        </AvatarCategory>
-        <AvatarItemCtn>
-          <AvatarItemListCtn
-            ref={dragRef}
-            onMouseDown={onDragStart}
-            onMouseMove={onThrottleDragMove}
-            onMouseUp={onDragEnd}
-            onMouseLeave={onDragEnd}
-          >
-            {" "}
-            {ImgList.map((Img) => {
-              if (Img.Category == selectCategory)
-                return (
-                  <ImgItemCtn className={select == Img.Num && "selected"}>
-                    <ImgItem Img={Img} onClick={() => selectController(Img)}>
-                      {/* {Img.Category}_{Img.Num} */}
-                    </ImgItem>
-                    <div className="point">
-                      <ImCoinDollar />
-                      1000
-                    </div>
-                  </ImgItemCtn>
-                );
-            })}{" "}
-          </AvatarItemListCtn>
-
-          <AvatarBtnSet>
-            <ChangeBtn
-              //* 사진 다 집어넣으면 axios만 넣어주기
-              onClick={postAvatar}
+  if (isLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <Wrap>
+        <AvatarHeader>
+          <div></div>
+          <div>캐릭터</div>
+          <BsPencil size="41%" className="postBtn" />
+        </AvatarHeader>
+        <AvatarBox userSelect={userSelect} select={select} />
+        <PointBox>
+          <ImCoinDollar />
+          1000
+        </PointBox>
+        <AvatarSelectCtn>
+          <AvatarCategory>
+            <AvatarCategoryItem
+              className={selectCategory === "Eye" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Eye")}
             >
-              변경하기
-            </ChangeBtn>
-            <ResetBtn onClick={() => setUserSelect(initialuserSelect)}>
-              <BiRefresh size="35" />
-              초기화
-            </ResetBtn>
-          </AvatarBtnSet>
-        </AvatarItemCtn>{" "}
-      </AvatarSelectCtn>
-    </Wrap>
-  );
+              눈
+            </AvatarCategoryItem>
+            <AvatarCategoryItem
+              className={selectCategory === "Mouth" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Mouth")}
+            >
+              입
+            </AvatarCategoryItem>
+            <AvatarCategoryItem
+              className={selectCategory === "Hair" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Hair")}
+            >
+              머리
+            </AvatarCategoryItem>
+            <AvatarCategoryItem
+              className={selectCategory === "Back" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Back")}
+            >
+              배경
+            </AvatarCategoryItem>
+          </AvatarCategory>
+          <AvatarItemCtn>
+            <AvatarItemListCtn
+              ref={dragRef}
+              onMouseDown={onDragStart}
+              onMouseMove={onThrottleDragMove}
+              onMouseUp={onDragEnd}
+              onMouseLeave={onDragEnd}
+            >
+              {" "}
+              {ImgList.map((Img) => {
+                if (Img.Category == selectCategory)
+                  return (
+                    <ImgItemCtn className={select == Img.Num && "selected"}>
+                      <ImgItem Img={Img} onClick={() => selectController(Img)}>
+                        {/* {Img.Category}_{Img.Num} */}
+                      </ImgItem>
+                      <div className="point">
+                        <ImCoinDollar />
+                        1000
+                      </div>
+                    </ImgItemCtn>
+                  );
+              })}{" "}
+            </AvatarItemListCtn>
+
+            <AvatarBtnSet>
+              <ChangeBtn
+                //* 사진 다 집어넣으면 axios만 넣어주기
+                onClick={postAvatar}
+              >
+                변경하기
+              </ChangeBtn>
+              <ResetBtn onClick={() => setUserSelect(initialuserSelect)}>
+                <BiRefresh size="35" />
+                초기화
+              </ResetBtn>
+            </AvatarBtnSet>
+          </AvatarItemCtn>{" "}
+        </AvatarSelectCtn>
+      </Wrap>
+    );
+  }
 };
 
 const Wrap = styled.div`
