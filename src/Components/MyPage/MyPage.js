@@ -15,17 +15,18 @@ import MyPartyItem from "./MyPartyItem";
 import { postsApi } from "../../instance";
 import AvatarBox from "../Avatar/AvatarBox";
 import Loading from "../../style/Loading";
+import EditUser from "./EditUser";
+import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 
 const MyPage = () => {
-  const [user, Setuser, onChange] = useInput();
+  const [user, setUser, onChange] = useInput();
   const [isOpen, SetisOpen] = useState(false);
   const [isOpen1, SetisOpen1] = useState(false);
   const [isOpen2, SetisOpen2] = useState(false);
-  const [isEdit, SetisEdit] = useState(false);
   const [reservedParty, setReservedParty] = useState();
   const [confirmParty, setConfirmParty] = useState();
   const [likeGame, setLikeGame] = useState();
-  const [ModalOpen, setModalOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const MyPage = () => {
       console.log(data);
 
       setLikeGame(data.findUser.likeGame);
-      Setuser(data.findUser);
+      setUser(data.findUser);
       setReservedParty(data.partyReserved);
       setConfirmParty(data.partyGo);
       setTimeout(() => setIsLoading(false), 1500);
@@ -49,11 +50,11 @@ const MyPage = () => {
     }
   };
 
-  const EditUser = async () => {
+  const editUser = async () => {
     try {
       const { data } = await userApi.editUser(user);
       console.log(data.findUserData);
-      Setuser(data.findUserData);
+      setUser(data.findUserData);
     } catch (error) {
       console.log(error);
     }
@@ -118,7 +119,7 @@ const MyPage = () => {
         }
       );
       console.log(data.findUserData);
-      Setuser(data.findUserData);
+      setUser(data.findUserData);
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +133,7 @@ const MyPage = () => {
     //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
-      Setuser({ ...user, myPlace: data.address });
+      setUser({ ...user, myPlace: data.address });
       // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
       ref.current.style.display = "none";
     },
@@ -150,8 +151,8 @@ const MyPage = () => {
   }, []);
 
   const editHandler = () => {
-    EditUser();
-    SetisEdit(false);
+    editUser();
+    setOpenEdit(false);
   };
 
   console.log(user);
@@ -162,76 +163,51 @@ const MyPage = () => {
     return (
       <Wrapper>
         <MainHeader>
-          <Arrow className="head" onClick={() => navigate("/main")} />
+          {openEdit ? (
+            <AiOutlineClose
+              size={"24"}
+              onClick={() => setOpenEdit(!openEdit)}
+              className="closeBtn"
+            />
+          ) : (
+            <div className="gap" />
+          )}
           <div className="headtxt">마이페이지</div>
           <RowBox>
-            <div onClick={() => SetisEdit(true)}>편집</div>
+            <div onClick={openEdit ? editHandler : () => setOpenEdit(true)}>
+              {openEdit ? "완료" : "편집"}
+            </div>
           </RowBox>
         </MainHeader>
-        <AvatarCtn>
-          <AvatarBox userSelect={user?.userAvater} />
-        </AvatarCtn>
+        <AvatarBox userSelect={user?.userAvater} />
         <ProfileCtn>
           {" "}
           <ProfileRow className="Topbox">
             {" "}
             <div>{user?.nickName} 님</div>{" "}
-            {isEdit && <button onClick={editHandler}>완료</button>}
           </ProfileRow>
-          {!isEdit && (
-            <>
-              <ProfileRow>
-                {user?.age ? `${user?.age} 살` : "없음"} /
-                {user?.visible ? `${user?.gender}` : "숨김"} /
-                {user?.myPlace.length
-                  ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-                  : "없음"}{" "}
-                <div className="visible">
-                  {" "}
-                  {user?.visible ? (
-                    <AiFillEye size="24" onClick={() => postVisible()} />
-                  ) : (
-                    <AiFillEyeInvisible
-                      size="24"
-                      onClick={() => postVisible()}
-                    />
-                  )}
-                </div>
-              </ProfileRow>
-              <LikeGameCtn>
-                <LikeGameBox>
-                  {likeGame?.map((game) => {
-                    if (likeGame.length >= 2)
-                      return <LikeGame>{game}</LikeGame>;
-                  })}
-                </LikeGameBox>
-              </LikeGameCtn>
-            </>
-          )}
-          {isEdit && (
-            <ProfileInputBox>
+          <ProfileRow>
+            {user?.age ? `${user?.age} 살` : "없음"} /
+            {user?.visible ? `${user?.gender}` : "숨김"} /
+            {user?.myPlace.length
+              ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+              : "없음"}{" "}
+            <div className="visible">
               {" "}
-              <ProfileInput
-                name="age"
-                value={user?.age}
-                placeholder={user?.age}
-                onChange={onChange}
-              />
-              <ProfileInput
-                name="gender"
-                value={user?.gender}
-                placeholder={user?.gender}
-                onChange={onChange}
-              />
-              <ProfileInput
-                name="address"
-                onClick={postCode}
-                // value={user?.myPlace}
-                placeholder={"클릭하여 주소변경"}
-              />
-              <DaumPostBox ref={ref}></DaumPostBox>
-            </ProfileInputBox>
-          )}
+              {user?.visible ? (
+                <AiFillEye size="24" onClick={() => postVisible()} />
+              ) : (
+                <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
+              )}
+            </div>
+          </ProfileRow>
+          <LikeGameCtn>
+            <LikeGameBox>
+              {likeGame?.map((game) => {
+                if (likeGame.length >= 2) return <LikeGame>{game}</LikeGame>;
+              })}
+            </LikeGameBox>
+          </LikeGameCtn>
           <MyPartyCtn>
             <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
               내가 찜한 모임
@@ -280,22 +256,31 @@ const MyPage = () => {
               }
             >
               고객문의
-            </div>
+            </div>{" "}
           </BottomTxt>
         </ProfileCtn>{" "}
+        <EditUser
+          user={user}
+          onChange={onChange}
+          setUser={setUser}
+          openEdit={openEdit}
+          setOpenEdit={setOpenEdit}
+        />
       </Wrapper>
     );
   }
 };
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: var(--white);
+  overflow-y: hidden;
 `;
 
 const MainHeader = styled.div`
@@ -306,7 +291,7 @@ const MainHeader = styled.div`
   box-shadow: 0px 0.5px 15px 0.1px black;
   z-index: 100;
   color: white;
-  padding: 3.5% 2% 3.5% 2%;
+  padding: 3.5% 4% 3.5% 3%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -316,42 +301,17 @@ const MainHeader = styled.div`
     text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
       0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
   }
+  .closeBtn {
+    margin-left: 2%;
+  }
+  .gap {
+    width: 30px;
+    margin-left: 2%;
+  }
 `;
 
 const RowBox = styled.div`
   display: flex;
-`;
-
-const AvatarCtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30%;
-  width: 100%;
-`;
-
-const EditBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 5%;
-  gap: 80px;
-  color: #919191;
-  .delete {
-    padding-right: 12%;
-    border-right: 2px solid #919191;
-    :hover {
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  }
-  .logout {
-    margin-right: 8%;
-    :hover {
-      cursor: pointer;
-    }
-  }
 `;
 
 const ProfileInputBox = styled.div`
@@ -381,7 +341,7 @@ const ProfileCtn = styled.div`
   color: var(--white);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  height: 100%;
+  height: 56%;
   padding-top: 5%;
   padding-left: 10%;
   padding-bottom: 15%;

@@ -7,7 +7,6 @@ import Mypage from "../Pages/Mypage";
 import Form from "../Pages/Main/Form";
 import KaKaoLogin from "../Components/Login/KaKaoLogin";
 import ChatPage from "../Pages/ChatPage";
-import Editpage from "../Pages/Editpage";
 import AvatarPage from "../Pages/AvatarPage";
 import FindPage from "../Pages/FindPage";
 import PracPage from "../Pages/PracPage";
@@ -41,7 +40,6 @@ const Router = () => {
           <Route path="/signup/google" element={<LoginGoogle />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/userpage/:nickname" element={<UserPage />} />
-          <Route path="/editpage" element={<Editpage />} />
           <Route path="/form" element={<Form />} />
           <Route path="/chat/:roomid" element={<ChatPage />} />
           <Route path="/posts/:postid" element={<SharePage />} />

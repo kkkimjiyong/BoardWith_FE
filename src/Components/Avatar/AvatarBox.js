@@ -27,12 +27,9 @@ const AvatarBox = ({ userSelect }) => {
             alt="이런!"
           />
         </MouthCtn>
-
-        <AvatarSqr></AvatarSqr>
-        {/* <img
-        src={require("../../Assets/Avatar/Standard.svg").default}
-        className="avatar"
-      /> */}
+        <SqrCtn>
+          <AvatarSqr />
+        </SqrCtn>
       </AvatarCtn>
     );
   }
@@ -46,24 +43,6 @@ const AvatarCtn = styled.div`
   width: 100%;
   height: 38%;
   background-color: var(--white);
-  &.selected {
-    border: 2px solid var(--primary);
-  }
-  .avatar {
-    width: 29%;
-    left: 35.5%;
-    position: absolute;
-  }
-  .Eye {
-    top: -16%;
-    width: 90%;
-    position: absolute;
-  }
-  .Mouth {
-    top: 5%;
-    width: 60%;
-    position: absolute;
-  }
 `;
 
 const AvatarSqr = styled.div`
@@ -76,13 +55,17 @@ const AvatarSqr = styled.div`
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  .nose {
-    margin-bottom: 10%;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: black;
-  }
+`;
+const SqrCtn = styled.div`
+  z-index: 0;
+  position: absolute;
+  border: 5px solid white;
+  top: 0%;
+  width: 280px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const HairCtn = styled.div`
