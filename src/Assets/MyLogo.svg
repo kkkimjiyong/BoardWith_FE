@@ -5,12 +5,12 @@ viewBox="0 0 180 50">
   <defs>
     <style>
          .cls-1 {
-        fill: #fff;
-        stroke-width: 2px;
+        fill: #c72363;
+        stroke-width: 3px;
       }
 
       .cls-1, .cls-2 {
-        stroke: white;
+        stroke: #fff;
         stroke-linejoin: round;
         stroke-dasharray: 160;
         stroke-dashoffset: 160;
@@ -19,12 +19,15 @@ viewBox="0 0 180 50">
       }
 @keyframes ani {
   0% {
+   
     stroke-dashoffset: 160; 
   }
-  50% {
+  30% {
+    stroke: #c72363;
     stroke-dashoffset: 0;  
   }
   100% {
+     
     stroke-dashoffset: -160;
   }
 }
@@ -32,8 +35,8 @@ viewBox="0 0 180 50">
 
       .cls-2 {
         fill: none;
-        stroke:white;
-        stroke-width: 2px;
+        stroke:#c72363;
+        stroke-width: 4px;
       }
     </style>
        <filter id="f1" x="0" y="0" width="200%" height="200%">

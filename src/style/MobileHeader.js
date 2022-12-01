@@ -40,8 +40,11 @@ const MobileHeaderCtn = styled.div`
   box-shadow: 1px 1px 15px 3px black;
   /* background-color: #9747ff; */
   .logo {
-    width: 6%;
+    width: 8%;
     margin: 0 6%;
+    @media only screen and (min-width: 1200px) {
+      width: 6.5%;
+    }
   }
 `;
 

@@ -3,31 +3,32 @@ import styled from "styled-components";
 import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 
 const AvatarBox = ({ userSelect }) => {
-  const [Face, setFace] = useState(1);
   console.log(userSelect);
-  useEffect(() => {}, []);
   if (userSelect) {
     const { Eye, Hair, Mouth } = userSelect;
     console.log(Mouth);
     return (
       <AvatarCtn>
-        <BackCtn>
+        <HairCtn>
           <img
             className="Hair"
-            src={`/avatar/Hair/Hair${Hair}.png`}
+            src={`/avatar/Hair/Hair${Hair}.svg`}
             alt="Hair!"
           />
-        </BackCtn>
-        <img className="Eye" src={`/avatar/Eye/Eye${Eye}.png`} alt="Eye!" />
+        </HairCtn>
+        <EyeCtn>
+          {" "}
+          <img className="Eye" src={`/avatar/Eye/Eye${Eye}.svg`} alt="Eye!" />
+        </EyeCtn>
+        <MouthCtn>
+          <img
+            className="Mouth"
+            src={`/avatar/Mouth/Mouth${Mouth}.svg`}
+            alt="이런!"
+          />
+        </MouthCtn>
 
-        <img
-          className="Mouth"
-          src={`/avatar/Mouth/Mouth${Mouth}.png`}
-          alt="이런!"
-        />
-        <AvatarSqr>
-          <div className="nose" />
-        </AvatarSqr>
+        <AvatarSqr></AvatarSqr>
         {/* <img
         src={require("../../Assets/Avatar/Standard.svg").default}
         className="avatar"
@@ -43,7 +44,7 @@ const AvatarCtn = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 38vh;
+  height: 38%;
   background-color: var(--white);
   &.selected {
     border: 2px solid var(--primary);
@@ -54,7 +55,8 @@ const AvatarCtn = styled.div`
     position: absolute;
   }
   .Eye {
-    top: -15%;
+    top: -16%;
+    width: 90%;
     position: absolute;
   }
   .Mouth {
@@ -83,7 +85,7 @@ const AvatarSqr = styled.div`
   }
 `;
 
-const BackCtn = styled.div`
+const HairCtn = styled.div`
   z-index: 0;
   position: absolute;
   border: 5px solid white;
@@ -94,7 +96,42 @@ const BackCtn = styled.div`
   justify-content: center;
   align-items: center;
   .Hair {
-    top: -15.5%;
+    width: 155%;
+    top: -14%;
+    position: absolute;
+  }
+`;
+
+const EyeCtn = styled.div`
+  z-index: 0;
+  position: absolute;
+  border: 5px solid white;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .Eye {
+    width: 155%;
+    top: -14%;
+    position: absolute;
+  }
+`;
+
+const MouthCtn = styled.div`
+  z-index: 0;
+  position: absolute;
+  border: 5px solid white;
+  top: 0;
+  width: 280px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .Mouth {
+    width: 155%;
+    top: -14%;
     position: absolute;
   }
 `;

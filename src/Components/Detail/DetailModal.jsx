@@ -50,7 +50,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [detail, setDetail] = useState();
   const [isPartyAccept, setIsPartyAccept] = useState(false);
   const [isCommentBan, setIsCommentBan] = useState([]);
-
   // 수정
 
   //? ---------------시간 (나중에 리팩토링) ----------------
@@ -308,37 +307,28 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                     </Sth>
                     <StHost>
                       <div>
-                        <div
-                          onClick={() =>
-                            navigate(`/userpage/${detail?.data?.nickName}`)
-                          }
-                          style={{
-                            borderRadius: "20px",
-                            width: "40px",
-                            height: "40px",
-                            backgroundColor: "white",
-                            backgroundSize: "cover",
-                          }}
-                        >
-                          <ProfileAvatarBox
-                            userSelect={{
-                              Eye: detail?.data?.userAvater?.Eye,
-                              Hair: detail?.data?.userAvater?.Hair,
-                              Mouth: detail?.data?.userAvater?.Mouth,
-                              Back: detail?.data?.userAvater?.Eye,
-                            }}
-                          />
-                        </div>
-                        <Stgap />
                         <FontAwesomeIcon
                           style={{
                             color: "white",
-                            marginRight: "5px",
+                            position: "absolute",
+                            top: "-17px",
+                            left: "-9px",
                           }}
                           size="1x"
                           icon={faCrown}
                         />
-                        <h4>{detail?.data?.nickName}</h4> {/* 닉네임 */}
+                        <ProfileAvatarBox
+                          onClick={() =>
+                            navigate(`/userpage/${detail?.data?.nickName}`)
+                          }
+                          userSelect={{
+                            Eye: detail?.data?.userAvater?.Eye,
+                            Hair: detail?.data?.userAvater?.Hair,
+                            Mouth: detail?.data?.userAvater?.Mouth,
+                            Back: detail?.data?.userAvater?.Eye,
+                          }}
+                        />
+                        <NickName>{detail?.data?.nickName}</NickName>
                       </div>
                       <StContentWrap>
                         <FontAwesomeIcon
@@ -670,6 +660,12 @@ const Sth = styled.div`
   justify-content: flex-end;
 `;
 
+const NickName = styled.div`
+  min-width: 100px;
+  display: flex;
+  margin-left: 40%;
+`;
+
 const StBackGroundColor = styled.div`
   position: fixed;
   top: 0;
@@ -732,6 +728,7 @@ const Wrap = styled.div`
 `;
 
 const StHost = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -796,7 +793,7 @@ const StMap = styled.div`
 `;
 
 const Stgap = styled.div`
-  width: 10px;
+  width: 100px;
 `;
 
 const Btnbox = styled.div`

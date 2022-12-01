@@ -17,6 +17,8 @@ import { getCookie } from "../../hooks/CookieHook";
 import { postsApi, userApi } from "../../instance";
 import { useInView } from "react-intersection-observer";
 import { Skeleton } from "@mui/material";
+import Tutorial from "../../Components/Tutorial/Tutorial";
+import Loading from "../../style/Loading";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -25,7 +27,8 @@ const MainSlide = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   const [formModalOpen, setFormModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
-  const [selfCheck, setSelfCheck] = useState(true);
+  const [isTutorial, setIsTutorial] = useState(true);
+  const [selfCheck, setSelfCheck] = useState(false);
   const [userBook, setUserBook] = useState();
   const scrollHead = useRef();
   const [loading, setLoading] = useState(true);
@@ -88,6 +91,7 @@ const MainSlide = () => {
       const { data } = await userApi.getUser();
       console.log(data.findUser.bookmarkData);
       setUserBook(data.findUser.bookmarkData);
+      setIsTutorial(data.findUser.tutorial);
     } catch (error) {
       console.log(error);
     }
@@ -124,7 +128,6 @@ const MainSlide = () => {
   useEffect(() => {
     //ref타켓이 보이고, 다음페이지가 있으면 데이터get요청
     if (inView && hasNextPage) {
-      // console.log(1);
       getData();
     }
   }, [hasNextPage, inView]);
@@ -168,67 +171,77 @@ const MainSlide = () => {
       console.log("bookmark", data);
     } catch (error) {}
   };
-
-  return (
-    <>
-      {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
-      {selfCheck && (
-        <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
-      )}
-      <MainBox className="Scroll">
-        <MainHeader onClick={() => scrollToTop()}>
-          <BiCurrentLocation size={"30"} onClick={() => nearFilterHandler()} />
-          <div className="headtxt">파티모집</div>
-          <Rowbox>
-            <FiFilter size={"24"} onClick={() => setOpen(!open)} />
-          </Rowbox>
-        </MainHeader>
-        <MainListCtn ref={scrollHead}>
-          {items?.map((items, idx) => {
-            return (
-              <Item
-                closed={items.closed}
-                setModalOpen={setModalOpen}
-                key={idx}
-                item={items}
-                Myaddress={Myaddress}
-              ></Item>
-            );
-          })}
-          <Target ref={ref}>target? </Target>{" "}
-        </MainListCtn>{" "}
-        <FormButton onClick={() => setFormModalOpen(true)}>
-          <FontAwesomeIcon
-            style={{
-              color: "white",
-            }}
-            size="2x"
-            icon={faPenToSquare}
+  console.log(selfCheck);
+  if (loading) {
+    return <Loading />;
+  } else {
+    return (
+      <>
+        {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
+        {selfCheck && (
+          <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
+        )}
+        {isTutorial && (
+          <Tutorial setSelfCheck={setSelfCheck} setIsTutorial={setIsTutorial} />
+        )}
+        <MainBox className="Scroll">
+          <MainHeader onClick={() => scrollToTop()}>
+            <BiCurrentLocation
+              size={"30"}
+              onClick={() => nearFilterHandler()}
+            />
+            <div className="headtxt">파티모집</div>
+            <Rowbox>
+              <FiFilter size={"24"} onClick={() => setOpen(!open)} />
+            </Rowbox>
+          </MainHeader>
+          <MainListCtn ref={scrollHead}>
+            {items?.map((items, idx) => {
+              return (
+                <Item
+                  closed={items.closed}
+                  setModalOpen={setModalOpen}
+                  key={idx}
+                  item={items}
+                  Myaddress={Myaddress}
+                ></Item>
+              );
+            })}
+            <Target ref={ref}>target? </Target>{" "}
+          </MainListCtn>{" "}
+          <FormButton onClick={() => setFormModalOpen(true)}>
+            <FontAwesomeIcon
+              style={{
+                color: "white",
+              }}
+              size="2x"
+              icon={faPenToSquare}
+            />
+          </FormButton>
+        </MainBox>{" "}
+        <MainFilter
+          targetMargin={targetMargin}
+          setTargetMargin={setTargetMargin}
+          items={items}
+          setItems={setItems}
+          getData={getData}
+          open={open}
+          setOpen={setOpen}
+        />{" "}
+        {/* //! 가장 가까운 모임 보여주는 모달창 */}
+        {NearModalOpen && (
+          <DetailModal
+            postid={neardata[0]?._id}
+            setModalOpen={setNearModalOpen}
           />
-        </FormButton>
-      </MainBox>{" "}
-      <MainFilter
-        targetMargin={targetMargin}
-        setTargetMargin={setTargetMargin}
-        items={items}
-        setItems={setItems}
-        getData={getData}
-        open={open}
-        setOpen={setOpen}
-      />{" "}
-      {/* //! 가장 가까운 모임 보여주는 모달창 */}
-      {NearModalOpen && (
-        <DetailModal
-          postid={neardata[0]?._id}
-          setModalOpen={setNearModalOpen}
-        />
-      )}
-      {/* 게시글 폼페이지 모달창 */}
-      {formModalOpen && (
-        <Form setItems={setItems} setFormModalOpen={setFormModalOpen} />
-      )}
-    </>
-  );
+        )}
+        {/* 게시글 폼페이지 모달창 */}
+        {formModalOpen && (
+          <Form setItems={setItems} setFormModalOpen={setFormModalOpen} />
+        )}
+      </>
+    );
+  }
 };
 
 export default MainSlide;

@@ -8,11 +8,12 @@ import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import { ImgList } from "./AvatarList";
 import axios from "axios";
 import { userApi } from "../../instance";
+import Loading from "../../style/Loading";
 
 const AvatarSelect = () => {
   //*초기 카테고리는 눈으로 고정
   const [selectCategory, SetSelectCategory] = useState("Eye");
-  const [select, setSelect] = useState();
+  const [select, setSelect] = useState({ Eye: 1, Mouth: 1, Hair: 1, Back: 1 });
   //? ----------------  드래그슬라이드 기능  ---------------------
   const dragRef = useRef(null);
   const [isDrag, setIsDrag] = useState(false);
@@ -20,6 +21,7 @@ const AvatarSelect = () => {
   const [point, setPoint] = useState();
   const [userSelect, setUserSelect] = useState();
   const [initialuserSelect, setInitialUserSelect] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   const onDragStart = (e) => {
     e.preventDefault();
@@ -59,7 +61,9 @@ const AvatarSelect = () => {
   const postAvatar = async () => {
     try {
       const { data } = await userApi.editUser({ userAvater: userSelect });
-      console.log(data);
+      console.log(data.findUserData.userAvater);
+      setUserSelect(data.findUserData.userAvater);
+      setInitialUserSelect(data.findUserData.userAvater);
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +73,8 @@ const AvatarSelect = () => {
       const { data } = await userApi.getUser();
       setUserSelect(data.findUser.userAvater);
       setInitialUserSelect(data.findUser.userAvater);
+      setPoint(data.findUser.point);
+      setTimeout(() => setIsLoading(false), 1500);
     } catch (error) {
       console.log(error);
     }
@@ -87,96 +93,106 @@ const AvatarSelect = () => {
       ...userSelect,
       [Img.Category]: Img.Num,
     });
-    setSelect(Img.Num);
+    setSelect({ Num: Img.Num, Category: Img.Category });
   };
-
+  console.log(select);
   //! --------------  포인트차감 로직  --------------------
   // const { Eye, Mouth, Back, Hair } = userSelect;
   // const { newEye, newMouth, newBack, newHair } = initialuserSelect;
   // if (Eye !== newEye) {
   //   setPoint((prev) => prev + 1000);
   // }
-
-  return (
-    <Wrap>
-      <AvatarHeader>
-        <div></div>
-        <div>캐릭터</div>
-        <BsPencil size="41%" className="postBtn" />
-      </AvatarHeader>
-      <AvatarBox userSelect={userSelect} select={select} />
-      <PointBox>
-        <ImCoinDollar />
-        1000
-      </PointBox>
-      <AvatarSelectCtn>
-        <AvatarCategory>
-          <AvatarCategoryItem
-            className={selectCategory === "Eye" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Eye")}
-          >
-            눈
-          </AvatarCategoryItem>
-          <AvatarCategoryItem
-            className={selectCategory === "Mouth" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Mouth")}
-          >
-            입
-          </AvatarCategoryItem>
-          <AvatarCategoryItem
-            className={selectCategory === "Hair" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Hair")}
-          >
-            머리
-          </AvatarCategoryItem>
-          <AvatarCategoryItem
-            className={selectCategory === "Back" ? "selected" : undefined}
-            onClick={() => SetSelectCategory("Back")}
-          >
-            배경
-          </AvatarCategoryItem>
-        </AvatarCategory>
-        <AvatarItemCtn>
-          <AvatarItemListCtn
-            ref={dragRef}
-            onMouseDown={onDragStart}
-            onMouseMove={onThrottleDragMove}
-            onMouseUp={onDragEnd}
-            onMouseLeave={onDragEnd}
-          >
-            {" "}
-            {ImgList.map((Img) => {
-              if (Img.Category == selectCategory)
-                return (
-                  <ImgItemCtn className={select == Img.Num && "selected"}>
-                    <ImgItem Img={Img} onClick={() => selectController(Img)}>
-                      {/* {Img.Category}_{Img.Num} */}
-                    </ImgItem>
-                    <div className="point">
-                      <ImCoinDollar />
-                      1000
-                    </div>
-                  </ImgItemCtn>
-                );
-            })}{" "}
-          </AvatarItemListCtn>
-
-          <AvatarBtnSet>
-            <ChangeBtn
-              //* 사진 다 집어넣으면 axios만 넣어주기
-              onClick={postAvatar}
+  if (isLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <Wrap>
+        <AvatarHeader>
+          <div></div>
+          <div>캐릭터</div>
+          <BsPencil size="41%" className="postBtn" />
+        </AvatarHeader>
+        <AvatarBox userSelect={userSelect} select={select} />
+        <PointBox>
+          <ImCoinDollar />
+          {point}
+        </PointBox>
+        <AvatarSelectCtn>
+          <AvatarCategory>
+            <AvatarCategoryItem
+              className={selectCategory === "Eye" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Eye")}
             >
-              변경하기
-            </ChangeBtn>
-            <ResetBtn onClick={() => setUserSelect(initialuserSelect)}>
-              <BiRefresh size="35" />
-              초기화
-            </ResetBtn>
-          </AvatarBtnSet>
-        </AvatarItemCtn>{" "}
-      </AvatarSelectCtn>
-    </Wrap>
-  );
+              눈
+            </AvatarCategoryItem>
+            <AvatarCategoryItem
+              className={selectCategory === "Mouth" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Mouth")}
+            >
+              입
+            </AvatarCategoryItem>
+            <AvatarCategoryItem
+              className={selectCategory === "Hair" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Hair")}
+            >
+              머리
+            </AvatarCategoryItem>
+            <AvatarCategoryItem
+              className={selectCategory === "Back" ? "selected" : undefined}
+              onClick={() => SetSelectCategory("Back")}
+            >
+              배경
+            </AvatarCategoryItem>
+          </AvatarCategory>
+          <AvatarItemCtn>
+            <AvatarItemListCtn
+              ref={dragRef}
+              onMouseDown={onDragStart}
+              onMouseMove={onThrottleDragMove}
+              onMouseUp={onDragEnd}
+              onMouseLeave={onDragEnd}
+            >
+              {" "}
+              {ImgList.map((Img) => {
+                if (Img.Category == selectCategory)
+                  return (
+                    <ImgItemCtn
+                      className={
+                        select.Num == Img.Num &&
+                        select.Category == Img.Category &&
+                        "selected"
+                      }
+                    >
+                      <ImgItem
+                        src={`/avatar/${Img.Category}/${Img.Category}${Img.Num}.svg`}
+                        onClick={() => selectController(Img)}
+                      />
+                      <div className="point">
+                        <ImCoinDollar />
+                        1000
+                      </div>
+                    </ImgItemCtn>
+                  );
+              })}{" "}
+            </AvatarItemListCtn>
+
+            <AvatarBtnSet>
+              <ChangeBtn
+                //* 사진 다 집어넣으면 axios만 넣어주기
+                onClick={postAvatar}
+              >
+                변경하기
+              </ChangeBtn>
+              <ResetBtn onClick={() => setUserSelect(initialuserSelect)}>
+                <BiRefresh size="35" />
+                초기화
+              </ResetBtn>
+            </AvatarBtnSet>
+          </AvatarItemCtn>{" "}
+        </AvatarSelectCtn>
+      </Wrap>
+    );
+  }
 };
 
 const Wrap = styled.div`
@@ -290,7 +306,7 @@ const AvatarItemCtn = styled.div`
 
 const AvatarItemListCtn = styled.div`
   display: flex;
-  padding: 10px 0px;
+  padding: 16px 0px;
   height: 60%;
   overflow-x: scroll;
   ::-webkit-scrollbar {
@@ -298,10 +314,9 @@ const AvatarItemListCtn = styled.div`
   }
 `;
 
-const ImgItem = styled.div`
+const ImgItem = styled.img`
   border-radius: 30px;
   height: 100%;
-  min-width: 45%;
   background-color: white;
 `;
 const ImgItemCtn = styled.div`
@@ -309,7 +324,6 @@ const ImgItemCtn = styled.div`
   margin-left: 7%;
   border-radius: 30px;
   height: 90%;
-  min-width: 45%;
   background-color: var(--white);
   &.selected {
     border: 7px solid var(--primary);

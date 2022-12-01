@@ -78,9 +78,12 @@ const Login = () => {
       <BtnSet>
         <LoginBtn onClick={() => onSubmitHandler()}>로그인</LoginBtn>
       </BtnSet>{" "}
-      <NaverLogin></NaverLogin>
-      <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
-      <LoginGoogle href={GOOGLE_LOGIN_URL}>Google 로그인</LoginGoogle>
+      <SocialLoginBox>
+        {" "}
+        <NaverLogin className="naver"></NaverLogin>
+        <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
+        <LoginGoogle href={GOOGLE_LOGIN_URL}></LoginGoogle>
+      </SocialLoginBox>
       <BottomTxt>
         <div className="txtbox" onClick={() => navigate("/signup")}>
           회원가입
@@ -97,6 +100,7 @@ const Login = () => {
 };
 
 const LoginCtn = styled.form`
+  margin-top: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -110,13 +114,6 @@ const LoginCtn = styled.form`
   .logo {
     margin-bottom: 20%;
   }
-`;
-
-const LoginTitle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
 `;
 
 const LoginInput = styled.input`
@@ -139,8 +136,10 @@ const BtnSet = styled.div`
 `;
 
 const LoginBtn = styled.div`
-  color: black;
-  font-size: 14px;
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 5%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -148,17 +147,16 @@ const LoginBtn = styled.div`
   width: 100%;
   cursor: pointer;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--primary);
   box-shadow: 0px 3px 10px 0px black;
 `;
 
 const KaKaoLogin = styled.a`
-  padding-left: 10px;
   height: 50px;
   border-radius: 10px;
   background-color: #fee500;
-  background-image: url("https://i.ibb.co/B2GHVc4/kakao-login-large-wide.png");
-  width: 87%;
+  background-image: url("https://i.ibb.co/3SG3qrZ/image.png");
+  width: 50px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -167,11 +165,11 @@ const KaKaoLogin = styled.a`
 
 const LoginGoogle = styled.a`
   color: black;
-  padding-left: 10px;
   height: 50px;
   border-radius: 10px;
   background-color: white;
-  width: 87%;
+  width: 50px;
+  background-image: url("https://i.ibb.co/K5pfVsP/image.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -182,7 +180,19 @@ const LoginGoogle = styled.a`
   text-decoration: none;
 `;
 
+const SocialLoginBox = styled.div`
+  width: 100%;
+  padding: 0 10%;
+  display: flex;
+  margin-top: 5%;
+  justify-content: space-around;
+  .naver {
+    width: 30px;
+  }
+`;
+
 const BottomTxt = styled.div`
+  margin-top: 5%;
   font-size: 12px;
   width: 100%;
   display: flex;
