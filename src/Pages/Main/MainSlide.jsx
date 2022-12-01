@@ -66,7 +66,7 @@ const MainSlide = () => {
     navigator.geolocation.getCurrentPosition(success, error, options);
 
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 1000);
   }, []);
 
   //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
