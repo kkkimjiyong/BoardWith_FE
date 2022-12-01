@@ -14,13 +14,9 @@ import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DailyCheck from "../../Components/DailyCheck";
 import { getCookie } from "../../hooks/CookieHook";
-<<<<<<< HEAD
 import { postsApi, userApi } from "../../instance";
 import { useInView } from "react-intersection-observer";
-=======
 import { Skeleton } from "@mui/material";
-import { postsApi } from "../../instance";
->>>>>>> 91825bb5d92008bb7540a2adba951b6f4f874fcc
 
 const MainSlide = () => {
   const navigate = useNavigate();
