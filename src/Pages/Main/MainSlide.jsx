@@ -131,32 +131,6 @@ const MainSlide = () => {
     }
   }, [hasNextPage, inView]);
 
-  // const onIntersect = async ([entry], observer) => {
-  //   if (!entry.isIntersecting) {
-  //     return;
-  //   }
-  //   observer.unobserve(entry.target);
-  //   let itemLength = await getData();
-  //   console.log(itemLength);
-  //   if (itemLength === 5) {
-  //     console.log("reobserve!!!!!!");
-  //     observer.observe(entry.target);
-  //   } else {
-  //     console.log("stop observe!!!!!!");
-  //     observer.unobserve(entry.target);
-  //   }
-  // };
-
-  // let observer = new IntersectionObserver(onIntersect, { threshold: 1 });
-  // let observed = false;
-
-  // useEffect(() => {
-  //   if (target && !observed) {
-  //     observer.observe(target);
-  //     observed = true;
-  //   }
-  // }, [target]);
-
   const bookMarked = async () => {
     try {
       const { data } = await axios.get(
@@ -274,7 +248,6 @@ const MainHeader = styled.div`
   align-items: center;
   .headtxt {
     font-size: 22px;
-    margin-left: 20px;
     color: #fff;
     text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
       0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;

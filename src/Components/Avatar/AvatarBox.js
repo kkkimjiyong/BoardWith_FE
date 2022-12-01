@@ -3,10 +3,8 @@ import styled from "styled-components";
 import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 
 const AvatarBox = ({ userSelect }) => {
-  console.log(userSelect);
   if (userSelect) {
     const { Eye, Hair, Mouth } = userSelect;
-    console.log(Mouth);
     return (
       <AvatarCtn>
         <HairCtn>
@@ -28,7 +26,7 @@ const AvatarBox = ({ userSelect }) => {
           />
         </MouthCtn>
         <SqrCtn>
-          <AvatarSqr />
+          <AvatarSqr></AvatarSqr>
         </SqrCtn>
       </AvatarCtn>
     );
@@ -46,9 +44,10 @@ const AvatarCtn = styled.div`
 `;
 
 const AvatarSqr = styled.div`
-  width: 155px;
-  height: 155px;
-  border-radius: 37px;
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  transform: scale(1.6);
   border: 5px solid black;
   position: absolute;
   display: flex;
@@ -79,8 +78,7 @@ const HairCtn = styled.div`
   justify-content: center;
   align-items: center;
   .Hair {
-    width: 155%;
-    top: -14%;
+    transform: scale(1.6);
     position: absolute;
   }
 `;
@@ -96,8 +94,7 @@ const EyeCtn = styled.div`
   justify-content: center;
   align-items: center;
   .Eye {
-    width: 155%;
-    top: -14%;
+    transform: scale(1.6);
     position: absolute;
   }
 `;
@@ -113,8 +110,7 @@ const MouthCtn = styled.div`
   justify-content: center;
   align-items: center;
   .Mouth {
-    width: 155%;
-    top: -14%;
+    transform: scale(1.6);
     position: absolute;
   }
 `;
