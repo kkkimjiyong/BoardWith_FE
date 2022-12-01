@@ -3,9 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 
 const AvatarBox = ({ userSelect }) => {
-  const [Face, setFace] = useState(1);
   console.log(userSelect);
-  useEffect(() => {}, []);
   if (userSelect) {
     const { Eye, Hair, Mouth } = userSelect;
     console.log(Mouth);
@@ -14,15 +12,15 @@ const AvatarBox = ({ userSelect }) => {
         <BackCtn>
           <img
             className="Hair"
-            src={`/avatar/Hair/Hair${Hair}.png`}
+            src={`/avatar/Hair/Hair${Hair}.svg`}
             alt="Hair!"
           />
         </BackCtn>
-        <img className="Eye" src={`/avatar/Eye/Eye${Eye}.png`} alt="Eye!" />
+        <img className="Eye" src={`/avatar/Eye/Eye${Eye}.svg`} alt="Eye!" />
 
         <img
           className="Mouth"
-          src={`/avatar/Mouth/Mouth${Mouth}.png`}
+          src={`/avatar/Mouth/Mouth${Mouth}.svg`}
           alt="이런!"
         />
         <AvatarSqr>
@@ -54,7 +52,8 @@ const AvatarCtn = styled.div`
     position: absolute;
   }
   .Eye {
-    top: -15%;
+    top: -20%;
+    width: 90%;
     position: absolute;
   }
   .Mouth {
@@ -94,7 +93,8 @@ const BackCtn = styled.div`
   justify-content: center;
   align-items: center;
   .Hair {
-    top: -15.5%;
+    width: 155%;
+    top: -14%;
     position: absolute;
   }
 `;

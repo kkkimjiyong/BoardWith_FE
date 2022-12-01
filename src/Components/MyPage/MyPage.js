@@ -14,6 +14,7 @@ import { useRef } from "react";
 import MyPartyItem from "./MyPartyItem";
 import { postsApi } from "../../instance";
 import AvatarBox from "../Avatar/AvatarBox";
+import Loading from "../../style/Loading";
 
 const MyPage = () => {
   const [user, Setuser, onChange] = useInput();
@@ -25,7 +26,11 @@ const MyPage = () => {
   const [confirmParty, setConfirmParty] = useState();
   const [likeGame, setLikeGame] = useState();
   const [ModalOpen, setModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
+  //---------- 1초 로딩 후 렌더  ------------
+  useEffect(() => {}, []);
 
   //? -----------------  API  -----------------------
 
@@ -38,6 +43,7 @@ const MyPage = () => {
       Setuser(data.findUser);
       setReservedParty(data.partyReserved);
       setConfirmParty(data.partyGo);
+      setTimeout(() => setIsLoading(false), 1500);
     } catch (error) {
       console.log(error);
     }
@@ -147,128 +153,136 @@ const MyPage = () => {
     SetisEdit(false);
   };
 
-  return (
-    <Wrapper>
-      <MainHeader>
-        <Arrow className="head" onClick={() => navigate("/main")} />
-        <div className="headtxt">마이페이지</div>
-        <RowBox>
-          <div onClick={() => SetisEdit(true)}>편집</div>
-        </RowBox>
-      </MainHeader>
-      <AvatarCtn>
-        <AvatarBox userSelect={user?.userAvater} />
-      </AvatarCtn>
-      <ProfileCtn>
-        {" "}
-        <ProfileRow className="Topbox">
+  if (isLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <Wrapper>
+        <MainHeader>
+          <Arrow className="head" onClick={() => navigate("/main")} />
+          <div className="headtxt">마이페이지</div>
+          <RowBox>
+            <div onClick={() => SetisEdit(true)}>편집</div>
+          </RowBox>
+        </MainHeader>
+        <AvatarCtn>
+          <AvatarBox userSelect={user?.userAvater} />
+        </AvatarCtn>
+        <ProfileCtn>
           {" "}
-          <div>{user?.nickName} 님</div>{" "}
-          {isEdit && <button onClick={editHandler}>완료</button>}
-        </ProfileRow>
-        {!isEdit && (
-          <>
-            <ProfileRow>
-              {user?.age ? `${user?.age} 살` : "없음"} /
-              {user?.visible ? `${user?.gender}` : "숨김"} /
-              {user?.myPlace.length
-                ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-                : "없음"}{" "}
-              <div className="visible">
-                {" "}
-                {user?.visible ? (
-                  <AiFillEye size="24" onClick={() => postVisible()} />
-                ) : (
-                  <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-                )}
-              </div>
-            </ProfileRow>
-            <LikeGameCtn>
-              <LikeGameBox>
-                {likeGame?.map((game) => {
-                  if (likeGame.length >= 2) return <LikeGame>{game}</LikeGame>;
-                })}
-              </LikeGameBox>
-            </LikeGameCtn>
-          </>
-        )}
-        {isEdit && (
-          <ProfileInputBox>
+          <ProfileRow className="Topbox">
             {" "}
-            <ProfileInput
-              name="age"
-              value={user?.age}
-              placeholder={user?.age}
-              onChange={onChange}
-            />
-            <ProfileInput
-              name="gender"
-              value={user?.gender}
-              placeholder={user?.gender}
-              onChange={onChange}
-            />
-            <ProfileInput
-              name="address"
-              onClick={postCode}
-              // value={user?.myPlace}
-              placeholder={"클릭하여 주소변경"}
-            />
-            <DaumPostBox ref={ref}></DaumPostBox>
-          </ProfileInputBox>
-        )}
-        <MyPartyCtn>
-          <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
-            내가 찜한 모임
-            <Arrow className={isOpen ? "open" : null} />
-          </MyPartyTitle>
-          <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
-            참여 신청 중인 모임
-            <Arrow className={isOpen1 ? "open" : null} />
-          </MyPartyTitle>
-          {isOpen1 && (
-            <MyPartyBox>
-              {reservedParty?.map((party) => {
-                if (!party.closed)
-                  return (
-                    <MyPartyItem deletHandler={deletHandler} party={party} />
-                  );
-              })}
-            </MyPartyBox>
+            <div>{user?.nickName} 님</div>{" "}
+            {isEdit && <button onClick={editHandler}>완료</button>}
+          </ProfileRow>
+          {!isEdit && (
+            <>
+              <ProfileRow>
+                {user?.age ? `${user?.age} 살` : "없음"} /
+                {user?.visible ? `${user?.gender}` : "숨김"} /
+                {user?.myPlace.length
+                  ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+                  : "없음"}{" "}
+                <div className="visible">
+                  {" "}
+                  {user?.visible ? (
+                    <AiFillEye size="24" onClick={() => postVisible()} />
+                  ) : (
+                    <AiFillEyeInvisible
+                      size="24"
+                      onClick={() => postVisible()}
+                    />
+                  )}
+                </div>
+              </ProfileRow>
+              <LikeGameCtn>
+                <LikeGameBox>
+                  {likeGame?.map((game) => {
+                    if (likeGame.length >= 2)
+                      return <LikeGame>{game}</LikeGame>;
+                  })}
+                </LikeGameBox>
+              </LikeGameCtn>
+            </>
           )}
-          <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
-            참여 확정 모임
-            <Arrow className={isOpen2 ? "open" : null} />
-          </MyPartyTitle>
-          {isOpen2 && (
-            <MyPartyBox>
-              {confirmParty?.map((party) => {
-                if (!party.closed)
-                  return (
-                    <MyPartyItem deletHandler={deletHandler} party={party} />
-                  );
-              })}
-            </MyPartyBox>
-          )}{" "}
-        </MyPartyCtn>{" "}
-        <BottomTxt>
-          <div className="txtbox" onClick={() => logoutHandler()}>
-            로그아웃
-          </div>
-          <div className="txtbox" onClick={() => deletUserHandler()}>
-            회원탈퇴
-          </div>
-          <div
-            className="txtbox-noborder"
-            onClick={() =>
-              window.open("https://forms.gle/jyY181dmMz3mCBWq8", "_blank")
-            }
-          >
-            고객문의
-          </div>
-        </BottomTxt>
-      </ProfileCtn>{" "}
-    </Wrapper>
-  );
+          {isEdit && (
+            <ProfileInputBox>
+              {" "}
+              <ProfileInput
+                name="age"
+                value={user?.age}
+                placeholder={user?.age}
+                onChange={onChange}
+              />
+              <ProfileInput
+                name="gender"
+                value={user?.gender}
+                placeholder={user?.gender}
+                onChange={onChange}
+              />
+              <ProfileInput
+                name="address"
+                onClick={postCode}
+                // value={user?.myPlace}
+                placeholder={"클릭하여 주소변경"}
+              />
+              <DaumPostBox ref={ref}></DaumPostBox>
+            </ProfileInputBox>
+          )}
+          <MyPartyCtn>
+            <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
+              내가 찜한 모임
+              <Arrow className={isOpen ? "open" : null} />
+            </MyPartyTitle>
+            <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
+              참여 신청 중인 모임
+              <Arrow className={isOpen1 ? "open" : null} />
+            </MyPartyTitle>
+            {isOpen1 && (
+              <MyPartyBox>
+                {reservedParty?.map((party) => {
+                  if (!party.closed)
+                    return (
+                      <MyPartyItem deletHandler={deletHandler} party={party} />
+                    );
+                })}
+              </MyPartyBox>
+            )}
+            <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
+              참여 확정 모임
+              <Arrow className={isOpen2 ? "open" : null} />
+            </MyPartyTitle>
+            {isOpen2 && (
+              <MyPartyBox>
+                {confirmParty?.map((party) => {
+                  if (!party.closed)
+                    return (
+                      <MyPartyItem deletHandler={deletHandler} party={party} />
+                    );
+                })}
+              </MyPartyBox>
+            )}{" "}
+          </MyPartyCtn>{" "}
+          <BottomTxt>
+            <div className="txtbox" onClick={() => logoutHandler()}>
+              로그아웃
+            </div>
+            <div className="txtbox" onClick={() => deletUserHandler()}>
+              회원탈퇴
+            </div>
+            <div
+              className="txtbox-noborder"
+              onClick={() =>
+                window.open("https://forms.gle/jyY181dmMz3mCBWq8", "_blank")
+              }
+            >
+              고객문의
+            </div>
+          </BottomTxt>
+        </ProfileCtn>{" "}
+      </Wrapper>
+    );
+  }
 };
 
 const Wrapper = styled.div`

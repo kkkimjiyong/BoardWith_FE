@@ -101,10 +101,8 @@ const Item = ({ number, item, Myaddress, closed }) => {
                 height: "30px",
               }}
             ></div> */}
-            <ProfileAvatarBox
-              userSelect={{ Eye: 1, Hair: 1, Mouth: 1, Back: 1 }}
-            />
-            <div>{item?.nickName}</div>
+            <ProfileAvatarBox userSelect={item?.userAvater} />
+            <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
 
           {starMark ? (
@@ -202,8 +200,6 @@ const ItemWrap = styled.div`
     display: flex;
     justify-content: center;
     padding: 4% 4%;
-    overflow-x: hidden;
-    word-break: break-all;
     flex-direction: column;
     background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;
@@ -238,8 +234,10 @@ const ItemWrap = styled.div`
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     /* background-color: #e2e5e7; */
+    overflow-x: hidden;
+    word-break: break-all;
     font-size: 1.2rem;
-    text-align: center;
+    text-align: left;
     align-items: center;
     margin-bottom: 2%;
     padding: 5px 0px;
@@ -359,10 +357,12 @@ const StatusBox = styled.div`
 
 const ItemProfile = styled.div`
   font-size: 16px;
+  width: 30%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  justify-content: space-around;
+  .nickNameTxt {
+  }
 `;
 
 export default Item;

@@ -1,85 +1,91 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 
 const AvatarBox = ({ userSelect }) => {
-  const [Face, setFace] = useState(1);
+  console.log(userSelect);
+  if (userSelect) {
+    const { Eye, Hair, Mouth } = userSelect;
+    console.log(Mouth);
+    return (
+      <AvatarCtn>
+        <BackCtn>
+          <img
+            className="Hair"
+            src={`/avatar/Hair/Hair${Hair}.svg`}
+            alt="Hair!"
+          />
+        </BackCtn>
+        <img className="Eye" src={`/avatar/Eye/Eye${Eye}.svg`} alt="Eye!" />
 
-  // const { Eye, Hair, Mouth, Back } = userSelect;
-
-  return (
-    <AvatarCtn>
-      {" "}
-      <Avatar />
-      {/* <BackCtn Back={Back}>
-        <FaceCtn Face={Face}>
-          <HairCtn Hair={Hair} />
-          <EyeCtn Eye={Eye} />
-          <MouthCtn Mouth={Mouth} />
-        </FaceCtn>
-      </BackCtn> */}
-    </AvatarCtn>
-  );
+        <img
+          className="Mouth"
+          src={`/avatar/Mouth/Mouth${Mouth}.svg`}
+          alt="이런!"
+        />
+        <AvatarSqr>
+          <div className="nose" />
+        </AvatarSqr>
+        {/* <img
+        src={require("../../Assets/Avatar/Standard.svg").default}
+        className="avatar"
+      /> */}
+      </AvatarCtn>
+    );
+  }
 };
 
 const AvatarCtn = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
   height: 40px;
-  /* border: 2px solid black; */
+  .Eye {
+    z-index: 1;
+    top: -45%;
+    width: 70px;
+    position: absolute;
+  }
+  .Mouth {
+    z-index: 1;
+    top: 30%;
+    width: 60%;
+    position: absolute;
+  }
 `;
 
-const BackCtn = styled.div`
-  width: 100%;
-  height: 100%;
+const AvatarSqr = styled.div`
+  z-index: 0;
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
+  border: 3px solid black;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: ${({ Back }) => `url(/avatar/Back/${Back}.png)`};
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  background-color: var(--white);
+  .nose {
+    margin-bottom: 3%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: black;
+  }
 `;
 
-const FaceCtn = styled.div`
-  width: 80%;
-  height: 80%;
-  border: 3px solid black;
-  background-image: ${({ Face }) => `url(/avatar/Face/${Face}.png)`};
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  /* background: transparent; */
-`;
-
-const HairCtn = styled.div`
-  width: 100%;
-  height: 45%;
-  top: 0%;
-  border: 3px solid gainsboro;
-`;
-
-const EyeCtn = styled.div`
-  position: relative;
-  width: 100%;
-  height: 20%;
-  border: 4px solid blue;
-  background-image: ${({ Eye }) => `url(/avatar/Eye/${Eye}.png)`};
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-`;
-const MouthCtn = styled.div`
-  position: relative;
-  width: 100%;
-  height: 20%;
-  border: 4px solid wheat;
-  background-image: ${({ Mouth }) => `url(/avatar/Mouth/${Mouth}.png)`};
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+const BackCtn = styled.div`
+  z-index: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .Hair {
+    width: 100px;
+    position: absolute;
+  }
 `;
 
 export default AvatarBox;

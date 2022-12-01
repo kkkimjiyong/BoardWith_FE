@@ -78,9 +78,12 @@ const Login = () => {
       <BtnSet>
         <LoginBtn onClick={() => onSubmitHandler()}>로그인</LoginBtn>
       </BtnSet>{" "}
-      <NaverLogin></NaverLogin>
-      <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
-      <LoginGoogle href={GOOGLE_LOGIN_URL}>Google 로그인</LoginGoogle>
+      <SocialLoginBox>
+        {" "}
+        <NaverLogin className="naver"></NaverLogin>
+        <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
+        <LoginGoogle href={GOOGLE_LOGIN_URL}></LoginGoogle>
+      </SocialLoginBox>
       <BottomTxt>
         <div className="txtbox" onClick={() => navigate("/signup")}>
           회원가입
@@ -153,12 +156,11 @@ const LoginBtn = styled.div`
 `;
 
 const KaKaoLogin = styled.a`
-  padding-left: 10px;
   height: 50px;
   border-radius: 10px;
   background-color: #fee500;
-  background-image: url("https://i.ibb.co/B2GHVc4/kakao-login-large-wide.png");
-  width: 87%;
+  background-image: url("https://i.ibb.co/3SG3qrZ/image.png");
+  width: 50px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -171,7 +173,8 @@ const LoginGoogle = styled.a`
   height: 50px;
   border-radius: 10px;
   background-color: white;
-  width: 87%;
+  width: 50px;
+  background-image: url("https://i.ibb.co/K5pfVsP/image.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -180,6 +183,16 @@ const LoginGoogle = styled.a`
   align-items: center;
   display: flex;
   text-decoration: none;
+`;
+
+const SocialLoginBox = styled.div`
+  width: 100%;
+  padding: 0 10%;
+  display: flex;
+  justify-content: space-around;
+  .naver {
+    width: 30px;
+  }
 `;
 
 const BottomTxt = styled.div`
