@@ -180,9 +180,9 @@ const MainSlide = () => {
         {!selfCheck && (
           <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
         )}
-        {/* {!isTutorial && (
+        {!isTutorial && (
           <Tutorial setSelfCheck={setSelfCheck} setIsTutorial={setIsTutorial} />
-        )} */}
+        )}
         <MainBox className="Scroll">
           <MainHeader onClick={() => scrollToTop()}>
             <BiCurrentLocation
