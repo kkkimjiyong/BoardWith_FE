@@ -86,6 +86,10 @@ export const userApi = {
   getOtherUser: (nickname) => instance.get(`/users/${nickname}`),
 };
 
+export const rankApi = {
+  getRank: (payload) => instance.get(`/rank`),
+};
+
 export const postApi = {
   getDetail: (payload) => instance.get(`/posts`),
   getDetailId: (payload) => instance.get(`/posts/${payload}`),

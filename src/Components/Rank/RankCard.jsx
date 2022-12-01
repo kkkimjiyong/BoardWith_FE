@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 
 const RankCard = () => {
   return (
@@ -23,6 +24,7 @@ const Wrap = styled.div`
 `;
 
 const StContainer = styled.div`
+  background-color: var(--gray);
   font-size: 14px;
   font-weight: normal;
   color: white;
@@ -30,8 +32,6 @@ const StContainer = styled.div`
   margin: 3% 3%;
   display: flex;
   align-items: center;
-  border: 2px solid #c72363;
-  /* box-shadow: 0 5px 18px -7px #c47aff; */
   border-radius: 10px;
   height: 100%;
   justify-content: space-between;
@@ -41,10 +41,13 @@ const StContainer = styled.div`
     display: flex;
     align-items: center;
     > h4 {
+      color: var(--primary);
       margin-right: 3%;
       font-size: 14px;
+      font-weight: normal;
     }
     > h5 {
+      font-weight: normal;
       font-size: 14px;
     }
   }
