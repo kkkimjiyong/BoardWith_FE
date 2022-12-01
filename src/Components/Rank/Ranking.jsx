@@ -9,17 +9,20 @@ import Loading from "../../style/Loading";
 
 const Ranking = () => {
   const [rank, setRank] = useState();
+  const [midrank, setMidRank] = useState();
   const [loading, setLoading] = useState(true);
-
-  // for (let i = 0; i < rank.length; i++) {}
 
   useEffect(() => {
     rankApi.getRank().then((res) => {
       setRank(res.data.data);
       setTimeout(() => setLoading(false), 500);
+      for (let i = 3; i < rank?.length; i++) {
+        setMidRank(++midrank, rank[i]);
+      }
     });
   }, []);
-  console.log();
+  console.log("rank", rank);
+  console.log("midrank", midrank);
   return (
     <Wrap>
       {loading ? (
