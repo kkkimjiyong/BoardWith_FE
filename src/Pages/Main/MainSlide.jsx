@@ -14,12 +14,16 @@ import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DailyCheck from "../../Components/DailyCheck";
 import { getCookie } from "../../hooks/CookieHook";
+<<<<<<< HEAD
 import { postsApi, userApi } from "../../instance";
 import { useInView } from "react-intersection-observer";
+=======
+import { Skeleton } from "@mui/material";
+import { postsApi } from "../../instance";
+>>>>>>> 91825bb5d92008bb7540a2adba951b6f4f874fcc
 
 const MainSlide = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [targetMargin, setTargetMargin] = useState(0);
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
@@ -28,6 +32,7 @@ const MainSlide = () => {
   const [selfCheck, setSelfCheck] = useState(true);
   const [userBook, setUserBook] = useState();
   const scrollHead = useRef();
+  const [loading, setLoading] = useState(true);
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
@@ -153,6 +158,20 @@ const MainSlide = () => {
   //     observed = true;
   //   }
   // }, [target]);
+
+  const bookMarked = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://www.iceflower.shop/posts/bookmark/${getCookie("nickName")}`,
+        {
+          headers: {
+            Authorization: `${getCookie("accessToken")}`,
+          },
+        }
+      );
+      console.log("bookmark", data);
+    } catch (error) {}
+  };
 
   return (
     <>
