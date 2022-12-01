@@ -12,6 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import { getCookie } from "../../hooks/CookieHook";
 import { postsApi } from "../../instance";
+import { AiFillStar } from "@react-icons/all-files/ai/AiFillStar";
+import { AiOutlineStar } from "@react-icons/all-files/ai/AiOutlineStar";
+import { ImLocation } from "@react-icons/all-files/im/ImLocation";
+import { AiFillCalendar } from "@react-icons/all-files/ai/AiFillCalendar";
 import AvatarBox from "../../Components/Avatar/AvatarBox";
 
 const Item = ({ number, item, Myaddress, closed, userBook }) => {
@@ -104,58 +108,31 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
           {starMark ? (
-            <div>
-              <FontAwesomeIcon
-                style={{
-                  color: "black",
-                }}
-                onClick={bookMark}
-                size="2x"
-                icon={faStar}
-              />
-            </div>
+            <StarBox>
+              <AiFillStar onClick={bookMark} size="80%" />
+            </StarBox>
           ) : (
-            <div>
-              {" "}
-              <FontAwesomeIcon size="2x" onClick={bookMark} icon={faSplotch} />
-            </div>
+            <StarBox>
+              <AiOutlineStar onClick={bookMark} size="80%" />
+            </StarBox>
           )}
         </ItemWrapBodySpaceBetween>
         <ItemWrapBody>
           <div>
             <ItemWrapTop>{item?.title}</ItemWrapTop>
             <ItemWrapBodyFlex>
-              <FontAwesomeIcon
-                style={{
-                  color: "#ddd",
-                }}
-                size="1x"
-                icon={faCalendar}
-              />{" "}
+              <ImLocation size="8%" />
               <ItemWrapBodyTitle>{item?.cafe}</ItemWrapBodyTitle>
             </ItemWrapBodyFlex>
 
             <ItemWrapBodyFlex2>
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  gap: "5px",
-                }}
-              >
-                {" "}
-                <FontAwesomeIcon
-                  style={{
-                    color: "#ddd",
-                  }}
-                  size="1x"
-                  icon={faLocationDot}
-                />{" "}
-                <div className="ItemWrap-Body-Title ">
-                  {realStartTime + " ~ " + realEndTime}
-                  {/* {new Date(startDate)} */}
-                </div>
-              </div>
+              <ItemWrapBodyTitle>
+                <AiFillCalendar
+                  style={{ position: "relative", left: "-6px", top: "6px" }}
+                  size="8%"
+                />
+                {realStartTime + " ~ " + realEndTime}
+              </ItemWrapBodyTitle>
               {!closed ? (
                 <StatusBox>
                   {" "}
@@ -245,11 +222,12 @@ const ItemWrapTop = styled.div`
 
 const ItemWrapBodySpaceBetween = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 `;
 
 const ItemWrapBodyFlex = styled.div`
-  gap: 5px;
+  /* gap: 5px; */
   display: flex;
   align-items: center;
   margin-top: 2%;
@@ -274,17 +252,6 @@ const ItemWrapBodyTitle = styled.div`
   border-radius: 4px;
   margin-left: 2%;
   position: relative;
-  /* background-color: #e2e5e7; */
-`;
-
-const ItemWrapBodyWanted = styled.div`
-  display: flex;
-  border-radius: 130px;
-  background-color: #e2e5e7;
-  white-space: nowrap;
-  width: 30%;
-  justify-content: center;
-  padding: 0.5%;
 `;
 
 const StatusBox = styled.div`
@@ -367,6 +334,12 @@ const ItemProfile = styled.div`
     font-weight: 600;
     margin-left: 3%;
   }
+`;
+
+const StarBox = styled.div`
+  width: 10%;
+  display: flex;
+  justify-content: center;
 `;
 
 export default Item;
