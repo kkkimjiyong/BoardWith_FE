@@ -73,7 +73,7 @@ const AvatarSelect = () => {
       const { data } = await userApi.getUser();
       setUserSelect(data.findUser.userAvater);
       setInitialUserSelect(data.findUser.userAvater);
-
+      setPoint(data.findUser.point);
       setTimeout(() => setIsLoading(false), 1500);
     } catch (error) {
       console.log(error);
@@ -115,7 +115,7 @@ const AvatarSelect = () => {
         <AvatarBox userSelect={userSelect} select={select} />
         <PointBox>
           <ImCoinDollar />
-          1000
+          {point}
         </PointBox>
         <AvatarSelectCtn>
           <AvatarCategory>
