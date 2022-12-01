@@ -166,7 +166,7 @@ function Form({ setFormModalOpen, setItems }) {
                   {...register("content")}
                 />
                 {errors.content && (
-                  <small role="alert">{errors.content.message}</small>
+                  <small role="alert" style={{color: "var(--primary)"}}>{errors.content.message}</small>
                 )}
               </FlexBox>
               <FlexBox>
