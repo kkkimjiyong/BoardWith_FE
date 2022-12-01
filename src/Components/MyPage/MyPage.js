@@ -8,12 +8,12 @@ import axios from "axios";
 import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
 import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
 import { ImExit } from "@react-icons/all-files/im/ImExit";
-import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
-import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
+import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 import ReactDaumPost from "react-daumpost-hook";
 import { useRef } from "react";
 import MyPartyItem from "./MyPartyItem";
 import { postsApi } from "../../instance";
+import AvatarBox from "../Avatar/AvatarBox";
 
 const MyPage = () => {
   const [user, Setuser, onChange] = useInput();
@@ -157,8 +157,7 @@ const MyPage = () => {
         </RowBox>
       </MainHeader>
       <AvatarCtn>
-        {" "}
-        <Avatar />
+        <AvatarBox userSelect={user?.userAvater} />
       </AvatarCtn>
       <ProfileCtn>
         {" "}
@@ -170,16 +169,19 @@ const MyPage = () => {
         {!isEdit && (
           <>
             <ProfileRow>
-              {user?.age ? `${user?.age} 살` : "없음"}/
-              {user?.visible ? `${user?.gender}` : "숨김"}/
+              {user?.age ? `${user?.age} 살` : "없음"} /
+              {user?.visible ? `${user?.gender}` : "숨김"} /
               {user?.myPlace.length
                 ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
                 : "없음"}{" "}
-              {user?.visible ? (
-                <AiFillEye size="24" onClick={() => postVisible()} />
-              ) : (
-                <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-              )}
+              <div className="visible">
+                {" "}
+                {user?.visible ? (
+                  <AiFillEye size="24" onClick={() => postVisible()} />
+                ) : (
+                  <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
+                )}
+              </div>
             </ProfileRow>
             <LikeGameCtn>
               <LikeGameBox>
@@ -248,17 +250,22 @@ const MyPage = () => {
             </MyPartyBox>
           )}{" "}
         </MyPartyCtn>{" "}
-        <EditBox>
-          {" "}
-          <div className="delete" onClick={deletUserHandler}>
+        <BottomTxt>
+          <div className="txtbox" onClick={() => logoutHandler()}>
+            로그아웃
+          </div>
+          <div className="txtbox" onClick={() => deletUserHandler()}>
             회원탈퇴
           </div>
-          <ImExit
-            className="logout"
-            size="30"
-            onClick={() => logoutHandler("accessToken")}
-          />
-        </EditBox>
+          <div
+            className="txtbox-noborder"
+            onClick={() =>
+              window.open("https://forms.gle/jyY181dmMz3mCBWq8", "_blank")
+            }
+          >
+            고객문의
+          </div>
+        </BottomTxt>
       </ProfileCtn>{" "}
     </Wrapper>
   );
@@ -286,7 +293,6 @@ const MainHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 100px;
   .headtxt {
     margin-left: 10px;
     color: #fff;
@@ -297,7 +303,6 @@ const MainHeader = styled.div`
 
 const RowBox = styled.div`
   display: flex;
-  gap: 20px;
 `;
 
 const AvatarCtn = styled.div`
@@ -306,7 +311,6 @@ const AvatarCtn = styled.div`
   align-items: center;
   height: 30%;
   width: 100%;
-  padding: 20%;
 `;
 
 const EditBox = styled.div`
@@ -351,6 +355,7 @@ const ProfileInput = styled.input`
 const DaumPostBox = styled.div``;
 
 const ProfileCtn = styled.div`
+  z-index: 10;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -363,7 +368,7 @@ const ProfileCtn = styled.div`
   padding-top: 5%;
   padding-left: 10%;
   padding-bottom: 15%;
-  gap: 30px;
+  padding: 5% 10% 15% 10%;
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
@@ -382,14 +387,20 @@ const ProfileCtn = styled.div`
 `;
 
 const ProfileRow = styled.div`
+  margin-top: 2%;
   width: 100%;
   padding: 0px 10px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
   &.Topbox {
     justify-content: space-between;
+  }
+  .visible {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    margin-left: 3%;
   }
 `;
 
@@ -419,14 +430,14 @@ const MyPartyCtn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 30px;
+  margin-top: 5%;
 `;
 
 const MyPartyTitle = styled.div`
+  color: #dadada;
   display: flex;
   align-items: center;
-  margin-top: 2%;
-  gap: 10px;
+  margin-top: 10%;
   :active {
     cursor: pointer;
     text-decoration: underline;
@@ -440,12 +451,33 @@ const MyPartyBox = styled.div`
   width: 85%;
   max-height: 50%;
 `;
+const BottomTxt = styled.div`
+  margin-top: 15%;
+  color: #6c6c6c;
+  font-size: 15px;
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  :hover {
+    cursor: pointer;
+  }
+  .txtbox {
+    padding: 0px 20px;
+    border-right: 1px solid #6c6c6c;
+  }
+  .txtbox-noborder {
+    padding: 0px 20px;
+  }
+`;
 
 const Arrow = styled.div`
   display: inline-block;
   border: 7px solid transparent;
   border-top-color: var(--white);
   transform: rotate(90deg);
+  margin-left: 5%;
   &.left {
     transform: rotate(270deg);
   }
@@ -454,6 +486,7 @@ const Arrow = styled.div`
     transform: rotate(0deg);
   }
   &.head {
+    margin-left: 0;
     border-top-color: white;
   }
 `;

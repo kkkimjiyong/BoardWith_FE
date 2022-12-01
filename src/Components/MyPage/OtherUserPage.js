@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import AvatarBox from "../Avatar/AvatarBox";
-import { ReactComponent as Avatar } from "../../Assets/Avatar3.svg";
+import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 
 const OtherUserPage = () => {
   const { nickname } = useParams();
