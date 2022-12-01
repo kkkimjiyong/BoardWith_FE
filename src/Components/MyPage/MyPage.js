@@ -44,7 +44,7 @@ const MyPage = () => {
       setUser(data.findUser);
       setReservedParty(data.partyReserved);
       setConfirmParty(data.partyGo);
-      setTimeout(() => setIsLoading(false), 1500);
+      setTimeout(() => setIsLoading(false), 1000);
     } catch (error) {
       console.log(error);
     }

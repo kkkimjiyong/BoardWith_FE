@@ -312,7 +312,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             color: "white",
                             position: "absolute",
                             top: "-17px",
-                            left: "4.5px",
+                            left: "1.8%",
                           }}
                           size="1x"
                           icon={faCrown}

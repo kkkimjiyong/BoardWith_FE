@@ -74,7 +74,7 @@ const AvatarSelect = () => {
       setUserSelect(data.findUser.userAvater);
       setInitialUserSelect(data.findUser.userAvater);
       setPoint(data.findUser.point);
-      setTimeout(() => setIsLoading(false), 1500);
+      setTimeout(() => setIsLoading(false), 1000);
     } catch (error) {
       console.log(error);
     }
