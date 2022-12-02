@@ -306,7 +306,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       )}
                     </Sth>
                     <StHost>
-                      <DetailProfile>
+                      <ProfileBox>
                         <FontAwesomeIcon
                           style={{
                             color: "white",
@@ -329,7 +329,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                           }}
                         />
                         <NickName>{detail?.data?.nickName}</NickName>
-                      </DetailProfile>
+                      </ProfileBox>
+
                       <StContentWrap>
                         <FontAwesomeIcon
                           style={{
@@ -592,7 +593,7 @@ const StContainer = styled.div`
   background-color: #d7d7d7;
   min-width: 370px;
   /* width: 340px; */
-  width: 90vw;
+  width: 85%;
   max-width: 500px;
   background-color: #343434;
   //box-shadow: 3px 5px 20px 2px #5b5b5b;
@@ -658,6 +659,11 @@ const Sth = styled.div`
   color: white;
   font-size: 20px;
   justify-content: flex-end;
+`;
+
+const ProfileBox = styled.div`
+  width: 100px;
+  height: 60px;
 `;
 
 const NickName = styled.div`
