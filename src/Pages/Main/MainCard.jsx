@@ -4,7 +4,6 @@ import { getDistance } from "geolib";
 import { useDispatch } from "react-redux";
 import { addDistance } from "../../redux/modules/postsSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "moment/locale/ko";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
 import { faSplotch } from "@fortawesome/free-solid-svg-icons";
@@ -59,19 +58,38 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
     }
   }, []);
   //요일시간 표기
-  const moment = require("moment-timezone");
-  const startDate = item?.time?.[0];
-  const endDate = item?.time?.[1];
-  const getStartTime = (startDate) => {
-    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
-    return m.format("MM.DD (ddd) HH:mm");
-  };
-  const getEndTime = (endDate) => {
-    var m = moment(endDate).tz("Asia/Seoul");
-    return m.format("HH:mm");
-  };
-  const realStartTime = getStartTime(startDate);
-  const realEndTime = getEndTime(endDate);
+  const IsoStartDate = item?.time?.[0];
+  const IsoendDate = item?.time?.[1];
+  const startDate = new Date(IsoStartDate);
+  const endDate = new Date(IsoendDate);
+
+  const week = ["일", "월", "화", "수", "목", "금", "토"];
+  console.log(
+    "한국시간으로 바뀌었나요",
+    startDate.getMonth() +
+      1 +
+      "." +
+      startDate.getDate() +
+      " (" +
+      week[startDate.getDay()] +
+      ") " +
+      startDate.getHours() +
+      ":00 ~ " +
+      endDate.getHours() +
+      ":00"
+  );
+  const showTime =
+    ("0" + (startDate.getMonth() + 1)).slice(-2) +
+    "." +
+    ("0" + startDate.getDate()).slice(-2) +
+    " (" +
+    week[startDate.getDay()] +
+    ") " +
+    startDate.getHours() +
+    ":00 ~ " +
+    endDate.getHours() +
+    ":00";
+
   //북마크(별) 색깔 변환
   const [starMark, setStarMark] = useState(
     userBook.includes(item._id) ? false : true
@@ -131,7 +149,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
                   style={{ position: "relative", left: "-6px", top: "6px" }}
                   size="8%"
                 />
-                {realStartTime + " ~ " + realEndTime}
+                {showTime}
               </ItemWrapBodyTitle>
               {!closed ? (
                 <StatusBox>

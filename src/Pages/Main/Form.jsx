@@ -89,7 +89,7 @@ function Form({ setFormModalOpen, setItems }) {
       console.log("formdata", data);
       setItems((prev) => [data.createPost, ...prev]);
       alert("파티모집글 작성이 완료되었습니다.");
-      setFormModalOpen(false);
+      // setFormModalOpen(false);
     } catch (error) {}
   };
 
@@ -166,7 +166,9 @@ function Form({ setFormModalOpen, setItems }) {
                   {...register("content")}
                 />
                 {errors.content && (
-                  <small role="alert" style={{color: "var(--primary)"}}>{errors.content.message}</small>
+                  <small role="alert" style={{ color: "var(--primary)" }}>
+                    {errors.content.message}
+                  </small>
                 )}
               </FlexBox>
               <FlexBox>
