@@ -72,7 +72,7 @@ const EditUser = ({ setOpenEdit, openEdit, user, Setuser, onChange }) => {
 
 const Wrapper = styled.div`
   z-index: 12;
-  bottom: ${({ openEdit }) => (openEdit ? "0%" : "-20%")};
+  bottom: ${({ openEdit }) => (openEdit ? "0%" : "-30%")};
   position: absolute;
   display: flex;
   flex-direction: column;

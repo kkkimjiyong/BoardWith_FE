@@ -25,6 +25,7 @@ const MyPage = () => {
   const [isOpen2, SetisOpen2] = useState(false);
   const [reservedParty, setReservedParty] = useState();
   const [confirmParty, setConfirmParty] = useState();
+  const [bookmark, setBookmark] = useState([]);
   const [likeGame, setLikeGame] = useState();
   const [openEdit, setOpenEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +33,7 @@ const MyPage = () => {
 
   //---------- 1초 로딩 후 렌더  ------------
   useEffect(() => {}, []);
-
+  console.log(bookmark);
   //? -----------------  API  -----------------------
 
   const getUser = async () => {
@@ -44,6 +45,7 @@ const MyPage = () => {
       setUser(data.findUser);
       setReservedParty(data.partyReserved);
       setConfirmParty(data.partyGo);
+      setBookmark(data.findUser.bookmarkData);
       setTimeout(() => setIsLoading(false), 1000);
     } catch (error) {
       console.log(error);
@@ -213,6 +215,19 @@ const MyPage = () => {
               내가 찜한 모임
               <Arrow className={isOpen ? "open" : null} />
             </MyPartyTitle>
+            {isOpen && (
+              <MyPartyBox>
+                {bookmark?.map((party) => {
+                  return (
+                    <MyPartyItem
+                      deletHandler={deletHandler}
+                      title={party.title}
+                      postId={party.postId}
+                    />
+                  );
+                })}
+              </MyPartyBox>
+            )}
             <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
               참여 신청 중인 모임
               <Arrow className={isOpen1 ? "open" : null} />
@@ -220,10 +235,13 @@ const MyPage = () => {
             {isOpen1 && (
               <MyPartyBox>
                 {reservedParty?.map((party) => {
-                  if (!party.closed)
-                    return (
-                      <MyPartyItem deletHandler={deletHandler} party={party} />
-                    );
+                  return (
+                    <MyPartyItem
+                      deletHandler={deletHandler}
+                      title={party.title}
+                      postId={party._id}
+                    />
+                  );
                 })}
               </MyPartyBox>
             )}
@@ -234,10 +252,13 @@ const MyPage = () => {
             {isOpen2 && (
               <MyPartyBox>
                 {confirmParty?.map((party) => {
-                  if (!party.closed)
-                    return (
-                      <MyPartyItem deletHandler={deletHandler} party={party} />
-                    );
+                  return (
+                    <MyPartyItem
+                      deletHandler={deletHandler}
+                      title={party.title}
+                      postId={party._id}
+                    />
+                  );
                 })}
               </MyPartyBox>
             )}{" "}
@@ -313,23 +334,6 @@ const MainHeader = styled.div`
 const RowBox = styled.div`
   display: flex;
 `;
-
-const ProfileInputBox = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 10px 0px;
-  width: 100%;
-`;
-
-const ProfileInput = styled.input`
-  padding: 2.5%;
-  margin: 0% 2%;
-  width: 30%;
-  border: none;
-  border-radius: 10px;
-`;
-
-const DaumPostBox = styled.div``;
 
 const ProfileCtn = styled.div`
   z-index: 10;
@@ -422,6 +426,7 @@ const MyPartyTitle = styled.div`
 `;
 
 const MyPartyBox = styled.div`
+  margin-top: 5%;
   gap: 10px;
   display: flex;
   flex-direction: column;
@@ -443,9 +448,15 @@ const BottomTxt = styled.div`
   .txtbox {
     padding: 0px 20px;
     border-right: 1px solid #6c6c6c;
+    :hover {
+      text-decoration: underline;
+    }
   }
   .txtbox-noborder {
     padding: 0px 20px;
+    :hover {
+      text-decoration: underline;
+    }
   }
 `;
 

@@ -80,10 +80,8 @@ const OtherUserPage = () => {
         <div className="headtxt">{user?.nickName}님</div>
         <div></div>
       </MainHeader>
-      {/* 범용성있게 아바타박스를 만든 뒤, 추가하자 */}
-      {/* <AvatarBox userSelect={user?.userAvater} /> */}
       <AvatarCtn>
-        <Avatar />
+        <AvatarBox userSelect={user?.userAvatar} />
       </AvatarCtn>
       <ProfileCtn>
         <ProfileRow>
@@ -152,6 +150,8 @@ const AvatarCtn = styled.div`
   align-items: center;
   height: 30%;
   width: 100%;
+  border-radius: 30%;
+  background-color: rebeccapurple;
   padding: 20%;
 `;
 
