@@ -92,8 +92,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
       >
         <div className="ItemWrap-Body-SpaceBetween">
           {" "}
-          <ItemProfile>
-            {" "}
+          <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
             <AvatarBox
               userSelect={item?.userAvatar}
               scale={0.12}

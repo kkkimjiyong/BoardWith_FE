@@ -175,7 +175,6 @@ const MainSlide = () => {
                   userBook={userBook}
                   closed={items.closed}
                   setModalOpen={setModalOpen}
-                  bookrMarked={userBook.includes(items._id) ? false : true}
                   key={idx}
                   item={items}
                   Myaddress={Myaddress}
