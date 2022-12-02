@@ -116,21 +116,6 @@ const BanComments = ({ comments, postid, isPostEdit }) => {
 
 export default BanComments;
 
-const StBanButton = styled.button`
-  background-color: var(--primary);
-  width: 80px;
-  height: 50px;
-  border-radius: 15px;
-  border: none;
-  font-size: large;
-  font-weight: bold;
-  cursor: pointer;
-  color: white;
-  &:active {
-    scale: 95%;
-  }
-`;
-
 const CommentBox = styled.div`
   margin: 3% 3%;
   display: flex;
