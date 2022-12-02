@@ -4,24 +4,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BanComments from "./BanComment";
 import Comments from "./Comment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "../../style/Loading";
 import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
-import {
-  faCalendar,
-  faCommentDots,
-  faCircleUp,
-} from "@fortawesome/free-regular-svg-icons";
-
-import {
-  faLocationDot,
-  faUserGroup,
-  faX,
-  faChevronLeft,
-  faBullhorn,
-  faShareFromSquare,
-  faCrown,
-} from "@fortawesome/free-solid-svg-icons";
 import {
   __getComments,
   __postComments,
@@ -30,10 +14,14 @@ import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 import moment from "moment-timezone";
-
-import { AiOutlineCalendar } from "react-icons/ai";
-import { FiMapPin } from "react-icons/fi";
-import { BsPeopleFill } from "react-icons/bs";
+import {
+  AiOutlineCalendar,
+  AiOutlineMessage,
+  AiOutlineClose,
+} from "react-icons/ai";
+import { FiMapPin, FiShare } from "react-icons/fi";
+import { BsPeopleFill, BsArrowUpCircle, BsChevronLeft } from "react-icons/bs";
+import { FaCrown, FaBullhorn } from "react-icons/fa";
 
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
@@ -298,62 +286,59 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       {open ? (
                         ""
                       ) : (
-                        <FontAwesomeIcon
+                        <AiOutlineClose
                           onClick={() => setModalOpen(false)}
                           style={{
                             color: "white",
                           }}
-                          size="1x"
-                          icon={faX}
+                          size="30px"
                           cursor="pointer"
                         />
                       )}
                     </Sth>
                     <StHost>
                       <ProfileBox>
-                        <FontAwesomeIcon
+                        <FaCrown
                           style={{
                             color: "white",
                             position: "absolute",
-                            top: "-17px",
+                            top: "-5px",
                             left: "1.8%",
                           }}
-                          size="1x"
-                          icon={faCrown}
+                          size="20px"
                         />
-                        <ProfileAvatarBox
-                          onClick={() =>
-                            navigate(`/userpage/${detail?.data?.nickName}`)
-                          }
-                          userSelect={{
-                            Eye: detail?.data?.userAvatar?.Eye,
-                            Hair: detail?.data?.userAvatar?.Hair,
-                            Mouth: detail?.data?.userAvatar?.Mouth,
-                            Back: detail?.data?.userAvatar?.Eye,
-                          }}
-                        />
+                        <StAvatarContainer>
+                          <ProfileAvatarBox
+                            onClick={() =>
+                              navigate(`/userpage/${detail?.data?.nickName}`)
+                            }
+                            userSelect={{
+                              Eye: detail?.data?.userAvatar?.Eye,
+                              Hair: detail?.data?.userAvatar?.Hair,
+                              Mouth: detail?.data?.userAvatar?.Mouth,
+                              Back: detail?.data?.userAvatar?.Eye,
+                            }}
+                          />
+                        </StAvatarContainer>
                         <NickName>{detail?.data?.nickName}</NickName>
                       </ProfileBox>
-
                       <StContentWrap>
-                        <FontAwesomeIcon
+                        <FiShare
                           style={{
-                            fontSize: "25px",
+                            fontSize: "26px",
                             color: "white",
                           }}
                           // size="lg"
-                          icon={faShareFromSquare}
                           onClick={shareToKatalk}
                           cursor="pointer"
                         />
                         <Stgap />
-                        <FontAwesomeIcon
+                        <AiOutlineMessage
                           style={{
-                            fontSize: "27px",
+                            fontSize: "26px",
                             color: "white",
                           }}
                           // size="lg"
-                          icon={faCommentDots}
                           onClick={() => {
                             enterChatRoomHandler();
                           }}
@@ -365,15 +350,14 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <h2>{detail?.data?.title}</h2> {/* 제목 */}
                     </div>
                     <div>
-                      <h4>{detail?.data?.content}</h4> {/* 제목 */}
+                      <h4>{detail?.data?.content}</h4> {/* 내용 */}
                     </div>
                     <StContentWrap>
-                      <FontAwesomeIcon
+                      <FiMapPin
                         style={{
                           color: "white",
                         }}
-                        size="1x"
-                        icon={faLocationDot}
+                        size="23px"
                       />
                       <div />
                       <h5>{detail?.data?.cafe}</h5> {/* 장소 */}
@@ -383,19 +367,18 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         style={{
                           color: "white",
                         }}
-                        size="1x"
+                        size="23px"
                       />
                       <div />
                       <h5>{realStartTime + " ~ " + realEndTime}</h5>{" "}
                       {/* 날짜 */}
                     </StContentWrap>
                     <StContentWrap>
-                      <FontAwesomeIcon
+                      <BsPeopleFill
                         style={{
                           color: "white",
                         }}
-                        size="1x"
-                        icon={faUserGroup}
+                        size="23px"
                       />
                       <div />
                       <h5>
@@ -464,12 +447,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                 {/*댓글 슬라이드 시작--------------------------------------------------------- */}
                 <ListWrap onClick={(e) => e.stopPropagation()} open={open}>
                   <StCommentTitle>
-                    <FontAwesomeIcon
+                    <BsChevronLeft
                       style={{
                         color: "white",
                       }}
-                      size="1x"
-                      icon={faChevronLeft}
+                      size="26px"
                       onClick={() => {
                         setOpen((open) => !open);
                       }}
@@ -485,13 +467,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                   </StCommentTitle>
                   {!isHost ? (
                     <StCommentbull>
-                      <FontAwesomeIcon
+                      <FaBullhorn
                         style={{
                           color: "white",
                           marginRight: "3%",
                         }}
-                        size="1x"
-                        icon={faBullhorn}
+                        size="20px"
                       />
                       파티를 희망하시는 분은 댓글로 신청해주세요!
                     </StCommentbull>
@@ -561,12 +542,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             }}
                           />
                           <button>
-                            <FontAwesomeIcon
+                            <BsArrowUpCircle
                               style={{
-                                color: "black",
+                                color: "white",
                               }}
-                              size="2x"
-                              icon={faCircleUp}
+                              size="25px"
                             />
                           </button>
                         </form>
@@ -672,7 +652,7 @@ const ProfileBox = styled.div`
 const NickName = styled.div`
   min-width: 100px;
   display: flex;
-  margin-left: 10%;
+  margin-left: 37%;
 `;
 
 const StBackGroundColor = styled.div`
@@ -819,7 +799,7 @@ const Btnbox = styled.div`
   > form {
     border-radius: 20px;
     width: 90%;
-    background-color: white;
+    background-color: var(--gray);
     display: flex;
     margin: 3% 0;
     justify-content: center;
@@ -836,6 +816,7 @@ const Btnbox = styled.div`
     justify-content: center;
     text-indent: center;
     text-align: center;
+    background-color: var(--gray);
   }
   input:nth-child(2) {
     width: 400px;
@@ -855,8 +836,7 @@ const Btnbox = styled.div`
   }
 `;
 
-const DetailProfile = styled.div`
-  display: flex;
-  width: 100%;
-  margin-left: 3%;
+const StAvatarContainer = styled.div`
+  position: relative;
+  left: -15px;
 `;

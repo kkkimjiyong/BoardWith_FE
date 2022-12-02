@@ -70,6 +70,8 @@ const BanComments = ({
       }
   }, [comments, setIsPartyAccept]);
 
+  console.log(comments);
+
   return (
     <>
       {/* 강퇴 당한 유저가 아니라면 */}
@@ -84,10 +86,10 @@ const BanComments = ({
                       <StAvatar>
                         <ProfileAvatarBox
                           userSelect={{
-                            Eye: comment?.userAvatar?.Eye,
-                            Hair: comment?.userAvatar?.Hair,
-                            Mouth: comment?.userAvatar?.Mouth,
-                            Back: comment?.userAvatar?.Back,
+                            Eye: comments?.userAvatar?.Eye,
+                            Hair: comments?.userAvatar?.Hair,
+                            Mouth: comments?.userAvatar?.Mouth,
+                            Back: comments?.userAvatar?.Back,
                           }}
                         />
                       </StAvatar>
@@ -117,9 +119,9 @@ const BanComments = ({
                     </div>
                   </div>
 
-                  <StBanButton onClick={kickPartyCancelHandler}>
-                    취소
-                  </StBanButton>
+                  <StCancelButton onClick={kickPartyCancelHandler}>
+                    복구
+                  </StCancelButton>
                 </StCommentBodyWrap>
               </CommentBox>
             </>
@@ -196,4 +198,19 @@ const StAvatar = styled.div`
   background-color: white;
   justify-content: center;
   align-items: center;
+`;
+const StCancelButton = styled.button`
+  padding: 0;
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  width: 90px;
+  height: 65px;
+  border-radius: 15px;
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--primary);
+  &:active {
+    scale: 95%;
+  }
 `;

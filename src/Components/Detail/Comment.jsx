@@ -5,16 +5,12 @@ import {
   __deleteComment,
   __editComment,
 } from "../../redux/modules/CommentsSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPenToSquare,
-  faTrashCan,
-  faCircleCheck,
-} from "@fortawesome/free-regular-svg-icons";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { postApi } from "../../instance";
 import { useNavigate } from "react-router-dom";
 import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
+import { BiEditAlt, BiCheckCircle } from "react-icons/bi";
+import { FiTrash2 } from "react-icons/fi";
+import { AiOutlineClose } from "react-icons/ai";
 
 const Comments = ({
   comments,
@@ -226,31 +222,36 @@ const Comments = ({
                     {isPostEdit ? (
                       <StButton2 onClick={kickPartyHandler}>강퇴</StButton2>
                     ) : (
-                      <StButton onClick={acceptingPartyHandler}>
-                        {/* 파티에 확정을 받았다면 / 받지않았다면 */}
-                        {isPartyAccept ? "취소" : "수락"}
-                      </StButton>
+                      <>
+                        {isPartyAccept ? (
+                          <StCancelButton onClick={acceptingPartyHandler}>
+                            취소
+                          </StCancelButton>
+                        ) : (
+                          <StButton onClick={acceptingPartyHandler}>
+                            수락
+                          </StButton>
+                        )}
+                      </>
                     )}
                   </>
                 )}
                 {/* 접속자 닉네임과 댓글작성자 닉네임이 같으면 */}
                 {nickName === comments?.nickName && (
                   <Sticon>
-                    <FontAwesomeIcon
+                    <BiEditAlt
                       style={{
                         color: "white",
                       }}
-                      size="lg"
-                      icon={faPenToSquare}
+                      size="26px"
                       cursor="pointer"
                       onClick={() => setEdit(true)}
                     />
-                    <FontAwesomeIcon
+                    <FiTrash2
                       style={{
                         color: "white",
                       }}
-                      size="lg"
-                      icon={faTrashCan}
+                      size="26px"
                       cursor="pointer"
                       onClick={() => onDelCommentHandler(comment.id)}
                     />
@@ -270,23 +271,21 @@ const Comments = ({
                     });
                   }}
                 ></StText>
-                <FontAwesomeIcon
+                <BiCheckCircle
                   style={{
                     color: "var(--primary)",
                     marginRight: "5px",
                   }}
-                  size="lg"
-                  icon={faCircleCheck}
+                  size="25px"
                   onClick={() => onEditHandler(comment.id)}
                   cursor="pointer"
                 />
-                <FontAwesomeIcon
+                <AiOutlineClose
                   style={{
                     color: "var(--primary)",
                     marginRight: "10px",
                   }}
-                  size="lg"
-                  icon={faXmark}
+                  size="25px"
                   onClick={editCancel}
                   cursor="pointer"
                 />
@@ -339,9 +338,9 @@ const Comments = ({
                           </StCommentBody>
                         </div>
                       </div>
-                      <StBanButton onClick={kickPartyCancelHandler}>
+                      <StCancelButton onClick={kickPartyCancelHandler}>
                         {isPostEdit && "취소"}
-                      </StBanButton>
+                      </StCancelButton>
                     </StCommentBodyWrap>
                   </CommentBox>
                 </>
@@ -357,9 +356,10 @@ const Comments = ({
 export default Comments;
 
 const StButton = styled.button`
+  padding: 0;
   background-color: var(--primary);
-  width: 80px;
-  height: 50px;
+  width: 90px;
+  height: 65px;
   border-radius: 15px;
   font-size: large;
   font-weight: bold;
@@ -370,11 +370,26 @@ const StButton = styled.button`
     scale: 95%;
   }
 `;
+const StCancelButton = styled.button`
+  padding: 0;
+  background-color: transparent;
+  border: 2px solid var(--primary);
+  width: 90px;
+  height: 65px;
+  border-radius: 15px;
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--primary);
+  &:active {
+    scale: 95%;
+  }
+`;
 
 const StButton2 = styled.button`
   background-color: var(--primary);
-  width: 80px;
-  height: 50px;
+  width: 90px;
+  height: 65px;
   border-radius: 15px;
   font-size: large;
   font-weight: bold;
@@ -388,8 +403,8 @@ const StButton2 = styled.button`
 
 const StBanButton = styled.button`
   background-color: var(--primary);
-  width: 80px;
-  height: 50px;
+  width: 90px;
+  height: 65px;
   border-radius: 15px;
   border: none;
   font-size: large;
