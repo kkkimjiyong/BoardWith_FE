@@ -111,10 +111,7 @@ const MyPage = () => {
   //? ----------------- 성별 보이게 안보이게 api --------------------------
   const postVisible = async () => {
     try {
-      const { data } = await userApi.editUser(
-        `https://www.iceflower.shop/users`,
-        { visible: !user.visible }
-      );
+      const { data } = await userApi.editUser({ visible: !user.visible });
       console.log(data.findUserData);
       setUser(data.findUserData);
     } catch (error) {
@@ -423,7 +420,6 @@ const MyPartyTitle = styled.div`
 
 const MyPartyBox = styled.div`
   margin-top: 5%;
-  gap: 10px;
   display: flex;
   flex-direction: column;
   width: 90%;
