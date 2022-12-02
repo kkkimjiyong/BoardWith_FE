@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import RankCard from "./RankCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCrown } from "@fortawesome/free-solid-svg-icons";
+import { FaCrown } from "react-icons/fa";
 import { rankApi } from "../../instance";
 import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 import Loading from "../../style/Loading";
 
 const Ranking = () => {
+  const [loading, setLoading] = useState(true);
   const [rank, setRank] = useState();
   const [midrank, setMidRank] = useState();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     rankApi.getRank().then((res) => {
-      setRank(res.data.data);
+      // console.log("res", res?.data?.data);
+      setRank(res?.data?.data);
       setTimeout(() => setLoading(false), 500);
-      for (let i = 3; i < rank?.length; i++) {
-        setMidRank(++midrank, rank[i]);
-      }
+      setMidRank(res?.data?.data?.slice(3, 27));
     });
-  }, []);
-  console.log("rank", rank);
-  console.log("midrank", midrank);
+  }, [loading]);
+  // console.log("rank", rank);
+  // console.log("userAvatar", rank?.[0]?.userAvatar?.Eye);
+
   return (
     <Wrap>
       {loading ? (
@@ -33,20 +32,19 @@ const Ranking = () => {
             <h2>랭킹</h2>
             <div>
               <StTopRanker>
-                <FontAwesomeIcon
+                <FaCrown
                   style={{
                     color: "#ffeda6",
                   }}
-                  size="lg"
-                  icon={faCrown}
+                  size="20px"
                 />
                 <StAvatar>
                   <ProfileAvatarBox
                     userSelect={{
-                      Eye: rank?.[0]?.userAvater?.Eye,
-                      Hair: rank?.[0]?.userAvater?.Hair,
-                      Mouth: rank?.[0]?.userAvater?.Mouth,
-                      Back: rank?.[0]?.userAvater?.Back,
+                      Eye: rank?.[0]?.userAvatar?.Eye,
+                      Hair: rank?.[0]?.userAvatar?.Hair,
+                      Mouth: rank?.[0]?.userAvatar?.Mouth,
+                      Back: rank?.[0]?.userAvatar?.Back,
                     }}
                   />
                 </StAvatar>
@@ -56,20 +54,19 @@ const Ranking = () => {
               </StTopRanker>
               <div>
                 <StTopRanker>
-                  <FontAwesomeIcon
+                  <FaCrown
                     style={{
                       color: "#bbbbbb",
                     }}
-                    size="sm"
-                    icon={faCrown}
+                    size=""
                   />
                   <StAvatar>
                     <ProfileAvatarBox
                       userSelect={{
-                        Eye: rank?.[1]?.userAvater?.Eye,
-                        Hair: rank?.[1]?.userAvater?.Hair,
-                        Mouth: rank?.[1]?.userAvater?.Mouth,
-                        Back: rank?.[1]?.userAvater?.Back,
+                        Eye: rank?.[1]?.userAvatar?.Eye,
+                        Hair: rank?.[1]?.userAvatar?.Hair,
+                        Mouth: rank?.[1]?.userAvatar?.Mouth,
+                        Back: rank?.[1]?.userAvatar?.Back,
                       }}
                     />
                   </StAvatar>
@@ -78,20 +75,19 @@ const Ranking = () => {
                   <span>{rank?.[1]?.totalPoint}P</span>
                 </StTopRanker>
                 <StTopRanker>
-                  <FontAwesomeIcon
+                  <FaCrown
                     style={{
                       color: "#b39b81",
                     }}
-                    size="sm"
-                    icon={faCrown}
+                    size=""
                   />
                   <StAvatar>
                     <ProfileAvatarBox
                       userSelect={{
-                        Eye: rank?.[2]?.userAvater?.Eye,
-                        Hair: rank?.[2]?.userAvater?.Hair,
-                        Mouth: rank?.[2]?.userAvater?.Mouth,
-                        Back: rank?.[2]?.userAvater?.Back,
+                        Eye: rank?.[2]?.userAvatar?.Eye,
+                        Hair: rank?.[2]?.userAvatar?.Hair,
+                        Mouth: rank?.[2]?.userAvatar?.Mouth,
+                        Back: rank?.[2]?.userAvatar?.Back,
                       }}
                     />
                   </StAvatar>
@@ -102,7 +98,9 @@ const Ranking = () => {
               </div>
             </div>
           </StContainer>
-          <RankCard />
+          {midrank?.map((rank) => (
+            <RankCard key={rank.nickName} rank={rank} />
+          ))}
         </>
       )}
     </Wrap>
