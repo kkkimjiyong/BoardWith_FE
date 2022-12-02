@@ -66,9 +66,10 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
   };
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
-
   //북마크(별) 색깔 변환
-  const [starMark, setStarMark] = useState(true);
+  const [starMark, setStarMark] = useState(
+    userBook.includes(item._id) ? false : true
+  );
   const bookMarking = async () => {
     try {
       const { data } = await postsApi.bookMarkPost({ postId: item._id });
@@ -100,14 +101,6 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
               circle={true}
               profile={true}
             />
-            {/* <div
-              style={{
-                borderRadius: "10px",
-                border: "2px solid #ddd",
-                width: "30px",
-                height: "30px",
-              }}
-            ></div> */}
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
           {starMark ? (
