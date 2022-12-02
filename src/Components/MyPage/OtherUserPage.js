@@ -83,13 +83,10 @@ const OtherUserPage = () => {
       {/* 범용성있게 아바타박스를 만든 뒤, 추가하자 */}
       {/* <AvatarBox userSelect={user?.userAvater} /> */}
       <AvatarCtn>
-        {" "}
         <Avatar />
       </AvatarCtn>
       <ProfileCtn>
-        {" "}
         <ProfileRow>
-          {" "}
           <div>{user?.nickName}</div>{" "}
         </ProfileRow>
         <ProfileRow>
@@ -101,7 +98,6 @@ const OtherUserPage = () => {
         </ProfileRow>
         <LikeGameCtn>
           <LikeGameBox>
-            {}
             <LikeGame>#달무티</LikeGame>
             <LikeGame>#달무티</LikeGame>
             <LikeGame>#달무티</LikeGame>

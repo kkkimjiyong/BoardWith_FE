@@ -45,7 +45,7 @@ const SignUp2 = () => {
             phoneNumber: user.phoneNumber,
           })
         );
-        alert("인증번호 전송!");
+        alert(data.verifyCode);
       }
     } catch (error) {
       console.log(error);
@@ -116,7 +116,7 @@ const SignUpWrap = styled.div`
   color: white;
 `;
 
-const SignUpCtn = styled.form`
+const SignUpCtn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -51,7 +51,8 @@ const KaKaoLogin = () => {
       setIsLoading(false);
       setUserId(data.userId);
     } catch (error) {
-      console.log("error", error);
+      alert(error.response.data.message);
+      setValue("nickName", "");
     }
   };
 

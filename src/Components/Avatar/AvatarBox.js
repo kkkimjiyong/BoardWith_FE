@@ -7,6 +7,7 @@ const AvatarBox = ({ userSelect }) => {
     const { Eye, Hair, Mouth } = userSelect;
     return (
       <AvatarCtn>
+        <div>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
         <HairCtn>
           <img
             className="Hair"
@@ -41,6 +42,7 @@ const AvatarCtn = styled.div`
   width: 100%;
   height: 38%;
   background-color: var(--white);
+  /* background-color: red; */
 `;
 
 const AvatarSqr = styled.div`
