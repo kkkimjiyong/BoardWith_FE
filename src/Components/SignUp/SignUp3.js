@@ -355,7 +355,7 @@ const TagButton = styled.button`
 const TagInput = styled.input`
   color: white;
   display: inline-flex;
-  min-width: 250px;
+  min-width: 270px;
   background: transparent;
   border: none;
   outline: none;

@@ -7,7 +7,6 @@ const AvatarBox = ({ userSelect }) => {
     const { Eye, Hair, Mouth } = userSelect;
     return (
       <AvatarCtn>
-        <div>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
         <HairCtn>
           <img
             className="Hair"
@@ -41,7 +40,7 @@ const AvatarCtn = styled.div`
   align-items: center;
   width: 100%;
   height: 38%;
-  background-color: var(--white);
+  /* background-color: var(--white); */
   /* background-color: red; */
 `;
 
@@ -60,7 +59,6 @@ const AvatarSqr = styled.div`
 const SqrCtn = styled.div`
   z-index: 0;
   position: absolute;
-  border: 5px solid white;
   top: 0%;
   width: 280px;
   height: 100%;
@@ -72,7 +70,6 @@ const SqrCtn = styled.div`
 const HairCtn = styled.div`
   z-index: 0;
   position: absolute;
-  border: 5px solid white;
   top: 0;
   width: 280px;
   height: 100%;
@@ -88,7 +85,6 @@ const HairCtn = styled.div`
 const EyeCtn = styled.div`
   z-index: 0;
   position: absolute;
-  border: 5px solid white;
   top: 0;
   width: 280px;
   height: 100%;
@@ -104,7 +100,6 @@ const EyeCtn = styled.div`
 const MouthCtn = styled.div`
   z-index: 0;
   position: absolute;
-  border: 5px solid white;
   top: 0;
   width: 280px;
   height: 100%;

@@ -56,6 +56,8 @@ instance.interceptors.response.use(
 
 export const signUpApi = {
   postSingup: (userinfo) => instance.post("/users/signup", userinfo),
+  DupNick: (userNickname) => instance.post("/users/Dup/Nick", userNickname),
+  DupId: (userId) => instance.post("/users/Dup/Id", userId),
 };
 
 export const loginApi = {
@@ -137,5 +139,5 @@ export const postsApi = {
   deletePost: (params) => instance.delete(`/posts/${params}`),
   updatePost: (payload) =>
     instance.patch(`/posts/${payload.postId}`, payload.post),
-  bookMarkPost: (payload) => instance.put(`/posts/bookmark/bookmark`, payload),
+  bookMarkPost: (payload) => instance.put(`/users/bookmark/bookmark`, payload),
 };

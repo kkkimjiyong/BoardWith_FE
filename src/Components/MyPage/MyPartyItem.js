@@ -3,21 +3,21 @@ import styled from "styled-components";
 import DetailModal from "../Detail/DetailModal";
 import { AiFillCloseCircle } from "@react-icons/all-files/ai/AiFillCloseCircle";
 
-const MyPartyItem = ({ party, deletHandler }) => {
+const MyPartyItem = ({ title, deletHandler, postId }) => {
   const [ModalOpen, setModalOpen] = useState();
 
   return (
     <Wrap>
       <Ctn onClick={() => setModalOpen(true)}>
-        {party.title}
+        {title}
 
         <Arrow className="left" />
         {ModalOpen && (
-          <DetailModal postid={party._id} setModalOpen={setModalOpen} />
+          <DetailModal postid={postId} setModalOpen={setModalOpen} />
         )}
       </Ctn>
       <AiFillCloseCircle
-        onClick={() => deletHandler(party._id)}
+        onClick={() => deletHandler(postId)}
         className="closebtn"
         size={"30"}
       />
