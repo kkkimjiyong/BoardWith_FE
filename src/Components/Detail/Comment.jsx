@@ -18,12 +18,8 @@ const Comments = ({
   nickName,
   isHost,
   postid,
-  detail,
   isPostEdit,
-  ModalOpen,
   setModalOpen,
-  open,
-  setOpen,
 }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
@@ -154,7 +150,7 @@ const Comments = ({
     comments?.confirmOrNot ? setIsPartyAccept(true) : setIsPartyAccept(false);
     //밴 유저인지
     comments?.banOrNot ? setIsBanUser(true) : setIsBanUser(false);
-  }, [comments, isPartyAccept, isBanUser]);
+  }, [comments]);
 
   console.log("comments", comments);
 

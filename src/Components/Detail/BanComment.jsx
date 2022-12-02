@@ -5,18 +5,7 @@ import { postApi } from "../../instance";
 import { useNavigate } from "react-router-dom";
 import AvatarBox from "../Avatar/AvatarBox";
 
-const BanComments = ({
-  comments,
-  nickName,
-  isHost,
-  postid,
-  detail,
-  isPostEdit,
-  ModalOpen,
-  setModalOpen,
-  open,
-  setOpen,
-}) => {
+const BanComments = ({ comments, postid, isPostEdit }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
