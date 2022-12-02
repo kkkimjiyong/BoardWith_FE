@@ -6,7 +6,7 @@ const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_SERVER,
   baseURL: "https://www.iceflower.shop",
   headers: {
-    Authorization: getCookie("accessToken"),
+    Authorization: sessionStorage.getItem("accessToken"),
   },
 });
 
@@ -30,11 +30,11 @@ instance.interceptors.response.use(
         const { data } = await axios.post(
           `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
           {
-            refresh_token: getCookie("refreshToken"),
+            refresh_token: sessionStorage.getItem("refreshToken"),
           }
         );
         console.log(data);
-        setCookie("accessToken", `Bearer ${data.accessToken}`);
+        sessionStorage.setItem("accessToken", `Bearer ${data.accessToken}`);
         prevRequest.headers = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.accessToken}`,
@@ -68,21 +68,21 @@ export const userApi = {
   getUser: () =>
     instance.get("/users", {
       headers: {
-        Authorization: getCookie("accessToken"),
+        Authorization: sessionStorage.getItem("accessToken"),
       },
     }),
 
   editUser: (EditUser) =>
     instance.put("/users", EditUser, {
       headers: {
-        Authorization: getCookie("accessToken"),
+        Authorization: sessionStorage.getItem("accessToken"),
       },
     }),
 
   dailyUser: () =>
     instance.put("/users/check", {
       headers: {
-        Authorization: getCookie("accessToken"),
+        Authorization: sessionStorage.getItem("accessToken"),
       },
     }),
   getOtherUser: (nickname) => instance.get(`/users/${nickname}`),
@@ -132,7 +132,7 @@ export const postsApi = {
   creatPost: (inputs) => {
     return instance.post(`/posts`, inputs, {
       headers: {
-        Authorization: getCookie("accessToken"),
+        Authorization: sessionStorage.getItem("accessToken"),
       },
     });
   },

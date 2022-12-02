@@ -111,14 +111,9 @@ const MyPage = () => {
   //? ----------------- 성별 보이게 안보이게 api --------------------------
   const postVisible = async () => {
     try {
-      const { data } = await axios.put(
+      const { data } = await userApi.editUser(
         `https://www.iceflower.shop/users`,
-        { visible: !user.visible },
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
+        { visible: !user.visible }
       );
       console.log(data.findUserData);
       setUser(data.findUserData);
@@ -129,23 +124,10 @@ const MyPage = () => {
 
   //? --------------------- 다음포스트  --------------------------
 
-  const ref = useRef(null);
-
-  const postConfig = {
-    //팝업창으로 사용시 해당 파라메터를 없애면 된다.
-    onComplete: (data) => {
-      // 데이터를 받아와서 set해주는 부분
-      setUser({ ...user, myPlace: data.address });
-      // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
-      ref.current.style.display = "none";
-    },
-  };
-  const postCode = ReactDaumPost(postConfig);
-
   useEffect(() => {
     // getReserved();
     // getConfirm();
-    if (!getCookie("accessToken")) {
+    if (!sessionStorage.getItem("accessToken")) {
       alert("로그인이 필요한 페이지입니다!");
       // window.location.replace("/");
       navigate("/");
@@ -156,8 +138,6 @@ const MyPage = () => {
     editUser();
     setOpenEdit(false);
   };
-
-  console.log(user);
 
   if (isLoading) {
     return <Loading />;
@@ -291,6 +271,18 @@ const MyPage = () => {
           openEdit={openEdit}
           setOpenEdit={setOpenEdit}
         />
+        {/* <FormButton onClick={() => setFormModalOpen(true)}>
+            <FontAwesomeIcon
+              style={{
+                color: "white",
+              }}
+              size="2x"
+              icon={faPenToSquare}
+            />
+          </FormButton>
+ {formModalOpen && (
+          <Form setItems={setItems} setFormModalOpen={setFormModalOpen} />
+        )} */}
       </Wrapper>
     );
   }

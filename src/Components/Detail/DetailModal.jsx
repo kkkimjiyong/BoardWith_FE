@@ -310,15 +310,16 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                           }}
                           size="20px"
                         />
-                        <StAvatarContainer>
+                        <StAvatarContainer
+                          onClick={() =>
+                            navigate(`/userpage/${detail?.data?.nickName}`)
+                          }
+                        >
                           <AvatarBox
                             profile={true}
                             scale={0.2}
                             backScale={0.8}
                             circle={true}
-                            onClick={() =>
-                              navigate(`/userpage/${detail?.data?.nickName}`)
-                            }
                             userSelect={{
                               Eye: detail?.data?.userAvatar?.Eye,
                               Hair: detail?.data?.userAvatar?.Hair,
