@@ -3,13 +3,8 @@ import styled from "styled-components";
 import { getDistance } from "geolib";
 import { useDispatch } from "react-redux";
 import { addDistance } from "../../redux/modules/postsSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
-import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
-import { getCookie } from "../../hooks/CookieHook";
 import { postsApi } from "../../instance";
 import { AiFillStar } from "@react-icons/all-files/ai/AiFillStar";
 import { AiOutlineStar } from "@react-icons/all-files/ai/AiOutlineStar";
@@ -64,20 +59,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
   const endDate = new Date(IsoendDate);
 
   const week = ["일", "월", "화", "수", "목", "금", "토"];
-  console.log(
-    "한국시간으로 바뀌었나요",
-    startDate.getMonth() +
-      1 +
-      "." +
-      startDate.getDate() +
-      " (" +
-      week[startDate.getDay()] +
-      ") " +
-      startDate.getHours() +
-      ":00 ~ " +
-      endDate.getHours() +
-      ":00"
-  );
+
   const showTime =
     ("0" + (startDate.getMonth() + 1)).slice(-2) +
     "." +
