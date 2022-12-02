@@ -53,22 +53,11 @@ const BanComments = ({
   // console.log("comments", comments);
 
   useEffect(() => {
-    //참가 확정 받은 유저인지 비교
-    for (let i = 0; i < detail?.confirmMember?.length; i++)
-      if (comments?.nickName === detail?.confirmMember[i]) {
-        setIsPartyAccept(true);
-      } else {
-        setIsPartyAccept(false);
-      }
-    //밴 유저인지 비교
-    for (let i = 0; i < detail?.banUser?.length; i++)
-      if (comments?.nickName === detail?.banUser[i]) {
-        setIsBanUser(true);
-        console.log("isBanUser", isBanUser);
-      } else {
-        setIsBanUser(false);
-      }
-  }, [comments, setIsPartyAccept]);
+    //참가 확정 받은 유저인지
+    comments?.confirmOrNot ? setIsPartyAccept(true) : setIsPartyAccept(false);
+    //밴 유저인지
+    comments?.banOrNot ? setIsBanUser(true) : setIsBanUser(false);
+  }, [comments, isPartyAccept, isBanUser]);
 
   console.log(comments);
 
@@ -108,7 +97,7 @@ const BanComments = ({
                           {comments?.nickName}
                         </Stspan>
                         <Stspan>
-                          <span>20대</span>
+                          <span>{comments?.age}세</span>
                           <span>&nbsp;/&nbsp;</span>
                           <span>{comments?.gender}</span>
                           {comments?.myPlace.length !== 0 && (
