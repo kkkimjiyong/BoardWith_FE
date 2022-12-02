@@ -593,10 +593,9 @@ const StContainer = styled.div`
   padding: 5% 8%;
   border: none;
   border-radius: 16px;
-  background-color: #d7d7d7;
   min-width: 370px;
   /* width: 340px; */
-  width: 85%;
+  width: 100%;
   max-width: 500px;
   background-color: #343434;
   //box-shadow: 3px 5px 20px 2px #5b5b5b;

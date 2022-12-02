@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { signUpApi } from "../../instance.js";
+import { signUpApi, userApi } from "../../instance.js";
 import { useState } from "react";
 import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
@@ -16,6 +16,8 @@ import { addUserData } from "../../redux/modules/postsSlice.js";
 const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [dupId, setDupId] = useState(false);
+  const [dupNickName, setDupNickName] = useState(false);
 
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({
@@ -34,6 +36,7 @@ const SignUp = () => {
   //useForm 설정
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -44,10 +47,39 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    dispatch(addUserData(data));
-    navigate("/signup1");
+    if (dupId && dupNickName) {
+      dispatch(addUserData(data));
+      navigate("/signup1");
+    } else {
+      alert("중복확인을 눌러주세요!");
+    }
   };
 
+  const DupId = async () => {
+    try {
+      const { data } = await signUpApi.DupId({ userId: getValues().userId });
+      console.log(data.findDupId);
+      alert(data.findDupId);
+      setDupId(true);
+    } catch (error) {
+      console.log(error.response.data.message);
+      alert(error.response.data.message);
+    }
+  };
+
+  const DupNickname = async () => {
+    try {
+      const { data } = await signUpApi.DupNick({
+        nickName: getValues().nickName,
+      });
+      console.log(data.findDupNick);
+      alert(data.findDupNick);
+      setDupNickName(true);
+    } catch (error) {
+      console.log(error.response.data.message);
+      alert(error.response.data.message);
+    }
+  };
   return (
     <>
       <SignUpWrap>
@@ -58,14 +90,27 @@ const SignUp = () => {
             <div>회원가입</div>
           </SignUpHeader>
           <Title>아이디와 닉네임을 입력해주세요</Title>{" "}
-          <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
-          {errors.userId && (
-            <AlertError role="alert">{errors.userId.message}</AlertError>
-          )}
-          <SignUpInput placeholder="닉네임" {...register("nickName")} />
-          {errors.nickName && (
-            <AlertError role="alert">{errors.nickName.message}</AlertError>
-          )}
+          <RowBox>
+            {" "}
+            <InputBox>
+              {" "}
+              <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
+              {errors.userId && (
+                <AlertError role="alert">{errors.userId.message}</AlertError>
+              )}
+            </InputBox>
+            <VerfiyBtn onClick={() => DupId()}>중복확인</VerfiyBtn>
+          </RowBox>
+          <RowBox>
+            {" "}
+            <InputBox>
+              <SignUpInput placeholder="닉네임" {...register("nickName")} />
+              {errors.nickName && (
+                <AlertError role="alert">{errors.nickName.message}</AlertError>
+              )}
+            </InputBox>
+            <VerfiyBtn onClick={() => DupNickname()}>중복확인</VerfiyBtn>
+          </RowBox>
           <NextBtn onClick={handleSubmit(onSubmit)}>다음</NextBtn>
         </SignUpCtn>
       </SignUpWrap>{" "}
@@ -112,7 +157,7 @@ const Title = styled.div`
 const SignUpInput = styled.input`
   color: white;
   display: block;
-  width: 90%;
+  width: 100%;
   padding: 0 20px;
   margin-top: 5%;
   height: 40px;
@@ -124,6 +169,24 @@ const SignUpInput = styled.input`
     border: none;
     border-bottom: 2px solid white;
   }
+`;
+
+const VerfiyBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  bottom: 50px;
+  font-weight: 500;
+  width: 20%;
+  font-size: 14px;
+  height: 2.5em;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: var(--primary);
+  margin-top: 5%;
+  margin-left: 10%;
 `;
 
 const NextBtn = styled.button`
@@ -154,6 +217,19 @@ const Arrow = styled.div`
 const AlertError = styled.div`
   font-size: 14px;
   color: red;
+`;
+
+const RowBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 60%;
 `;
 
 export default SignUp;
