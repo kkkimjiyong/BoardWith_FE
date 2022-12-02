@@ -37,8 +37,8 @@ const SignUp3 = () => {
       alert("회원가입을 축하드립니다!");
       navigate("/");
     } catch (error) {
-      console.log(error.data.err);
-      alert(error.data.err);
+      alert(error.response.data.err);
+      setValue("nickName", "");
     }
   };
 

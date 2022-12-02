@@ -55,7 +55,7 @@ const SignUp1 = () => {
   return (
     <Layout>
       <SignUpWrap>
-        <SignUpCtn onSubmit={handleSubmit(onSubmit)}>
+        <SignUpCtn>
           <SignUpHeader>
             <Arrow onClick={() => navigate("/signup")} />
             <div>회원가입</div>
@@ -79,7 +79,7 @@ const SignUp1 = () => {
             <AlertError role="alert">{errors.confirm.message}</AlertError>
           )}
 
-          <NextBtn>다음</NextBtn>
+          <NextBtn onClick={handleSubmit(onSubmit)}>다음</NextBtn>
         </SignUpCtn>
       </SignUpWrap>
     </Layout>
@@ -95,7 +95,7 @@ const SignUpWrap = styled.div`
   color: white;
 `;
 
-const SignUpCtn = styled.form`
+const SignUpCtn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

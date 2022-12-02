@@ -21,7 +21,7 @@ const KaKaoLogin = () => {
     age: yup
       .string()
       .required("나이를 입력해주세요")
-      .max(2, "최대 99살까지만 가능합니다"),
+      .max(2, "최대 두 자리까지만 가능합니다"),
     address: yup.string().required("주소를 입력해주세요!"),
     nickName: yup
       .string()
@@ -48,7 +48,7 @@ const KaKaoLogin = () => {
       setIsLoading(false);
       setUserId(data.userId);
     } catch (error) {
-      console.log(error);
+      alert(error.error);
     }
   };
 
@@ -68,7 +68,6 @@ const KaKaoLogin = () => {
       if (data.accessToken) {
         setCookie("accessToken", data.accessToken, { path: "/" });
         setCookie("refreshToken", data.refresh_token, { path: "/" });
-        setCookie("kakao", true, { path: "/" });
         alert("가입을 축하드립니다!");
         navigate("/main");
       } else {
@@ -76,10 +75,10 @@ const KaKaoLogin = () => {
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      alert(error.response.data.message);
+      setValue("nickName", "");
     }
   };
-
   useEffect(() => {}, []);
 
   //* --------------------  선호게임 태그인풋창  ---------------------------
