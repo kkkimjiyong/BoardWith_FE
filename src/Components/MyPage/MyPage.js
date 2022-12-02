@@ -179,7 +179,7 @@ const MyPage = () => {
             </div>
           </RowBox>
         </MainHeader>
-        <AvatarBox userSelect={user?.userAvater} />
+        <AvatarBox userSelect={user?.userAvatar} />
         <ProfileCtn>
           {" "}
           <ProfileRow className="Topbox">

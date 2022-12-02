@@ -7,7 +7,6 @@ const AvatarBox = ({ userSelect }) => {
     const { Eye, Hair, Mouth } = userSelect;
     return (
       <AvatarCtn>
-        <div>ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</div>
         <HairCtn>
           <img
             className="Hair"
