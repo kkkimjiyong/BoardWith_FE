@@ -12,7 +12,7 @@ const NaverLogin = ({ setGetToken, setUserInfo }) => {
       // 팝업창으로 로그인을 진행할 것인지?
       isPopup: false,
       // 버튼 타입 ( 색상, 타입, 크기 변경 가능 )
-      loginButton: { color: "green", type: 1, height: 50 },
+      loginButton: { color: "green", type: 1, height: 40 },
       callbackHandle: true,
     });
     naverLogin.init();
