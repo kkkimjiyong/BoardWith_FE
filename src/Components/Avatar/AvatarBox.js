@@ -98,6 +98,7 @@ const HairCtn = styled.div`
   justify-content: center;
   align-items: center;
   .Hair {
+    z-index: 5;
     transform: scale(1.6);
     position: absolute;
   }
