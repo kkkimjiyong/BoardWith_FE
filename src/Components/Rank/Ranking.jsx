@@ -119,7 +119,7 @@ const Ranking = () => {
 export default Ranking;
 
 const Wrap = styled.div`
-  margin: 3% 0 10% 0;
+  margin: 3% 0 14% 0;
   color: white;
   width: 100%;
   height: 100%;

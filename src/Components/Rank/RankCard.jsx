@@ -60,6 +60,7 @@ const StContainer = styled.div`
       margin-right: 3%;
       font-size: 14px;
       font-weight: normal;
+      width: 15px;
     }
     > h5 {
       font-weight: normal;
