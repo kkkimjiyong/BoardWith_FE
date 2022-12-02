@@ -42,7 +42,7 @@ const SignUp1 = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { gender: "female" },
+    defaultValues: { gender: "male" },
     resolver: yupResolver(formSchema),
   });
   //submit 핸들러

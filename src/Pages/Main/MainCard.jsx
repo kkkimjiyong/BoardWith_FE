@@ -10,12 +10,11 @@ import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
 import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
-import ProfileAvatarBox from "../../Components/Avatar/ProfileAvatarBox";
-import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 import { postsApi } from "../../instance";
+import AvatarBox from "../../Components/Avatar/AvatarBox";
 
-const Item = ({ number, item, Myaddress, closed }) => {
+const Item = ({ number, item, Myaddress, closed, userBook }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [ModalOpen, setModalOpen] = useState();
@@ -94,7 +93,13 @@ const Item = ({ number, item, Myaddress, closed }) => {
           {" "}
           <ItemProfile>
             {" "}
-            <ProfileAvatarBox userSelect={item?.userAvatar} />
+            <AvatarBox
+              userSelect={item?.userAvatar}
+              scale={0.12}
+              backScale={0.8}
+              circle={true}
+              profile={true}
+            />
             {/* <div
               style={{
                 borderRadius: "10px",
@@ -361,6 +366,7 @@ const ItemProfile = styled.div`
   display: flex;
   align-items: center;
   .nickNameTxt {
+    font-weight: 600;
     margin-left: 3%;
   }
 `;

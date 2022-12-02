@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { postApi } from "../../instance";
 import { useNavigate } from "react-router-dom";
-import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
+import AvatarBox from "../Avatar/AvatarBox";
 
 const BanComments = ({
   comments,
@@ -84,7 +84,11 @@ const BanComments = ({
                   <div>
                     <div>
                       <StAvatar>
-                        <ProfileAvatarBox
+                        <AvatarBox
+                          profile={true}
+                          scale={0.2}
+                          backScale={0.8}
+                          circle={true}
                           userSelect={{
                             Eye: comments?.userAvatar?.Eye,
                             Hair: comments?.userAvatar?.Hair,

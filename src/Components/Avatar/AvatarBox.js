@@ -2,11 +2,29 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
 
-const AvatarBox = ({ userSelect }) => {
+const AvatarBox = ({
+  userSelect,
+  avatarScale,
+  scale,
+  circle,
+  backScale,
+  profile,
+}) => {
   if (userSelect) {
-    const { Eye, Hair, Mouth } = userSelect;
+    const { Eye, Hair, Mouth, Back } = userSelect;
     return (
-      <AvatarCtn>
+      <AvatarCtn profile={profile} translateScale={scale}>
+        <BackCtn
+          translateBorder={circle}
+          translateBackScale={backScale}
+          profile={profile}
+        >
+          <img
+            className="Back"
+            src={`/avatar/Back/Back${Back}.svg`}
+            alt="Back!"
+          />
+        </BackCtn>
         <HairCtn>
           <img
             className="Hair"
@@ -38,8 +56,10 @@ const AvatarCtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: ${({ profile }) => (profile ? "30px" : "100%")};
   height: 38%;
+  transform: ${({ translateScale }) => `scale(${translateScale})`};
+  /* transform: scale(0.5); */
   /* background-color: var(--white); */
   /* background-color: red; */
 `;
@@ -54,7 +74,7 @@ const AvatarSqr = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: transparent;
+  background-color: var(--white);
 `;
 const SqrCtn = styled.div`
   z-index: 0;
@@ -68,6 +88,7 @@ const SqrCtn = styled.div`
 `;
 
 const HairCtn = styled.div`
+  z-index: 1;
   z-index: 0;
   position: absolute;
   top: 0;
@@ -83,7 +104,8 @@ const HairCtn = styled.div`
 `;
 
 const EyeCtn = styled.div`
-  z-index: 0;
+  z-index: 1;
+
   position: absolute;
   top: 0;
   width: 280px;
@@ -98,7 +120,8 @@ const EyeCtn = styled.div`
 `;
 
 const MouthCtn = styled.div`
-  z-index: 0;
+  z-index: 1;
+
   position: absolute;
   top: 0;
   width: 280px;
@@ -108,6 +131,23 @@ const MouthCtn = styled.div`
   align-items: center;
   .Mouth {
     transform: scale(1.6);
+    position: absolute;
+  }
+`;
+
+const BackCtn = styled.div`
+  z-index: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .Back {
+    width: ${({ profile }) => (profile ? null : "100%")};
+    transform: ${({ translateBackScale }) => `scale(${translateBackScale})`};
+    border-radius: ${({ translateBorder }) => (translateBorder ? "50%" : null)};
     position: absolute;
   }
 `;
