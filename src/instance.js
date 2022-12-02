@@ -10,6 +10,11 @@ const instance = axios.create({
   },
 });
 
+const instanceNoAuth = axios.create({
+  // baseURL: process.env.REACT_APP_BACK_SERVER,
+  baseURL: "https://www.iceflower.shop",
+});
+
 //? ------------------------- axios interceptor  --------------------------
 
 instance.interceptors.response.use(
@@ -56,8 +61,9 @@ instance.interceptors.response.use(
 
 export const signUpApi = {
   postSingup: (userinfo) => instance.post("/users/signup", userinfo),
-  DupNick: (userNickname) => instance.post("/users/Dup/Nick", userNickname),
-  DupId: (userId) => instance.post("/users/Dup/Id", userId),
+  DupNick: (userNickname) =>
+    instanceNoAuth.post("/users/Dup/Nick", userNickname),
+  DupId: (userId) => instanceNoAuth.post("/users/Dup/Id", userId),
 };
 
 export const loginApi = {

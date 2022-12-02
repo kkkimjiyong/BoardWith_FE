@@ -2,11 +2,11 @@ import styled from "styled-components";
 import Layout from "../../style/Layout";
 import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Item from "./MainCard";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "./Skeleton";
-import { postsApi } from "../../instance";
+import { postsApi, userApi } from "../../instance";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const Search = () => {
   const [titleSearch, setTitleSearch] = useState([]);
   const [nicknameSearch, setNicknameSearch] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [bookmarked, setBookmarked] = useState();
 
   const creatTitlePost = async () => {
     setLoading(true);
@@ -50,6 +51,22 @@ const Search = () => {
     }
   };
 
+  const getUser = async () => {
+    try {
+      const { data } = await userApi.getUser();
+      console.log(data.findUser.bookmark);
+      setBookmarked(data.findUser.bookmark);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  console.log(bookmarked);
+
   return (
     <Layout>
       <MainHeader>
@@ -71,6 +88,7 @@ const Search = () => {
             if (items.participant.length < items.partyMember && !items.closed) {
               return (
                 <Item
+                  userBook={bookmarked}
                   //   setModalOpen={setModalOpen}
                   key={idx}
                   item={items}
@@ -89,6 +107,7 @@ const Search = () => {
             if (items.participant.length < items.partyMember && !items.closed) {
               return (
                 <Item
+                  userBook={bookmarked}
                   //   setModalOpen={setModalOpen}
                   key={idx}
                   item={items}

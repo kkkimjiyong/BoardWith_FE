@@ -166,12 +166,6 @@ const Comments = ({
         setIsBanUser(false);
       }
   }, [comments, isPartyAccept]);
-  // console.log("detail", detail);
-  // console.log("comments", comments);
-  // console.log("myPlace", comments?.myPlace);
-  // console.log(comments?.myPlace.length === 0);
-  console.log("isPartyAccept", isPartyAccept);
-  console.log("아바타", comments?.userAvater?.Eye);
 
   return (
     <>
@@ -316,12 +310,7 @@ const Comments = ({
                               scale={0.2}
                               backScale={0.8}
                               circle={true}
-                              userSelect={{
-                                Eye: comments?.userAvater?.Eye,
-                                Hair: comments?.userAvater?.Hair,
-                                Mouth: comments?.userAvater?.Mouth,
-                                Back: comments?.userAvater?.Back,
-                              }}
+                              userSelect={comments?.userAvater}
                             />
                           </StAvatar>
                         </div>

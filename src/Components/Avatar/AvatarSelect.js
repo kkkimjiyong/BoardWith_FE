@@ -202,7 +202,6 @@ const AvatarSelect = () => {
                   );
               })}{" "}
             </AvatarItemListCtn>
-
             <AvatarBtnSet>
               <ChangeBtn
                 //* 사진 다 집어넣으면 axios만 넣어주기
@@ -227,7 +226,7 @@ const Wrap = styled.div`
   position: relative;
   margin: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
@@ -241,7 +240,7 @@ const AvatarHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 7vh;
+  height: 7%;
   font-size: 1.5rem;
   color: var(--white);
   background-color: var(--black);
@@ -287,14 +286,16 @@ const AvatarSelectCtn = styled.div`
 
 const AvatarBtnSet = styled.div`
   width: 100%;
-  gap: 20px;
+  height: 15%;
+  margin-bottom: 10px;
   justify-content: center;
   display: flex;
 `;
 const ChangeBtn = styled.button`
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
   border-radius: 50px;
+  margin-right: 20px;
   width: 60%;
   border: none;
   color: var(--white);
@@ -302,7 +303,7 @@ const ChangeBtn = styled.button`
 `;
 
 const ResetBtn = styled.button`
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
   display: flex;
   justify-content: center;
@@ -346,7 +347,7 @@ const AvatarItemCtn = styled.div`
 
 const AvatarItemListCtn = styled.div`
   display: flex;
-  margin: 5% 0%;
+  margin-top: 5%;
   height: 70%;
   overflow-x: scroll;
   ::-webkit-scrollbar {
@@ -373,7 +374,7 @@ const ImgItemCtn = styled.div`
     justify-content: center;
     width: 100%;
     align-items: center;
-    font-size: 24px;
+    font-size: 20px;
     margin-top: 2%;
   }
 `;
