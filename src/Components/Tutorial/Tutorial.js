@@ -117,7 +117,7 @@ const ContentBox = styled.div`
     ::after {
       content: "";
       position: absolute;
-      top: -38%;
+      top: -30%;
       left: 80%;
       width: 0;
       height: 0;

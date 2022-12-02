@@ -33,18 +33,13 @@ const Login = () => {
       console.log(data.nickName);
       if (data.accessToken) {
         console.log("나 푸쉬됬어요3");
-        setCookie("accessToken", data.accessToken, {
+        sessionStorage.setItem("accessToken", data.accessToken, {
           path: "/",
         });
-        setCookie("refreshToken", data.refresh_token, {
+        sessionStorage.setItem("refreshToken", data.refresh_token, {
           path: "/",
         });
-        setCookie("nickName", data.nickName);
-        setCookie("123", "123", {
-          path: "/",
-          httpOnly: true,
-        });
-        setCookie("nickName", data.nickName);
+        sessionStorage.setItem("nickName", data.nickName);
       }
 
       navigate("/main");

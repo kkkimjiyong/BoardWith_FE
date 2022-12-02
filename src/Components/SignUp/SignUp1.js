@@ -42,7 +42,7 @@ const SignUp1 = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { gender: "female" },
+    defaultValues: { gender: "male" },
     resolver: yupResolver(formSchema),
   });
   //submit 핸들러
@@ -144,7 +144,7 @@ const NextBtn = styled.button`
   align-items: center;
   justify-content: center;
   color: var(--white);
-  position: fixed;
+  position: absolute;
   bottom: 50px;
   font-weight: 600;
   width: 80%;

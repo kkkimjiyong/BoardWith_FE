@@ -16,11 +16,6 @@ const MyPartyItem = ({ title, deletHandler, postId }) => {
           <DetailModal postid={postId} setModalOpen={setModalOpen} />
         )}
       </Ctn>
-      <AiFillCloseCircle
-        onClick={() => deletHandler(postId)}
-        className="closebtn"
-        size={"30"}
-      />
     </Wrap>
   );
 };
@@ -48,16 +43,6 @@ const Ctn = styled.div`
   align-items: center;
   border-radius: 20px;
   padding: 2% 5%;
-`;
-
-const CloseBtn = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--primary);
 `;
 
 const Arrow = styled.div`

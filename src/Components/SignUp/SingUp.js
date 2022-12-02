@@ -41,7 +41,7 @@ const SignUp = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { gender: "female" },
+    defaultValues: { gender: "male" },
     resolver: yupResolver(formSchema),
   });
 
@@ -194,7 +194,7 @@ const NextBtn = styled.button`
   align-items: center;
   justify-content: center;
   color: var(--white);
-  position: fixed;
+  position: absolute;
   bottom: 50px;
   font-weight: 600;
   width: 80%;

@@ -10,12 +10,11 @@ import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
 import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
-import ProfileAvatarBox from "../../Components/Avatar/ProfileAvatarBox";
-import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 import { postsApi } from "../../instance";
+import AvatarBox from "../../Components/Avatar/AvatarBox";
 
-const Item = ({ number, item, Myaddress, closed }) => {
+const Item = ({ number, item, Myaddress, closed, userBook }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [ModalOpen, setModalOpen] = useState();
@@ -67,9 +66,10 @@ const Item = ({ number, item, Myaddress, closed }) => {
   };
   const realStartTime = getStartTime(startDate);
   const realEndTime = getEndTime(endDate);
-
   //북마크(별) 색깔 변환
-  const [starMark, setStarMark] = useState(true);
+  const [starMark, setStarMark] = useState(
+    userBook.includes(item._id) ? false : true
+  );
   const bookMarking = async () => {
     try {
       const { data } = await postsApi.bookMarkPost({ postId: item._id });
@@ -92,17 +92,14 @@ const Item = ({ number, item, Myaddress, closed }) => {
       >
         <div className="ItemWrap-Body-SpaceBetween">
           {" "}
-          <ItemProfile>
-            {" "}
-            <ProfileAvatarBox userSelect={item?.userAvatar} />
-            {/* <div
-              style={{
-                borderRadius: "10px",
-                border: "2px solid #ddd",
-                width: "30px",
-                height: "30px",
-              }}
-            ></div> */}
+          <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
+            <AvatarBox
+              userSelect={item?.userAvatar}
+              scale={0.12}
+              backScale={0.8}
+              circle={true}
+              profile={true}
+            />
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
           {starMark ? (
@@ -361,6 +358,7 @@ const ItemProfile = styled.div`
   display: flex;
   align-items: center;
   .nickNameTxt {
+    font-weight: 600;
     margin-left: 3%;
   }
 `;

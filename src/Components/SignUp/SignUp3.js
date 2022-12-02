@@ -61,7 +61,7 @@ const SignUp3 = () => {
   //submit 핸들러
   const onSubmit = (data) => {
     console.log(data);
-    reset();
+
     console.log({
       ...userInfo,
       age: data.age,
@@ -77,6 +77,7 @@ const SignUp3 = () => {
       myPlace: data.address.split(" ").slice(0, 2),
     });
     console.log(errors);
+    reset();
   };
 
   //* --------------------  다음 주소창  ----------------------------
@@ -293,7 +294,7 @@ const NextBtn = styled.div`
   align-items: center;
   justify-content: center;
   color: var(--white);
-  position: fixed;
+  position: absolute;
   bottom: 50px;
   font-weight: 600;
   width: 80%;

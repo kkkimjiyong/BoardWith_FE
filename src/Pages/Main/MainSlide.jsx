@@ -29,7 +29,7 @@ const MainSlide = () => {
   const [open, setOpen] = useState(false);
   const [isTutorial, setIsTutorial] = useState(false);
   const [selfCheck, setSelfCheck] = useState(false);
-  const [userBook, setUserBook] = useState();
+  const [userBook, setUserBook] = useState([]);
   const scrollHead = useRef();
   const [loading, setLoading] = useState(true);
 
@@ -90,7 +90,7 @@ const MainSlide = () => {
     try {
       const { data } = await userApi.getUser();
       console.log(data.findUser.bookmarkData);
-      setUserBook(data.findUser.bookmarkData);
+      setUserBook(data.findUser.bookmark);
       setIsTutorial(data.findUser.tutorial);
       setSelfCheck(data.findUser.loginCheck);
     } catch (error) {
@@ -100,7 +100,7 @@ const MainSlide = () => {
   useEffect(() => {
     getUser();
   }, []);
-
+  console.log(userBook);
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
@@ -123,7 +123,7 @@ const MainSlide = () => {
     //threshold는 ref타겟의 모습이 0~1만큼의 모습이 보이면 inview가 작동하는 값
     threshold: 0.1,
   });
-
+  console.log(userBook.includes("6389a348dfd4d14c13502f31"));
   useEffect(() => {
     //ref타켓이 보이고, 다음페이지가 있으면 데이터get요청
     if (inView && hasNextPage) {
@@ -172,6 +172,7 @@ const MainSlide = () => {
             {items?.map((items, idx) => {
               return (
                 <Item
+                  userBook={userBook}
                   closed={items.closed}
                   setModalOpen={setModalOpen}
                   key={idx}
@@ -221,7 +222,7 @@ export default MainSlide;
 
 const Target = styled.div`
   height: 100px;
-  color: var(--white);
+  color: var(--black);
 `;
 
 const MainBox = styled.div`
