@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
+import AvatarBox from "../Avatar/AvatarBox";
 
 const RankCard = (rank, ranking) => {
   // console.log(rank);
@@ -10,7 +10,11 @@ const RankCard = (rank, ranking) => {
         <div>
           <h4>{rank?.rank?.rank}</h4>
           <StAvatar>
-            <ProfileAvatarBox
+            <AvatarBox
+              profile={true}
+              scale={0.15}
+              backScale={0.8}
+              circle={true}
               // styled={{ width: "10px" }}
               userSelect={{
                 Eye: rank.rank?.userAvatar?.Eye,
@@ -67,8 +71,8 @@ const StContainer = styled.div`
 const StAvatar = styled.div`
   background-color: white;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;

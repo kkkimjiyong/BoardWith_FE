@@ -7,7 +7,6 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { postApi } from "../../instance";
 import { useNavigate } from "react-router-dom";
-import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 import { BiCheckCircle } from "@react-icons/all-files/bi/BiCheckCircle";
 import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt";
 import { FiTrash2 } from "@react-icons/all-files/fi/FiTrash2";
@@ -312,7 +311,11 @@ const Comments = ({
                       <div>
                         <div>
                           <StAvatar>
-                            <ProfileAvatarBox
+                            <AvatarBox
+                              profile={true}
+                              scale={0.2}
+                              backScale={0.8}
+                              circle={true}
                               userSelect={{
                                 Eye: comments?.userAvater?.Eye,
                                 Hair: comments?.userAvater?.Hair,

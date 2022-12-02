@@ -5,7 +5,6 @@ import styled from "styled-components";
 import BanComments from "./BanComment";
 import Comments from "./Comment";
 import Loading from "../../style/Loading";
-import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 import {
   __getComments,
   __postComments,

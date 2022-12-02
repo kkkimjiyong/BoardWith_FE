@@ -3,8 +3,8 @@ import styled from "styled-components";
 import RankCard from "./RankCard";
 import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 import { rankApi } from "../../instance";
-import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 import Loading from "../../style/Loading";
+import AvatarBox from "../Avatar/AvatarBox";
 
 const Ranking = () => {
   const [loading, setLoading] = useState(true);
@@ -39,7 +39,11 @@ const Ranking = () => {
                   size="20px"
                 />
                 <StAvatar>
-                  <ProfileAvatarBox
+                  <AvatarBox
+                    profile={true}
+                    scale={0.2}
+                    backScale={0.8}
+                    circle={true}
                     userSelect={{
                       Eye: rank?.[0]?.userAvatar?.Eye,
                       Hair: rank?.[0]?.userAvatar?.Hair,
@@ -60,7 +64,11 @@ const Ranking = () => {
                     }}
                   />
                   <StAvatar>
-                    <ProfileAvatarBox
+                    <AvatarBox
+                      profile={true}
+                      scale={0.2}
+                      backScale={0.8}
+                      circle={true}
                       userSelect={{
                         Eye: rank?.[1]?.userAvatar?.Eye,
                         Hair: rank?.[1]?.userAvatar?.Hair,
@@ -80,7 +88,11 @@ const Ranking = () => {
                     }}
                   />
                   <StAvatar>
-                    <ProfileAvatarBox
+                    <AvatarBox
+                      profile={true}
+                      scale={0.2}
+                      backScale={0.8}
+                      circle={true}
                       userSelect={{
                         Eye: rank?.[2]?.userAvatar?.Eye,
                         Hair: rank?.[2]?.userAvatar?.Hair,

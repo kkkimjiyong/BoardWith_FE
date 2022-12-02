@@ -10,8 +10,6 @@ import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
 import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
-import ProfileAvatarBox from "../../Components/Avatar/ProfileAvatarBox";
-import axios from "axios";
 import { getCookie } from "../../hooks/CookieHook";
 import { postsApi } from "../../instance";
 import AvatarBox from "../../Components/Avatar/AvatarBox";
