@@ -285,7 +285,7 @@ const ItemWrap = styled.div`
 
 const StatusBox = styled.div`
   color: #2e294e;
-  width: 20%;
+  min-width: 20%;
   height: 30px;
   border: 1px solid #5c5c5c;
   padding: 5px 0px;
