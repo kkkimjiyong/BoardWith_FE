@@ -2,16 +2,27 @@ import React from "react";
 import styled from "styled-components";
 import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 
-const RankCard = () => {
+const RankCard = (rank, ranking) => {
+  // console.log(rank);
   return (
-    <Wrap>
+    <Wrap key={rank.nickName}>
       <StContainer>
         <div>
-          <h4>순위</h4>
-          <StAvatar style={{}} />
-          <h5>닉네임</h5>
+          <h4>{rank?.rank?.rank}</h4>
+          <StAvatar>
+            <ProfileAvatarBox
+              // styled={{ width: "10px" }}
+              userSelect={{
+                Eye: rank.rank?.userAvatar?.Eye,
+                Hair: rank.rank?.userAvatar?.Hair,
+                Mouth: rank.rank?.userAvatar?.Mouth,
+                Back: rank.rank?.userAvatar?.Back,
+              }}
+            />
+          </StAvatar>
+          <h5>{rank?.rank?.nickName}</h5>
         </div>
-        <span>1000P</span>
+        <span>{rank?.rank?.totalPoint}P</span>
       </StContainer>
     </Wrap>
   );
@@ -54,10 +65,11 @@ const StContainer = styled.div`
 `;
 
 const StAvatar = styled.div`
-  border: 1px solid gray;
+  background-color: white;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  background-size: cover;
-  background-image: url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
