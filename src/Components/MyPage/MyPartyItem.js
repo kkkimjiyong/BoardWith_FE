@@ -21,6 +21,7 @@ const MyPartyItem = ({ title, deletHandler, postId }) => {
 };
 
 const Wrap = styled.div`
+  margin-top: 5%;
   display: flex;
   justify-content: center;
   align-items: center;

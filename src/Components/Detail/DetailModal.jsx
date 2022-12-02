@@ -320,12 +320,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             scale={0.2}
                             backScale={0.8}
                             circle={true}
-                            userSelect={{
-                              Eye: detail?.data?.userAvatar?.Eye,
-                              Hair: detail?.data?.userAvatar?.Hair,
-                              Mouth: detail?.data?.userAvatar?.Mouth,
-                              Back: detail?.data?.userAvatar?.Eye,
-                            }}
+                            userSelect={detail?.data.userAvatar}
                           />
                         </StAvatarContainer>
                         <NickName>{detail?.data?.nickName}</NickName>
