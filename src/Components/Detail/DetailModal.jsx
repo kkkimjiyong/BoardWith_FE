@@ -31,6 +31,10 @@ import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 import moment from "moment-timezone";
 
+import { AiOutlineCalendar } from "react-icons/ai";
+import { FiMapPin } from "react-icons/fi";
+import { BsPeopleFill } from "react-icons/bs";
+
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const dispatch = useDispatch();
@@ -375,12 +379,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <h5>{detail?.data?.cafe}</h5> {/* 장소 */}
                     </StContentWrap>
                     <StContentWrap>
-                      <FontAwesomeIcon
+                      <AiOutlineCalendar
                         style={{
                           color: "white",
                         }}
                         size="1x"
-                        icon={faCalendar}
                       />
                       <div />
                       <h5>{realStartTime + " ~ " + realEndTime}</h5>{" "}

@@ -34,7 +34,7 @@ const Ranking = () => {
               <StTopRanker>
                 <FaCrown
                   style={{
-                    color: "#ffeda6",
+                    color: "#FFBD70",
                   }}
                   size="20px"
                 />
@@ -56,9 +56,8 @@ const Ranking = () => {
                 <StTopRanker>
                   <FaCrown
                     style={{
-                      color: "#bbbbbb",
+                      color: "#C5C5C5",
                     }}
-                    size=""
                   />
                   <StAvatar>
                     <ProfileAvatarBox
@@ -77,9 +76,8 @@ const Ranking = () => {
                 <StTopRanker>
                   <FaCrown
                     style={{
-                      color: "#b39b81",
+                      color: "#9A6C36",
                     }}
-                    size=""
                   />
                   <StAvatar>
                     <ProfileAvatarBox
