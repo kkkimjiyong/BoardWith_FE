@@ -51,15 +51,13 @@ const SignUp = () => {
   return (
     <>
       <SignUpWrap>
-        <SignUpCtn>
+        <SignUpCtn onSubmit={handleSubmit(onSubmit)}>
           {" "}
           <SignUpHeader>
             <Arrow onClick={() => navigate("/")} />
             <div>회원가입</div>
           </SignUpHeader>
-          <h3>
-            아이디와 닉네임을 <br /> 입력해주세요
-          </h3>{" "}
+          <Title>아이디와 닉네임을 입력해주세요</Title>{" "}
           <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
           {errors.userId && (
             <AlertError role="alert">{errors.userId.message}</AlertError>
@@ -68,7 +66,7 @@ const SignUp = () => {
           {errors.nickName && (
             <AlertError role="alert">{errors.nickName.message}</AlertError>
           )}
-          <NextBtn onClick={handleSubmit(onSubmit)}>다음</NextBtn>
+          <NextBtn>다음</NextBtn>
         </SignUpCtn>
       </SignUpWrap>{" "}
     </>
@@ -84,7 +82,7 @@ const SignUpWrap = styled.div`
   color: white;
 `;
 
-const SignUpCtn = styled.div`
+const SignUpCtn = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -106,33 +104,9 @@ const SignUpHeader = styled.div`
   padding-right: 40%;
 `;
 
-const RowBox = styled.div`
-  width: 90%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  &.column {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-`;
-
-const VerfiyBtn = styled.div`
-  font-size: 15px;
-  color: var(--white);
-  width: 35%;
-  background-color: var(--primary);
-  display: flex;
-  justify-content: center;
-  border-radius: 15px;
-  padding: 5px 10px;
-`;
-
-const InputBirth = styled.input`
-  border-radius: 5px;
-  width: 10%;
-  padding: 10px;
-  border: 2px solid #9747ff;
+const Title = styled.div`
+  line-height: 180%;
+  margin-bottom: 5%;
 `;
 
 const SignUpInput = styled.input`
@@ -140,7 +114,7 @@ const SignUpInput = styled.input`
   display: block;
   width: 90%;
   padding: 0 20px;
-  margin-bottom: 5px;
+  margin-top: 5%;
   height: 40px;
   border: none;
   border-bottom: 1px solid #ffffff;
@@ -152,13 +126,7 @@ const SignUpInput = styled.input`
   }
 `;
 
-const DaumPostBox = styled.div`
-  position: relative;
-  box-shadow: 0px 3px 3px 0px gray;
-  width: 400px;
-`;
-
-const NextBtn = styled.div`
+const NextBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,68 +136,13 @@ const NextBtn = styled.div`
   font-weight: 600;
   width: 80%;
   max-width: 500px;
-  height: 3em;
+  font-size: 16px;
+  height: 2.5em;
   border: none;
   border-radius: 20px;
   box-shadow: 0px 3px 3px 0px gray;
   cursor: pointer;
   background-color: var(--primary);
-  :hover {
-    background-color: gray;
-  }
-`;
-
-const WholeBox = styled.div`
-  width: 90%;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`;
-
-const TagBox = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  min-height: 40px;
-  margin: 10px;
-  padding: 0 10px;
-  border: none;
-  border-bottom: 1px solid white;
-  &:focus-within {
-    border-bottom: 2px solid white;
-  }
-`;
-
-const TagItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 5px;
-  padding: 5px;
-  background-color: var(--primary);
-  border-radius: 5px;
-  color: white;
-  font-size: 13px;
-`;
-
-const Text = styled.span``;
-
-const TagButton = styled.button`
-  background-color: transparent;
-  text-shadow: 0px 1px 1px 0px var(--black);
-  border: none;
-  color: var(--red);
-`;
-
-const TagInput = styled.input`
-  color: white;
-  display: inline-flex;
-  min-width: 250px;
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: text;
 `;
 
 const Arrow = styled.div`

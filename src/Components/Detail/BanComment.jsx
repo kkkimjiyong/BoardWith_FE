@@ -84,10 +84,10 @@ const BanComments = ({
                       <StAvatar>
                         <ProfileAvatarBox
                           userSelect={{
-                            Eye: comment?.userAvater?.Eye,
-                            Hair: comment?.userAvater?.Hair,
-                            Mouth: comment?.userAvater?.Mouth,
-                            Back: comment?.userAvater?.Back,
+                            Eye: comment?.userAvatar?.Eye,
+                            Hair: comment?.userAvatar?.Hair,
+                            Mouth: comment?.userAvatar?.Mouth,
+                            Back: comment?.userAvatar?.Back,
                           }}
                         />
                       </StAvatar>

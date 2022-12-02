@@ -158,7 +158,7 @@ const MainFilter = ({
   return (
     <BackGroudModal onClick={() => setOpen(!open)} open={open}>
       {" "}
-      <Wrap open={open}>
+      <Wrap open={open} onClick={(e) => e.stopPropagation()}>
         <div>
           <Contentbox>
             <ContentLabel>위치</ContentLabel>

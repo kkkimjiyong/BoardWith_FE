@@ -87,7 +87,7 @@ function Form({ setFormModalOpen, setItems }) {
       const { data } = await postsApi.creatPost(payload);
       console.log("formpayload", payload);
       console.log("formdata", data);
-      setItems((prev) => prev.concat(data.createPost));
+      setItems((prev) => [data.createPost, ...prev]);
       alert("파티모집글 작성이 완료되었습니다.");
       setFormModalOpen(false);
     } catch (error) {}
