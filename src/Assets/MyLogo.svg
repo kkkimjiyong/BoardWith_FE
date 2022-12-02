@@ -5,7 +5,7 @@ viewBox="0 0 180 50">
   <defs>
     <style>
          .cls-1 {
-        fill: #c72363;
+        fill: #fff;
         stroke-width: 3px;
       }
 
@@ -14,7 +14,7 @@ viewBox="0 0 180 50">
         stroke-linejoin: round;
         stroke-dasharray: 160;
         stroke-dashoffset: 160;
-        animation: ani 5s linear infinite;
+        animation: ani 5s linear infinite alternate;
         filter:url(#f1)
       }
 @keyframes ani {
@@ -22,12 +22,12 @@ viewBox="0 0 180 50">
    
     stroke-dashoffset: 160; 
   }
-  30% {
-    stroke: #c72363;
+  50% {
+
     stroke-dashoffset: 0;  
   }
   100% {
-     
+        stroke: #c72363;
     stroke-dashoffset: -160;
   }
 }

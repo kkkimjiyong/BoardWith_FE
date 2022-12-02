@@ -21,7 +21,10 @@ const OtherUserPage = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
+  const { nickname } = useParams();
+  console.log(bookmark);
+  console.log(confirmParty);
+  console.log(reservedParty);
   //---------- 1초 로딩 후 렌더  ------------
   useEffect(() => {
     getUser();
@@ -31,24 +34,14 @@ const OtherUserPage = () => {
 
   const getUser = async () => {
     try {
-      const { data } = await userApi.getUser();
+      const { data } = await userApi.getOtherUser(nickname);
       console.log(data);
-      setLikeGame(data.findUser.likeGame);
-      setUser(data.findUser);
+      setLikeGame(data.lookOtherUser.likeGame);
+      setUser(data.lookOtherUser);
       setReservedParty(data.partyReserved);
       setConfirmParty(data.partyGo);
-      setBookmark(data.findUser.bookmarkData);
+      setBookmark(data.bookmarkData);
       setTimeout(() => setIsLoading(false), 1000);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const editUser = async () => {
-    try {
-      const { data } = await userApi.editUser(user);
-      console.log(data.findUserData);
-      setUser(data.findUserData);
     } catch (error) {
       console.log(error);
     }

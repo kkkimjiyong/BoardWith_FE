@@ -38,7 +38,6 @@ const MobileHeaderCtn = styled.div`
   bottom: 0;
   width: 100%;
   box-shadow: 1px 1px 15px 3px black;
-  /* background-color: #9747ff; */
   .logo {
     width: 8%;
     margin: 0 6%;

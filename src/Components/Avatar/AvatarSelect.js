@@ -23,7 +23,7 @@ const AvatarSelect = () => {
   const [userSelect, setUserSelect] = useState();
   const [initialuserSelect, setInitialUserSelect] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
+  const [puserSelect, setpUserSelect] = useState([]);
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDrag(true);
@@ -59,17 +59,22 @@ const AvatarSelect = () => {
 
   //? ------------------아바타 API  ----------------------
 
-  const postAvatar = async () => {
-    try {
-      const { data } = await userApi.editUser({
-        userAvatar: userSelect,
-        point,
-      });
-      setUserSelect(data.findUserData.userAvatar);
-      setInitialUserSelect(data.findUserData.userAvatar);
-      console.log(point);
-    } catch (error) {
-      console.log(error);
+  const postAvatar = async (point) => {
+    if (point < 0) {
+      alert("포인트가 부족합니다!");
+      setPoint(initialpoint);
+    } else {
+      try {
+        const { data } = await userApi.editUser({
+          userAvatar: userSelect,
+          point,
+        });
+        setUserSelect(data.findUserData.userAvatar);
+        setInitialUserSelect(data.findUserData.userAvatar);
+        console.log(point);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   const getUser = async () => {
@@ -79,6 +84,12 @@ const AvatarSelect = () => {
       setInitialUserSelect(data.findUser.userAvatar);
       setPoint(data.findUser.point);
       setInitialPoint(data.findUser.point);
+      setpUserSelect([
+        { Category: "Eye", Num: data.findUser.userAvatar.Eye },
+        { Category: "Mouth", Num: data.findUser.userAvatar.Mouth },
+        { Category: "Back", Num: data.findUser.userAvatar.Back },
+        { Category: "Hair", Num: data.findUser.userAvatar.Hair },
+      ]);
       setTimeout(() => setIsLoading(false), 1000);
     } catch (error) {
       console.log(error);
@@ -89,8 +100,6 @@ const AvatarSelect = () => {
     getUser();
   }, []);
 
-  //! 이런식으로 user avatar가 db에 저장되면 된다!
-
   const selectController = (Img) => {
     setUserSelect({
       ...userSelect,
@@ -99,31 +108,24 @@ const AvatarSelect = () => {
     setSelect({ Num: Img.Num, Category: Img.Category });
   };
   //! --------------  포인트차감 로직  --------------------
-
-  // const discountPoint = () => {
-  //   if (userSelect?.Eye !== initialuserSelect?.Eye) {
-  //     console.log(userSelect?.Eye !== initialuserSelect?.Eye);
-  //     setPoint((prev) => prev - 1000);
-  //   }
-  //   if (userSelect?.Mouth !== initialuserSelect?.Mouth) {
-  //     console.log(userSelect?.Mouth !== initialuserSelect?.Mouth);
-  //     setPoint((prev) => prev - 1000);
-  //   }
-  //   if (userSelect?.Back !== initialuserSelect?.Back) {
-  //     console.log(userSelect?.Back !== initialuserSelect?.Back);
-  //     setPoint((prev) => prev - 1000);
-  //   }
-  //   if (userSelect?.Hair !== initialuserSelect?.Hair) {
-  //     console.log(userSelect?.Hair !== initialuserSelect?.Hair);
-  //     setPoint((prev) => prev - 1000);
-  //   }
-  //   if (point < 0) {
-  //     alert("포인트가 부족합니다!");
-  //     setPoint(initialpoint);
-  //   } else {
-  //     console.log(point);
-  //   }
-  // };
+  const discountPoint = () => {
+    let point = initialpoint;
+    if (userSelect?.Eye !== initialuserSelect?.Eye) {
+      point -= 300;
+    }
+    if (userSelect?.Mouth !== initialuserSelect?.Mouth) {
+      point -= 300;
+    }
+    if (userSelect?.Back !== initialuserSelect?.Back) {
+      point -= 300;
+    }
+    if (userSelect?.Hair !== initialuserSelect?.Hair) {
+      point -= 300;
+    }
+    setPoint(point);
+    return postAvatar(point);
+  };
+  console.log(puserSelect.filter((c) => c.Category == selectCategory));
 
   if (isLoading) {
     return <Loading />;
@@ -137,7 +139,7 @@ const AvatarSelect = () => {
         </AvatarHeader>
         <AvatarCtn>
           {" "}
-          <AvatarBox userSelect={userSelect} select={select} profile={false} />
+          <AvatarBox userSelect={userSelect} profile={false} />
         </AvatarCtn>
 
         <PointBox>
@@ -195,19 +197,26 @@ const AvatarSelect = () => {
                         onClick={() => selectController(Img)}
                       />
                       <div className="point">
-                        <ImCoinDollar />
-                        300
+                        {puserSelect?.filter(
+                          (c) => c.Category == selectCategory
+                        )[0].Num == Img.Num ? (
+                          "사용중"
+                        ) : (
+                          <>
+                            <ImCoinDollar />
+                            300
+                          </>
+                        )}
                       </div>
                     </ImgItemCtn>
                   );
               })}{" "}
             </AvatarItemListCtn>
-
             <AvatarBtnSet>
               <ChangeBtn
                 //* 사진 다 집어넣으면 axios만 넣어주기
-                onClick={postAvatar}
-                // onClick={discountPoint}
+                // onClick={postAvatar}
+                onClick={discountPoint}
               >
                 변경하기
               </ChangeBtn>
@@ -227,7 +236,7 @@ const Wrap = styled.div`
   position: relative;
   margin: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
@@ -241,7 +250,7 @@ const AvatarHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 7vh;
+  height: 7%;
   font-size: 1.5rem;
   color: var(--white);
   background-color: var(--black);
@@ -287,14 +296,16 @@ const AvatarSelectCtn = styled.div`
 
 const AvatarBtnSet = styled.div`
   width: 100%;
-  gap: 20px;
+  height: 15%;
+  margin-bottom: 10px;
   justify-content: center;
   display: flex;
 `;
 const ChangeBtn = styled.button`
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
   border-radius: 50px;
+  margin-right: 20px;
   width: 60%;
   border: none;
   color: var(--white);
@@ -302,7 +313,7 @@ const ChangeBtn = styled.button`
 `;
 
 const ResetBtn = styled.button`
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
   display: flex;
   justify-content: center;
@@ -346,7 +357,7 @@ const AvatarItemCtn = styled.div`
 
 const AvatarItemListCtn = styled.div`
   display: flex;
-  margin: 5% 0%;
+  margin-top: 5%;
   height: 70%;
   overflow-x: scroll;
   ::-webkit-scrollbar {
@@ -373,7 +384,7 @@ const ImgItemCtn = styled.div`
     justify-content: center;
     width: 100%;
     align-items: center;
-    font-size: 24px;
+    font-size: 20px;
     margin-top: 2%;
   }
 `;
