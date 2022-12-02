@@ -1,35 +1,84 @@
-import axios from "axios";
-import styled from "styled-components";
 import React, { useRef } from "react";
 import { useEffect } from "react";
+import axios from "axios";
 import { getCookie, setCookie } from "../../hooks/CookieHook";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { useState } from "react";
 import Layout from "../../style/Layout";
 import ReactDaumPost from "react-daumpost-hook";
 import useInput from "../../hooks/UseInput";
+import Loading from "../../style/Loading";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-const LoginGoogle = () => {
-  // 인가코드 받아오기---------------------------------------------------
+const KaKaoLogin = () => {
   const navigate = useNavigate();
-  let href = window.location.href;
-  console.log(href);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState();
+  const formSchema = yup.object({
+    age: yup
+      .string()
+      .required("나이를 입력해주세요")
+      .max(2, "최대 99살까지만 가능합니다"),
+    address: yup.string().required("주소를 입력해주세요!"),
+    nickName: yup
+      .string()
+      .required("닉네임을 입력해주세요")
+      .min(2, "최소 2자 이상 가능합니다")
+      .max(8, "최대 8자 까지만 가능합니다"),
+  });
+
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code");
-  console.log(code);
+  console.log("code", code);
 
-  const postKaKaoCode = async (signup) => {
+  const isGoogle = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/google/callback",
-        { ...signup, code, myPlace: signup.address.split(" ").slice(0, 2) }
+        "https://www.iceflower.shop/social/google/isGoogle",
+        { code }
+      );
+      // console.log("data", data);
+      if (data.accessToken) {
+        console.log("data", data);
+        alert("로그인 성공!");
+        setCookie("accessToken", data.accessToken, { path: "/" });
+        setCookie("refreshToken", data.refresh_token, { path: "/" });
+        navigate("/main");
+      }
+      setIsLoading(false);
+      setUserId(data.userId);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  //* -------------------  인가코드 받고, 서버로 넘겨주기 -----------------
+
+  //이 코드를 백엔드로 보내주면됨
+  console.log(code);
+
+  const postKaKaoUser = async (signup) => {
+    try {
+      const { data } = await axios.post(
+        "https://www.iceflower.shop/social/google/callback",
+        signup
       );
       console.log(data.accessToken);
-      if (data.accessToken)
+      if (data.accessToken) {
         setCookie("accessToken", data.accessToken, { path: "/" });
-      setCookie("google", true, { path: "/" });
+        setCookie("refreshToken", data.refresh_token, { path: "/" });
+        setCookie("google", true, { path: "/" });
+        alert("가입을 축하드립니다!");
+        navigate("/main");
+      } else {
+        alert("다시 가입부탁드립니다!");
+        navigate("/");
+      }
     } catch (error) {
-      console.log(error);
+      console.log("error1", error);
     }
   };
 
@@ -68,142 +117,166 @@ const LoginGoogle = () => {
   };
 
   //* --------------------- 닉네임,주소입력 기능  -----------------------
+  const {
+    register,
+    setValue,
+    watch,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: { gender: "male" },
+    resolver: yupResolver(formSchema),
+  });
+  console.log(watch());
+  //submit 핸들러
+  const onSubmit = (data) => {
+    console.log(data);
+    reset();
+    console.log({
+      userId,
+      ...data,
+      age: data.age,
+      likeGame: tagList,
+      myPlace: data.address.split(" ").slice(0, 2),
+    });
 
-  const initialState = {
-    nickName: "",
-    address: "",
-    myPlace: "",
-    age: "",
-    gender: "",
-    likeGame: "",
+    //선호지역은 자동적으로 나의 집주소에서 구단위 까지만으로 적용
+    postKaKaoUser({
+      userId,
+      ...data,
+      age: data.age,
+      likeGame: tagList,
+      myPlace: data.address.split(" ").slice(0, 2),
+    });
+    console.log(errors);
   };
-
-  const [signup, setSignup, onChange] = useInput(initialState);
-  const onSubmitHandler = () => {
-    if (signup.nickName) {
-      postKaKaoCode(signup);
-      navigate("/main");
-    } else {
-      alert("다시 입력해주세요!");
-    }
-  };
-
   //? --------------------  다음 주소창  ----------------------------
 
   const postConfig = {
     //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
-      setSignup({ ...signup, address: data.address });
+      setValue("address", data.address);
       // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
       ref.current.style.display = "none";
     },
   };
   const postCode = ReactDaumPost(postConfig);
-  if (getCookie("kakao")) {
-    window.location.replace("/main");
+
+  useEffect(() => {
+    isGoogle();
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
   } else {
     return (
       <Layout>
-        <Wrap>
-          {" "}
-          <SignUpCtn>
-            {" "}
-            <SignUpHeader>
-              <Arrow onClick={() => navigate("/")} />
-              <div>추가정보</div>
-            </SignUpHeader>
-            <RowBox className="column">
-              <h3>추가정보를 입력해주세요</h3> <div>성별</div>
-            </RowBox>
-            <RowBox>
-              <label htmlFor="male">남자</label>
-              <InputBirth
-                id="male"
-                type="radio"
-                name="gender"
-                value="male"
-                onChange={onChange}
+        <SignUpWrap>
+          <>
+            <SignUpCtn>
+              <SignUpHeader>
+                <Arrow onClick={() => navigate("/")} />
+                <div>회원가입</div>
+              </SignUpHeader>
+
+              <RowBox className="column">
+                <h3>추가정보를 입력해주세요</h3>
+              </RowBox>
+
+              <RowBox>
+                <label htmlFor="male">남자</label>
+                <InputBirth
+                  id="male"
+                  type="radio"
+                  value={"male"}
+                  {...register("gender")}
+                ></InputBirth>
+
+                <label htmlFor="female">여자</label>
+                <InputBirth
+                  id="female"
+                  type="radio"
+                  value={"female"}
+                  {...register("gender")}
+                ></InputBirth>
+              </RowBox>
+              <SignUpInput placeholder="닉네임" {...register("nickName")} />
+              {errors.nickName && (
+                <AlertError role="alert">{errors.nickName.message}</AlertError>
+              )}
+              <SignUpInput
+                className="Birth1"
+                placeholder="나이를 입력해주세요"
+                {...register("age")}
               />
-              <label htmlFor="female">여자</label>
-              <InputBirth
-                id="female"
-                type="radio"
-                name="gender"
-                value="female"
-                onChange={onChange}
-              />
-            </RowBox>{" "}
-            <SignUpInput
-              placeholder="닉네임 (필수)"
-              value={signup.nickName}
-              onChange={onChange}
-              name="nickName"
-            />
-            <SignUpInput
-              placeholder="나이"
-              value={signup.age}
-              onChange={onChange}
-              name="age"
-            />
-            <SignUpInput
-              placeholder="주소"
-              onClick={postCode}
-              value={signup.address}
-            />
-            <DaumPostBox ref={ref}></DaumPostBox>
-          </SignUpCtn>
-          {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
-          <WholeBox>
-            <TagBox>
-              {tagList.map((tagItem, index) => {
-                return (
-                  <TagItem key={index}>
-                    <Text>{tagItem}</Text>
-                    <TagButton onClick={deleteTagItem}>X</TagButton>
-                  </TagItem>
-                );
-              })}
-              <TagInput
+              {errors.age && (
+                <AlertError role="alert">{errors.age.message}</AlertError>
+              )}
+              <SignUpInput
+                placeholder="클릭하면, 주소창이 뜹니다."
                 type="text"
-                placeholder="#선호게임"
-                tabIndex={2}
-                onChange={(e) => setTagItem(e.target.value)}
-                value={tagItem}
-                onKeyPress={onKeyPress}
+                onClick={postCode}
+                {...register("address")}
               />
-            </TagBox>
-          </WholeBox>
-          <NextBtn onClick={onSubmitHandler}>완료</NextBtn>
-        </Wrap>
+              {errors.address && (
+                <AlertError role="alert">{errors.address.message}</AlertError>
+              )}
+              <DaumPostBox ref={ref}></DaumPostBox>
+            </SignUpCtn>
+
+            {/* 이 부분을 폼안에 넣어버리면, 엔터가 안먹어서 다른방법을 찾아야함 */}
+            <WholeBox>
+              <TagBox>
+                {tagList.map((tagItem, index) => {
+                  return (
+                    <TagItem key={index}>
+                      <Text>{tagItem}</Text>
+                      <TagButton onClick={deleteTagItem}>X</TagButton>
+                    </TagItem>
+                  );
+                })}
+                <TagInput
+                  type="text"
+                  placeholder="엔터로 태그를 만들어주세요. ( 선호게임 )"
+                  tabIndex={2}
+                  onChange={(e) => setTagItem(e.target.value)}
+                  value={tagItem}
+                  onKeyPress={onKeyPress}
+                />
+              </TagBox>
+            </WholeBox>
+            <NextBtn onClick={handleSubmit(onSubmit)}>완료</NextBtn>
+          </>
+        </SignUpWrap>
       </Layout>
     );
   }
 };
 
-export default LoginGoogle;
-
-const Wrap = styled.div`
-  height: 100vh;
+const SignUpWrap = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 30px;
+  width: 100%;
+  height: 100vh;
+  color: white;
 `;
 
 const SignUpCtn = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   gap: 20px;
-  color: white;
 `;
 
 const SignUpHeader = styled.div`
-  position: absolute;
+  position: relative;
   top: 0;
   font-size: 1.5rem;
   font-weight: 400;
@@ -224,6 +297,17 @@ const RowBox = styled.div`
     align-items: flex-start;
     flex-direction: column;
   }
+`;
+
+const VerfiyBtn = styled.div`
+  font-size: 15px;
+  color: var(--white);
+  width: 35%;
+  background-color: var(--primary);
+  display: flex;
+  justify-content: center;
+  border-radius: 15px;
+  padding: 5px 10px;
 `;
 
 const InputBirth = styled.input`
@@ -260,7 +344,7 @@ const NextBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: var(--white);
   position: fixed;
   bottom: 50px;
   font-weight: 600;
@@ -271,14 +355,14 @@ const NextBtn = styled.div`
   border-radius: 20px;
   box-shadow: 0px 3px 3px 0px gray;
   cursor: pointer;
-  background-color: white;
+  background-color: var(--primary);
   :hover {
     background-color: gray;
   }
 `;
 
 const WholeBox = styled.div`
-  width: 67%;
+  width: 90%;
   display: flex;
   align-items: center;
   gap: 20px;
@@ -305,7 +389,7 @@ const TagItem = styled.div`
   justify-content: space-between;
   margin: 5px;
   padding: 5px;
-  background-color: #a766ff;
+  background-color: var(--primary);
   border-radius: 5px;
   color: white;
   font-size: 13px;
@@ -313,11 +397,17 @@ const TagItem = styled.div`
 
 const Text = styled.span``;
 
-const TagButton = styled.button``;
+const TagButton = styled.button`
+  background-color: transparent;
+  text-shadow: 0px 1px 1px 0px var(--black);
+  border: none;
+  color: var(--red);
+`;
 
 const TagInput = styled.input`
+  color: white;
   display: inline-flex;
-  min-width: 150px;
+  min-width: 250px;
   background: transparent;
   border: none;
   outline: none;
@@ -329,3 +419,10 @@ const Arrow = styled.div`
   border-top-color: white;
   transform: rotate(90deg);
 `;
+
+const AlertError = styled.div`
+  font-size: 14px;
+  color: red;
+`;
+
+export default KaKaoLogin;

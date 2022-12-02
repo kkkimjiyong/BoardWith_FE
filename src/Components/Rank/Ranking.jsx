@@ -1,66 +1,110 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import RankCard from "./RankCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCrown } from "@fortawesome/free-solid-svg-icons";
+import { rankApi } from "../../instance";
+import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
+import Loading from "../../style/Loading";
 
 const Ranking = () => {
+  const [rank, setRank] = useState();
+  const [midrank, setMidRank] = useState();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    rankApi.getRank().then((res) => {
+      setRank(res.data.data);
+      setTimeout(() => setLoading(false), 500);
+      for (let i = 3; i < rank?.length; i++) {
+        setMidRank(++midrank, rank[i]);
+      }
+    });
+  }, []);
+  console.log("rank", rank);
+  console.log("midrank", midrank);
   return (
     <Wrap>
-      <StContainer>
-        <h2>랭킹</h2>
-        <div>
-          <StTopRanker>
-            <FontAwesomeIcon
-              style={{
-                color: "#ffeda6",
-              }}
-              size="lg"
-              icon={faCrown}
-            />
-            <StAvatar />
-            <span>1위</span>
-            <p>닉네임</p>
-            <span>9999P</span>
-          </StTopRanker>
-          <div>
-            <StTopRanker>
-              <FontAwesomeIcon
-                style={{
-                  color: "#bbbbbb",
-                }}
-                size="sm"
-                icon={faCrown}
-              />
-              <StAvatar />
-              <span>2위</span>
-              <p>닉네임</p>
-              <span>8888P</span>
-            </StTopRanker>
-            <StTopRanker>
-              <FontAwesomeIcon
-                style={{
-                  color: "#b39b81",
-                }}
-                size="sm"
-                icon={faCrown}
-              />
-              <StAvatar />
-              <span>3위</span>
-              <p>닉네임</p>
-              <span>7777P</span>
-            </StTopRanker>
-          </div>
-        </div>
-      </StContainer>
-      <RankCard />
-      <RankCard />
-      <RankCard />
-      <RankCard />
-      <RankCard />
-      <RankCard />
-      <RankCard />
-      <RankCard />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <StContainer>
+            <h2>랭킹</h2>
+            <div>
+              <StTopRanker>
+                <FontAwesomeIcon
+                  style={{
+                    color: "#ffeda6",
+                  }}
+                  size="lg"
+                  icon={faCrown}
+                />
+                <StAvatar>
+                  <ProfileAvatarBox
+                    userSelect={{
+                      Eye: rank?.[0]?.userAvater?.Eye,
+                      Hair: rank?.[0]?.userAvater?.Hair,
+                      Mouth: rank?.[0]?.userAvater?.Mouth,
+                      Back: rank?.[0]?.userAvater?.Back,
+                    }}
+                  />
+                </StAvatar>
+                <span>1위</span>
+                <p>{rank?.[0]?.nickName}</p>
+                <span>{rank?.[0]?.totalPoint}P</span>
+              </StTopRanker>
+              <div>
+                <StTopRanker>
+                  <FontAwesomeIcon
+                    style={{
+                      color: "#bbbbbb",
+                    }}
+                    size="sm"
+                    icon={faCrown}
+                  />
+                  <StAvatar>
+                    <ProfileAvatarBox
+                      userSelect={{
+                        Eye: rank?.[1]?.userAvater?.Eye,
+                        Hair: rank?.[1]?.userAvater?.Hair,
+                        Mouth: rank?.[1]?.userAvater?.Mouth,
+                        Back: rank?.[1]?.userAvater?.Back,
+                      }}
+                    />
+                  </StAvatar>
+                  <span>2위</span>
+                  <p>{rank?.[1]?.nickName}</p>
+                  <span>{rank?.[1]?.totalPoint}P</span>
+                </StTopRanker>
+                <StTopRanker>
+                  <FontAwesomeIcon
+                    style={{
+                      color: "#b39b81",
+                    }}
+                    size="sm"
+                    icon={faCrown}
+                  />
+                  <StAvatar>
+                    <ProfileAvatarBox
+                      userSelect={{
+                        Eye: rank?.[2]?.userAvater?.Eye,
+                        Hair: rank?.[2]?.userAvater?.Hair,
+                        Mouth: rank?.[2]?.userAvater?.Mouth,
+                        Back: rank?.[2]?.userAvater?.Back,
+                      }}
+                    />
+                  </StAvatar>
+                  <span>3위</span>
+                  <p>{rank?.[2]?.nickName}</p>
+                  <span>{rank?.[2]?.totalPoint}P</span>
+                </StTopRanker>
+              </div>
+            </div>
+          </StContainer>
+          <RankCard />
+        </>
+      )}
     </Wrap>
   );
 };
@@ -97,6 +141,8 @@ const StContainer = styled.div`
   /* height: 100%; */
   > h2 {
     color: #fff;
+    font-size: 20px;
+    font-weight: normal;
   }
   > div {
     width: 100%;
@@ -107,14 +153,14 @@ const StContainer = styled.div`
   }
 `;
 const StAvatar = styled.div`
-  border: 2px solid #c72363;
-  /* box-shadow: 0 5px 18px -7px #c47aff; */
   margin-bottom: 10px;
   border-radius: 50%;
   width: 70px;
   height: 70px;
-  background-size: cover;
-  background-image: url(https://r1.community.samsung.com/t5/image/serverpage/image-id/2304962i2F7C66D1874B9309/image-size/large?v=v2&px=999);
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StTopRanker = styled.div`
@@ -124,8 +170,10 @@ const StTopRanker = styled.div`
   align-items: center;
   > p {
     margin: 0;
+    font-size: 14px;
   }
   > span {
-    font-size: 12px;
+    font-size: 10px;
+    color: #a6a6a6;
   }
 `;

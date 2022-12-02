@@ -174,6 +174,7 @@ const Comments = ({
   // console.log("myPlace", comments?.myPlace);
   // console.log(comments?.myPlace.length === 0);
   console.log("isPartyAccept", isPartyAccept);
+  console.log("아바타", comments?.userAvater?.Eye);
 
   return (
     <>
@@ -306,10 +307,10 @@ const Comments = ({
                           <StAvatar>
                             <ProfileAvatarBox
                               userSelect={{
-                                Eye: comment?.userAvater?.Eye,
-                                Hair: comment?.userAvater?.Hair,
-                                Mouth: comment?.userAvater?.Mouth,
-                                Back: comment?.userAvater?.Back,
+                                Eye: comments?.userAvater?.Eye,
+                                Hair: comments?.userAvater?.Hair,
+                                Mouth: comments?.userAvater?.Mouth,
+                                Back: comments?.userAvater?.Back,
                               }}
                             />
                           </StAvatar>
