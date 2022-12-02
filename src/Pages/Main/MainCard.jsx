@@ -83,7 +83,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
     setStarMark(!starMark);
     bookMarking();
   };
-
+  console.log();
   return (
     <ItemWrap>
       <div
