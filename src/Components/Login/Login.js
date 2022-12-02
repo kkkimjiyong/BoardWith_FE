@@ -124,6 +124,7 @@ const LoginInput = styled.input`
   border: none;
   border-bottom: 1px solid white;
   padding-left: 30px;
+  margin-bottom: 5%;
 `;
 
 const BtnSet = styled.div`
@@ -139,8 +140,8 @@ const LoginBtn = styled.div`
   color: var(--white);
   font-size: 16px;
   font-weight: 600;
-  margin-top: 5%;
-  height: 50px;
+  margin-top: 10%;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,11 +153,11 @@ const LoginBtn = styled.div`
 `;
 
 const KaKaoLogin = styled.a`
-  height: 50px;
+  height: 40px;
   border-radius: 10px;
   background-color: #fee500;
   background-image: url("https://i.ibb.co/3SG3qrZ/image.png");
-  width: 50px;
+  width: 40px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -165,10 +166,10 @@ const KaKaoLogin = styled.a`
 
 const LoginGoogle = styled.a`
   color: black;
-  height: 50px;
+  height: 40px;
   border-radius: 10px;
   background-color: white;
-  width: 50px;
+  width: 40px;
   background-image: url("https://i.ibb.co/K5pfVsP/image.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -184,7 +185,7 @@ const SocialLoginBox = styled.div`
   width: 100%;
   padding: 0 10%;
   display: flex;
-  margin-top: 5%;
+  margin-top: 10%;
   justify-content: space-around;
   .naver {
     width: 30px;

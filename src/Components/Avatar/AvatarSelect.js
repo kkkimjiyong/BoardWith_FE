@@ -19,6 +19,7 @@ const AvatarSelect = () => {
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState();
   const [point, setPoint] = useState();
+  const [initialpoint, setInitialPoint] = useState();
   const [userSelect, setUserSelect] = useState();
   const [initialuserSelect, setInitialUserSelect] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -60,10 +61,13 @@ const AvatarSelect = () => {
 
   const postAvatar = async () => {
     try {
-      const { data } = await userApi.editUser({ userAvater: userSelect });
-      console.log(data.findUserData.userAvater);
-      setUserSelect(data.findUserData.userAvater);
-      setInitialUserSelect(data.findUserData.userAvater);
+      const { data } = await userApi.editUser({
+        userAvatar: userSelect,
+        point,
+      });
+      setUserSelect(data.findUserData.userAvatar);
+      setInitialUserSelect(data.findUserData.userAvatar);
+      console.log(point);
     } catch (error) {
       console.log(error);
     }
@@ -71,9 +75,10 @@ const AvatarSelect = () => {
   const getUser = async () => {
     try {
       const { data } = await userApi.getUser();
-      setUserSelect(data.findUser.userAvater);
-      setInitialUserSelect(data.findUser.userAvater);
+      setUserSelect(data.findUser.userAvatar);
+      setInitialUserSelect(data.findUser.userAvatar);
       setPoint(data.findUser.point);
+      setInitialPoint(data.findUser.point);
       setTimeout(() => setIsLoading(false), 1000);
     } catch (error) {
       console.log(error);
@@ -84,8 +89,6 @@ const AvatarSelect = () => {
     getUser();
   }, []);
 
-  console.log(userSelect);
-
   //! 이런식으로 user avatar가 db에 저장되면 된다!
 
   const selectController = (Img) => {
@@ -95,13 +98,33 @@ const AvatarSelect = () => {
     });
     setSelect({ Num: Img.Num, Category: Img.Category });
   };
-  console.log(select);
   //! --------------  포인트차감 로직  --------------------
-  // const { Eye, Mouth, Back, Hair } = userSelect;
-  // const { newEye, newMouth, newBack, newHair } = initialuserSelect;
-  // if (Eye !== newEye) {
-  //   setPoint((prev) => prev + 1000);
-  // }
+
+  // const discountPoint = () => {
+  //   if (userSelect?.Eye !== initialuserSelect?.Eye) {
+  //     console.log(userSelect?.Eye !== initialuserSelect?.Eye);
+  //     setPoint((prev) => prev - 1000);
+  //   }
+  //   if (userSelect?.Mouth !== initialuserSelect?.Mouth) {
+  //     console.log(userSelect?.Mouth !== initialuserSelect?.Mouth);
+  //     setPoint((prev) => prev - 1000);
+  //   }
+  //   if (userSelect?.Back !== initialuserSelect?.Back) {
+  //     console.log(userSelect?.Back !== initialuserSelect?.Back);
+  //     setPoint((prev) => prev - 1000);
+  //   }
+  //   if (userSelect?.Hair !== initialuserSelect?.Hair) {
+  //     console.log(userSelect?.Hair !== initialuserSelect?.Hair);
+  //     setPoint((prev) => prev - 1000);
+  //   }
+  //   if (point < 0) {
+  //     alert("포인트가 부족합니다!");
+  //     setPoint(initialpoint);
+  //   } else {
+  //     console.log(point);
+  //   }
+  // };
+
   if (isLoading) {
     return <Loading />;
   } else {
@@ -169,7 +192,7 @@ const AvatarSelect = () => {
                       />
                       <div className="point">
                         <ImCoinDollar />
-                        1000
+                        300
                       </div>
                     </ImgItemCtn>
                   );
@@ -178,8 +201,9 @@ const AvatarSelect = () => {
 
             <AvatarBtnSet>
               <ChangeBtn
-                //* 사진 다 집어넣으면 axios만 넣어주기
-                onClick={postAvatar}
+              //* 사진 다 집어넣으면 axios만 넣어주기
+              // onClick={postAvatar}
+              // onClick={discountPoint}
               >
                 변경하기
               </ChangeBtn>

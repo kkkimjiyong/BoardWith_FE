@@ -192,14 +192,7 @@ const Comments = ({
                         navigate(`/userpage/${comments?.nickName}`)
                       }
                     >
-                      <ProfileAvatarBox
-                        userSelect={{
-                          Eye: comments?.userAvater?.Eye,
-                          Hair: comments?.userAvater?.Hair,
-                          Mouth: comments?.userAvater?.Mouth,
-                          Back: comments?.userAvater?.Back,
-                        }}
-                      />
+                      <ProfileAvatarBox userSelect={comments?.userAvatar} />
                     </StAvatar>
                   </div>
                   <div>

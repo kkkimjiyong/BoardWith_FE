@@ -94,7 +94,7 @@ const Item = ({ number, item, Myaddress, closed }) => {
           {" "}
           <ItemProfile>
             {" "}
-            <ProfileAvatarBox userSelect={item?.userAvater} />
+            <ProfileAvatarBox userSelect={item?.userAvatar} />
             {/* <div
               style={{
                 borderRadius: "10px",

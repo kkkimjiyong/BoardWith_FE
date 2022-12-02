@@ -322,10 +322,10 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             navigate(`/userpage/${detail?.data?.nickName}`)
                           }
                           userSelect={{
-                            Eye: detail?.data?.userAvater?.Eye,
-                            Hair: detail?.data?.userAvater?.Hair,
-                            Mouth: detail?.data?.userAvater?.Mouth,
-                            Back: detail?.data?.userAvater?.Eye,
+                            Eye: detail?.data?.userAvatar?.Eye,
+                            Hair: detail?.data?.userAvatar?.Hair,
+                            Mouth: detail?.data?.userAvatar?.Mouth,
+                            Back: detail?.data?.userAvatar?.Eye,
                           }}
                         />
                         <NickName>{detail?.data?.nickName}</NickName>

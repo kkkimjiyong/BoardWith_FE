@@ -78,7 +78,7 @@ const SignUp2 = () => {
             <Arrow onClick={() => navigate("/signup1")} />
             <div>회원가입</div>
           </SignUpHeader>
-          <h3>본인인증 해주세요</h3>
+          <Title>본인인증 해주세요</Title>
           <RowBox>
             {" "}
             <SignUpInput
@@ -89,13 +89,16 @@ const SignUp2 = () => {
             />
             <VerfiyBtn onClick={postVerify}>인증번호 받기</VerfiyBtn>
           </RowBox>
-
-          <SignUpInput
-            placeholder="인증번호를 입력해주세요."
-            onChange={onChange}
-            value={user.verifyCode}
-            name="verifyCode"
-          />
+          <RowBox>
+            {" "}
+            <SignUpInput
+              className="verifycode"
+              placeholder="인증번호를 입력해주세요."
+              onChange={onChange}
+              value={user.verifyCode}
+              name="verifyCode"
+            />
+          </RowBox>
 
           <NextBtn onClick={() => postVerifyCode()}>다음</NextBtn>
         </SignUpCtn>
@@ -113,7 +116,7 @@ const SignUpWrap = styled.div`
   color: white;
 `;
 
-const SignUpCtn = styled.div`
+const SignUpCtn = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -155,21 +158,21 @@ const VerfiyBtn = styled.div`
   justify-content: center;
   border-radius: 15px;
   padding: 5px 10px;
+  margin-left: 5%;
+  margin-top: 3%;
 `;
 
-const InputBirth = styled.input`
-  border-radius: 5px;
-  width: 10%;
-  padding: 10px;
-  border: 2px solid #9747ff;
+const Title = styled.div`
+  line-height: 180%;
+  margin-bottom: 5%;
 `;
 
 const SignUpInput = styled.input`
   color: white;
   display: block;
-  width: 90%;
+  width: 60%;
   padding: 0 20px;
-  margin-bottom: 5px;
+  margin-top: 5%;
   height: 40px;
   border: none;
   border-bottom: 1px solid #ffffff;
@@ -179,15 +182,12 @@ const SignUpInput = styled.input`
     border: none;
     border-bottom: 2px solid white;
   }
+  &.verifycode {
+    width: 100%;
+  }
 `;
 
-const DaumPostBox = styled.div`
-  position: relative;
-  box-shadow: 0px 3px 3px 0px gray;
-  width: 400px;
-`;
-
-const NextBtn = styled.div`
+const NextBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,79 +197,19 @@ const NextBtn = styled.div`
   font-weight: 600;
   width: 80%;
   max-width: 500px;
-  height: 3em;
+  font-size: 16px;
+  height: 2.5em;
   border: none;
   border-radius: 20px;
   box-shadow: 0px 3px 3px 0px gray;
   cursor: pointer;
   background-color: var(--primary);
-  :hover {
-    background-color: gray;
-  }
-`;
-
-const WholeBox = styled.div`
-  width: 90%;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`;
-
-const TagBox = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  min-height: 40px;
-  margin: 10px;
-  padding: 0 10px;
-  border: none;
-  border-bottom: 1px solid white;
-  &:focus-within {
-    border-bottom: 2px solid white;
-  }
-`;
-
-const TagItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 5px;
-  padding: 5px;
-  background-color: var(--primary);
-  border-radius: 5px;
-  color: white;
-  font-size: 13px;
-`;
-
-const Text = styled.span``;
-
-const TagButton = styled.button`
-  background-color: transparent;
-  text-shadow: 0px 1px 1px 0px var(--black);
-  border: none;
-  color: var(--red);
-`;
-
-const TagInput = styled.input`
-  color: white;
-  display: inline-flex;
-  min-width: 250px;
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: text;
 `;
 
 const Arrow = styled.div`
   border: 7px solid transparent;
   border-top-color: white;
   transform: rotate(90deg);
-`;
-
-const AlertError = styled.div`
-  font-size: 14px;
-  color: red;
 `;
 
 export default SignUp2;
