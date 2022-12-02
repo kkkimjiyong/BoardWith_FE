@@ -18,18 +18,15 @@ const Comments = ({
   nickName,
   isHost,
   postid,
-  detail,
   isPostEdit,
-  ModalOpen,
   setModalOpen,
-  open,
-  setOpen,
 }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
-  const navigate = useNavigate();
   const [isPartyAccept, setIsPartyAccept] = useState(false);
+
+  const navigate = useNavigate();
 
   const commentId = comments._id;
   //console.log("nickName", nickName);
@@ -149,29 +146,13 @@ const Comments = ({
   console.log("comments", comments);
 
   useEffect(() => {
-    //참가 확정 받은 유저인지 비교
-    for (let i = 0; i < detail?.confirmMember?.length; i++)
-      if (comments?.nickName === detail?.confirmMember[i]) {
-        setIsPartyAccept(true);
-      } else {
-        setIsPartyAccept(false);
-      }
+    //참가 확정 받은 유저인지
+    comments?.confirmOrNot ? setIsPartyAccept(true) : setIsPartyAccept(false);
+    //밴 유저인지
+    comments?.banOrNot ? setIsBanUser(true) : setIsBanUser(false);
+  }, [comments]);
 
-    //밴 유저인지 비교
-    for (let i = 0; i < detail?.banUser?.length; i++)
-      if (comments?.nickName === detail?.banUser[i]) {
-        setIsBanUser(true);
-        console.log("isBanUser", isBanUser);
-      } else {
-        setIsBanUser(false);
-      }
-  }, [comments, isPartyAccept]);
-  // console.log("detail", detail);
-  // console.log("comments", comments);
-  // console.log("myPlace", comments?.myPlace);
-  // console.log(comments?.myPlace.length === 0);
-  console.log("isPartyAccept", isPartyAccept);
-  console.log("아바타", comments?.userAvater?.Eye);
+  console.log("comments", comments);
 
   return (
     <>
@@ -208,7 +189,7 @@ const Comments = ({
                         {comments?.nickName}
                       </Stspan>
                       <Stspan>
-                        <span>20대</span>
+                        <span>{comments?.age}세</span>
                         <span>&nbsp;/&nbsp;</span>
                         <span>{comments?.gender}</span>
                         {comments?.myPlace.length !== 0 && (

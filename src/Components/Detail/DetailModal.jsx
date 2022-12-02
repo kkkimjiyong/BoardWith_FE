@@ -43,8 +43,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [y, setY] = useState();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
-  const [isPartyAccept, setIsPartyAccept] = useState(false);
-  const [isCommentBan, setIsCommentBan] = useState([]);
+
   // 수정
 
   //? ---------------시간 (나중에 리팩토링) ----------------
@@ -131,18 +130,15 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   //useEffect 디테일 데이터 불러오기---------------------------------------
   useEffect(() => {
     userApi.getUser().then((res) => {
-      console.log("몇번이나 눌리는겨?");
       setNickName(res.data.findUser.nickName);
     });
     postApi.getDetailId(postid).then((res) => {
-      console.log("몇번이나 눌리는겨?");
-
       setDetail(res.data);
     });
     dispatch(__getComments(postid));
-  }, [isClosed, isPartyAccept]);
+  }, [isClosed]);
 
-  console.log(isClosed);
+  // console.log(isClosed);
 
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
   // console.log(detail?.data?.nickName);
@@ -194,7 +190,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   }, [postApi.getDetailId(postid)]);
 
   console.log("comments", comments);
-  console.log("isCommentBan", isCommentBan);
 
   useEffect(() => {
     //파티 마감 상태
