@@ -14,14 +14,18 @@ import { userApi } from "../../instance";
 import { postApi } from "../../instance";
 import { getCookie } from "../../hooks/CookieHook";
 import moment from "moment-timezone";
-import {
-  AiOutlineCalendar,
-  AiOutlineMessage,
-  AiOutlineClose,
-} from "react-icons/ai";
-import { FiMapPin, FiShare } from "react-icons/fi";
+import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
+import { AiOutlineMessage } from "@react-icons/all-files/ai/AiOutlineMessage";
+import { AiOutlineCalendar } from "@react-icons/all-files/ai/AiOutlineCalendar";
+import { FiShare } from "@react-icons/all-files/fi/FiShare";
+import { FiMapPin } from "@react-icons/all-files/fi/FiMapPin";
+// import { BsPeopleFill } from "@react-icons/all-files/bs/BsPeopleFill";
+// import { BsChevronLeft } from "@react-icons/all-files/bs/BsChevronLeft";
+import { FaBullhorn } from "@react-icons/all-files/fa/FaBullhorn";
+import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
+// import { BsArrowUpCircle } from "@react-icons/all-files/bs/BsArrowUpCircle";
 import { BsPeopleFill, BsArrowUpCircle, BsChevronLeft } from "react-icons/bs";
-import { FaCrown, FaBullhorn } from "react-icons/fa";
+import AvatarBox from "../Avatar/AvatarBox";
 
 const { kakao } = window;
 export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
@@ -308,7 +312,11 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                           size="20px"
                         />
                         <StAvatarContainer>
-                          <ProfileAvatarBox
+                          <AvatarBox
+                            profile={true}
+                            scale={0.2}
+                            backScale={0.8}
+                            circle={true}
                             onClick={() =>
                               navigate(`/userpage/${detail?.data?.nickName}`)
                             }
@@ -651,7 +659,8 @@ const ProfileBox = styled.div`
 const NickName = styled.div`
   min-width: 100px;
   display: flex;
-  margin-left: 37%;
+  margin-left: 50px;
+  font-weight: 600;
 `;
 
 const StBackGroundColor = styled.div`
@@ -837,5 +846,5 @@ const Btnbox = styled.div`
 
 const StAvatarContainer = styled.div`
   position: relative;
-  left: -15px;
+  width: 100%;
 `;

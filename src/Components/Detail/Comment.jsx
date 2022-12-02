@@ -8,9 +8,11 @@ import {
 import { postApi } from "../../instance";
 import { useNavigate } from "react-router-dom";
 import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
-import { BiEditAlt, BiCheckCircle } from "react-icons/bi";
-import { FiTrash2 } from "react-icons/fi";
-import { AiOutlineClose } from "react-icons/ai";
+import { BiCheckCircle } from "@react-icons/all-files/bi/BiCheckCircle";
+import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt";
+import { FiTrash2 } from "@react-icons/all-files/fi/FiTrash2";
+import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
+import AvatarBox from "../Avatar/AvatarBox";
 
 const Comments = ({
   comments,
@@ -188,7 +190,13 @@ const Comments = ({
                         navigate(`/userpage/${comments?.nickName}`)
                       }
                     >
-                      <ProfileAvatarBox userSelect={comments?.userAvatar} />
+                      <AvatarBox
+                        userSelect={comments?.userAvatar}
+                        profile={true}
+                        scale={0.2}
+                        backScale={0.8}
+                        circle={true}
+                      />
                     </StAvatar>
                   </div>
                   <div>

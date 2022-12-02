@@ -15,6 +15,9 @@ import "moment/locale/ko";
 import { BiAlignRight } from "@react-icons/all-files/bi/BiAlignRight";
 import { AiOutlineNotification } from "@react-icons/all-files/ai/AiOutlineNotification";
 import { FaArrowAltCircleUp } from "@react-icons/all-files/fa/FaArrowAltCircleUp";
+import AvatarBox from "../Avatar/AvatarBox";
+import { GiSiren } from "@react-icons/all-files/gi/GiSiren";
+
 const ChatRoom = () => {
   // const socket = io("https://www.iceflower.shop/");
   const socket = io("https://www.iceflower.shop/");
@@ -119,7 +122,8 @@ const ChatRoom = () => {
     // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
 
     socket.on("roomUsers", (msg) => {
-      setUsers([...users, msg.nickName]);
+      console.log(msg);
+      setUsers(msg.nickName);
     });
     socket.on("message", (message) => {
       setChatArr((chatArr) => [...chatArr, message]);
@@ -141,22 +145,33 @@ const ChatRoom = () => {
             SetisEdit(!isEdit);
           }}
         >
+          {" "}
           <UserCtn onClick={(e) => e.stopPropagation()} isEdit={isEdit}>
             <DrawerHead>{detail?.title}</DrawerHead>
-            {users?.map((user, index) => {
-              if (user)
-                return (
-                  <UserBox>
-                    <div>{user}</div>
-                    <UserBtn
-                      onClick={() => {
-                        ban(user);
-                      }}
-                    >
-                      밴
-                    </UserBtn>
-                  </UserBox>
-                );
+            {users?.map((user) => {
+              return (
+                <UserBox>
+                  <div className="row">
+                    {" "}
+                    <AvatarBox
+                      profile={true}
+                      scale={0.12}
+                      backScale={0.8}
+                      circle={true}
+                      userSelect={{ Eye: 1, Hair: 1, Back: 1, Mouth: 1 }}
+                    />
+                    <div className="avatar">{user}</div>
+                  </div>
+
+                  <UserBtn
+                    onClick={() => {
+                      ban(user);
+                    }}
+                  >
+                    <GiSiren size={30} />
+                  </UserBtn>
+                </UserBox>
+              );
             })}
           </UserCtn>
         </UserWrap>
@@ -322,6 +337,13 @@ const Arrow = styled.div`
 `;
 
 const UserBtn = styled.div`
+  font-size: 13px;
+  background-color: var(--primary);
+  padding: 0% 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
   cursor: pointer;
 `;
 
@@ -348,12 +370,20 @@ const UserCtn = styled.div`
   overflow: hidden;
 `;
 const UserBox = styled.div`
-  padding: 10px 20px;
+  padding: 20px 20px;
   color: var(--white);
-  background-color: var(--gray);
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   gap: 10px;
+  justify-content: space-between;
+  .row {
+    display: flex;
+    align-items: center;
+  }
+  .avatar {
+    margin-left: 10px;
+  }
 `;
 const ChatCtn = styled.div`
   width: 100%;

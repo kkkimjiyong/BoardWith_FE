@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import RankCard from "./RankCard";
-import { FaCrown } from "react-icons/fa";
+import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 import { rankApi } from "../../instance";
 import ProfileAvatarBox from "../Avatar/ProfileAvatarBox";
 import Loading from "../../style/Loading";

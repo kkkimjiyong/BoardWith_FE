@@ -90,7 +90,7 @@ const MainSlide = () => {
     try {
       const { data } = await userApi.getUser();
       console.log(data.findUser.bookmarkData);
-      setUserBook(data.findUser.bookmarkData);
+      setUserBook(data.findUser.bookmark);
       setIsTutorial(data.findUser.tutorial);
       setSelfCheck(data.findUser.loginCheck);
     } catch (error) {
@@ -100,7 +100,7 @@ const MainSlide = () => {
   useEffect(() => {
     getUser();
   }, []);
-
+  console.log(userBook);
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
@@ -172,6 +172,7 @@ const MainSlide = () => {
             {items?.map((items, idx) => {
               return (
                 <Item
+                  userBook={userBook}
                   closed={items.closed}
                   setModalOpen={setModalOpen}
                   key={idx}
@@ -221,7 +222,7 @@ export default MainSlide;
 
 const Target = styled.div`
   height: 100px;
-  color: var(--white);
+  color: var(--black);
 `;
 
 const MainBox = styled.div`

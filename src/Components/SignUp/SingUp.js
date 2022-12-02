@@ -41,7 +41,7 @@ const SignUp = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { gender: "female" },
+    defaultValues: { gender: "male" },
     resolver: yupResolver(formSchema),
   });
 

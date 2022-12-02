@@ -135,7 +135,11 @@ const AvatarSelect = () => {
           <div>캐릭터</div>
           <BsPencil size="41%" className="postBtn" />
         </AvatarHeader>
-        <AvatarBox userSelect={userSelect} select={select} />
+        <AvatarCtn>
+          {" "}
+          <AvatarBox userSelect={userSelect} select={select} profile={false} />
+        </AvatarCtn>
+
         <PointBox>
           <ImCoinDollar />
           {point}
@@ -201,9 +205,9 @@ const AvatarSelect = () => {
 
             <AvatarBtnSet>
               <ChangeBtn
-              //* 사진 다 집어넣으면 axios만 넣어주기
-              // onClick={postAvatar}
-              // onClick={discountPoint}
+                //* 사진 다 집어넣으면 axios만 넣어주기
+                onClick={postAvatar}
+                // onClick={discountPoint}
               >
                 변경하기
               </ChangeBtn>
@@ -246,10 +250,20 @@ const AvatarHeader = styled.div`
     right: -15%;
   }
 `;
+
+const AvatarCtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  width: 100%;
+  background-color: var(--white);
+`;
 const PointBox = styled.div`
   position: absolute;
   color: var(--white);
   font-size: 1.5rem;
+  min-width: 15%;
   top: 10%;
   left: 5%;
   display: flex;
@@ -259,21 +273,23 @@ const PointBox = styled.div`
   border-radius: 50px;
   padding: 2%;
   background-color: var(--primary);
+  .point {
+    margin-left: 15%;
+  }
 `;
 
 const AvatarSelectCtn = styled.div`
-  z-index: 10;
-  height: 50vh;
+  z-index: 50;
+  /* padding-top: 5%; */
+  height: 40%;
   background-color: var(--black);
 `;
 
 const AvatarBtnSet = styled.div`
   width: 100%;
   gap: 20px;
-  padding: 10% 0%;
   justify-content: center;
   display: flex;
-  height: 30%;
 `;
 const ChangeBtn = styled.button`
   font-size: 24px;
@@ -330,8 +346,8 @@ const AvatarItemCtn = styled.div`
 
 const AvatarItemListCtn = styled.div`
   display: flex;
-  padding: 16px 0px;
-  height: 60%;
+  margin: 5% 0%;
+  height: 70%;
   overflow-x: scroll;
   ::-webkit-scrollbar {
     display: none;
@@ -347,7 +363,7 @@ const ImgItemCtn = styled.div`
   color: var(--white);
   margin-left: 7%;
   border-radius: 30px;
-  height: 90%;
+  height: 80%;
   background-color: var(--white);
   &.selected {
     border: 7px solid var(--primary);
@@ -358,7 +374,7 @@ const ImgItemCtn = styled.div`
     width: 100%;
     align-items: center;
     font-size: 24px;
-    margin-top: 5%;
+    margin-top: 2%;
   }
 `;
 

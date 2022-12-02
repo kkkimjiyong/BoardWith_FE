@@ -189,11 +189,15 @@ const MyPage = () => {
             <div>{user?.nickName} 님</div>{" "}
           </ProfileRow>
           <ProfileRow>
-            {user?.age ? `${user?.age} 살` : "없음"} /
-            {user?.visible ? `${user?.gender}` : "숨김"} /
-            {user?.myPlace.length
-              ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-              : "없음"}{" "}
+            <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
+            <div>{user?.visible ? `${user?.gender}` : "숨김"} /</div>
+            <div>
+              {" "}
+              {user?.myPlace.length
+                ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+                : "없음"}
+            </div>
+
             <div className="visible">
               {" "}
               {user?.visible ? (
@@ -341,8 +345,8 @@ const ProfileCtn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #484848;
-  color: var(--white);
+  background-color: var(--black);
+  color: #d3d3d3;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   height: 56%;
@@ -430,7 +434,7 @@ const MyPartyBox = styled.div`
   gap: 10px;
   display: flex;
   flex-direction: column;
-  width: 85%;
+  width: 90%;
   max-height: 50%;
 `;
 const BottomTxt = styled.div`

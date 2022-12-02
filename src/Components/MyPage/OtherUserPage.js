@@ -81,7 +81,8 @@ const OtherUserPage = () => {
         <div></div>
       </MainHeader>
       <AvatarCtn>
-        <AvatarBox userSelect={user?.userAvatar} />
+        {" "}
+        <AvatarBox userSelect={user?.userAvatar} circle={true} />
       </AvatarCtn>
       <ProfileCtn>
         <ProfileRow>
@@ -115,7 +116,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-color: var(--white);
+  background-color: var(--black);
 `;
 
 const MainHeader = styled.div`
@@ -139,55 +140,23 @@ const MainHeader = styled.div`
   }
 `;
 
-const RowBox = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
 const AvatarCtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30%;
-  width: 100%;
-  border-radius: 30%;
-  background-color: rebeccapurple;
-  padding: 20%;
-`;
-
-const EditBox = styled.div`
-  width: 100%;
-  height: 30%;
-  padding: 10px 10% 10px 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  color: #919191;
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-const EditBtn = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 3rem;
-  width: 5rem;
-  border-radius: 5px;
-  cursor: pointer;
-  :hover {
-    box-shadow: 0px 2px 2px 0px gray;
-  }
+  height: 28%;
+  background-color: var(--white);
+  margin: 5% 0%;
+  z-index: 9;
 `;
 
 const ProfileCtn = styled.div`
+  z-index: 10;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #484848;
+  background-color: var(--black);
   color: var(--white);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
