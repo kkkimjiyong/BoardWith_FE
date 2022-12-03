@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
 
 const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_SERVER,
@@ -74,7 +72,12 @@ export const loginApi = {
 export const userApi = {
   getUser: () => instance.get("/users"),
 
-  editUser: (EditUser) => instance.put("/users", EditUser),
+  editUser: (EditUser) =>
+    instance.put("/users", EditUser, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
 
   dailyUser: () =>
     instance.put("/users/check", {
