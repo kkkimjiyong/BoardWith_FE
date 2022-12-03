@@ -12,6 +12,7 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
       setIsTutorial(true);
       setSelfCheck(true);
     } catch (error) {
+      setIsTutorial(true);
       console.log(error);
     }
   };
@@ -19,7 +20,6 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
   return (
     <BackGround>
       <div className="MainMsg">말풍선을 클릭하여, 튜토리얼을 완수하세요!</div>
-
       {next === 1 && (
         <NearDetail onClick={() => setNext(2)}>
           <ContentBox> 가장 가까운 모임을 보여주는 기능입니다.</ContentBox>

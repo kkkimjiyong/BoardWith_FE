@@ -73,6 +73,7 @@ const SignUp3 = () => {
     //선호지역은 자동적으로 나의 집주소에서 구단위 까지만으로 적용
     postSignUp({
       ...userInfo,
+      ...data,
       age: data.age,
       likeGame: tagList,
       myPlace: data.address.split(" ").slice(0, 2),

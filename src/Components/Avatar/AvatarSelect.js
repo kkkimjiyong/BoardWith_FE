@@ -60,21 +60,25 @@ const AvatarSelect = () => {
   //? ------------------아바타 API  ----------------------
 
   const postAvatar = async (point) => {
-    if (point < 0) {
-      alert("포인트가 부족합니다!");
-      setPoint(initialpoint);
-    } else {
-      try {
-        const { data } = await userApi.editUser({
-          userAvatar: userSelect,
-          point,
-        });
-        setUserSelect(data.findUserData.userAvatar);
-        setInitialUserSelect(data.findUserData.userAvatar);
-        console.log(point);
-      } catch (error) {
-        console.log(error);
+    if (window.confirm(`${point}가 남습니다. 구매하시겠습니까?`)) {
+      if (point < 0) {
+        alert("포인트가 부족합니다!");
+        setPoint(initialpoint);
+      } else {
+        try {
+          const { data } = await userApi.editUser({
+            userAvatar: userSelect,
+            point,
+          });
+          setUserSelect(data.findUserData.userAvatar);
+          setInitialUserSelect(data.findUserData.userAvatar);
+          console.log(point);
+        } catch (error) {
+          console.log(error);
+        }
       }
+    } else {
+      setPoint(initialpoint);
     }
   };
   const getUser = async () => {
@@ -134,7 +138,7 @@ const AvatarSelect = () => {
         <AvatarHeader>
           <div></div>
           <div>캐릭터</div>
-          <BsPencil size="41%" className="postBtn" />
+          <div></div>
         </AvatarHeader>
         <AvatarCtn>
           {" "}

@@ -1,7 +1,5 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { getCookie, removeCookie, setCookie } from "./hooks/CookieHook";
-//쿠키에서 보안상 이유로, 세션스토리지로 바꾸었습니다.
+
 const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_SERVER,
   baseURL: "https://www.iceflower.shop",
@@ -74,7 +72,12 @@ export const loginApi = {
 export const userApi = {
   getUser: () => instance.get("/users"),
 
-  editUser: (EditUser) => instance.put("/users", EditUser),
+  editUser: (EditUser) =>
+    instance.put("/users", EditUser, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
 
   dailyUser: () =>
     instance.put("/users/check", {
