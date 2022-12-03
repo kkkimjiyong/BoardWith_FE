@@ -125,7 +125,6 @@ const AvatarSelect = () => {
     setPoint(point);
     return postAvatar(point);
   };
-  console.log(puserSelect.filter((c) => c.Category == selectCategory));
 
   if (isLoading) {
     return <Loading />;
@@ -213,13 +212,7 @@ const AvatarSelect = () => {
               })}{" "}
             </AvatarItemListCtn>
             <AvatarBtnSet>
-              <ChangeBtn
-                //* 사진 다 집어넣으면 axios만 넣어주기
-                // onClick={postAvatar}
-                onClick={discountPoint}
-              >
-                변경하기
-              </ChangeBtn>
+              <ChangeBtn onClick={discountPoint}>변경하기</ChangeBtn>
               <ResetBtn onClick={() => setUserSelect(initialuserSelect)}>
                 <BiRefresh size="35" />
                 초기화
