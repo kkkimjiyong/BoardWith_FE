@@ -42,7 +42,8 @@ const ChatRoom = () => {
     return m.format("MM.DD (ddd) HH:mm");
   };
   const RoomTime = getStartTime(detail?.time[0]);
-  console.log(users);
+  console.log(users[1]);
+  console.log(users[0]);
   // axios로 채팅db가져오기
   const getChat = async () => {
     try {
@@ -62,7 +63,7 @@ const ChatRoom = () => {
       console.log(error);
     }
   };
-  console.log(chatArr);
+
   useEffect(() => {
     getUser();
     getChat();
@@ -105,6 +106,8 @@ const ChatRoom = () => {
     });
   };
 
+  console.log(users.map((user) => console.log(user)));
+
   const navigate = useNavigate();
 
   const exithandler = () => {
@@ -122,7 +125,7 @@ const ChatRoom = () => {
 
     socket.on("roomUsers", (msg) => {
       console.log("ddd", msg);
-      setUsers(msg.nickName);
+      setUsers(msg);
     });
 
     socket.on("message", (message) => {

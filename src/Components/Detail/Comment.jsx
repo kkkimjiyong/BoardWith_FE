@@ -172,7 +172,7 @@ const Comments = ({
                     >
                       <AvatarBox
                         userSelect={comments?.userAvatar}
-                        profile={true}
+                        profile
                         scale={0.2}
                         backScale={0.8}
                         circle={true}

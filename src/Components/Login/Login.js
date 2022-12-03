@@ -50,12 +50,13 @@ const Login = () => {
   };
 
   const onSubmitHandler = (e) => {
+    e.preventDefault();
     console.log(error);
     postLogin(login);
   };
 
   return (
-    <LoginCtn className="neonBox">
+    <LoginCtn onSubmit={onSubmitHandler} className="neonBox">
       <MainLogo className="logo" />
       <LoginInput
         value={login.userId}
@@ -71,7 +72,7 @@ const Login = () => {
         placeholder="비밀번호"
       />
       <BtnSet>
-        <LoginBtn onClick={() => onSubmitHandler()}>로그인</LoginBtn>
+        <LoginBtn>로그인</LoginBtn>
       </BtnSet>{" "}
       <SocialLoginBox>
         {" "}
@@ -131,7 +132,7 @@ const BtnSet = styled.div`
   gap: 30px;
 `;
 
-const LoginBtn = styled.div`
+const LoginBtn = styled.button`
   color: var(--white);
   font-size: 16px;
   font-weight: 600;
