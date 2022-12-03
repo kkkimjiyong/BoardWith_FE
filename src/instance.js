@@ -36,6 +36,7 @@ instance.interceptors.response.use(
           `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
           {
             refresh_token: sessionStorage.getItem("refreshToken"),
+            nickName: sessionStorage.getItem("nickName"),
           }
         );
         console.log(data);
