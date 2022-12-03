@@ -72,19 +72,9 @@ export const loginApi = {
 };
 
 export const userApi = {
-  getUser: () =>
-    instance.get("/users", {
-      headers: {
-        Authorization: sessionStorage.getItem("accessToken"),
-      },
-    }),
+  getUser: () => instance.get("/users"),
 
-  editUser: (EditUser) =>
-    instance.put("/users", EditUser, {
-      headers: {
-        Authorization: sessionStorage.getItem("accessToken"),
-      },
-    }),
+  editUser: (EditUser) => instance.put("/users", EditUser),
 
   dailyUser: () =>
     instance.put("/users/check", {

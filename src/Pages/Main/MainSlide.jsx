@@ -123,7 +123,6 @@ const MainSlide = () => {
     //threshold는 ref타겟의 모습이 0~1만큼의 모습이 보이면 inview가 작동하는 값
     threshold: 0.1,
   });
-  console.log(userBook.includes("6389a348dfd4d14c13502f31"));
   useEffect(() => {
     //ref타켓이 보이고, 다음페이지가 있으면 데이터get요청
     if (inView && hasNextPage) {
@@ -131,20 +130,6 @@ const MainSlide = () => {
     }
   }, [hasNextPage, inView]);
 
-  const bookMarked = async () => {
-    try {
-      const { data } = await axios.get(
-        `https://www.iceflower.shop/posts/bookmark/${getCookie("nickName")}`,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
-      console.log("bookmark", data);
-    } catch (error) {}
-  };
-  console.log(selfCheck);
   if (loading) {
     return <Loading />;
   } else {
