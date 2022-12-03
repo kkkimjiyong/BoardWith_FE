@@ -81,8 +81,8 @@ const MyPage = () => {
 
   const logoutHandler = (name) => {
     alert("로그아웃 성공");
-    removeCookie("accessToken");
-    removeCookie("refreshToken");
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
     navigate("/");
   };
 
@@ -92,7 +92,7 @@ const MyPage = () => {
     try {
       const { data } = await axios.delete("https://www.iceflower.shop/users", {
         headers: {
-          Authorization: `${getCookie("accessToken")}`,
+          Authorization: `${sessionStorage.getItem("accessToken")}`,
         },
       });
       console.log(data);
