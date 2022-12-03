@@ -111,6 +111,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     if (comment.comment === "") {
       alert("댓글 내용을 입력해주세요");
     } else {
+      console.log("댓글입력");
       dispatch(__postComments({ comment, postid }));
       setComment(initialState);
     }
@@ -189,7 +190,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     );
   }, [postApi.getDetailId(postid)]);
 
-  console.log("comments", comments);
+  // console.log("comments", comments);
 
   useEffect(() => {
     //파티 마감 상태
@@ -265,7 +266,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   };
 
   // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
-  console.log("detail", detail?.data);
+  // console.log("detail", detail?.data);\
+  console.log("댓글리스트", comments);
 
   return (
     <BackGroudModal>
@@ -815,6 +817,7 @@ const Btnbox = styled.div`
     text-indent: center;
     text-align: center;
     background-color: var(--gray);
+    color: white;
   }
   input:nth-child(2) {
     width: 400px;
