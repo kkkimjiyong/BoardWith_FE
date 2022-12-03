@@ -111,12 +111,30 @@ export const postApi = {
 };
 
 export const commentsApi = {
-  getComments: (payload) => instance.get(`/comments/${payload}`),
+  getComments: (payload) =>
+    instance.get(`/comments/${payload}`, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
   postComments: (payload) =>
-    instance.post(`/comments/${payload.postid}`, payload.comment),
+    instance.post(`/comments/${payload.postid}`, payload.comment, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
   editComments: (payload) =>
-    instance.put(`/comments/${payload.commentId}`, payload.comment),
-  delComments: (payload) => instance.delete(`/comments/${payload}`),
+    instance.put(`/comments/${payload.commentId}`, payload.comment, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
+  delComments: (payload) =>
+    instance.delete(`/comments/${payload}`, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
 };
 
 export const postsApi = {

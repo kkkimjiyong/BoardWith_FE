@@ -161,7 +161,6 @@ const ChatRoom = () => {
               return (
                 <UserBox>
                   <div className="row">
-                    {" "}
                     <AvatarBox
                       profile={true}
                       scale={0.12}
@@ -171,7 +170,6 @@ const ChatRoom = () => {
                     />
                     <div className="avatar">{user}</div>
                   </div>
-
                   <UserBtn
                     onClick={() => {
                       ban(user);
@@ -200,11 +198,8 @@ const ChatRoom = () => {
         <RoomInfo isOpen={isOpen}>
           {isOpen && (
             <>
-              {" "}
               <RoomBox>
-                {" "}
                 <RoomBoxTitle>
-                  {" "}
                   <div>주최자</div>
                   <div>장소</div>
                   <div>일자</div>
@@ -233,7 +228,7 @@ const ChatRoom = () => {
             onChange={onChange}
           />
           <FaArrowAltCircleUp
-            // onClick={onSubmitHandler}
+            onClick={onSubmitHandler}
             color="white"
             size="30"
             className="sendBtn"

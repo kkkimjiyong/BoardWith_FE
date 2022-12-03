@@ -11,7 +11,6 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
-import { getCookie } from "../../hooks/CookieHook";
 import moment from "moment-timezone";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import { AiOutlineMessage } from "@react-icons/all-files/ai/AiOutlineMessage";
@@ -43,8 +42,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [y, setY] = useState();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
-  const [isPartyAccept, setIsPartyAccept] = useState(false);
-  const [isCommentBan, setIsCommentBan] = useState([]);
+
   // 수정
 
   //? ---------------시간 (나중에 리팩토링) ----------------
@@ -112,6 +110,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     if (comment.comment === "") {
       alert("댓글 내용을 입력해주세요");
     } else {
+      console.log("댓글입력");
       dispatch(__postComments({ comment, postid }));
       setComment(initialState);
     }
@@ -131,18 +130,15 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   //useEffect 디테일 데이터 불러오기---------------------------------------
   useEffect(() => {
     userApi.getUser().then((res) => {
-      console.log("몇번이나 눌리는겨?");
       setNickName(res.data.findUser.nickName);
     });
     postApi.getDetailId(postid).then((res) => {
-      console.log("몇번이나 눌리는겨?");
-
       setDetail(res.data);
     });
     dispatch(__getComments(postid));
-  }, [isClosed, isPartyAccept]);
+  }, [isClosed]);
 
-  console.log(isClosed);
+  // console.log(isClosed);
 
   //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
   // console.log(detail?.data?.nickName);
@@ -177,7 +173,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
     const closeHandler = () => {
       if (closed) {
-        if (getCookie("accesstoken") !== null) {
+        if (sessionStorage.getItem("accesstoken") !== null) {
           setOpen((open) => !open);
         } else {
           alert("로그인이 필요한 기능입니다.");
@@ -193,8 +189,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     );
   }, [postApi.getDetailId(postid)]);
 
-  console.log("comments", comments);
-  console.log("isCommentBan", isCommentBan);
+  // console.log("comments", comments);
 
   useEffect(() => {
     //파티 마감 상태
@@ -270,7 +265,8 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   };
 
   // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
-  console.log("detail", detail?.data);
+  // console.log("detail", detail?.data);\
+  console.log("댓글리스트", comments);
 
   return (
     <BackGroudModal>
@@ -394,7 +390,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <StButtonWrap>
                         <Stbutton
                           onClick={() => {
-                            if (getCookie("accesstoken") !== null) {
+                            if (
+                              sessionStorage.getItem("accesstoken") !== null
+                            ) {
                               setOpen((open) => !open);
                             } else {
                               alert("로그인이 필요한 기능입니다.");
@@ -412,7 +410,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             마감취소
                           </Stbutton1>
                         )} */}
-
                         <Stbutton1
                           onClick={
                             !isClosed ? closePartyHandler : openPartyHandler
@@ -427,7 +424,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         className="innerDiv"
                         onClick={() => {
                           if (!isClosed) {
-                            if (getCookie("accesstoken") !== null) {
+                            if (
+                              sessionStorage.getItem("accesstoken") !== null
+                            ) {
                               setOpen((open) => !open);
                             } else {
                               alert("로그인이 필요한 기능입니다.");
@@ -820,6 +819,7 @@ const Btnbox = styled.div`
     text-indent: center;
     text-align: center;
     background-color: var(--gray);
+    color: white;
   }
   input:nth-child(2) {
     width: 400px;
