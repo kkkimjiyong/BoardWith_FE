@@ -41,13 +41,13 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
       )}
 
       {next === 4 && (
-        <DoneModal>
+        <DoneModal onClick={doneTutorial}>
           <DoneLine>
             {" "}
             <div className="headTxt1"> 보드게임 일원이 되신 것을</div>
             <div className="headTxt2"> 축하드립니다!</div>
             <div> 튜토리얼 성공 +300P 지급! </div>
-            <DoneBtn onClick={doneTutorial}>완료</DoneBtn>
+            <DoneBtn>완료</DoneBtn>
           </DoneLine>
         </DoneModal>
       )}
