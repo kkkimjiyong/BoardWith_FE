@@ -118,8 +118,6 @@ const OtherUserPage = () => {
         <LikeGameCtn>
           <LikeGameBox>
             <LikeGame>#달무티</LikeGame>
-            <LikeGame>#달무티</LikeGame>
-            <LikeGame>#달무티</LikeGame>
           </LikeGameBox>
 
           {/* 맵돌려야지~ */}

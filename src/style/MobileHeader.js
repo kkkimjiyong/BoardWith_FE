@@ -39,7 +39,7 @@ const MobileHeaderCtn = styled.div`
   width: 100%;
   box-shadow: 1px 1px 15px 3px black;
   .logo {
-    width: 8%;
+    width: 7%;
     margin: 0 6%;
     @media only screen and (min-width: 1200px) {
       width: 6.5%;

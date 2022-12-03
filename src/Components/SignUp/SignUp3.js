@@ -28,6 +28,7 @@ const SignUp3 = () => {
       .required("나이를 입력해주세요")
       .max(2, "최대 99살까지만 가능합니다"),
     address: yup.string().required("주소를 입력해주세요!"),
+    gender: yup.string().required("성별을 선택해주세요!"),
   });
 
   const postSignUp = async (payload) => {
@@ -158,6 +159,9 @@ const SignUp3 = () => {
                 {...register("gender")}
               ></InputBirth>
             </RowBox>
+            {errors.gender && (
+              <AlertError role="alert">{errors.gender.message}</AlertError>
+            )}
             <SignUpInput
               className="Birth1"
               placeholder="나이를 입력해주세요"

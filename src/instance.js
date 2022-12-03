@@ -36,6 +36,7 @@ instance.interceptors.response.use(
           `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
           {
             refresh_token: sessionStorage.getItem("refreshToken"),
+            nickName: sessionStorage.getItem("nickName"),
           }
         );
         console.log(data);
@@ -71,19 +72,9 @@ export const loginApi = {
 };
 
 export const userApi = {
-  getUser: () =>
-    instance.get("/users", {
-      headers: {
-        Authorization: sessionStorage.getItem("accessToken"),
-      },
-    }),
+  getUser: () => instance.get("/users"),
 
-  editUser: (EditUser) =>
-    instance.put("/users", EditUser, {
-      headers: {
-        Authorization: sessionStorage.getItem("accessToken"),
-      },
-    }),
+  editUser: (EditUser) => instance.put("/users", EditUser),
 
   dailyUser: () =>
     instance.put("/users/check", {
