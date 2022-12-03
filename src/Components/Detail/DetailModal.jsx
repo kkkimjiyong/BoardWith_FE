@@ -173,7 +173,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
     const closeHandler = () => {
       if (closed) {
-        if (sessionStorage.getItem("accesstoken") !== null) {
+        if (sessionStorage.getItem("accessToken")) {
           setOpen((open) => !open);
         } else {
           alert("로그인이 필요한 기능입니다.");
@@ -267,6 +267,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
   // console.log("detail", detail?.data);\
   console.log("댓글리스트", comments);
+  console.log("토큰", sessionStorage.getItem("accessToken"));
 
   return (
     <BackGroudModal>
@@ -390,9 +391,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <StButtonWrap>
                         <Stbutton
                           onClick={() => {
-                            if (
-                              sessionStorage.getItem("accesstoken") !== null
-                            ) {
+                            if (sessionStorage.getItem("accessToken")) {
                               setOpen((open) => !open);
                             } else {
                               alert("로그인이 필요한 기능입니다.");
@@ -424,9 +423,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         className="innerDiv"
                         onClick={() => {
                           if (!isClosed) {
-                            if (
-                              sessionStorage.getItem("accesstoken") !== null
-                            ) {
+                            if (sessionStorage.getItem("accessToken")) {
                               setOpen((open) => !open);
                             } else {
                               alert("로그인이 필요한 기능입니다.");
