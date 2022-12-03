@@ -44,7 +44,9 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
         <DoneModal>
           <DoneLine>
             {" "}
-            축하드립니다! 튜토리얼 완성 +300P 지급!
+            <div className="headTxt1"> 보드게임 일원이 되신 것을</div>
+            <div className="headTxt2"> 축하드립니다!</div>
+            <div> 튜토리얼 성공 +300P 지급! </div>
             <DoneBtn onClick={doneTutorial}>완료</DoneBtn>
           </DoneLine>
         </DoneModal>
@@ -99,7 +101,7 @@ const Filter = styled.div`
 const Avatar = styled.div`
   position: absolute;
   bottom: 11%;
-  right: 6%;
+  right: 3%;
 `;
 
 const ContentBox = styled.div`
@@ -117,7 +119,7 @@ const ContentBox = styled.div`
     ::after {
       content: "";
       position: absolute;
-      top: -30%;
+      top: -25%;
       left: 80%;
       width: 0;
       height: 0;
@@ -158,7 +160,7 @@ const BottomContentBox = styled.div`
     content: "";
     position: absolute;
     bottom: 5%;
-    left: 53%;
+    left: 56%;
     width: 0;
     height: 0;
     border: 50px solid transparent;
@@ -168,6 +170,13 @@ const BottomContentBox = styled.div`
     margin-left: -23px;
     margin-bottom: -46px;
   }
+`;
+
+const MainCardModal = styled.div`
+  width: 90%;
+  height: 40%;
+  border: 2px solid var(--primary);
+  background-color: var(--black);
 `;
 
 const DoneModal = styled.div`
@@ -181,6 +190,16 @@ const DoneModal = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  .headTxt1 {
+    margin-bottom: 5%;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .headTxt2 {
+    margin-bottom: 50%;
+    font-size: 20px;
+    font-weight: 600;
+  }
 `;
 
 const DoneLine = styled.div`

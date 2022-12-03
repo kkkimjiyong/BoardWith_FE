@@ -152,7 +152,9 @@ const Comments = ({
     comments?.banOrNot ? setIsBanUser(true) : setIsBanUser(false);
   }, [comments]);
 
+
   console.log("comments", comments);
+
 
   return (
     <>
@@ -297,12 +299,7 @@ const Comments = ({
                               scale={0.2}
                               backScale={0.8}
                               circle={true}
-                              userSelect={{
-                                Eye: comments?.userAvater?.Eye,
-                                Hair: comments?.userAvater?.Hair,
-                                Mouth: comments?.userAvater?.Mouth,
-                                Back: comments?.userAvater?.Back,
-                              }}
+                              userSelect={comments?.userAvater}
                             />
                           </StAvatar>
                         </div>

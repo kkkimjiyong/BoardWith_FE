@@ -122,7 +122,6 @@ const EyeCtn = styled.div`
 
 const MouthCtn = styled.div`
   z-index: 1;
-
   position: absolute;
   top: 0;
   width: 280px;
@@ -131,6 +130,7 @@ const MouthCtn = styled.div`
   justify-content: center;
   align-items: center;
   .Mouth {
+    margin-bottom: 15%;
     transform: scale(1.6);
     position: absolute;
   }

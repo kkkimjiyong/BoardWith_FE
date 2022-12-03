@@ -154,9 +154,9 @@ const MainSlide = () => {
         {!selfCheck && (
           <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
         )}
-        {!isTutorial && (
+        {/* {!isTutorial && (
           <Tutorial setSelfCheck={setSelfCheck} setIsTutorial={setIsTutorial} />
-        )}
+        )} */}
         <MainBox className="Scroll">
           <MainHeader onClick={() => scrollToTop()}>
             <BiCurrentLocation
@@ -243,7 +243,7 @@ const MainHeader = styled.div`
   z-index: 10;
   color: white;
   padding: 2% 5%;
-  height: 7vh;
+  min-height: 7%;
   display: flex;
   justify-content: space-between;
   align-items: center;

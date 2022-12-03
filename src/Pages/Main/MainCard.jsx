@@ -33,6 +33,8 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
       return memberStatus[3];
     }
   };
+
+  console.log(userBook);
   useEffect(() => {
     //*각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
     //*부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
@@ -98,7 +100,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
               scale={0.12}
               backScale={0.8}
               circle={true}
-              profile={true}
+              profile
             />
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
@@ -283,7 +285,7 @@ const ItemWrap = styled.div`
 
 const StatusBox = styled.div`
   color: #2e294e;
-  width: 20%;
+  min-width: 20%;
   height: 30px;
   border: 1px solid #5c5c5c;
   padding: 5px 0px;
