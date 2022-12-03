@@ -67,7 +67,7 @@ const Comments = ({
       "삭제하시면 참여 신청이 취소됩니다.\n정말로 삭제하시겠습니까?"
     );
     if (result) {
-      console.log("comments", comments._id);
+      // console.log("comments", comments._id);
       dispatch(__deleteComment(comments._id));
       setModalOpen((ModalOpen) => !ModalOpen);
       alert("참여 신청을 취소했습니다.");
@@ -80,7 +80,7 @@ const Comments = ({
   // console.log("comments", comments);
   const acceptingPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
-    console.log("nickName", nickName);
+    // console.log("nickName", nickName);
     postApi
       .acceptingParty({ postid: postid, nickName: nickName })
       .then((res) => {
@@ -106,7 +106,7 @@ const Comments = ({
   // console.log("comments", comments);
   const kickPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
-    console.log("nickName", nickName);
+    // console.log("nickName", nickName);
     const result = window.confirm(
       "이 파티원을 파티에서 강제퇴장시키시겠습니다?"
     );
@@ -130,7 +130,7 @@ const Comments = ({
 
   const kickPartyCancelHandler = () => {
     const nickName = { nickName: comments.nickName };
-    console.log("nickName", nickName);
+    // console.log("nickName", nickName);
     postApi
       .kickingPartyCancel({ postid: postid, nickName: nickName })
       .then((res) => {
@@ -143,7 +143,7 @@ const Comments = ({
       });
   };
 
-  console.log("comments", comments);
+  console.log("댓글카드", comments);
 
   useEffect(() => {
     //참가 확정 받은 유저인지
@@ -152,9 +152,7 @@ const Comments = ({
     comments?.banOrNot ? setIsBanUser(true) : setIsBanUser(false);
   }, [comments]);
 
-
-  console.log("comments", comments);
-
+  // console.log("comments", comments);
 
   return (
     <>
