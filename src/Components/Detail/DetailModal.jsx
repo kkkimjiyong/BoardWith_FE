@@ -11,7 +11,6 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
-import { getCookie } from "../../hooks/CookieHook";
 import moment from "moment-timezone";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import { AiOutlineMessage } from "@react-icons/all-files/ai/AiOutlineMessage";
@@ -174,7 +173,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
     const closeHandler = () => {
       if (closed) {
-        if (getCookie("accesstoken") !== null) {
+        if (sessionStorage.getItem("accesstoken") !== null) {
           setOpen((open) => !open);
         } else {
           alert("로그인이 필요한 기능입니다.");
@@ -391,7 +390,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <StButtonWrap>
                         <Stbutton
                           onClick={() => {
-                            if (getCookie("accesstoken") !== null) {
+                            if (
+                              sessionStorage.getItem("accesstoken") !== null
+                            ) {
                               setOpen((open) => !open);
                             } else {
                               alert("로그인이 필요한 기능입니다.");
@@ -409,7 +410,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                             마감취소
                           </Stbutton1>
                         )} */}
-
                         <Stbutton1
                           onClick={
                             !isClosed ? closePartyHandler : openPartyHandler
@@ -424,7 +424,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         className="innerDiv"
                         onClick={() => {
                           if (!isClosed) {
-                            if (getCookie("accesstoken") !== null) {
+                            if (
+                              sessionStorage.getItem("accesstoken") !== null
+                            ) {
                               setOpen((open) => !open);
                             } else {
                               alert("로그인이 필요한 기능입니다.");
