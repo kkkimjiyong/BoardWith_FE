@@ -17,6 +17,7 @@ import { AiOutlineMessage } from "@react-icons/all-files/ai/AiOutlineMessage";
 import { AiOutlineCalendar } from "@react-icons/all-files/ai/AiOutlineCalendar";
 import { FiShare } from "@react-icons/all-files/fi/FiShare";
 import { FiMapPin } from "@react-icons/all-files/fi/FiMapPin";
+import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 // import { BsPeopleFill } from "@react-icons/all-files/bs/BsPeopleFill";
 // import { BsChevronLeft } from "@react-icons/all-files/bs/BsChevronLeft";
 import { FaBullhorn } from "@react-icons/all-files/fa/FaBullhorn";
@@ -323,6 +324,17 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                         <NickName>{detail?.data?.nickName}</NickName>
                       </ProfileBox>
                       <StContentWrap>
+                        {isHost && (
+                          <FiEdit
+                            onClick={() => setModalOpen(false)}
+                            style={{
+                              fontSize: "26px",
+                              color: "white",
+                            }}
+                            cursor="pointer"
+                          />
+                        )}
+                        <Stgap />
                         <FiShare
                           style={{
                             fontSize: "26px",
