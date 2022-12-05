@@ -85,7 +85,8 @@ const Login = () => {
         {" "}
         <NaverLogin
           //
-          href={NAVER_LOGIN_URL}
+          // href={NAVER_LOGIN_URL}
+          onClick={() => alert("현재 개발중입니다!")}
         ></NaverLogin>
         <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
         <LoginGoogle href={GOOGLE_LOGIN_URL}></LoginGoogle>
@@ -158,7 +159,7 @@ const LoginBtn = styled.button`
   box-shadow: 0px 3px 10px 0px black;
 `;
 
-const NaverLogin = styled.a`
+const NaverLogin = styled.div`
   height: 40px;
   border-radius: 10px;
   /* background-color: #fee500; */
