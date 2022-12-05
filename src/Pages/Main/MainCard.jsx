@@ -107,7 +107,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
             />
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
-          {starMark ? (
+          {!starMark ? (
             <StarBox>
               <AiFillStar onClick={bookMark} size="80%" />
             </StarBox>
