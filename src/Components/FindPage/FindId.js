@@ -35,14 +35,13 @@ const FindId = () => {
         "https://www.iceflower.shop/sms/verifyID",
         findUser
       );
-      if (data === "success") {
-        alert(`아이디는 ${data}입니다!`);
-      } else {
-        alert("다시 시도해주세요");
+      console.log(data);
+      if (data) {
+        alert(`아이디는 ${data.findId}입니다!`);
       }
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      alert("다시 시도해주세요!");
     }
   };
 
