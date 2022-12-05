@@ -9,10 +9,15 @@ import { ReactComponent as MainLogo } from "../../Assets/MyLogo.svg";
 import MyLogo from "../../Assets/MainLogo.png";
 import cookie from "react-cookies";
 import naverButton from "../../Assets/naverButton.png";
+import AlertModal from "../AlertModal";
 
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState();
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
+
   const initialState = {
     userId: "",
     password: "",
@@ -39,7 +44,7 @@ const Login = () => {
       const { data } = await loginApi.postLogin(payload);
       console.log(data.nickName);
       if (data.accessToken) {
-        console.log("나 푸쉬됬어요3");
+        setAlert(true);
         sessionStorage.setItem("accessToken", data.accessToken, {
           path: "/",
         });
@@ -47,9 +52,9 @@ const Login = () => {
           path: "/",
         });
         sessionStorage.setItem("nickName", data.nickName);
+        setContent("환영합니다!");
       }
-
-      window.location.replace("/main");
+      setAddress("/main");
     } catch (error) {
       alert("다시 로그인해주세요");
       console.log(error);
@@ -64,6 +69,9 @@ const Login = () => {
 
   return (
     <LoginCtn onSubmit={onSubmitHandler} className="neonBox">
+      {alert && (
+        <AlertModal setAlert={setAlert} address={address} content={content} />
+      )}
       <MainLogo className="logo" />
       <LoginInput
         value={login.userId}

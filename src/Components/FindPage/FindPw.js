@@ -25,9 +25,8 @@ const FindPw = () => {
           phoneNumber: findUser.phoneNumber,
         }
       );
-      if (data.isSuccess == "true") {
-        alert("인증번호 전송!");
-      }
+
+      alert(data.message);
     } catch (error) {
       console.log(error);
       alert(error.message);

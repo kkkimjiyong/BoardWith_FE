@@ -43,6 +43,7 @@ instance.interceptors.response.use(
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.accessToken}`,
         };
+        window.location.reload();
         return await axios(prevRequest);
       } catch (err) {
         console.log(err);

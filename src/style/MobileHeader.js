@@ -27,7 +27,7 @@ const MobileHeader = () => {
 };
 
 const MobileHeaderCtn = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 30;
   height: 6vh;
   background-color: var(--black);
