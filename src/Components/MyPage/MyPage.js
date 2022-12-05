@@ -33,7 +33,6 @@ const MyPage = () => {
 
   //---------- 1초 로딩 후 렌더  ------------
   useEffect(() => {}, []);
-  console.log(bookmark);
   //? -----------------  API  -----------------------
 
   const getUser = async () => {

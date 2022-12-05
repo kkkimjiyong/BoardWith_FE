@@ -48,7 +48,7 @@ const KaKaoLogin = () => {
         sessionStorage.setItem("refreshToken", data.refresh_token, {
           path: "/",
         });
-        navigate("/main");
+        window.location.replace("/main");
       }
       setIsLoading(false);
       setUserId(data.userId);

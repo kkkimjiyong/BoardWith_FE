@@ -42,7 +42,7 @@ const Login = () => {
         sessionStorage.setItem("nickName", data.nickName);
       }
 
-      navigate("/main");
+      window.location.replace("/main");
     } catch (error) {
       alert("다시 로그인해주세요");
       console.log(error);
