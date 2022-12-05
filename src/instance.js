@@ -148,11 +148,10 @@ export const postsApi = {
     return instance.get(`posts/searchNickname/${payload}`);
   },
   creatPost: (inputs) => {
-    return instance.post(`/posts`, inputs, {
-      headers: {
-        Authorization: sessionStorage.getItem("accessToken"),
-      },
-    });
+    return instance.post(`/posts`, inputs);
+  },
+  putPost: (inputs) => {
+    return instance.put(`/posts`, inputs);
   },
   deletePost: (params) => instance.delete(`/posts/${params}`),
   updatePost: (payload) =>
