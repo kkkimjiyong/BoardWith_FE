@@ -89,11 +89,14 @@ const MyPage = () => {
 
   const deleteUser = async () => {
     try {
-      const { data } = await axios.delete("https://www.iceflower.shop/users", {
-        headers: {
-          Authorization: `${sessionStorage.getItem("accessToken")}`,
-        },
-      });
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_BACK_SERVER}/users`,
+        {
+          headers: {
+            Authorization: `${sessionStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       console.log(data);
     } catch (error) {
       console.log(error);

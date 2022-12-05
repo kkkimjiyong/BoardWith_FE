@@ -19,8 +19,7 @@ import AvatarBox from "../Avatar/AvatarBox";
 import { GiSiren } from "@react-icons/all-files/gi/GiSiren";
 
 const ChatRoom = () => {
-  // const socket = io("https://www.iceflower.shop/");
-  const socket = io("https://www.iceflower.shop/");
+  const socket = io(process.env.REACT_APP_BACK_SERVER);
   //웹소켓으로만 통신하고싶을때
   // {
   //   transports: ["websocket"],
@@ -48,7 +47,7 @@ const ChatRoom = () => {
   const getChat = async () => {
     try {
       const { data } = await axios.get(
-        `https://www.iceflower.shop/chats/${roomid}`
+        `${process.env.REACT_APP_BACK_SERVER}/${roomid}`
       );
       if (data.updateSocket.chat) setChatArr(data.updateSocket.chat);
     } catch (error) {}

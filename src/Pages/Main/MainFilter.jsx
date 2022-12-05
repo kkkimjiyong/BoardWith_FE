@@ -147,7 +147,7 @@ const MainFilter = ({
   };
   const getFiltered = async () => {
     const response = await axios.post(
-      `https://www.iceflower.shop/posts/filterPosts`,
+      `${process.env.REACT_APP_BACK_SERVER}/posts/filterPosts`,
       filtered
     );
     console.log(response.data);

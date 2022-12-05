@@ -1,16 +1,14 @@
 import axios from "axios";
 
 const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_SERVER,
-  baseURL: "https://www.iceflower.shop",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
   headers: {
     Authorization: sessionStorage.getItem("accessToken"),
   },
 });
 
 const instanceNoAuth = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_SERVER,
-  baseURL: "https://www.iceflower.shop",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
 });
 
 //? ------------------------- axios interceptor  --------------------------
