@@ -168,7 +168,7 @@ const ChatRoom = () => {
                       scale={0.12}
                       backScale={0.8}
                       circle={true}
-                      userSelect={{ Eye: 1, Hair: 1, Back: 1, Mouth: 1 }}
+                      userSelect={user.userAvatar}
                     />
                     <div className="avatar">{user}</div>
                   </div>

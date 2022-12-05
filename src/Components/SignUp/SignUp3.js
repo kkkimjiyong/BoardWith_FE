@@ -12,13 +12,16 @@ import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 import Layout from "../../style/Layout.js";
 import { useSelector } from "react-redux";
+import AlertModal from "../AlertModal.js";
 
 const SignUp3 = () => {
-  const [next, setNext] = useState(0);
   const initialState = { phoneNumber: "", verifyCode: "" };
   const [user, setUser, onChange] = useInput(initialState);
   const userInfo = useSelector((state) => state.posts.user);
-  console.log(userInfo);
+
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
   const navigate = useNavigate();
 
   //yup을 이용한 유효섬겅증방식
@@ -35,8 +38,9 @@ const SignUp3 = () => {
     try {
       const data = await signUpApi.postSingup(payload);
       console.log(data);
-      alert("회원가입을 축하드립니다!");
-      navigate("/");
+      setAlert(true);
+      setContent("회원가입을 축하드립니다!");
+      setAddress("/");
     } catch (error) {
       alert(error.response.data.err);
       setValue("nickName", "");
@@ -133,6 +137,9 @@ const SignUp3 = () => {
   return (
     <Layout>
       <SignUpWrap>
+        {alert && (
+          <AlertModal setAlert={setAlert} address={address} content={content} />
+        )}
         <>
           <SignUpCtn>
             <SignUpHeader>

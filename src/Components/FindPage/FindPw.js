@@ -3,9 +3,14 @@ import useInput from "../../hooks/UseInput";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AlertModal from "../AlertModal";
+import { useState } from "react";
 
 const FindPw = () => {
   const navigate = useNavigate();
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
   const initialState = {
     userId: "",
     phoneNumber: "",
@@ -25,9 +30,8 @@ const FindPw = () => {
           phoneNumber: findUser.phoneNumber,
         }
       );
-      if (data.isSuccess == "true") {
-        alert("인증번호 전송!");
-      }
+      setAlert(true);
+      setContent(data.message);
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -45,11 +49,14 @@ const FindPw = () => {
         }
       );
       if (data == "success") {
-        alert("인증성공!");
+        setAlert(true);
+
+        setContent("인증성공!");
       }
     } catch (error) {
       console.log(error);
-      alert("다시 시도해주세요!");
+      setAlert(true);
+      setContent("다시 시도해주세요!");
     }
   };
 
@@ -60,11 +67,13 @@ const FindPw = () => {
         findUser
       );
       console.log(data);
-      alert(data.message);
-      navigate("/");
+      setAlert(true);
+      setContent(data.message);
+      setAddress("/");
     } catch (error) {
+      setAlert(true);
       console.log(error);
-      alert(error.message);
+      setContent(error.message);
     }
   };
 
@@ -72,6 +81,9 @@ const FindPw = () => {
 
   return (
     <SignUpWrap>
+      {alert && (
+        <AlertModal setAlert={setAlert} address={address} content={content} />
+      )}
       <SignUpHeader>
         <Arrow onClick={() => navigate("/")} />
         <div>비밀번호 찾기</div>
