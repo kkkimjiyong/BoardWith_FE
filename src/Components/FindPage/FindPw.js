@@ -61,6 +61,7 @@ const FindPw = () => {
       );
       console.log(data);
       alert(data.message);
+      navigate("/");
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -98,7 +99,7 @@ const FindPw = () => {
           {/* <small role="alert">dk</small> */}
         </ColumnBox>
 
-        <VerfiyBtn onClick={() => postPw()}>전번</VerfiyBtn>
+        <VerfiyBtn onClick={() => postPw()}>인증번호 전송</VerfiyBtn>
       </RowBox>
       <RowBox>
         <ColumnBox>
@@ -110,8 +111,7 @@ const FindPw = () => {
           />
           {/* <small role="alert">dk</small> */}
         </ColumnBox>
-
-        <VerfiyBtn onClick={() => postVerify()}>인증번호</VerfiyBtn>
+        <VerfiyBtn onClick={() => postVerify()}>인증번호 확인</VerfiyBtn>
       </RowBox>
       <RowBox>
         <ColumnBox>

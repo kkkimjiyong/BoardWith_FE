@@ -23,6 +23,7 @@ const FindId = () => {
         "https://www.iceflower.shop/sms/sendID",
         { phoneNumber: findUser.phoneNumber }
       );
+      alert(data.message);
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -37,7 +38,8 @@ const FindId = () => {
       );
       console.log(data);
       if (data) {
-        alert(`아이디는 ${data.findId}입니다!`);
+        alert(`아이디는 ${data}입니다!`);
+        navigate("/");
       }
     } catch (error) {
       console.log(error);
