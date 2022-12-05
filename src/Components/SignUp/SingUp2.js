@@ -35,9 +35,12 @@ const SignUp2 = () => {
 
   const postPhone = async () => {
     try {
-      const { data } = await axios.post("https://www.iceflower.shop/sms/send", {
-        phoneNumber: user.phoneNumber,
-      });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_BACK_SERVER}/sms/send`,
+        {
+          phoneNumber: user.phoneNumber,
+        }
+      );
       console.log(data);
       if (data) {
         dispatch(
@@ -56,7 +59,7 @@ const SignUp2 = () => {
   const postVerifyCode = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/verify",
+        `${process.env.REACT_APP_BACK_SERVER}/sms/verify`,
         { ...user, verifyCode: user.verifyCode.trim(" ") }
       );
       if (data == "success") {

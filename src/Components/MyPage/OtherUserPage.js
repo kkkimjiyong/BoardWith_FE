@@ -53,7 +53,7 @@ const OtherUserPage = () => {
   const postVisible = async () => {
     try {
       const { data } = await userApi.editUser(
-        `https://www.iceflower.shop/users`,
+        `${process.env.REACT_APP_BACK_SERVER}/users`,
         { visible: !user.visible }
       );
       console.log(data.findUserData);
@@ -69,11 +69,14 @@ const OtherUserPage = () => {
 
   const deleteUser = async () => {
     try {
-      const { data } = await axios.delete("https://www.iceflower.shop/users", {
-        headers: {
-          Authorization: `${getCookie("accessToken")}`,
-        },
-      });
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_BACK_SERVER}/users`,
+        {
+          headers: {
+            Authorization: `${getCookie("accessToken")}`,
+          },
+        }
+      );
       console.log(data);
     } catch (error) {
       console.log(error);

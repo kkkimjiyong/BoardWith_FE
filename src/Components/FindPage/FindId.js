@@ -24,7 +24,7 @@ const FindId = () => {
   const postPhone = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/sendID",
+        `${process.env.REACT_APP_BACK_SERVER}/sms/sendID`,
         { phoneNumber: findUser.phoneNumber }
       );
       setAlert(true);
@@ -38,7 +38,7 @@ const FindId = () => {
   const postVerify = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/verifyID",
+        `${process.env.REACT_APP_BACK_SERVER}/sms/verifyID`,
         findUser
       );
       console.log(data);

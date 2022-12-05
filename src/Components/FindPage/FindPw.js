@@ -24,7 +24,7 @@ const FindPw = () => {
   const postPw = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/sendPW",
+        `${process.env.REACT_APP_BACK_SERVER}/sms/sendPW`,
         {
           userId: findUser.userId,
           phoneNumber: findUser.phoneNumber,
@@ -41,7 +41,7 @@ const FindPw = () => {
   const postVerify = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/verify",
+        `${process.env.REACT_APP_BACK_SERVER}/sms/verify`,
         {
           userId: findUser.userId,
           phoneNumber: findUser.phoneNumber,
@@ -63,7 +63,7 @@ const FindPw = () => {
   const postChangePw = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/users/change/password",
+        `${process.env.REACT_APP_BACK_SERVER}/users/change/password`,
         findUser
       );
       console.log(data);
