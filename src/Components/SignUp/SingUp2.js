@@ -45,7 +45,7 @@ const SignUp2 = () => {
             phoneNumber: user.phoneNumber,
           })
         );
-        alert(data.verifyCode);
+        alert(data.message);
       }
     } catch (error) {
       console.log(error);
@@ -56,7 +56,7 @@ const SignUp2 = () => {
     try {
       const { data } = await axios.post(
         "https://www.iceflower.shop/sms/verify",
-        user
+        { ...user, verifyCode: user.verifyCode.trim(" ") }
       );
       if (data == "success") {
         alert("인증성공!");

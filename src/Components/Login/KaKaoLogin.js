@@ -40,12 +40,13 @@ const KaKaoLogin = () => {
         { code }
       );
       if (data.accessToken) {
-        alert("로그인 성공!");
         sessionStorage.setItem("accessToken", data.accessToken, { path: "/" });
         sessionStorage.setItem("refreshToken", data.refresh_token, {
           path: "/",
         });
-        navigate("/main");
+        alert("로그인 성공!");
+
+        window.location.replace("/main");
       }
       setIsLoading(false);
       setUserId(data.userId);
