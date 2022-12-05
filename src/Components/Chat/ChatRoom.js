@@ -32,7 +32,7 @@ const ChatRoom = () => {
   const scrollRef = useRef();
   const [chatArr, setChatArr] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState({});
+  const [owner, setOwner] = useState({});
   const [detail, setDetail] = useState();
 
   const moment = require("moment-timezone");
@@ -41,7 +41,6 @@ const ChatRoom = () => {
     return m.format("MM.DD (ddd) HH:mm");
   };
   const RoomTime = getStartTime(detail?.time[0]);
-  console.log(user);
   // axios로 채팅db가져오기
   const getChat = async () => {
     try {
@@ -55,7 +54,7 @@ const ChatRoom = () => {
     try {
       const { data } = await userApi.getUser();
       console.log(data);
-      setUser(data.findUser);
+      setOwner(data.findUser);
       roomsubmit(data.findUser);
     } catch (error) {
       console.log(error);
@@ -78,24 +77,30 @@ const ChatRoom = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     console.log("chatMessage", {
-      nickName: user.nickName,
+      nickName: owner.nickName,
       message: message.message,
       room: roomid,
-      userAvatar: user.userAvatar,
+      userAvatar: owner.userAvatar,
     });
     socket.emit("chatMessage", {
-      nickName: user.nickName,
+      nickName: owner.nickName,
       message: message.message,
       room: roomid,
-      userAvatar: user.userAvatar,
+      userAvatar: owner.userAvatar,
     });
     setMessage({ message: "" });
   };
 
   const roomsubmit = (user) => {
     console.log(user?.nickName);
+    console.log("joinRoom", {
+      nickName: user?.nickName,
+      userAvatar: user?.userAvatar,
+      room: roomid,
+    });
     socket.emit("joinRoom", {
       nickName: user?.nickName,
+      userAvatar: user?.userAvatar,
       room: roomid,
     });
   };
@@ -111,13 +116,11 @@ const ChatRoom = () => {
     });
   };
 
-  console.log(users);
-
   const navigate = useNavigate();
 
   const exithandler = () => {
     socket.emit("leave-room", {
-      nickName: user?.nickName,
+      nickName: owner?.nickName,
       room: roomid,
     });
     socket.disconnect();
@@ -125,12 +128,9 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    console.log("render!");
-    // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
-
     socket.on("roomUsers", (msg) => {
-      console.log("ddd", msg);
-      setUsers([...users, msg]);
+      console.log("roomUsers", msg);
+      setUsers(msg);
     });
 
     socket.on("message", (message) => {
@@ -142,17 +142,17 @@ const ChatRoom = () => {
     });
     socket.on("notice", (msg) => {
       console.log("서버에서의 notice", msg);
-      alert(msg);
+      // alert(msg);
     });
     socket.on("banUsers", (msg) => {
-      console.log("밴강퇴", msg, user?.nickName);
-      if (msg == user?.nickName) {
+      console.log("밴강퇴", msg, owner?.nickName);
+      if (msg == owner?.nickName) {
         navigate("/main");
         socket.disconnect();
       }
     });
   }, [getUser]);
-  console.log(detail);
+  console.log(users[0]);
   return (
     <>
       <Wrapper>
@@ -178,7 +178,7 @@ const ChatRoom = () => {
                     />
                     <div className="avatar">{user.nickName}</div>
                   </div>
-                  {user?.nickName == detail?.nickName && (
+                  {owner?.nickName == detail?.nickName && (
                     <UserBtn
                       onClick={() => {
                         ban(user);
@@ -226,7 +226,7 @@ const ChatRoom = () => {
         </RoomInfo>
         <ChatCtn>
           {chatArr?.map((chat) => {
-            return <ChatMessage name={user?.nickName} chat={chat} />;
+            return <ChatMessage name={owner?.nickName} chat={chat} />;
           })}
           <div style={{ height: "0px" }} ref={scrollRef} />
         </ChatCtn>{" "}
@@ -283,6 +283,7 @@ const DrawerHead = styled.div`
 `;
 
 const RoomInfo = styled.div`
+  z-index: 29;
   position: absolute;
   top: 8%;
   width: 90%;
@@ -298,7 +299,7 @@ const RoomInfo = styled.div`
 
 const RoomInfoHeader = styled.div`
   color: var(--white);
-  z-index: 10;
+  z-index: 950;
   display: flex;
   position: absolute;
   width: 90%;
