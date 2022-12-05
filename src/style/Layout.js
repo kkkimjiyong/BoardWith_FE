@@ -43,6 +43,7 @@ const LogoBox = styled.img`
 `;
 
 const Container = styled.div`
+  z-index: 999;
   position: relative;
   overflow-x: hidden;
   width: 100%;
@@ -51,8 +52,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-left: 2px dashed var(--primary);
-  border-right: 2px dashed var(--primary);
+  border-left: 2px solid var(--primary);
+  border-right: 2px solid var(--primary);
   @media only screen and (min-width: 1200px) {
     margin-left: 25%;
   }

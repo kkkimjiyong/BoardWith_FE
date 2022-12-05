@@ -170,16 +170,16 @@ const MainSlide = () => {
             })}
             <Target ref={ref}>target? </Target>{" "}
           </MainListCtn>{" "}
-          <FormButton onClick={() => setFormModalOpen(true)}>
-            <FontAwesomeIcon
-              style={{
-                color: "white",
-              }}
-              size="2x"
-              icon={faPenToSquare}
-            />
-          </FormButton>
         </MainBox>{" "}
+        <FormButton onClick={() => setFormModalOpen(true)}>
+          <FontAwesomeIcon
+            style={{
+              color: "white",
+            }}
+            size="2x"
+            icon={faPenToSquare}
+          />
+        </FormButton>
         <MainFilter
           targetMargin={targetMargin}
           setTargetMargin={setTargetMargin}
@@ -216,6 +216,7 @@ const MainBox = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  max-width: 540px;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
@@ -244,7 +245,7 @@ const MainHeader = styled.div`
 
 const MainListCtn = styled.div`
   width: 100%;
-  padding: 3% 5% 0 5%;
+  padding: 3% 6% 0 6%;
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
@@ -269,7 +270,7 @@ const Rowbox = styled.div`
 const FormButton = styled.button`
   position: fixed;
   bottom: 10%;
-  left: 80%;
+  left: 75%;
   background-color: var(--primary);
   border: none;
   color: white;

@@ -56,7 +56,7 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
 };
 
 const BackGround = styled.div`
-  z-index: 140;
+  z-index: 999;
   color: white;
   width: 100%;
   height: 100%;

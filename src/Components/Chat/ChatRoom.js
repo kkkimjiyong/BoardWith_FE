@@ -42,8 +42,7 @@ const ChatRoom = () => {
     return m.format("MM.DD (ddd) HH:mm");
   };
   const RoomTime = getStartTime(detail?.time[0]);
-  console.log(users[1]);
-  console.log(users[0]);
+  console.log(user);
   // axios로 채팅db가져오기
   const getChat = async () => {
     try {
@@ -79,10 +78,17 @@ const ChatRoom = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    console.log("chatMessage", {
+      nickName: user.nickName,
+      message: message.message,
+      room: roomid,
+      userAvatar: user.userAvatar,
+    });
     socket.emit("chatMessage", {
       nickName: user.nickName,
       message: message.message,
       room: roomid,
+      userAvatar: user.userAvatar,
     });
     setMessage({ message: "" });
   };
@@ -106,7 +112,7 @@ const ChatRoom = () => {
     });
   };
 
-  console.log(users.map((user) => console.log(user)));
+  console.log(users);
 
   const navigate = useNavigate();
 
@@ -125,7 +131,7 @@ const ChatRoom = () => {
 
     socket.on("roomUsers", (msg) => {
       console.log("ddd", msg);
-      setUsers(msg);
+      setUsers([...users, msg]);
     });
 
     socket.on("message", (message) => {
@@ -147,7 +153,7 @@ const ChatRoom = () => {
       }
     });
   }, [getUser]);
-
+  console.log(detail);
   return (
     <>
       <Wrapper>
@@ -171,15 +177,17 @@ const ChatRoom = () => {
                       circle={true}
                       userSelect={user.userAvatar}
                     />
-                    <div className="avatar">{user}</div>
+                    <div className="avatar">{user.nickName}</div>
                   </div>
-                  <UserBtn
-                    onClick={() => {
-                      ban(user);
-                    }}
-                  >
-                    <GiSiren size={30} />
-                  </UserBtn>
+                  {user?.nickName == detail?.nickName && (
+                    <UserBtn
+                      onClick={() => {
+                        ban(user);
+                      }}
+                    >
+                      <GiSiren size={30} />
+                    </UserBtn>
+                  )}
                 </UserBox>
               );
             })}
@@ -268,6 +276,7 @@ const ChatHeader = styled.div`
 `;
 
 const DrawerHead = styled.div`
+  z-index: 950;
   color: var(--white);
   margin: 0% 5%;
   padding: 5% 0%;
@@ -276,7 +285,7 @@ const DrawerHead = styled.div`
 
 const RoomInfo = styled.div`
   position: absolute;
-  top: 9%;
+  top: 8%;
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -329,7 +338,7 @@ const RoomBtn = styled.div`
 const Arrow = styled.div`
   display: inline-block;
   border: 10px solid transparent;
-  border-top-color: black;
+  border-top-color: white;
   margin-top: 12px;
   &.left {
     border-top-color: white;

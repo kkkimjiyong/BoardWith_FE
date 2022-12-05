@@ -11,6 +11,7 @@ const AvatarBox = ({
   profile,
 }) => {
   if (userSelect) {
+    console.log(userSelect);
     const { Eye, Hair, Mouth, Back } = userSelect;
     return (
       <AvatarCtn profile={profile} translateScale={scale}>

@@ -5,11 +5,13 @@ import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 import { rankApi } from "../../instance";
 import Loading from "../../style/Loading";
 import AvatarBox from "../Avatar/AvatarBox";
+import { useNavigate } from "react-router-dom";
 
 const Ranking = () => {
   const [loading, setLoading] = useState(true);
   const [rank, setRank] = useState();
   const [midrank, setMidRank] = useState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     rankApi.getRank().then((res) => {
@@ -38,7 +40,9 @@ const Ranking = () => {
                   }}
                   size="20px"
                 />
-                <StAvatar>
+                <StAvatar
+                  onClick={() => navigate(`/userpage/${rank?.[0]?.nickName}`)}
+                >
                   <AvatarBox
                     profile={true}
                     scale={0.2}
@@ -63,7 +67,9 @@ const Ranking = () => {
                       color: "#C5C5C5",
                     }}
                   />
-                  <StAvatar>
+                  <StAvatar
+                    onClick={() => navigate(`/userpage/${rank?.[1]?.nickName}`)}
+                  >
                     <AvatarBox
                       profile={true}
                       scale={0.2}
@@ -87,7 +93,9 @@ const Ranking = () => {
                       color: "#9A6C36",
                     }}
                   />
-                  <StAvatar>
+                  <StAvatar
+                    onClick={() => navigate(`/userpage/${rank?.[2]?.nickName}`)}
+                  >
                     <AvatarBox
                       profile={true}
                       scale={0.2}
