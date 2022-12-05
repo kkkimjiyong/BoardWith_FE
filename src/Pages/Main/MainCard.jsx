@@ -3,15 +3,13 @@ import styled from "styled-components";
 import { getDistance } from "geolib";
 import { useDispatch } from "react-redux";
 import { addDistance } from "../../redux/modules/postsSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "moment/locale/ko";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar, faStar } from "@fortawesome/free-regular-svg-icons";
-import { faSplotch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
-import { getCookie } from "../../hooks/CookieHook";
 import { postsApi } from "../../instance";
+import { AiFillStar } from "@react-icons/all-files/ai/AiFillStar";
+import { AiOutlineStar } from "@react-icons/all-files/ai/AiOutlineStar";
+import { ImLocation } from "@react-icons/all-files/im/ImLocation";
+import { AiFillCalendar } from "@react-icons/all-files/ai/AiFillCalendar";
 import AvatarBox from "../../Components/Avatar/AvatarBox";
 
 const Item = ({ number, item, Myaddress, closed, userBook }) => {
@@ -55,19 +53,25 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
     }
   }, []);
   //요일시간 표기
-  const moment = require("moment-timezone");
-  const startDate = item?.time?.[0];
-  const endDate = item?.time?.[1];
-  const getStartTime = (startDate) => {
-    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
-    return m.format("MM.DD (ddd) HH:mm");
-  };
-  const getEndTime = (endDate) => {
-    var m = moment(endDate).tz("Asia/Seoul");
-    return m.format("HH:mm");
-  };
-  const realStartTime = getStartTime(startDate);
-  const realEndTime = getEndTime(endDate);
+  const IsoStartDate = item?.time?.[0];
+  const IsoendDate = item?.time?.[1];
+  const startDate = new Date(IsoStartDate);
+  const endDate = new Date(IsoendDate);
+
+  const week = ["일", "월", "화", "수", "목", "금", "토"];
+
+  const showTime =
+    ("0" + (startDate.getMonth() + 1)).slice(-2) +
+    "." +
+    ("0" + startDate.getDate()).slice(-2) +
+    " (" +
+    week[startDate.getDay()] +
+    ") " +
+    startDate.getHours() +
+    ":00 ~ " +
+    endDate.getHours() +
+    ":00";
+
   //북마크(별) 색깔 변환
   const [starMark, setStarMark] = useState(
     userBook.includes(item._id) ? false : true
@@ -87,13 +91,12 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
   };
   console.log();
   return (
-    <ItemWrap>
+    <Wrap>
       <div
         className={!closed ? "ItemWrap" : "ClosedItemWrap"}
         onClick={() => setModalOpen(true)}
       >
-        <div className="ItemWrap-Body-SpaceBetween">
-          {" "}
+        <ItemWrapBodySpaceBetween>
           <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
             <AvatarBox
               userSelect={item?.userAvatar}
@@ -105,58 +108,31 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
           {starMark ? (
-            <div>
-              <FontAwesomeIcon
-                style={{
-                  color: "black",
-                }}
-                onClick={bookMark}
-                size="2x"
-                icon={faStar}
-              />
-            </div>
+            <StarBox>
+              <AiFillStar onClick={bookMark} size="80%" />
+            </StarBox>
           ) : (
-            <div>
-              {" "}
-              <FontAwesomeIcon size="2x" onClick={bookMark} icon={faSplotch} />
-            </div>
+            <StarBox>
+              <AiOutlineStar onClick={bookMark} size="80%" />
+            </StarBox>
           )}
-        </div>
-        <div className="ItemWrap-Body">
+        </ItemWrapBodySpaceBetween>
+        <ItemWrapBody>
           <div>
-            <div className="ItemWrap-Top ">{item?.title}</div>
-            <div className="ItemWrap-Body-Flex">
-              <FontAwesomeIcon
-                style={{
-                  color: "#ddd",
-                }}
-                size="1x"
-                icon={faCalendar}
-              />{" "}
-              <div className="ItemWrap-Body-Title ">{item?.cafe}</div>
-            </div>
+            <ItemWrapTop>{item?.title}</ItemWrapTop>
+            <ItemWrapBodyFlex>
+              <ImLocation size="8%" />
+              <ItemWrapBodyTitle>{item?.cafe}</ItemWrapBodyTitle>
+            </ItemWrapBodyFlex>
 
-            <div className="ItemWrap-Body-Flex2">
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  gap: "5px",
-                }}
-              >
-                {" "}
-                <FontAwesomeIcon
-                  style={{
-                    color: "#ddd",
-                  }}
-                  size="1x"
-                  icon={faLocationDot}
-                />{" "}
-                <div className="ItemWrap-Body-Title ">
-                  {realStartTime + " ~ " + realEndTime}
-                  {/* {new Date(startDate)} */}
-                </div>
-              </div>
+            <ItemWrapBodyFlex2>
+              <ItemWrapBodyTitle>
+                <AiFillCalendar
+                  style={{ position: "relative", left: "-6px", top: "6px" }}
+                  size="8%"
+                />
+                {showTime}
+              </ItemWrapBodyTitle>
               {!closed ? (
                 <StatusBox>
                   {" "}
@@ -174,9 +150,9 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
                   <div className="statusTxt">마감</div>
                 </StatusBox>
               )}
-            </div>
+            </ItemWrapBodyFlex2>
           </div>
-        </div>
+        </ItemWrapBody>
       </div>
       {/*! 리스트에서 보여주는 디테일모달창  */}
       {ModalOpen && (
@@ -187,11 +163,11 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
           setModalOpen={setModalOpen}
         />
       )}
-    </ItemWrap>
+    </Wrap>
   );
 };
 
-const ItemWrap = styled.div`
+const Wrap = styled.div`
   .ItemWrap {
     color: #d7d7d7;
     width: 100%;
@@ -209,6 +185,7 @@ const ItemWrap = styled.div`
       /* box-shadow: 5px 5px 10px 2px #d90368; */
     }
   }
+
   .ClosedItemWrap {
     color: #8a8a8a;
     width: 100%;
@@ -227,60 +204,54 @@ const ItemWrap = styled.div`
       /* box-shadow: 5px 5px 10px 2px #d90368; */
     }
   }
+`;
 
-  .ItemWrap-Top {
-    display: flex;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    /* background-color: #e2e5e7; */
-    overflow-x: hidden;
-    word-break: break-all;
-    font-size: 1.2rem;
-    text-align: left;
-    align-items: center;
-    margin-bottom: 2%;
-    padding: 5px 0px;
-  }
-  .ItemWrap-Body-SpaceBetween {
-    display: flex;
-    justify-content: space-between;
-  }
-  .ItemWrap-Body-Flex {
-    gap: 5px;
-    display: flex;
-    align-items: center;
-    margin-top: 2%;
-  }
-  .ItemWrap-Body-Flex2 {
-    display: flex;
-    align-items: center;
-    margin-top: 2%;
-    justify-content: space-between;
-  }
+const ItemWrapTop = styled.div`
+  display: flex;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  /* background-color: #e2e5e7; */
+  overflow-x: hidden;
+  word-break: break-all;
+  font-size: 1.2rem;
+  text-align: left;
+  align-items: center;
+  margin-bottom: 2%;
+  padding: 5px 0px;
+`;
 
-  .ItemWrap-Body {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    text-align: left;
-    margin-top: 3%;
-  }
+const ItemWrapBodySpaceBetween = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
-  .ItemWrap-Body-Title {
-    font-size: 14px;
-    border-radius: 4px;
-    margin-left: 2%;
-    position: relative;
-    /* background-color: #e2e5e7; */
-  }
-  .ItemWrap-Body-Wanted {
-    display: flex;
-    border-radius: 130px;
-    background-color: #e2e5e7;
-    white-space: nowrap;
-    width: 30%;
-    justify-content: center;
-    padding: 0.5%;
-  }
+const ItemWrapBodyFlex = styled.div`
+  /* gap: 5px; */
+  display: flex;
+  align-items: center;
+  margin-top: 2%;
+`;
+
+const ItemWrapBodyFlex2 = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 2%;
+  justify-content: space-between;
+`;
+
+const ItemWrapBody = styled.div`
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  text-align: left;
+  margin-top: 3%;
+`;
+
+const ItemWrapBodyTitle = styled.div`
+  font-size: 14px;
+  border-radius: 4px;
+  margin-left: 2%;
+  position: relative;
 `;
 
 const StatusBox = styled.div`
@@ -363,6 +334,12 @@ const ItemProfile = styled.div`
     font-weight: 600;
     margin-left: 3%;
   }
+`;
+
+const StarBox = styled.div`
+  width: 10%;
+  display: flex;
+  justify-content: center;
 `;
 
 export default Item;

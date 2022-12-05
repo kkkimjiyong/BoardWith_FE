@@ -135,6 +135,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     });
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
+      console.log(res.data);
     });
     dispatch(__getComments(postid));
   }, [isClosed]);
@@ -326,7 +327,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <StContentWrap>
                         {isHost && (
                           <FiEdit
-                            onClick={() => setModalOpen(false)}
+                            onClick={() =>
+                              navigate(`/modify/${detail?.data?._id}`)
+                            }
                             style={{
                               fontSize: "26px",
                               color: "white",

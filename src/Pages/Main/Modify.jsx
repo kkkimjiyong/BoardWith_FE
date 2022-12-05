@@ -23,9 +23,10 @@ import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postsApi } from "../../instance";
+import { postApi } from "../../instance";
 
 const { kakao } = window;
-function Form({ setFormModalOpen, setItems }) {
+function Modify({ setFormModalOpen, setItems }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [location, Setlocation] = useState();
@@ -68,7 +69,7 @@ function Form({ setFormModalOpen, setItems }) {
       map: data.cafe.split(" ")[1],
       time: [startTime.toISOString(), endTime.toISOString()],
     });
-    creatPost({
+    putPost({
       title: data.title,
       content: data.content,
       partyMember: data.partyMember,
@@ -82,11 +83,18 @@ function Form({ setFormModalOpen, setItems }) {
 
   //useForm 설정
 
-  const creatPost = async (payload) => {
+  const putPost = async (payload) => {
     try {
-      const { data } = await postsApi.creatPost(payload);
-      console.log("formpayload", payload);
-      console.log("formdata", data);
+      const { data } = await postsApi.putPost(payload);
+      setItems((prev) => [data.createPost, ...prev]);
+      alert("파티모집글 수정이 완료되었습니다.");
+      // setFormModalOpen(false);
+    } catch (error) {}
+  };
+  const getPost = async () => {
+    try {
+      const { data } = await postApi.getDetail();
+      console.log("data", data);
       setItems((prev) => [data.createPost, ...prev]);
       alert("파티모집글 작성이 완료되었습니다.");
       // setFormModalOpen(false);
@@ -268,7 +276,7 @@ function Form({ setFormModalOpen, setItems }) {
     </BackGroudModal>
   );
 }
-export default Form;
+export default Modify;
 
 const DatePicker = styled(MobileDatePicker)(({ theme }) => ({
   "& input": {
