@@ -46,7 +46,7 @@ const ChatRoom = () => {
   const getChat = async () => {
     try {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_BACK_SERVER}/${roomid}`
+        `${process.env.REACT_APP_BACK_SERVER}/chats/${roomid}`
       );
       if (data.updateSocket.chat) setChatArr(data.updateSocket.chat);
     } catch (error) {}
