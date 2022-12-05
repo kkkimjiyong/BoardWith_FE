@@ -48,8 +48,9 @@ const SignUp2 = () => {
         alert(data.message);
       }
     } catch (error) {
-      console.log(error);
-      alert(error.message);
+      if (error.response.data.statusCode === 999) {
+        alert(error.response.data.message);
+      }
     }
   };
   const postVerifyCode = async () => {

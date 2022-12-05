@@ -136,9 +136,9 @@ const MainSlide = () => {
     return (
       <>
         {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
-        {!selfCheck && (
+        {/* {!selfCheck && (
           <DailyCheck selfCheck={selfCheck} setSelfCheck={setSelfCheck} />
-        )}
+        )} */}
         {!isTutorial && (
           <Tutorial setSelfCheck={setSelfCheck} setIsTutorial={setIsTutorial} />
         )}

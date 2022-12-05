@@ -108,9 +108,9 @@ const MyPage = () => {
   };
 
   //? ----------------- 성별 보이게 안보이게 api --------------------------
-  const postVisible = async () => {
+  const postVisible = async (value) => {
     try {
-      const { data } = await userApi.editUser({ visible: !user.visible });
+      const { data } = await userApi.editUser({ visible: value });
       console.log(data.findUserData);
       setUser(data.findUserData);
     } catch (error) {
@@ -166,7 +166,7 @@ const MyPage = () => {
           </ProfileRow>
           <ProfileRow>
             <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
-            <div>{user?.visible ? `${user?.gender}` : "숨김"} /</div>
+            <div>{user?.visible == "V" ? `${user?.gender}` : "숨김"} /</div>
             <div>
               {" "}
               {user?.myPlace.length
@@ -176,10 +176,13 @@ const MyPage = () => {
 
             <div className="visible">
               {" "}
-              {user?.visible ? (
-                <AiFillEye size="24" onClick={() => postVisible()} />
+              {user?.visible == "V" ? (
+                <AiFillEye size="24" onClick={() => postVisible("H")} />
               ) : (
-                <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
+                <AiFillEyeInvisible
+                  size="24"
+                  onClick={() => postVisible("V")}
+                />
               )}
             </div>
           </ProfileRow>
