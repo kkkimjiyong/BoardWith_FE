@@ -327,7 +327,9 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <StContentWrap>
                         {isHost && (
                           <FiEdit
-                            onClick={() => setModalOpen(false)}
+                            onClick={() =>
+                              navigate(`/modify/${detail?.data?._id}`)
+                            }
                             style={{
                               fontSize: "26px",
                               color: "white",
