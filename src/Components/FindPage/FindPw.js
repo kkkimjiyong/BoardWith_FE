@@ -25,6 +25,9 @@ const FindPw = () => {
           phoneNumber: findUser.phoneNumber,
         }
       );
+      if (data.isSuccess == "true") {
+        alert("인증번호 전송!");
+      }
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -41,14 +44,12 @@ const FindPw = () => {
           verifyCode: findUser.verifyCode,
         }
       );
-      if (data === "success") {
-        alert(`아이디는 ${data}입니다!`);
-      } else {
-        alert("다시 시도해주세요");
+      if (data == "success") {
+        alert("인증성공!");
       }
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      alert("다시 시도해주세요!");
     }
   };
 
@@ -58,6 +59,8 @@ const FindPw = () => {
         "https://www.iceflower.shop/users/change/password",
         findUser
       );
+      console.log(data);
+      alert(data.message);
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -117,6 +120,7 @@ const FindPw = () => {
             value={findUser.password}
             name="password"
             onChange={onChange}
+            type="password"
           />
           {/* <small role="alert">dk</small> */}
         </ColumnBox>
