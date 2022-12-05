@@ -362,7 +362,14 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       </StContentWrap>
                     </StHost>
                     <div>
-                      <h2>{detail?.data?.title}</h2> {/* 제목 */}
+                      <h2
+                        style={{
+                          lineHeight: "1.5",
+                        }}
+                      >
+                        {detail?.data?.title}
+                      </h2>{" "}
+                      {/* 제목 */}
                     </div>
                     <div>
                       <h4>{detail?.data?.content}</h4> {/* 내용 */}
