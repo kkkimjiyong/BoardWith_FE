@@ -135,6 +135,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
     });
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
+      console.log(res.data);
     });
     dispatch(__getComments(postid));
   }, [isClosed]);

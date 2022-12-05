@@ -32,7 +32,7 @@ const KaKaoLogin = () => {
 
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code");
-
+  console.log(code);
   const isKaKao = async () => {
     try {
       const { data } = await axios.post(
