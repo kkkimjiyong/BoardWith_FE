@@ -11,11 +11,15 @@ import { AiOutlineStar } from "@react-icons/all-files/ai/AiOutlineStar";
 import { ImLocation } from "@react-icons/all-files/im/ImLocation";
 import { AiFillCalendar } from "@react-icons/all-files/ai/AiFillCalendar";
 import AvatarBox from "../../Components/Avatar/AvatarBox";
+import Modify from "./Modify";
 
-const Item = ({ number, item, Myaddress, closed, userBook }) => {
+const Item = ({ number, items, Myaddress, closed, userBook }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [item, setItem] = useState(items);
+  console.log(item);
   const [ModalOpen, setModalOpen] = useState();
+  const [modifyModalOpen, setModifyModalOpen] = useState(false);
   //?---------------30%까지는 여유, 60&까지는 보통, 100%미만까지는 마감임박------------
   const memberStatus = ["여유", "보통", "마감임박", "마감"];
   const statusIndicator = () => {
@@ -121,15 +125,20 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
           <div>
             <ItemWrapTop>{item?.title}</ItemWrapTop>
             <ItemWrapBodyFlex>
-              <ImLocation size="8%" />
+              <ImLocation size="5%" />
               <ItemWrapBodyTitle>{item?.cafe}</ItemWrapBodyTitle>
             </ItemWrapBodyFlex>
 
             <ItemWrapBodyFlex2>
               <ItemWrapBodyTitle>
                 <AiFillCalendar
-                  style={{ position: "relative", left: "-6px", top: "6px" }}
-                  size="8%"
+                  style={{
+                    position: "relative",
+                    left: "-6px",
+                    top: "6px",
+                    marginRight: "1%",
+                  }}
+                  size="5%"
                 />
                 {showTime}
               </ItemWrapBodyTitle>
@@ -159,8 +168,10 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
         <DetailModal
           closed={closed}
           postid={item._id}
+          setItem={setItem}
           ModalOpen={ModalOpen}
           setModalOpen={setModalOpen}
+          setModifyModalOpen={setModifyModalOpen}
         />
       )}
     </Wrap>
@@ -213,7 +224,7 @@ const ItemWrapTop = styled.div`
   /* background-color: #e2e5e7; */
   overflow-x: hidden;
   word-break: break-all;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-align: left;
   align-items: center;
   margin-bottom: 2%;
@@ -248,7 +259,7 @@ const ItemWrapBody = styled.div`
 `;
 
 const ItemWrapBodyTitle = styled.div`
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 4px;
   margin-left: 2%;
   position: relative;

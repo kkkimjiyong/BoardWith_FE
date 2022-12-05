@@ -151,7 +151,7 @@ export const postsApi = {
     return instance.post(`/posts`, inputs);
   },
   putPost: (inputs) => {
-    return instance.put(`/posts`, inputs);
+    return instance.put(`/posts/${inputs.postId}`, inputs.postPayload.data);
   },
   deletePost: (params) => instance.delete(`/posts/${params}`),
   updatePost: (payload) =>

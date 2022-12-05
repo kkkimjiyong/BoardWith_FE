@@ -21,6 +21,7 @@ import SignUp1 from "../Components/SignUp/SignUp1";
 import SignUp2 from "../Components/SignUp/SingUp2";
 import SignUp3 from "../Components/SignUp/SignUp3";
 import NaverLogin from "../Components/Login/NaverLogin";
+import Modify from "../Pages/Main/Modify";
 
 // const Main = lazy(() => import("../Pages/Main/Main"));
 // const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
@@ -50,6 +51,7 @@ const Router = () => {
           <Route path="/prac" element={<PracPage />} />
           <Route path="/rank" element={<RankingPage />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/modify/:id" element={<Modify />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

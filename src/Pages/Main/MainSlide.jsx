@@ -19,6 +19,7 @@ import { useInView } from "react-intersection-observer";
 import { Skeleton } from "@mui/material";
 import Tutorial from "../../Components/Tutorial/Tutorial";
 import Loading from "../../style/Loading";
+import Modify from "./Modify";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const MainSlide = () => {
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
   const [formModalOpen, setFormModalOpen] = useState(false);
+  const [modifyModalOpen, setModifyModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [isTutorial, setIsTutorial] = useState(false);
   const [selfCheck, setSelfCheck] = useState(false);
@@ -161,7 +163,7 @@ const MainSlide = () => {
                   closed={items.closed}
                   setModalOpen={setModalOpen}
                   key={idx}
-                  item={items}
+                  items={items}
                   Myaddress={Myaddress}
                 ></Item>
               );
@@ -192,6 +194,7 @@ const MainSlide = () => {
           <DetailModal
             postid={neardata[0]?._id}
             setModalOpen={setNearModalOpen}
+            setModifyModalOpen={setModifyModalOpen}
           />
         )}
         {/* 게시글 폼페이지 모달창 */}
