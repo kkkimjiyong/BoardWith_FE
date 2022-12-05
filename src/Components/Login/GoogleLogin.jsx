@@ -44,8 +44,10 @@ const KaKaoLogin = () => {
       if (data.accessToken) {
         console.log("data", data);
         alert("로그인 성공!");
-        setCookie("accessToken", data.accessToken, { path: "/" });
-        setCookie("refreshToken", data.refresh_token, { path: "/" });
+        sessionStorage.setItem("accessToken", data.accessToken, { path: "/" });
+        sessionStorage.setItem("refreshToken", data.refresh_token, {
+          path: "/",
+        });
         navigate("/main");
       }
       setIsLoading(false);
@@ -69,9 +71,11 @@ const KaKaoLogin = () => {
       );
       console.log(data.accessToken);
       if (data.accessToken) {
-        setCookie("accessToken", data.accessToken, { path: "/" });
-        setCookie("refreshToken", data.refresh_token, { path: "/" });
-        setCookie("google", true, { path: "/" });
+        sessionStorage.setItem("accessToken", data.accessToken, { path: "/" });
+        sessionStorage.setItem("refreshToken", data.refresh_token, {
+          path: "/",
+        });
+        sessionStorage.setItem("google", true, { path: "/" });
         alert("가입을 축하드립니다!");
         navigate("/main");
       } else {
