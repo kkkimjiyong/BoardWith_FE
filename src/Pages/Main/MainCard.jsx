@@ -100,7 +100,7 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
           <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
             <AvatarBox
               userSelect={item?.userAvatar}
-              scale={0.12}
+              scale={0.1}
               backScale={0.8}
               circle={true}
               profile
@@ -109,11 +109,11 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
           </ItemProfile>
           {!starMark ? (
             <StarBox>
-              <AiFillStar onClick={bookMark} size="80%" />
+              <AiFillStar onClick={bookMark} size="100%" />
             </StarBox>
           ) : (
             <StarBox>
-              <AiOutlineStar onClick={bookMark} size="80%" />
+              <AiOutlineStar onClick={bookMark} size="100%" />
             </StarBox>
           )}
         </ItemWrapBodySpaceBetween>
@@ -121,15 +121,15 @@ const Item = ({ number, item, Myaddress, closed, userBook }) => {
           <div>
             <ItemWrapTop>{item?.title}</ItemWrapTop>
             <ItemWrapBodyFlex>
-              <ImLocation size="8%" />
+              <ImLocation size="5%" />
               <ItemWrapBodyTitle>{item?.cafe}</ItemWrapBodyTitle>
             </ItemWrapBodyFlex>
 
             <ItemWrapBodyFlex2>
               <ItemWrapBodyTitle>
                 <AiFillCalendar
-                  style={{ position: "relative", left: "-6px", top: "6px" }}
-                  size="8%"
+                  style={{ position: "relative", left: "-6px", top: "2px" }}
+                  size="5%"
                 />
                 {showTime}
               </ItemWrapBodyTitle>
@@ -174,7 +174,7 @@ const Wrap = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-    padding: 4% 4%;
+    padding: 5% 4%;
     flex-direction: column;
     background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;
@@ -230,13 +230,13 @@ const ItemWrapBodyFlex = styled.div`
   /* gap: 5px; */
   display: flex;
   align-items: center;
-  margin-top: 2%;
+  /* margin-top: 2%; */
 `;
 
 const ItemWrapBodyFlex2 = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 2%;
+  /* margin-top: 2%; */
   justify-content: space-between;
 `;
 
@@ -248,7 +248,7 @@ const ItemWrapBody = styled.div`
 `;
 
 const ItemWrapBodyTitle = styled.div`
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 4px;
   margin-left: 2%;
   position: relative;
@@ -332,7 +332,7 @@ const ItemProfile = styled.div`
   align-items: center;
   .nickNameTxt {
     font-weight: 600;
-    margin-left: 3%;
+    margin-left: 5%;
   }
 `;
 

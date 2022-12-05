@@ -1,12 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import AvatarBox from "../Avatar/AvatarBox";
 
 const ChatMessage = ({ chat, name }) => {
   return (
     //내가 아닌 상대가 보냈을 때, 익명이라는 클래스네임 부여
     <ChatCtn className={chat.nickName !== name && "anonymous"}>
       <ChatProfile>
-        <ProfileBox></ProfileBox>
+        <AvatarBox
+          profile={true}
+          scale={0.12}
+          backScale={0.8}
+          circle={true}
+          userSelect={chat.userAvatar}
+        />
       </ChatProfile>{" "}
       <ChatBox>
         <ChatNickName>{chat.nickName}</ChatNickName>{" "}
@@ -20,6 +27,8 @@ const ChatCtn = styled.div`
   color: #dddddd;
   width: 100%;
   height: 13%;
+  padding: 0% 5%;
+  margin-top: 2%;
   display: flex;
   flex-direction: row-reverse;
   align-items: center;

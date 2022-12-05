@@ -31,16 +31,18 @@ const StContainer = styled.div`
   left: 0;
   background: #0000009c;
   z-index: 999;
-  position: absolute;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
-  display: block;
   width: 100%;
   height: 100%;
 `;
 
 const StModal = styled.div`
   flex-direction: column;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
