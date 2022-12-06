@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { postApi } from "../../instance";
 import { useNavigate } from "react-router-dom";
 import AvatarBox from "../Avatar/AvatarBox";
+import AlertModal from "../AlertModal";
 
 const BanComments = ({ comments, postid, isPostEdit }) => {
   const dispatch = useDispatch();
@@ -11,6 +12,8 @@ const BanComments = ({ comments, postid, isPostEdit }) => {
   const [isBanUser, setIsBanUser] = useState(false);
   const navigate = useNavigate();
   const [isPartyAccept, setIsPartyAccept] = useState(false);
+  const [alert, setAlert] = useState();
+  const [content, setContent] = useState();
 
   const commentId = comments._id;
   //console.log("nickName", nickName);
@@ -52,6 +55,7 @@ const BanComments = ({ comments, postid, isPostEdit }) => {
 
   return (
     <>
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       {/* 강퇴 당한 유저가 아니라면 */}
       {isPostEdit && (
         <>
@@ -171,7 +175,7 @@ const StCancelButton = styled.button`
   padding: 0;
   background-color: transparent;
   border: 2px solid var(--primary);
-  width: 90px;
+  min-width: 90px;
   height: 65px;
   border-radius: 15px;
   font-size: large;
