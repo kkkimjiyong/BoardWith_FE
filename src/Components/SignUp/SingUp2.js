@@ -13,10 +13,14 @@ import useInput from "../../hooks/UseInput.js";
 import Layout from "../../style/Layout.js";
 import { useDispatch } from "react-redux";
 import { addUserData } from "../../redux/modules/postsSlice.js";
+import AlertModal from "../AlertModal.js";
 
 const SignUp2 = () => {
   const initialState = { phoneNumber: "", verifyCode: "" };
   const [user, setUser, onChange] = useInput(initialState);
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,11 +33,13 @@ const SignUp2 = () => {
     ) {
       postPhone();
     } else {
-      alert("전화번호를 다시 입력해주세요!");
+      setAlert(true);
+      setContent("전화번호를 다시 입력해주세요!");
     }
   };
 
   const postPhone = async () => {
+    setAlert(true);
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACK_SERVER}/sms/send`,
@@ -48,35 +54,38 @@ const SignUp2 = () => {
             phoneNumber: user.phoneNumber,
           })
         );
-        alert(data.message);
+        setContent(data.message);
       }
     } catch (error) {
       if (error.response.data.statusCode === 999) {
-        alert(error.response.data.message);
+        setContent(error.response.data.message);
       }
     }
   };
   const postVerifyCode = async () => {
+    setAlert(true);
+
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACK_SERVER}/sms/verify`,
         { ...user, verifyCode: user.verifyCode.trim(" ") }
       );
       if (data == "success") {
-        alert("인증성공!");
+        setContent("인증성공!");
         navigate("/signup3");
       } else {
-        alert("틀려요!");
+        setContent("틀려요!");
       }
     } catch (error) {
       console.log(error);
-      alert("틀려요!");
+      setContent("틀려요!");
     }
   };
 
   return (
     <Layout>
       <SignUpWrap>
+        {alert && <AlertModal setAlert={setAlert} content={content} />}
         <SignUpCtn>
           <SignUpHeader>
             <Arrow onClick={() => navigate("/signup1")} />
@@ -164,6 +173,10 @@ const VerfiyBtn = styled.div`
   padding: 5px 10px;
   margin-left: 5%;
   margin-top: 3%;
+  :hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
 `;
 
 const Title = styled.div`
@@ -207,6 +220,9 @@ const NextBtn = styled.button`
   border-radius: 20px;
   box-shadow: 0px 3px 3px 0px gray;
   cursor: pointer;
+  :hover {
+    transform: scale(1.05);
+  }
   background-color: var(--primary);
 `;
 
@@ -214,6 +230,9 @@ const Arrow = styled.div`
   border: 7px solid transparent;
   border-top-color: white;
   transform: rotate(90deg);
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export default SignUp2;

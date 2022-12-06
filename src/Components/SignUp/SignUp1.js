@@ -161,6 +161,9 @@ const Arrow = styled.div`
   border: 7px solid transparent;
   border-top-color: white;
   transform: rotate(90deg);
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const AlertError = styled.div`
