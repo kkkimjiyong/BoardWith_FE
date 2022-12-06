@@ -24,7 +24,6 @@ import Modify from "./Modify";
 import AlertModal from "../../Components/AlertModal";
 import MobileHeader from "../../style/MobileHeader";
 
-
 const MainSlide = () => {
   const navigate = useNavigate();
   const [targetMargin, setTargetMargin] = useState(0);
@@ -40,6 +39,8 @@ const MainSlide = () => {
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
+  const [filteredItems, setFilteredItems] = useState(true);
+  const [initialItems, setInitialItems] = useState([]);
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
@@ -109,7 +110,7 @@ const MainSlide = () => {
   useEffect(() => {
     getUser();
   }, []);
-  console.log(userBook);
+  console.log(filteredItems);
   //? --------------------------------------------------------------------------
 
   const [items, setItems] = useState([]);
@@ -117,11 +118,12 @@ const MainSlide = () => {
   let page = useRef(0);
   console.log(page);
   const [target, setTarget] = useState(null);
-
+  console.log(items);
   const getData = async () => {
     try {
       const response = await postsApi.getPosts(page.current);
       setItems((prev) => prev.concat(response.data.data));
+      setInitialItems((prev) => prev.concat(response.data.data));
       setHasNextPage(response.data.data.length == 5);
       page.current += 5;
     } catch (error) {}
@@ -133,12 +135,18 @@ const MainSlide = () => {
     threshold: 0.1,
   });
   useEffect(() => {
+    console.log(filteredItems);
     //ref타켓이 보이고, 다음페이지가 있으면 데이터get요청
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && filteredItems) {
+      console.log(filteredItems);
       getData();
     }
-  }, [hasNextPage, inView]);
+  }, [hasNextPage, inView, filteredItems]);
 
+  const closeFilterHandler = () => {
+    setItems(initialItems);
+    setFilteredItems(true);
+  };
   if (loading) {
     return <Loading />;
   } else {
@@ -157,7 +165,11 @@ const MainSlide = () => {
             />
             <div className="headtxt">파티모집</div>
             <Rowbox>
-              <FiFilter size={"24"} onClick={() => setOpen(!open)} />
+              {filteredItems ? (
+                <FiFilter size={"24"} onClick={() => setOpen(!open)} />
+              ) : (
+                <div onClick={closeFilterHandler}>엑스</div>
+              )}
             </Rowbox>
           </MainHeader>
           <MainListCtn ref={scrollHead}>
@@ -170,6 +182,8 @@ const MainSlide = () => {
                   key={idx}
                   items={items}
                   Myaddress={Myaddress}
+                  setItems={setItems}
+                  ModalOpen={ModalOpen}
                 ></Item>
               );
             })}
@@ -193,11 +207,14 @@ const MainSlide = () => {
           getData={getData}
           open={open}
           setOpen={setOpen}
+          setFilteredItems={setFilteredItems}
+          filteredItems={filteredItems}
         />
         {/* //! 가장 가까운 모임 보여주는 모달창 */}
         {NearModalOpen && (
           <DetailModal
-            postid={neardata[0]?._id}
+            item={neardata[0]}
+            postid={neardata[0]._id}
             setModalOpen={setNearModalOpen}
             setModifyModalOpen={setModifyModalOpen}
           />

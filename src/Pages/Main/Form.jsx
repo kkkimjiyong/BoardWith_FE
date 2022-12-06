@@ -26,10 +26,7 @@ import { postsApi } from "../../instance";
 
 const { kakao } = window;
 function Form({ setFormModalOpen, setItems }) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [location, Setlocation] = useState();
-  const [ModalOpen, setModalOpen] = useState(false);
 
   //카카오 Map API
   var geocoder = new kakao.maps.services.Geocoder();
