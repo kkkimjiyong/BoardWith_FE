@@ -113,7 +113,7 @@ const MyPage = () => {
 
     setContent("탈퇴 성공");
     deleteUser();
-    removeCookie(name);
+    sessionStorage.removeItem(name);
     setAddress("/");
   };
 
