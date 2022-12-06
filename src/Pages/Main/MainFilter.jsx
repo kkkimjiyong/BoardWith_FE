@@ -151,7 +151,7 @@ const MainFilter = ({
       filtered
     );
     console.log(response.data);
-    setItems(response.data);
+    setItems(response.data.data);
     setOpen(!open);
   };
 

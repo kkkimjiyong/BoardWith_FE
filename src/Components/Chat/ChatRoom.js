@@ -107,11 +107,13 @@ const ChatRoom = () => {
 
   const ban = (user) => {
     socket.emit("ban", {
-      nickName: user,
+      nickName: user.nickName,
+      userAvatar: user.userAvatar,
       room: roomid,
     });
     console.log("ban", {
-      nickName: user,
+      nickName: user.nickName,
+      userAvatar: user.userAvatar,
       room: roomid,
     });
   };

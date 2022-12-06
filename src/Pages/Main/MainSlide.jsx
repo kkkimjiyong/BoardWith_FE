@@ -270,7 +270,7 @@ const Rowbox = styled.div`
 const FormButton = styled.button`
   position: fixed;
   bottom: 10%;
-  left: 75%;
+  left: 72%;
   background-color: var(--primary);
   border: none;
   color: white;

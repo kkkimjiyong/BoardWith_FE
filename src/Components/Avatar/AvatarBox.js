@@ -45,7 +45,9 @@ const AvatarBox = ({
           />
         </MouthCtn>
         <SqrCtn>
-          <AvatarSqr></AvatarSqr>
+          <AvatarSqr>
+            <NoseAvatar></NoseAvatar>
+          </AvatarSqr>
         </SqrCtn>
       </AvatarCtn>
     );
@@ -77,6 +79,15 @@ const AvatarSqr = styled.div`
   align-items: center;
   background-color: var(--white);
 `;
+const NoseAvatar = styled.div`
+  background-color: var(--black);
+  position: absolute;
+  top: 40%;
+  width: 10%;
+  height: 10%;
+  border-radius: 50%;
+`;
+
 const SqrCtn = styled.div`
   z-index: 0;
   position: absolute;

@@ -51,7 +51,8 @@ const Login = () => {
       }
       setAddress("/main");
     } catch (error) {
-      alert("다시 로그인해주세요");
+      setAlert(true);
+      setContent("다시 로그인해주세요");
       console.log(error);
     }
   };

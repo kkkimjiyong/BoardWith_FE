@@ -10,10 +10,33 @@ import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 
-const EditUser = ({ setOpenEdit, openEdit, user, Setuser, onChange }) => {
+const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
   const [ModalOpen, setModalOpen] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(user.visible == "H");
   console.log(user);
+
+  const toggleHandler = () => {
+    let payload = "";
+    setOpen(!open);
+    if (open) {
+      payload = "V";
+    } else {
+      payload = "H";
+    }
+    return postVisible(payload);
+  };
+
+  //? ----------------- 성별 보이게 안보이게 api --------------------------
+  const postVisible = async (payload) => {
+    try {
+      const { data } = await userApi.editUser({ visible: payload });
+      console.log(data.findUserData);
+      setUser(data.findUserData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //? --------------------- 다음포스트  --------------------------
 
   const ref = useRef(null);
@@ -22,7 +45,7 @@ const EditUser = ({ setOpenEdit, openEdit, user, Setuser, onChange }) => {
     //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
-      Setuser({ ...user, myPlace: data.address });
+      setUser({ ...user, myPlace: data.address });
       // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
       ref.current.style.display = "none";
     },
@@ -32,16 +55,15 @@ const EditUser = ({ setOpenEdit, openEdit, user, Setuser, onChange }) => {
   return (
     <Wrapper openEdit={openEdit}>
       <EditTxt>닉네임</EditTxt>
-      <EditInput value={user.nickName} name="nickName" onChange={onChange} />
+      <EditInput value={"수정불가"} name="nickName" onChange={onChange} />
       <EditTxt>내 정보</EditTxt>
       <EditBox>
         <div> 나이, 성별, 지역</div>
         <ToggleBox open={open}>
-          <div onClick={() => setOpen(!open)} className="circleBtn" />
+          <div onClick={toggleHandler} className="circleBtn" />
         </ToggleBox>
       </EditBox>
       <EditTxt className="info">
-        {" "}
         앱에서 다른 사용자에게 나의 나이, 성별, 지역 정보를 노출할 수 있습니다.
       </EditTxt>
       <EditTxt>나이</EditTxt>

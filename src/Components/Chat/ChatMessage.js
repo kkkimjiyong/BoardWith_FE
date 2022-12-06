@@ -26,7 +26,7 @@ const ChatMessage = ({ chat, name }) => {
 const ChatCtn = styled.div`
   color: #dddddd;
   width: 100%;
-  height: 13%;
+  height: 70px;
   padding: 0% 5%;
   margin-top: 2%;
   display: flex;
