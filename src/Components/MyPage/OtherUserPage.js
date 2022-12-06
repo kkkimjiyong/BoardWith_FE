@@ -67,13 +67,31 @@ const OtherUserPage = () => {
         <ProfileRow>
           <div>{user?.nickName}</div>{" "}
         </ProfileRow>
-        <ProfileRow>
-          {user?.age ? `${user?.age} 살` : "없음"}/
-          {user?.visible ? `${user?.gender}` : "숨김"}/
-          {user?.myPlace.length
-            ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-            : "없음"}{" "}
-        </ProfileRow>
+        {user?.visible == "V" && (
+          <ProfileRow>
+            <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
+            <div>{user?.gender ? `${user?.gender}` : "없음"} /</div>
+            <div>
+              {" "}
+              {user?.myPlace.length
+                ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+                : "없음"}
+            </div>
+
+            {/* <div className="visible">
+                {" "}
+                {user?.visible == "V" ? (
+                  <AiFillEye size="24" onClick={() => postVisible("H")} />
+                ) : (
+                  <AiFillEyeInvisible
+                    size="24"
+                    onClick={() => postVisible("V")}
+                  />
+                )}
+              </div> */}
+          </ProfileRow>
+        )}
+        {user?.visible == "H" && <div>비공개</div>}
         <LikeGameCtn>
           <LikeGameBox>
             {likeGame?.map((game) => {
