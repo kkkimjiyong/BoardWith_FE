@@ -3,8 +3,14 @@ import styled from "styled-components";
 import DetailModal from "../Detail/DetailModal";
 import { AiFillCloseCircle } from "@react-icons/all-files/ai/AiFillCloseCircle";
 
-const MyPartyItem = ({ title, deletHandler, postId, party }) => {
-  const [ModalOpen, setModalOpen] = useState();
+const MyPartyItem = ({
+  title,
+  deletHandler,
+  postId,
+  party,
+  setModalOpen,
+  ModalOpen,
+}) => {
   console.log(party);
   return (
     <Wrap>

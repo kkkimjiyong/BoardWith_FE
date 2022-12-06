@@ -84,6 +84,17 @@ export const userApi = {
       },
     }),
 
+  avatarUser: (payload) =>
+    instance.post(
+      "/users/change/point",
+      { userAvatar: payload },
+      {
+        headers: {
+          Authorization: sessionStorage.getItem("accessToken"),
+        },
+      }
+    ),
+
   dailyUser: () =>
     instance.put("/users/check", {
       headers: {
