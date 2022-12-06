@@ -314,6 +314,10 @@ const ChangeBtn = styled.button`
   border: none;
   color: var(--white);
   background-color: var(--primary);
+  :hover {
+    cursor: pointer;
+    transform: scale(1.03);
+  }
 `;
 
 const ResetBtn = styled.button`
@@ -327,6 +331,10 @@ const ResetBtn = styled.button`
   border: none;
   color: var(--white);
   background-color: var(--gray);
+  :hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
 `;
 
 const AvatarCategory = styled.div`
@@ -347,6 +355,10 @@ const AvatarCategoryItem = styled.div`
   border-bottom: 2px solid var(--gray);
   &.selected {
     border-bottom: 2px solid var(--primary);
+  }
+  :hover {
+    cursor: pointer;
+    transform: scale(1.05);
   }
 `;
 

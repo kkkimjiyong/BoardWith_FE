@@ -166,6 +166,9 @@ const SearchInput = styled.input`
   margin-top: 5px;
 `;
 const Arrow = styled.div`
+  :hover {
+    cursor: pointer;
+  }
   position: relative;
   left: -47%;
   display: inline-block;

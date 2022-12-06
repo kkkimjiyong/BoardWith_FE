@@ -6,13 +6,12 @@ import { userApi } from "../../instance";
 const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
   const [next, setNext] = useState(1);
   const doneTutorial = async () => {
+    setIsTutorial(true);
     try {
       const { data } = await userApi.editUser({ tutorial: true, point: 3300 });
       console.log(data);
-      setIsTutorial(true);
       setSelfCheck(true);
     } catch (error) {
-      setIsTutorial(true);
       console.log(error);
     }
   };

@@ -42,7 +42,7 @@ const BackGroudModal = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 998;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   /* position: fixed;
   left: 50%;
   top: 50vh;
@@ -75,8 +75,8 @@ const CheckBox = styled.div`
 
 const CheckCtn = styled.div`
   color: var(--white);
-  width: 80%;
-  height: 30%;
+  width: 85%;
+  height: 25%;
   border-radius: 5%;
   display: flex;
   justify-content: center;
@@ -105,6 +105,7 @@ const ContentBox = styled.div`
   background-color: var(--primary);
   :hover {
     cursor: pointer;
+    transform: scale(1.05);
   }
   &.Btn {
     display: flex;

@@ -207,7 +207,9 @@ const Wrap = styled.div`
     margin: 5% 0%;
     :hover {
       color: white;
-      /* box-shadow: 5px 5px 10px 2px #d90368; */
+      box-shadow: 0px 3px 5px 0px var(--primary);
+      transform: scale(1.02);
+      cursor: pointer;
     }
   }
 
@@ -355,6 +357,11 @@ const ItemProfile = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  :hover {
+    margin-left: 2%;
+    transform: scale(1.06);
+    cursor: pointer;
+  }
   .nickNameTxt {
     font-weight: 600;
     margin-left: 5%;
@@ -365,6 +372,9 @@ const StarBox = styled.div`
   width: 10%;
   display: flex;
   justify-content: center;
+  :hover {
+    transform: scale(1.1);
+  }
 `;
 
 export default Item;

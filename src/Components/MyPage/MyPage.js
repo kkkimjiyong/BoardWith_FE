@@ -177,18 +177,6 @@ const MyPage = () => {
                   ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
                   : "없음"}
               </div>
-
-              {/* <div className="visible">
-                {" "}
-                {user?.visible == "V" ? (
-                  <AiFillEye size="24" onClick={() => postVisible("H")} />
-                ) : (
-                  <AiFillEyeInvisible
-                    size="24"
-                    onClick={() => postVisible("V")}
-                  />
-                )}
-              </div> */}
             </ProfileRow>
           )}
           {user?.visible == "H" && <div>비공개</div>}
@@ -227,6 +215,7 @@ const MyPage = () => {
                   return (
                     <MyPartyItem
                       deletHandler={deletHandler}
+                      party={party}
                       title={party.title}
                       postId={party._id}
                     />
@@ -324,6 +313,9 @@ const MainHeader = styled.div`
       0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
   }
   .closeBtn {
+    :hover {
+      cursor: pointer;
+    }
     margin-left: 2%;
   }
   .gap {
@@ -334,6 +326,9 @@ const MainHeader = styled.div`
 
 const RowBox = styled.div`
   display: flex;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const ProfileCtn = styled.div`

@@ -186,6 +186,10 @@ const StAvatar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  :hover {
+    transform: scale(1.06);
+    cursor: pointer;
+  }
 `;
 
 const StTopRanker = styled.div`
