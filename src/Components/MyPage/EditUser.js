@@ -11,7 +11,6 @@ import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 
 const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
-  const [ModalOpen, setModalOpen] = useState(false);
   const [open, setOpen] = useState(user.visible == "H");
   console.log(user);
 
@@ -106,11 +105,6 @@ const Wrapper = styled.div`
   padding: 0% 5%;
   background-color: var(--black);
   transition: all 1s ease-in-out;
-`;
-
-const RowBox = styled.div`
-  display: flex;
-  gap: 20px;
 `;
 
 const EditInput = styled.input`

@@ -18,9 +18,8 @@ import { useInView } from "react-intersection-observer";
 import { Skeleton } from "@mui/material";
 import Tutorial from "../../Components/Tutorial/Tutorial";
 import Loading from "../../style/Loading";
-
+import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import Modify from "./Modify";
-
 import AlertModal from "../../Components/AlertModal";
 import MobileHeader from "../../style/MobileHeader";
 
@@ -160,15 +159,22 @@ const MainSlide = () => {
         <MainBox className="Scroll">
           <MainHeader onClick={() => scrollToTop()}>
             <BiCurrentLocation
+              className="locationBtn"
               size={"30"}
               onClick={() => nearFilterHandler()}
             />
             <div className="headtxt">파티모집</div>
             <Rowbox>
               {filteredItems ? (
-                <FiFilter size={"24"} onClick={() => setOpen(!open)} />
+                <FiFilter
+                  className="filterBtn"
+                  size={"24"}
+                  onClick={() => setOpen(!open)}
+                />
               ) : (
-                <div onClick={closeFilterHandler}>엑스</div>
+                <div className="filterBtn" onClick={closeFilterHandler}>
+                  <AiOutlineClose size={26} />
+                </div>
               )}
             </Rowbox>
           </MainHeader>
@@ -258,6 +264,11 @@ const MainHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .locationBtn {
+    :hover {
+      cursor: pointer;
+    }
+  }
   .headtxt {
     font-size: 22px;
     color: #fff;
@@ -289,6 +300,11 @@ const MainListCtn = styled.div`
 const Rowbox = styled.div`
   display: flex;
   gap: 10px;
+  .filterBtn {
+    :hover {
+      cursor: pointer;
+    }
+  }
 `;
 const FormButton = styled.button`
   position: fixed;
@@ -300,4 +316,7 @@ const FormButton = styled.button`
   height: 60px;
   width: 60px;
   border-radius: 50%;
+  :hover {
+    cursor: pointer;
+  }
 `;

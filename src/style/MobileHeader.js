@@ -39,6 +39,9 @@ const MobileHeaderCtn = styled.div`
   width: 100%;
   max-width: 540px;
   box-shadow: 1px 1px 15px 3px black;
+  :hover {
+    cursor: pointer;
+  }
   .logo {
     width: 7%;
     margin: 0 6%;

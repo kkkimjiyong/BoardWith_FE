@@ -225,9 +225,15 @@ const BottomTxt = styled.div`
   .txtbox {
     padding: 0px 20px;
     border-right: 1px solid white;
+    :hover {
+      cursor: pointer;
+    }
   }
   .txtbox-noborder {
     padding: 0px 20px;
+    :hover {
+      cursor: pointer;
+    }
   }
 `;
 
