@@ -165,6 +165,7 @@ const StAvatar = styled.div`
   background-color: white;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 const StCancelButton = styled.button`
   padding: 0;
