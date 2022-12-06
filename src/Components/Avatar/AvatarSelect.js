@@ -151,7 +151,6 @@ const AvatarSelect = () => {
           {" "}
           <AvatarBox userSelect={userSelect} profile={false} />
         </AvatarCtn>
-
         <PointBox>
           <ImCoinDollar />
           {point}
@@ -273,6 +272,7 @@ const AvatarCtn = styled.div`
   background-color: var(--white);
 `;
 const PointBox = styled.div`
+  z-index: 20;
   position: absolute;
   color: var(--white);
   font-size: 1.5rem;
