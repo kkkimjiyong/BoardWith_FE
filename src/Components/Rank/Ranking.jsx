@@ -22,7 +22,6 @@ const Ranking = () => {
     });
   }, [loading]);
   // console.log("rank", rank);
-  // console.log("userAvatar", rank?.[0]?.userAvatar?.Eye);
 
   return (
     <Wrap>
@@ -32,6 +31,16 @@ const Ranking = () => {
         <>
           <StContainer>
             <h2>랭킹</h2>
+            <span
+              style={{
+                fontWeight: "100",
+                fontSize: "15px",
+                color: "#929292",
+                marginBottom: "10px",
+              }}
+            >
+              랭킹은 총 합산 포인트로 산출됩니다.
+            </span>
             <div>
               <StTopRanker>
                 <FaCrown
