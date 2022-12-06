@@ -46,6 +46,7 @@ const Router = () => {
           <Route path="/form" element={<Form />} />
           <Route path="/chat/:roomid" element={<ChatPage />} />
           <Route path="/posts/:postid" element={<SharePage />} />
+          <Route path="/modify/:postid" element={<Modify />} />
           <Route path="/avatar" element={<AvatarPage />} />
           <Route path="/find/:id" element={<FindPage />} />
           <Route path="/prac" element={<PracPage />} />

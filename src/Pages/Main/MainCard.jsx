@@ -104,20 +104,20 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
           <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
             <AvatarBox
               userSelect={item?.userAvatar}
-              scale={0.12}
+              scale={0.1}
               backScale={0.8}
               circle={true}
               profile
             />
             <div className="nickNameTxt">{item?.nickName}</div>
           </ItemProfile>
-          {starMark ? (
+          {!starMark ? (
             <StarBox>
-              <AiFillStar onClick={bookMark} size="80%" />
+              <AiFillStar onClick={bookMark} size="100%" />
             </StarBox>
           ) : (
             <StarBox>
-              <AiOutlineStar onClick={bookMark} size="80%" />
+              <AiOutlineStar onClick={bookMark} size="100%" />
             </StarBox>
           )}
         </ItemWrapBodySpaceBetween>
@@ -132,12 +132,14 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
             <ItemWrapBodyFlex2>
               <ItemWrapBodyTitle>
                 <AiFillCalendar
+
                   style={{
                     position: "relative",
                     left: "-6px",
                     top: "6px",
                     marginRight: "1%",
                   }}
+
                   size="5%"
                 />
                 {showTime}
@@ -185,7 +187,7 @@ const Wrap = styled.div`
     height: 100%;
     display: flex;
     justify-content: center;
-    padding: 4% 4%;
+    padding: 5% 4%;
     flex-direction: column;
     background-color: var(--gray);
     box-shadow: 3px 10px 10px 1px black;
@@ -241,13 +243,13 @@ const ItemWrapBodyFlex = styled.div`
   /* gap: 5px; */
   display: flex;
   align-items: center;
-  margin-top: 2%;
+  /* margin-top: 2%; */
 `;
 
 const ItemWrapBodyFlex2 = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 2%;
+  /* margin-top: 2%; */
   justify-content: space-between;
 `;
 
@@ -343,7 +345,7 @@ const ItemProfile = styled.div`
   align-items: center;
   .nickNameTxt {
     font-weight: 600;
-    margin-left: 3%;
+    margin-left: 5%;
   }
 `;
 

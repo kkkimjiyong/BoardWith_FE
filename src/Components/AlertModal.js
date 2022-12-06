@@ -2,47 +2,30 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { userApi } from "../instance";
-import LayoutLogo from "../Assets/LayoutLogo.png";
+import LayoutLogo from "../Assets/MainLogo.png";
+import { useNavigate } from "react-router-dom";
 
-const DailyCheck = ({ setSelfCheck, selfCheck }) => {
-  const checkHandler = () => {
-    setSelfCheck(true);
-    editUser();
+const AlertModal = ({ content, setAlert, address }) => {
+  const navigate = useNavigate();
+
+  const buttonHandler = () => {
+    setAlert(false);
+    navigate(address);
   };
-
-  const editUser = async () => {
-    try {
-      const { data } = await userApi.dailyUser();
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // const dailyCheck
-
-  console.log(selfCheck);
 
   return (
     <BackGroudModal>
       <Wrap>
         <CheckCtn>
-          <div>출석체크 보드윗</div>
+          {/* <img src={LayoutLogo} className="logo" /> */}
+          <div>Board With</div>
           <CheckBox>
-            {" "}
-            <div>아리가또 환영합니다~</div>
-            {/* <ContentBox>Day1</ContentBox>
-            <ContentBox>Day2</ContentBox>
-            <ContentBox>Day3</ContentBox>
-            <ContentBox>Day4</ContentBox>
-            <ContentBox>Day5</ContentBox>
-            <ContentBox>Day6</ContentBox>
-            <ContentBox>Day7</ContentBox> */}
-            <ContentBox className="Btn" onClick={checkHandler}>
-              출석체크 +100P
+            <div>{content}</div>{" "}
+            <ContentBox className="Btn" onClick={() => buttonHandler()}>
+              확인
             </ContentBox>
-          </CheckBox>
-          <div className="btmTxt">누르면 메인페이지로 넘어갑니다.</div>
+          </CheckBox>{" "}
+          {/* <div className="btmTxt">누르면 메인페이지로 넘어갑니다.</div> */}
         </CheckCtn>
       </Wrap>
     </BackGroudModal>
@@ -92,8 +75,8 @@ const CheckBox = styled.div`
 
 const CheckCtn = styled.div`
   color: var(--white);
-  width: 90%;
-  height: 45%;
+  width: 80%;
+  height: 30%;
   border-radius: 5%;
   display: flex;
   justify-content: center;
@@ -105,6 +88,10 @@ const CheckCtn = styled.div`
   .btmTxt {
     font-size: 12px;
   }
+  .logo {
+    position: absolute;
+    transform: scale(0.8);
+  }
 `;
 
 const ContentBox = styled.div`
@@ -113,7 +100,7 @@ const ContentBox = styled.div`
   bottom: 0%;
   margin: 0% 2.5%;
   width: 100%;
-  height: 10%;
+  height: 20%;
   border-radius: 10px;
   background-color: var(--primary);
   :hover {
@@ -126,4 +113,4 @@ const ContentBox = styled.div`
   }
 `;
 
-export default DailyCheck;
+export default AlertModal;

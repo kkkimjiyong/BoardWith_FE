@@ -339,10 +339,12 @@ export const DetailModal = ({
                       <StContentWrap>
                         {isHost && (
                           <FiEdit
+
                             onClick={() => {
                               setModifyModalOpen(true);
-                              // navigate(`/modify/${detail?.data?._id}`);
+                           
                             }}
+
                             style={{
                               fontSize: "26px",
                               color: "white",
@@ -375,7 +377,14 @@ export const DetailModal = ({
                       </StContentWrap>
                     </StHost>
                     <div>
-                      <h2>{detail?.data?.title}</h2> {/* 제목 */}
+                      <h2
+                        style={{
+                          lineHeight: "1.5",
+                        }}
+                      >
+                        {detail?.data?.title}
+                      </h2>{" "}
+                      {/* 제목 */}
                     </div>
                     <div>
                       <h4>{detail?.data?.content}</h4> {/* 내용 */}

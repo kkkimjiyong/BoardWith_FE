@@ -9,10 +9,15 @@ import { ReactComponent as MainLogo } from "../../Assets/MyLogo.svg";
 import MyLogo from "../../Assets/MainLogo.png";
 import cookie from "react-cookies";
 import naverButton from "../../Assets/naverButton.png";
+import AlertModal from "../AlertModal";
 
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState();
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
+
   const initialState = {
     userId: "",
     password: "",
@@ -21,25 +26,20 @@ const Login = () => {
 
   const state = "boardwith";
 
-  const GOOGLE_CLIENT_ID =
-    "601009542517-255ebev9elhpvn2mp5kn653q51832dk4.apps.googleusercontent.com";
-  const GOOGLE_REDIRECT_URI = "https://boardwith.vercel.app/signup/google";
-  const REST_API_KEY = "55dc07a0e4c564bac2630a91922eab90";
-  const REDIRECT_URI = "https://boardwith.vercel.app/signup/oauth";
-  const NAVER_CLIENT_ID = "55dc07a0e4c564bac2630a91922eab90";
-  const NAVER_CALLBACK_URL = "https://boardwith.vercel.app/signup/naver";
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-  const GOOGLE_LOGIN_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
-  const NAVER_LOGIN_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_CALLBACK_URL}&state=${Math.random()
-    .toString(36)
-    .substr(3, 14)}`;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+  const GOOGLE_LOGIN_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
+  const NAVER_LOGIN_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
+    process.env.REACT_APP_NAVER_CLIENT_ID
+  }&redirect_uri=${
+    process.env.REACT_APP_NAVER_CALLBACK_URL
+  }&state=${Math.random().toString(36).substr(3, 14)}`;
 
   const postLogin = async (payload) => {
     try {
       const { data } = await loginApi.postLogin(payload);
       console.log(data.nickName);
       if (data.accessToken) {
-        console.log("나 푸쉬됬어요3");
+        setAlert(true);
         sessionStorage.setItem("accessToken", data.accessToken, {
           path: "/",
         });
@@ -47,11 +47,12 @@ const Login = () => {
           path: "/",
         });
         sessionStorage.setItem("nickName", data.nickName);
+        setContent("환영합니다!");
       }
-
-      window.location.replace("/main");
+      setAddress("/main");
     } catch (error) {
-      alert("다시 로그인해주세요");
+      setAlert(true);
+      setContent("다시 로그인해주세요");
       console.log(error);
     }
   };
@@ -64,6 +65,9 @@ const Login = () => {
 
   return (
     <LoginCtn onSubmit={onSubmitHandler} className="neonBox">
+      {alert && (
+        <AlertModal setAlert={setAlert} address={address} content={content} />
+      )}
       <MainLogo className="logo" />
       <LoginInput
         value={login.userId}
@@ -85,7 +89,8 @@ const Login = () => {
         {" "}
         <NaverLogin
           //
-          href={NAVER_LOGIN_URL}
+          // href={NAVER_LOGIN_URL}
+          onClick={() => alert("현재 개발중입니다!")}
         ></NaverLogin>
         <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
         <LoginGoogle href={GOOGLE_LOGIN_URL}></LoginGoogle>
@@ -158,7 +163,7 @@ const LoginBtn = styled.button`
   box-shadow: 0px 3px 10px 0px black;
 `;
 
-const NaverLogin = styled.a`
+const NaverLogin = styled.div`
   height: 40px;
   border-radius: 10px;
   /* background-color: #fee500; */

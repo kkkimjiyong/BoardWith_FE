@@ -36,7 +36,7 @@ const NaverLogin = ({ setGetToken, setUserInfo }) => {
   const isNaver = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/social/naver/isNaver",
+        `${process.env.REACT_APP_BACK_SERVER}/social/naver/isNaver`,
         { code }
       );
       if (data.accessToken) {
@@ -61,7 +61,7 @@ const NaverLogin = ({ setGetToken, setUserInfo }) => {
   const postNaverUser = async (signup) => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/social/naver/callback",
+        `${process.env.REACT_APP_BACK_SERVER}/social/naver/callback`,
         signup
       );
       console.log(data.accessToken);

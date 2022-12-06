@@ -3,9 +3,13 @@ import useInput from "../../hooks/UseInput";
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AlertModal from "../AlertModal";
 
 const FindId = () => {
   const navigate = useNavigate();
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
   const initialState = {
     phoneNumber: "",
     verifyCode: "",
@@ -20,10 +24,11 @@ const FindId = () => {
   const postPhone = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/sendID",
+        `${process.env.REACT_APP_BACK_SERVER}/sms/sendID`,
         { phoneNumber: findUser.phoneNumber }
       );
-      alert(data.message);
+      setAlert(true);
+      setContent(data.message);
     } catch (error) {
       console.log(error);
       alert(error.message);
@@ -33,13 +38,14 @@ const FindId = () => {
   const postVerify = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/sms/verifyID",
+        `${process.env.REACT_APP_BACK_SERVER}/sms/verifyID`,
         findUser
       );
       console.log(data);
       if (data) {
-        alert(`아이디는 ${data}입니다!`);
-        navigate("/");
+        setAlert(true);
+        setContent(`아이디는 ${data}입니다!`);
+        setAddress("/");
       }
     } catch (error) {
       console.log(error);
@@ -51,6 +57,9 @@ const FindId = () => {
 
   return (
     <SignUpWrap>
+      {alert && (
+        <AlertModal setAlert={setAlert} address={address} content={content} />
+      )}
       <SignUpHeader>
         <Arrow onClick={() => navigate("/")} />
         <div>아이디 찾기</div>

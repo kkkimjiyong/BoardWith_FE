@@ -1,19 +1,23 @@
 import axios from "axios";
 
 const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_SERVER,
-  baseURL: "https://www.iceflower.shop",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
   headers: {
     Authorization: sessionStorage.getItem("accessToken"),
   },
 });
 
 const instanceNoAuth = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_SERVER,
-  baseURL: "https://www.iceflower.shop",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
 });
 
 //? ------------------------- axios interceptor  --------------------------
+
+instance.interceptors.request.use(function (config) {
+  const token = sessionStorage.getItem("accessToken");
+  config.headers.Authorization = token;
+  return config;
+});
 
 instance.interceptors.response.use(
   (response) => {
@@ -43,6 +47,7 @@ instance.interceptors.response.use(
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.accessToken}`,
         };
+        window.location.reload();
         return await axios(prevRequest);
       } catch (err) {
         console.log(err);

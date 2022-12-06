@@ -27,8 +27,8 @@ const MobileHeader = () => {
 };
 
 const MobileHeaderCtn = styled.div`
-  position: absolute;
-  z-index: 30;
+  position: fixed;
+  z-index: 997;
   height: 6vh;
   background-color: var(--black);
   display: flex;
@@ -37,6 +37,7 @@ const MobileHeaderCtn = styled.div`
   padding: 10px 20px;
   bottom: 0;
   width: 100%;
+  max-width: 540px;
   box-shadow: 1px 1px 15px 3px black;
   .logo {
     width: 7%;

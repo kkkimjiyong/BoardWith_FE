@@ -80,40 +80,38 @@ const SignUp = () => {
     }
   };
   return (
-    <>
-      <SignUpWrap>
-        <SignUpCtn>
+    <SignUpWrap>
+      <SignUpCtn>
+        {" "}
+        <SignUpHeader>
+          <Arrow onClick={() => navigate("/")} />
+          <div>회원가입</div>
+        </SignUpHeader>
+        <Title>아이디와 닉네임을 입력해주세요</Title>{" "}
+        <RowBox>
           {" "}
-          <SignUpHeader>
-            <Arrow onClick={() => navigate("/")} />
-            <div>회원가입</div>
-          </SignUpHeader>
-          <Title>아이디와 닉네임을 입력해주세요</Title>{" "}
-          <RowBox>
+          <InputBox>
             {" "}
-            <InputBox>
-              {" "}
-              <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
-              {errors.userId && (
-                <AlertError role="alert">{errors.userId.message}</AlertError>
-              )}
-            </InputBox>
-            <VerfiyBtn onClick={() => DupId()}>중복확인</VerfiyBtn>
-          </RowBox>
-          <RowBox>
-            {" "}
-            <InputBox>
-              <SignUpInput placeholder="닉네임" {...register("nickName")} />
-              {errors.nickName && (
-                <AlertError role="alert">{errors.nickName.message}</AlertError>
-              )}
-            </InputBox>
-            <VerfiyBtn onClick={() => DupNickname()}>중복확인</VerfiyBtn>
-          </RowBox>
-          <NextBtn onClick={handleSubmit(onSubmit)}>다음</NextBtn>
-        </SignUpCtn>
-      </SignUpWrap>{" "}
-    </>
+            <SignUpInput placeholder="아이디" {...register("userId")} />{" "}
+            {errors.userId && (
+              <AlertError role="alert">{errors.userId.message}</AlertError>
+            )}
+          </InputBox>
+          <VerfiyBtn onClick={() => DupId()}>중복확인</VerfiyBtn>
+        </RowBox>
+        <RowBox>
+          {" "}
+          <InputBox>
+            <SignUpInput placeholder="닉네임" {...register("nickName")} />
+            {errors.nickName && (
+              <AlertError role="alert">{errors.nickName.message}</AlertError>
+            )}
+          </InputBox>
+          <VerfiyBtn onClick={() => DupNickname()}>중복확인</VerfiyBtn>
+        </RowBox>
+        <NextBtn onClick={handleSubmit(onSubmit)}>다음</NextBtn>
+      </SignUpCtn>
+    </SignUpWrap>
   );
 };
 const SignUpWrap = styled.div`
@@ -122,7 +120,7 @@ const SignUpWrap = styled.div`
   align-items: center;
   gap: 30px;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   color: white;
 `;
 

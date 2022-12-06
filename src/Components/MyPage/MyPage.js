@@ -17,6 +17,7 @@ import AvatarBox from "../Avatar/AvatarBox";
 import Loading from "../../style/Loading";
 import EditUser from "./EditUser";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
+import AlertModal from "../AlertModal";
 
 const MyPage = () => {
   const [user, setUser, onChange] = useInput();
@@ -29,6 +30,9 @@ const MyPage = () => {
   const [likeGame, setLikeGame] = useState();
   const [openEdit, setOpenEdit] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
   const navigate = useNavigate();
 
   //---------- 1초 로딩 후 렌더  ------------
@@ -79,21 +83,25 @@ const MyPage = () => {
   //? ------------------  로그아웃 -------------------
 
   const logoutHandler = (name) => {
-    alert("로그아웃 성공");
+    setAlert(true);
+    setContent("로그아웃 성공");
     sessionStorage.removeItem("accessToken");
     sessionStorage.removeItem("refreshToken");
-    navigate("/");
+    setAddress("/");
   };
 
   //? --------------------  회원탈퇴  ---------------------
 
   const deleteUser = async () => {
     try {
-      const { data } = await axios.delete("https://www.iceflower.shop/users", {
-        headers: {
-          Authorization: `${sessionStorage.getItem("accessToken")}`,
-        },
-      });
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_BACK_SERVER}/users`,
+        {
+          headers: {
+            Authorization: `${sessionStorage.getItem("accessToken")}`,
+          },
+        }
+      );
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -101,21 +109,12 @@ const MyPage = () => {
   };
 
   const deletUserHandler = (name) => {
-    alert("탈퇴 성공");
+    setAlert(true);
+
+    setContent("탈퇴 성공");
     deleteUser();
     removeCookie(name);
-    navigate("/");
-  };
-
-  //? ----------------- 성별 보이게 안보이게 api --------------------------
-  const postVisible = async () => {
-    try {
-      const { data } = await userApi.editUser({ visible: !user.visible });
-      console.log(data.findUserData);
-      setUser(data.findUserData);
-    } catch (error) {
-      console.log(error);
-    }
+    setAddress("/");
   };
 
   //? --------------------- 다음포스트  --------------------------
@@ -124,9 +123,10 @@ const MyPage = () => {
     // getReserved();
     // getConfirm();
     if (!sessionStorage.getItem("accessToken")) {
-      alert("로그인이 필요한 페이지입니다!");
+      setAlert(true);
+      setContent("로그인이 필요한 페이지입니다!");
       // window.location.replace("/");
-      navigate("/");
+      setAddress("/");
     }
   }, []);
 
@@ -140,6 +140,9 @@ const MyPage = () => {
   } else {
     return (
       <Wrapper>
+        {alert && (
+          <AlertModal setAlert={setAlert} address={address} content={content} />
+        )}
         <MainHeader>
           {openEdit ? (
             <AiOutlineClose
@@ -164,25 +167,31 @@ const MyPage = () => {
             {" "}
             <div>{user?.nickName} 님</div>{" "}
           </ProfileRow>
-          <ProfileRow>
-            <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
-            <div>{user?.visible ? `${user?.gender}` : "숨김"} /</div>
-            <div>
-              {" "}
-              {user?.myPlace.length
-                ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-                : "없음"}
-            </div>
+          {user?.visible == "V" && (
+            <ProfileRow>
+              <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
+              <div>{user?.gender ? `${user?.gender}` : "없음"} /</div>
+              <div>
+                {" "}
+                {user?.myPlace.length
+                  ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+                  : "없음"}
+              </div>
 
-            <div className="visible">
-              {" "}
-              {user?.visible ? (
-                <AiFillEye size="24" onClick={() => postVisible()} />
-              ) : (
-                <AiFillEyeInvisible size="24" onClick={() => postVisible()} />
-              )}
-            </div>
-          </ProfileRow>
+              {/* <div className="visible">
+                {" "}
+                {user?.visible == "V" ? (
+                  <AiFillEye size="24" onClick={() => postVisible("H")} />
+                ) : (
+                  <AiFillEyeInvisible
+                    size="24"
+                    onClick={() => postVisible("V")}
+                  />
+                )}
+              </div> */}
+            </ProfileRow>
+          )}
+          {user?.visible == "H" && <div>비공개</div>}
           <LikeGameCtn>
             <LikeGameBox>
               {likeGame?.map((game) => {
