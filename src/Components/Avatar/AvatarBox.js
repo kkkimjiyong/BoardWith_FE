@@ -46,7 +46,9 @@ const AvatarBox = ({
         </MouthCtn>
         <SqrCtn>
           <AvatarSqr>
-            <NoseAvatar></NoseAvatar>
+            <CheekAvatar />
+            <CheekAvatar className="right" />
+            <NoseAvatar />
           </AvatarSqr>
         </SqrCtn>
       </AvatarCtn>
@@ -72,12 +74,14 @@ const AvatarSqr = styled.div`
   height: 100px;
   border-radius: 20px;
   transform: scale(1.6);
-  border: 5px solid black;
+  border: 4px solid black;
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: var(--white);
+  overflow-x: hidden;
+  overflow-y: hidden;
 `;
 const NoseAvatar = styled.div`
   background-color: var(--black);
@@ -88,8 +92,22 @@ const NoseAvatar = styled.div`
   border-radius: 50%;
 `;
 
-const SqrCtn = styled.div`
+const CheekAvatar = styled.div`
   z-index: 0;
+  position: absolute;
+  top: 30%;
+  left: -20%;
+  width: 50%;
+  height: 50%;
+  border: 2px solid var(--black);
+  border-radius: 50%;
+  &.right {
+    left: 70%;
+  }
+`;
+
+const SqrCtn = styled.div`
+  z-index: 1;
   position: absolute;
   top: 0%;
   width: 280px;
@@ -100,8 +118,7 @@ const SqrCtn = styled.div`
 `;
 
 const HairCtn = styled.div`
-  z-index: 1;
-  z-index: 0;
+  z-index: 2;
   position: absolute;
   top: 0;
   width: 280px;
@@ -117,7 +134,7 @@ const HairCtn = styled.div`
 `;
 
 const EyeCtn = styled.div`
-  z-index: 1;
+  z-index: 2;
 
   position: absolute;
   top: 0;
@@ -133,7 +150,7 @@ const EyeCtn = styled.div`
 `;
 
 const MouthCtn = styled.div`
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   top: 0;
   width: 280px;
@@ -149,7 +166,7 @@ const MouthCtn = styled.div`
 `;
 
 const BackCtn = styled.div`
-  z-index: 0;
+  z-index: 1;
   position: absolute;
   top: 0;
   width: 100%;
