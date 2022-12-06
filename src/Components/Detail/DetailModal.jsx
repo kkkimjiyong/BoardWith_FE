@@ -522,6 +522,8 @@ export const DetailModal = ({
                           <input
                             value={comment.comment}
                             type="text"
+                            minlength="1"
+                            maxlength="20"
                             placeholder="신청 내용을 입력하세요"
                             onChange={(e) => {
                               const { value } = e.target;
@@ -840,4 +842,5 @@ const Btnbox = styled.div`
 const StAvatarContainer = styled.div`
   position: relative;
   width: 100%;
+  cursor: pointer;
 `;

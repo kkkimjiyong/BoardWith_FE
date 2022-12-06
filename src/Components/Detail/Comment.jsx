@@ -472,4 +472,5 @@ const StAvatar = styled.div`
   background-color: white;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
