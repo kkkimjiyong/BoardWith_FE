@@ -27,16 +27,8 @@ import { postApi } from "../../instance";
 import { useParams } from "react-router-dom";
 
 const { kakao } = window;
-function Modify({
-  setModifyModalOpen,
-  setModalOpen,
-  detail,
-  setDetail,
-  setItem,
-}) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [location, Setlocation] = useState(detail.data.location);
+function Modify({ setModifyModalOpen, setItem, item }) {
+  const [location, Setlocation] = useState(item.location);
   //카카오 Map API
   var geocoder = new kakao.maps.services.Geocoder();
 
@@ -49,7 +41,6 @@ function Modify({
     map: yup.string(),
     partyMember: yup.number(),
   });
-
   const onSubmit = (data) => {
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
@@ -62,23 +53,11 @@ function Modify({
     startTime.setHours(data.startTime.split(":")[0]);
     endTime.setHours(data.endTime.split(":")[0]);
 
-    // console.log(startTime.toISOString());
-    // console.log(endTime.toISOString());
-    console.log("submit", {
-      title: data.title,
-      content: data.content,
-      partyMember: data.partyMember,
-      date: "임시",
-      cafe: data.cafe,
-      location: location,
-      map: data.cafe.split(" ")[1],
-      time: [startTime.toISOString(), endTime.toISOString()],
-    });
     putPost({
-      postId: detail.data._id,
+      postId: item._id,
       postPayload: {
         data: {
-          ...detail.data,
+          ...item,
           title: data.title,
           content: data.content,
           partyMember: data.partyMember,
@@ -91,7 +70,6 @@ function Modify({
       },
     });
   };
-  console.log(detail.data);
   //useForm 설정
 
   const putPost = async (payload) => {
@@ -100,19 +78,14 @@ function Modify({
       const { data } = await postsApi.putPost(payload);
       console.log(data);
       alert("파티모집글 수정이 완료되었습니다.");
-      setDetail(payload.postPayload);
       setItem(payload.postPayload.data);
       setModifyModalOpen(false);
       // setModalOpen(false);
     } catch (error) {}
   };
 
-  console.log(detail.data);
-  const timeStart = detail.data.time[0];
+  const timeStart = item.time[0];
   const time1 = new Date(timeStart);
-  console.log(time1);
-  console.log(time1.setMinutes(0));
-  console.log(typeof detail.data.partyMember);
 
   const {
     control,
@@ -126,8 +99,8 @@ function Modify({
     mode: "onChange",
     resolver: yupResolver(formSchema),
     defaultValues: {
-      fullday: new Date(detail.data.time[0]),
-      partyMember: `${detail.data.partyMember}`,
+      fullday: new Date(item.time[0]),
+      partyMember: `${item.partyMember}`,
     },
   });
 
@@ -182,10 +155,7 @@ function Modify({
             <Inputbox>
               <FlexBox>
                 <LabelBox>파티명</LabelBox>
-                <InputBox
-                  defaultValue={detail.data.title}
-                  {...register("title")}
-                />
+                <InputBox defaultValue={item.title} {...register("title")} />
               </FlexBox>
               <FlexBox>
                 <LabelBox>내용</LabelBox>
@@ -194,7 +164,7 @@ function Modify({
                     height: "80px",
                   }}
                   maxLength={50}
-                  defaultValue={detail.data.content}
+                  defaultValue={item.content}
                   {...register("content")}
                 />
                 {errors.content && (
@@ -211,7 +181,7 @@ function Modify({
                     name="fullday"
                     render={({ field: { onChange, value } }) => (
                       <DatePicker
-                        defaultValue={`${new Date(detail.data.time[0])}`}
+                        defaultValue={`${new Date(item.time[0])}`}
                         inputFormat={"yyyy-MM-dd"}
                         mask={"____-__-__"}
                         value={value}
@@ -236,9 +206,7 @@ function Modify({
                   <TimeSelect
                     name="startTime"
                     size={1}
-                    defaultValue={`${new Date(
-                      detail.data.time[0]
-                    ).getHours()}:00`}
+                    defaultValue={`${new Date(item.time[0]).getHours()}:00`}
                     {...register("startTime")}
                   >
                     {timeSelect.map((time) => {
@@ -253,9 +221,7 @@ function Modify({
                     name="endTime"
                     size={1}
                     // onChange={onChange}
-                    defaultValue={`${new Date(
-                      detail.data.time[1]
-                    ).getHours()}:00`}
+                    defaultValue={`${new Date(item.time[1]).getHours()}:00`}
                     {...register("endTime")}
                   >
                     {timeSelect.map((time) => {
@@ -276,7 +242,7 @@ function Modify({
                   name="partyMember"
                   render={({ field: { onChange } }) => (
                     <MemberSlider
-                      defaultValue={`${detail.data.partyMember}`}
+                      defaultValue={`${item.partyMember}`}
                       onChange={(e) => {
                         onChange(e.target.value);
                       }}
@@ -294,7 +260,7 @@ function Modify({
                 <LabelBox>지도</LabelBox>
                 <InputBox
                   onClick={postCode}
-                  defaultValue={detail.data.cafe}
+                  defaultValue={item.cafe}
                   {...register("cafe")}
                 />
               </FlexBox>{" "}
