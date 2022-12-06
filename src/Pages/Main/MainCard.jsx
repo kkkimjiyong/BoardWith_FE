@@ -13,13 +13,20 @@ import { AiFillCalendar } from "@react-icons/all-files/ai/AiFillCalendar";
 import AvatarBox from "../../Components/Avatar/AvatarBox";
 import Modify from "./Modify";
 
-const Item = ({ number, items, Myaddress, closed, userBook }) => {
+const Item = ({
+  items,
+  Myaddress,
+  closed,
+  userBook,
+  setItems,
+  setModalOpen,
+  ModalOpen,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [item, setItem] = useState(items);
-  console.log(item);
-  const [ModalOpen, setModalOpen] = useState();
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
+
   //?---------------30%까지는 여유, 60&까지는 보통, 100%미만까지는 마감임박------------
   const memberStatus = ["여유", "보통", "마감임박", "마감"];
   const statusIndicator = () => {
@@ -36,7 +43,11 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
     }
   };
 
-  console.log(userBook);
+  useEffect(() => {
+    console.log("바뀜!");
+    setItem(items);
+  }, [setItems, items]);
+
   useEffect(() => {
     //*각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
     //*부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
@@ -56,6 +67,7 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
       );
     }
   }, []);
+
   //요일시간 표기
   const IsoStartDate = item?.time?.[0];
   const IsoendDate = item?.time?.[1];
@@ -80,6 +92,7 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
   const [starMark, setStarMark] = useState(
     userBook.includes(item._id) ? false : true
   );
+
   const bookMarking = async () => {
     try {
       const { data } = await postsApi.bookMarkPost({ postId: item._id });
@@ -93,12 +106,12 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
     setStarMark(!starMark);
     bookMarking();
   };
-  console.log();
+
   return (
     <Wrap>
       <div
         className={!closed ? "ItemWrap" : "ClosedItemWrap"}
-        onClick={() => setModalOpen(true)}
+        onClick={() => setModalOpen(item._id)}
       >
         <ItemWrapBodySpaceBetween>
           <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
@@ -132,14 +145,12 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
             <ItemWrapBodyFlex2>
               <ItemWrapBodyTitle>
                 <AiFillCalendar
-
                   style={{
                     position: "relative",
                     left: "-6px",
                     top: "6px",
                     marginRight: "1%",
                   }}
-
                   size="5%"
                 />
                 {showTime}
@@ -166,8 +177,9 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
         </ItemWrapBody>
       </div>
       {/*! 리스트에서 보여주는 디테일모달창  */}
-      {ModalOpen && (
+      {ModalOpen === item._id && (
         <DetailModal
+          item={item}
           closed={closed}
           postid={item._id}
           setItem={setItem}

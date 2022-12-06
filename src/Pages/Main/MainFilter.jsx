@@ -14,6 +14,8 @@ import { date } from "yup";
 import axios from "axios";
 
 const MainFilter = ({
+  setFilteredItems,
+  filteredItems,
   items,
   setItems,
   getData,
@@ -152,6 +154,7 @@ const MainFilter = ({
     );
     console.log(response.data);
     setItems(response.data.data);
+    setFilteredItems(false);
     setOpen(!open);
   };
 
