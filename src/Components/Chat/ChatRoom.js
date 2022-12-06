@@ -19,8 +19,7 @@ import AvatarBox from "../Avatar/AvatarBox";
 import { GiSiren } from "@react-icons/all-files/gi/GiSiren";
 
 const ChatRoom = () => {
-  // const socket = io("https://www.iceflower.shop/");
-  const socket = io("https://www.iceflower.shop/");
+  const socket = io(process.env.REACT_APP_BACK_SERVER);
   //웹소켓으로만 통신하고싶을때
   // {
   //   transports: ["websocket"],
@@ -33,7 +32,7 @@ const ChatRoom = () => {
   const scrollRef = useRef();
   const [chatArr, setChatArr] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState({});
+  const [owner, setOwner] = useState({});
   const [detail, setDetail] = useState();
 
   const moment = require("moment-timezone");
@@ -42,13 +41,11 @@ const ChatRoom = () => {
     return m.format("MM.DD (ddd) HH:mm");
   };
   const RoomTime = getStartTime(detail?.time[0]);
-  console.log(users[1]);
-  console.log(users[0]);
   // axios로 채팅db가져오기
   const getChat = async () => {
     try {
       const { data } = await axios.get(
-        `https://www.iceflower.shop/chats/${roomid}`
+        `${process.env.REACT_APP_BACK_SERVER}/chats/${roomid}`
       );
       if (data.updateSocket.chat) setChatArr(data.updateSocket.chat);
     } catch (error) {}
@@ -57,7 +54,7 @@ const ChatRoom = () => {
     try {
       const { data } = await userApi.getUser();
       console.log(data);
-      setUser(data.findUser);
+      setOwner(data.findUser);
       roomsubmit(data.findUser);
     } catch (error) {
       console.log(error);
@@ -79,40 +76,53 @@ const ChatRoom = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    socket.emit("chatMessage", {
-      nickName: user.nickName,
+    console.log("chatMessage", {
+      nickName: owner.nickName,
       message: message.message,
       room: roomid,
+      userAvatar: owner.userAvatar,
+    });
+    socket.emit("chatMessage", {
+      nickName: owner.nickName,
+      message: message.message,
+      room: roomid,
+      userAvatar: owner.userAvatar,
     });
     setMessage({ message: "" });
   };
 
   const roomsubmit = (user) => {
     console.log(user?.nickName);
+    console.log("joinRoom", {
+      nickName: user?.nickName,
+      userAvatar: user?.userAvatar,
+      room: roomid,
+    });
     socket.emit("joinRoom", {
       nickName: user?.nickName,
+      userAvatar: user?.userAvatar,
       room: roomid,
     });
   };
 
   const ban = (user) => {
     socket.emit("ban", {
-      nickName: user,
+      nickName: user.nickName,
+      userAvatar: user.userAvatar,
       room: roomid,
     });
     console.log("ban", {
-      nickName: user,
+      nickName: user.nickName,
+      userAvatar: user.userAvatar,
       room: roomid,
     });
   };
-
-  console.log(users.map((user) => console.log(user)));
 
   const navigate = useNavigate();
 
   const exithandler = () => {
     socket.emit("leave-room", {
-      nickName: user?.nickName,
+      nickName: owner?.nickName,
       room: roomid,
     });
     socket.disconnect();
@@ -120,11 +130,8 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    console.log("render!");
-    // socket.emit("joinRoom", { username: 여기에 유저아이디가 들어가야할듯 , room: 여기에는 포스트아이디 });
-
     socket.on("roomUsers", (msg) => {
-      console.log("ddd", msg);
+      console.log("roomUsers", msg);
       setUsers(msg);
     });
 
@@ -137,17 +144,17 @@ const ChatRoom = () => {
     });
     socket.on("notice", (msg) => {
       console.log("서버에서의 notice", msg);
-      alert(msg);
+      // alert(msg);
     });
     socket.on("banUsers", (msg) => {
-      console.log("밴강퇴", msg, user?.nickName);
-      if (msg == user?.nickName) {
+      console.log("밴강퇴", msg, owner?.nickName);
+      if (msg == owner?.nickName) {
         navigate("/main");
         socket.disconnect();
       }
     });
   }, [getUser]);
-
+  console.log(users[0]);
   return (
     <>
       <Wrapper>
@@ -164,24 +171,24 @@ const ChatRoom = () => {
               return (
                 <UserBox>
                   <div className="row">
-                    {" "}
                     <AvatarBox
                       profile={true}
                       scale={0.12}
                       backScale={0.8}
                       circle={true}
-                      userSelect={{ Eye: 1, Hair: 1, Back: 1, Mouth: 1 }}
+                      userSelect={user.userAvatar}
                     />
-                    <div className="avatar">{user}</div>
+                    <div className="avatar">{user.nickName}</div>
                   </div>
-
-                  <UserBtn
-                    onClick={() => {
-                      ban(user);
-                    }}
-                  >
-                    <GiSiren size={30} />
-                  </UserBtn>
+                  {owner?.nickName == detail?.nickName && (
+                    <UserBtn
+                      onClick={() => {
+                        ban(user);
+                      }}
+                    >
+                      <GiSiren size={30} />
+                    </UserBtn>
+                  )}
                 </UserBox>
               );
             })}
@@ -203,11 +210,8 @@ const ChatRoom = () => {
         <RoomInfo isOpen={isOpen}>
           {isOpen && (
             <>
-              {" "}
               <RoomBox>
-                {" "}
                 <RoomBoxTitle>
-                  {" "}
                   <div>주최자</div>
                   <div>장소</div>
                   <div>일자</div>
@@ -224,7 +228,7 @@ const ChatRoom = () => {
         </RoomInfo>
         <ChatCtn>
           {chatArr?.map((chat) => {
-            return <ChatMessage name={user?.nickName} chat={chat} />;
+            return <ChatMessage name={owner?.nickName} chat={chat} />;
           })}
           <div style={{ height: "0px" }} ref={scrollRef} />
         </ChatCtn>{" "}
@@ -236,7 +240,7 @@ const ChatRoom = () => {
             onChange={onChange}
           />
           <FaArrowAltCircleUp
-            // onClick={onSubmitHandler}
+            onClick={onSubmitHandler}
             color="white"
             size="30"
             className="sendBtn"
@@ -273,6 +277,7 @@ const ChatHeader = styled.div`
 `;
 
 const DrawerHead = styled.div`
+  z-index: 950;
   color: var(--white);
   margin: 0% 5%;
   padding: 5% 0%;
@@ -280,8 +285,9 @@ const DrawerHead = styled.div`
 `;
 
 const RoomInfo = styled.div`
+  z-index: 29;
   position: absolute;
-  top: 9%;
+  top: 8%;
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -295,7 +301,7 @@ const RoomInfo = styled.div`
 
 const RoomInfoHeader = styled.div`
   color: var(--white);
-  z-index: 10;
+  z-index: 950;
   display: flex;
   position: absolute;
   width: 90%;
@@ -334,7 +340,7 @@ const RoomBtn = styled.div`
 const Arrow = styled.div`
   display: inline-block;
   border: 10px solid transparent;
-  border-top-color: black;
+  border-top-color: white;
   margin-top: 12px;
   &.left {
     border-top-color: white;

@@ -47,47 +47,6 @@ const OtherUserPage = () => {
     }
   };
 
-  //? --------------------  회원탈퇴  ---------------------
-
-  //? ----------------- 성별 보이게 안보이게 api --------------------------
-  const postVisible = async () => {
-    try {
-      const { data } = await userApi.editUser(
-        `https://www.iceflower.shop/users`,
-        { visible: !user.visible }
-      );
-      console.log(data.findUserData);
-      setUser(data.findUserData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //? ------------------  로그아웃 -------------------
-
-  //? ------------------  로그아웃 -------------------
-
-  const deleteUser = async () => {
-    try {
-      const { data } = await axios.delete("https://www.iceflower.shop/users", {
-        headers: {
-          Authorization: `${getCookie("accessToken")}`,
-        },
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deletUserHandler = (name) => {
-    deleteUser();
-    removeCookie(name);
-    navigate("/");
-  };
-
-  //? ----------------- 성별 보이게 안보이게 api --------------------------
-
   return (
     <Wrapper>
       <MainHeader>
@@ -117,7 +76,9 @@ const OtherUserPage = () => {
         </ProfileRow>
         <LikeGameCtn>
           <LikeGameBox>
-            <LikeGame>#달무티</LikeGame>
+            {likeGame?.map((game) => {
+              return <LikeGame>{game}</LikeGame>;
+            })}
           </LikeGameBox>
 
           {/* 맵돌려야지~ */}

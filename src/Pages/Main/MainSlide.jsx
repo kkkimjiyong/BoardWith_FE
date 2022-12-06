@@ -12,13 +12,14 @@ import { FiFilter } from "@react-icons/all-files/fi/FiFilter";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import DailyCheck from "../../Components/DailyCheck";
 import { getCookie } from "../../hooks/CookieHook";
 import { postsApi, userApi } from "../../instance";
 import { useInView } from "react-intersection-observer";
 import { Skeleton } from "@mui/material";
 import Tutorial from "../../Components/Tutorial/Tutorial";
 import Loading from "../../style/Loading";
+import AlertModal from "../../Components/AlertModal";
+import MobileHeader from "../../style/MobileHeader";
 
 const MainSlide = () => {
   const navigate = useNavigate();
@@ -32,6 +33,8 @@ const MainSlide = () => {
   const [userBook, setUserBook] = useState([]);
   const scrollHead = useRef();
   const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
@@ -82,7 +85,8 @@ const MainSlide = () => {
       setItems(neardata);
       setNearModalOpen(true);
     } else {
-      alert("위치 허용을 누르셔야 이용가능합니다!");
+      setAlert(true);
+      setContent("위치 허용을 누르셔야 이용가능합니다!");
     }
   };
   //? --------------- get User --------------------
@@ -136,6 +140,7 @@ const MainSlide = () => {
     return (
       <>
         {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
+        {alert && <AlertModal setAlert={setAlert} content={content} />}
         {!isTutorial && (
           <Tutorial setSelfCheck={setSelfCheck} setIsTutorial={setIsTutorial} />
         )}
@@ -165,16 +170,16 @@ const MainSlide = () => {
             })}
             <Target ref={ref}>target? </Target>{" "}
           </MainListCtn>{" "}
-          <FormButton onClick={() => setFormModalOpen(true)}>
-            <FontAwesomeIcon
-              style={{
-                color: "white",
-              }}
-              size="2x"
-              icon={faPenToSquare}
-            />
-          </FormButton>
         </MainBox>{" "}
+        <FormButton onClick={() => setFormModalOpen(true)}>
+          <FontAwesomeIcon
+            style={{
+              color: "white",
+            }}
+            size="2x"
+            icon={faPenToSquare}
+          />
+        </FormButton>
         <MainFilter
           targetMargin={targetMargin}
           setTargetMargin={setTargetMargin}
@@ -183,7 +188,7 @@ const MainSlide = () => {
           getData={getData}
           open={open}
           setOpen={setOpen}
-        />{" "}
+        />
         {/* //! 가장 가까운 모임 보여주는 모달창 */}
         {NearModalOpen && (
           <DetailModal
@@ -211,6 +216,7 @@ const MainBox = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  max-width: 540px;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
@@ -239,7 +245,7 @@ const MainHeader = styled.div`
 
 const MainListCtn = styled.div`
   width: 100%;
-  padding: 3% 5% 0 5%;
+  padding: 3% 6% 0 6%;
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
@@ -262,9 +268,9 @@ const Rowbox = styled.div`
   gap: 10px;
 `;
 const FormButton = styled.button`
-  position: absolute;
+  position: fixed;
   bottom: 10%;
-  left: 80%;
+  left: 72%;
   background-color: var(--primary);
   border: none;
   color: white;

@@ -18,18 +18,15 @@ const Comments = ({
   nickName,
   isHost,
   postid,
-  detail,
   isPostEdit,
-  ModalOpen,
   setModalOpen,
-  open,
-  setOpen,
 }) => {
   const dispatch = useDispatch();
   const [isEdit, setEdit] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
-  const navigate = useNavigate();
   const [isPartyAccept, setIsPartyAccept] = useState(false);
+
+  const navigate = useNavigate();
 
   const commentId = comments._id;
   //console.log("nickName", nickName);
@@ -70,7 +67,7 @@ const Comments = ({
       "삭제하시면 참여 신청이 취소됩니다.\n정말로 삭제하시겠습니까?"
     );
     if (result) {
-      console.log("comments", comments._id);
+      // console.log("comments", comments._id);
       dispatch(__deleteComment(comments._id));
       setModalOpen((ModalOpen) => !ModalOpen);
       alert("참여 신청을 취소했습니다.");
@@ -83,7 +80,7 @@ const Comments = ({
   // console.log("comments", comments);
   const acceptingPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
-    console.log("nickName", nickName);
+    // console.log("nickName", nickName);
     postApi
       .acceptingParty({ postid: postid, nickName: nickName })
       .then((res) => {
@@ -109,7 +106,7 @@ const Comments = ({
   // console.log("comments", comments);
   const kickPartyHandler = () => {
     const nickName = { nickName: comments.nickName };
-    console.log("nickName", nickName);
+    // console.log("nickName", nickName);
     const result = window.confirm(
       "이 파티원을 파티에서 강제퇴장시키시겠습니다?"
     );
@@ -133,7 +130,7 @@ const Comments = ({
 
   const kickPartyCancelHandler = () => {
     const nickName = { nickName: comments.nickName };
-    console.log("nickName", nickName);
+    // console.log("nickName", nickName);
     postApi
       .kickingPartyCancel({ postid: postid, nickName: nickName })
       .then((res) => {
@@ -146,26 +143,16 @@ const Comments = ({
       });
   };
 
-  console.log("comments", comments);
+  console.log("댓글카드", comments);
 
   useEffect(() => {
-    //참가 확정 받은 유저인지 비교
-    for (let i = 0; i < detail?.confirmMember?.length; i++)
-      if (comments?.nickName === detail?.confirmMember[i]) {
-        setIsPartyAccept(true);
-      } else {
-        setIsPartyAccept(false);
-      }
+    //참가 확정 받은 유저인지
+    comments?.confirmOrNot ? setIsPartyAccept(true) : setIsPartyAccept(false);
+    //밴 유저인지
+    comments?.banOrNot ? setIsBanUser(true) : setIsBanUser(false);
+  }, [comments]);
 
-    //밴 유저인지 비교
-    for (let i = 0; i < detail?.banUser?.length; i++)
-      if (comments?.nickName === detail?.banUser[i]) {
-        setIsBanUser(true);
-        console.log("isBanUser", isBanUser);
-      } else {
-        setIsBanUser(false);
-      }
-  }, [comments, isPartyAccept]);
+  // console.log("comments", comments);
 
   return (
     <>
@@ -202,7 +189,7 @@ const Comments = ({
                         {comments?.nickName}
                       </Stspan>
                       <Stspan>
-                        <span>20대</span>
+                        <span>{comments?.age}세</span>
                         <span>&nbsp;/&nbsp;</span>
                         <span>{comments?.gender}</span>
                         {comments?.myPlace.length !== 0 && (

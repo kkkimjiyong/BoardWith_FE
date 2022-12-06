@@ -1,15 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import AvatarBox from "../Avatar/AvatarBox";
 
 const RankCard = (rank, ranking) => {
+  const navigate = useNavigate();
   // console.log(rank);
   return (
     <Wrap key={rank.nickName}>
       <StContainer>
         <div>
           <h4>{rank?.rank?.rank}</h4>
-          <StAvatar>
+          <StAvatar
+            onClick={() => navigate(`/userpage/${rank?.rank?.nickName}`)}
+          >
             <AvatarBox
               profile={true}
               scale={0.15}
@@ -60,6 +64,7 @@ const StContainer = styled.div`
       margin-right: 3%;
       font-size: 14px;
       font-weight: normal;
+      width: 15px;
     }
     > h5 {
       font-weight: normal;

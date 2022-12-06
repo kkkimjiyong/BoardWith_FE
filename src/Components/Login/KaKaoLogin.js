@@ -32,11 +32,11 @@ const KaKaoLogin = () => {
 
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code");
-
+  console.log(code);
   const isKaKao = async () => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/social/kakao/isKakao",
+        `${process.env.REACT_APP_BACK_SERVER}/social/kakao/isKakao`,
         { code }
       );
       if (data.accessToken) {
@@ -64,7 +64,7 @@ const KaKaoLogin = () => {
   const postKaKaoUser = async (signup) => {
     try {
       const { data } = await axios.post(
-        "https://www.iceflower.shop/social/kakao/callback",
+        `${process.env.REACT_APP_BACK_SERVER}/social/kakao/callback`,
         signup
       );
       console.log(data.accessToken);

@@ -9,6 +9,7 @@ import { ImgList } from "./AvatarList";
 import axios from "axios";
 import { userApi } from "../../instance";
 import Loading from "../../style/Loading";
+import AlertModal from "../AlertModal";
 
 const AvatarSelect = () => {
   //*초기 카테고리는 눈으로 고정
@@ -24,6 +25,9 @@ const AvatarSelect = () => {
   const [initialuserSelect, setInitialUserSelect] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [puserSelect, setpUserSelect] = useState([]);
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDrag(true);
@@ -60,9 +64,10 @@ const AvatarSelect = () => {
   //? ------------------아바타 API  ----------------------
 
   const postAvatar = async (point) => {
-    if (window.confirm(`${point}가 남습니다. 구매하시겠습니까?`)) {
+    if (window.confirm(`총 ${point}가 남습니다. 구매하시겠습니까?`)) {
+      setAlert(true);
       if (point < 0) {
-        alert("포인트가 부족합니다!");
+        setContent("포인트가 부족합니다!");
         setPoint(initialpoint);
       } else {
         try {
@@ -72,6 +77,7 @@ const AvatarSelect = () => {
           });
           setUserSelect(data.findUserData.userAvatar);
           setInitialUserSelect(data.findUserData.userAvatar);
+          setContent("구매 성공!");
           console.log(point);
         } catch (error) {
           console.log(error);
@@ -135,6 +141,7 @@ const AvatarSelect = () => {
   } else {
     return (
       <Wrap>
+        {alert && <AlertModal setAlert={setAlert} content={content} />}
         <AvatarHeader>
           <div></div>
           <div>캐릭터</div>

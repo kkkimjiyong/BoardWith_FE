@@ -1,19 +1,23 @@
 import axios from "axios";
 
 const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_SERVER,
-  baseURL: "https://www.iceflower.shop",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
   headers: {
     Authorization: sessionStorage.getItem("accessToken"),
   },
 });
 
 const instanceNoAuth = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_SERVER,
-  baseURL: "https://www.iceflower.shop",
+  baseURL: process.env.REACT_APP_BACK_SERVER,
 });
 
 //? ------------------------- axios interceptor  --------------------------
+
+instance.interceptors.request.use(function (config) {
+  const token = sessionStorage.getItem("accessToken");
+  config.headers.Authorization = token;
+  return config;
+});
 
 instance.interceptors.response.use(
   (response) => {
@@ -43,6 +47,7 @@ instance.interceptors.response.use(
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.accessToken}`,
         };
+        window.location.reload();
         return await axios(prevRequest);
       } catch (err) {
         console.log(err);
@@ -111,12 +116,30 @@ export const postApi = {
 };
 
 export const commentsApi = {
-  getComments: (payload) => instance.get(`/comments/${payload}`),
+  getComments: (payload) =>
+    instance.get(`/comments/${payload}`, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
   postComments: (payload) =>
-    instance.post(`/comments/${payload.postid}`, payload.comment),
+    instance.post(`/comments/${payload.postid}`, payload.comment, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
   editComments: (payload) =>
-    instance.put(`/comments/${payload.commentId}`, payload.comment),
-  delComments: (payload) => instance.delete(`/comments/${payload}`),
+    instance.put(`/comments/${payload.commentId}`, payload.comment, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
+  delComments: (payload) =>
+    instance.delete(`/comments/${payload}`, {
+      headers: {
+        Authorization: sessionStorage.getItem("accessToken"),
+      },
+    }),
 };
 
 export const postsApi = {
@@ -130,11 +153,10 @@ export const postsApi = {
     return instance.get(`posts/searchNickname/${payload}`);
   },
   creatPost: (inputs) => {
-    return instance.post(`/posts`, inputs, {
-      headers: {
-        Authorization: sessionStorage.getItem("accessToken"),
-      },
-    });
+    return instance.post(`/posts`, inputs);
+  },
+  putPost: (inputs) => {
+    return instance.put(`/posts`, inputs);
   },
   deletePost: (params) => instance.delete(`/posts/${params}`),
   updatePost: (payload) =>

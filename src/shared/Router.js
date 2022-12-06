@@ -20,6 +20,8 @@ import LoginGoogle from "../Components/Login/GoogleLogin";
 import SignUp1 from "../Components/SignUp/SignUp1";
 import SignUp2 from "../Components/SignUp/SingUp2";
 import SignUp3 from "../Components/SignUp/SignUp3";
+import NaverLogin from "../Components/Login/NaverLogin";
+import Modify from "../Pages/Main/Modify";
 
 // const Main = lazy(() => import("../Pages/Main/Main"));
 // const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
@@ -38,11 +40,13 @@ const Router = () => {
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup/oauth" element={<KaKaoLogin />} />
           <Route path="/signup/google" element={<LoginGoogle />} />
+          <Route path="/signup/naver" element={<NaverLogin />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/userpage/:nickname" element={<UserPage />} />
           <Route path="/form" element={<Form />} />
           <Route path="/chat/:roomid" element={<ChatPage />} />
           <Route path="/posts/:postid" element={<SharePage />} />
+          <Route path="/modify/:postid" element={<Modify />} />
           <Route path="/avatar" element={<AvatarPage />} />
           <Route path="/find/:id" element={<FindPage />} />
           <Route path="/prac" element={<PracPage />} />
