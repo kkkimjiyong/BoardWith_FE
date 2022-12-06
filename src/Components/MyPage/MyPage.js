@@ -33,10 +33,14 @@ const MyPage = () => {
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
   const [address, setAddress] = useState();
+  const [ModalOpen, setModalOpen] = useState();
   const navigate = useNavigate();
 
   //---------- 1초 로딩 후 렌더  ------------
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(1);
+    getUser();
+  }, [setModalOpen, ModalOpen]);
   //? -----------------  API  -----------------------
 
   const getUser = async () => {
@@ -64,21 +68,6 @@ const MyPage = () => {
       console.log(error);
     }
   };
-
-  //? ------------------  삭제 포스트 =========================
-
-  const deletHandler = async (id) => {
-    try {
-      const { data } = await postsApi.deletePost(id);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getUser();
-  }, []);
-  // console.log({ visible: !user.visible });
 
   //? ------------------  로그아웃 -------------------
 
@@ -197,7 +186,9 @@ const MyPage = () => {
                 {bookmark?.map((party) => {
                   return (
                     <MyPartyItem
-                      deletHandler={deletHandler}
+                      setModalOpen={setModalOpen}
+                      ModalOpen={ModalOpen}
+                      party={party}
                       title={party.title}
                       postId={party.postId}
                     />
@@ -214,7 +205,8 @@ const MyPage = () => {
                 {reservedParty?.map((party) => {
                   return (
                     <MyPartyItem
-                      deletHandler={deletHandler}
+                      setModalOpen={setModalOpen}
+                      ModalOpen={ModalOpen}
                       party={party}
                       title={party.title}
                       postId={party._id}
@@ -232,7 +224,9 @@ const MyPage = () => {
                 {confirmParty?.map((party) => {
                   return (
                     <MyPartyItem
-                      deletHandler={deletHandler}
+                      setModalOpen={setModalOpen}
+                      ModalOpen={ModalOpen}
+                      party={party}
                       title={party.title}
                       postId={party._id}
                     />
@@ -415,7 +409,7 @@ const MyPartyTitle = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10%;
-  :active {
+  :hover {
     cursor: pointer;
     text-decoration: underline;
   }
