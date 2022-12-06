@@ -24,14 +24,19 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postsApi } from "../../instance";
 import { postApi } from "../../instance";
+import { useParams } from "react-router-dom";
 
 const { kakao } = window;
-function Modify({ setFormModalOpen, setItems }) {
+function Modify({
+  setModifyModalOpen,
+  setModalOpen,
+  detail,
+  setDetail,
+  setItem,
+}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [location, Setlocation] = useState();
-  const [ModalOpen, setModalOpen] = useState(false);
-
+  const [location, Setlocation] = useState(detail.data.location);
   //카카오 Map API
   var geocoder = new kakao.maps.services.Geocoder();
 
@@ -70,36 +75,44 @@ function Modify({ setFormModalOpen, setItems }) {
       time: [startTime.toISOString(), endTime.toISOString()],
     });
     putPost({
-      title: data.title,
-      content: data.content,
-      partyMember: data.partyMember,
-      date: "임시",
-      cafe: data.cafe,
-      location: location,
-      map: data.cafe.split(" ")[1],
-      time: [startTime.toISOString(), endTime.toISOString()],
+      postId: detail.data._id,
+      postPayload: {
+        data: {
+          ...detail.data,
+          title: data.title,
+          content: data.content,
+          partyMember: data.partyMember,
+          date: "임시",
+          cafe: data.cafe,
+          location: location,
+          map: data.cafe.split(" ")[1],
+          time: [startTime.toISOString(), endTime.toISOString()],
+        },
+      },
     });
   };
-
+  console.log(detail.data);
   //useForm 설정
 
   const putPost = async (payload) => {
     try {
+      console.log(payload);
       const { data } = await postsApi.putPost(payload);
-      setItems((prev) => [data.createPost, ...prev]);
+      console.log(data);
       alert("파티모집글 수정이 완료되었습니다.");
-      // setFormModalOpen(false);
+      setDetail(payload.postPayload);
+      setItem(payload.postPayload.data);
+      setModifyModalOpen(false);
+      // setModalOpen(false);
     } catch (error) {}
   };
-  const getPost = async () => {
-    try {
-      const { data } = await postApi.getDetail();
-      console.log("data", data);
-      setItems((prev) => [data.createPost, ...prev]);
-      alert("파티모집글 작성이 완료되었습니다.");
-      // setFormModalOpen(false);
-    } catch (error) {}
-  };
+
+  console.log(detail.data);
+  const timeStart = detail.data.time[0];
+  const time1 = new Date(timeStart);
+  console.log(time1);
+  console.log(time1.setMinutes(0));
+  console.log(typeof detail.data.partyMember);
 
   const {
     control,
@@ -112,7 +125,10 @@ function Modify({ setFormModalOpen, setItems }) {
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(formSchema),
-    defaultValues: { fullday: new Date(), partyMember: "10" },
+    defaultValues: {
+      fullday: new Date(detail.data.time[0]),
+      partyMember: `${detail.data.partyMember}`,
+    },
   });
 
   // console.log(location);
@@ -145,7 +161,11 @@ function Modify({ setFormModalOpen, setItems }) {
       <Layout>
         <Wrap>
           <div>
-            <Sth onClick={() => setFormModalOpen(false)}>
+            <Sth
+              onClick={() => {
+                setModifyModalOpen(false);
+              }}
+            >
               <FontAwesomeIcon
                 style={{
                   color: "white",
@@ -155,14 +175,17 @@ function Modify({ setFormModalOpen, setItems }) {
                 cursor="pointer"
               />
             </Sth>{" "}
-            <FormHeader>새로운 파티</FormHeader>
+            <FormHeader>파티 내용 수정</FormHeader>
           </div>
 
           <Formbox onSubmit={handleSubmit(onSubmit)}>
             <Inputbox>
               <FlexBox>
                 <LabelBox>파티명</LabelBox>
-                <InputBox {...register("title")} />
+                <InputBox
+                  defaultValue={detail.data.title}
+                  {...register("title")}
+                />
               </FlexBox>
               <FlexBox>
                 <LabelBox>내용</LabelBox>
@@ -171,6 +194,7 @@ function Modify({ setFormModalOpen, setItems }) {
                     height: "80px",
                   }}
                   maxLength={50}
+                  defaultValue={detail.data.content}
                   {...register("content")}
                 />
                 {errors.content && (
@@ -187,6 +211,7 @@ function Modify({ setFormModalOpen, setItems }) {
                     name="fullday"
                     render={({ field: { onChange, value } }) => (
                       <DatePicker
+                        defaultValue={`${new Date(detail.data.time[0])}`}
                         inputFormat={"yyyy-MM-dd"}
                         mask={"____-__-__"}
                         value={value}
@@ -211,7 +236,9 @@ function Modify({ setFormModalOpen, setItems }) {
                   <TimeSelect
                     name="startTime"
                     size={1}
-                    defaultValue={timeSelect[0].value}
+                    defaultValue={`${new Date(
+                      detail.data.time[0]
+                    ).getHours()}:00`}
                     {...register("startTime")}
                   >
                     {timeSelect.map((time) => {
@@ -226,7 +253,9 @@ function Modify({ setFormModalOpen, setItems }) {
                     name="endTime"
                     size={1}
                     // onChange={onChange}
-                    defaultValue={timeSelect[23].value}
+                    defaultValue={`${new Date(
+                      detail.data.time[1]
+                    ).getHours()}:00`}
                     {...register("endTime")}
                   >
                     {timeSelect.map((time) => {
@@ -247,7 +276,7 @@ function Modify({ setFormModalOpen, setItems }) {
                   name="partyMember"
                   render={({ field: { onChange } }) => (
                     <MemberSlider
-                      defaultValue={10}
+                      defaultValue={`${detail.data.partyMember}`}
                       onChange={(e) => {
                         onChange(e.target.value);
                       }}
@@ -263,12 +292,16 @@ function Modify({ setFormModalOpen, setItems }) {
               </FlexBox>
               <FlexBox>
                 <LabelBox>지도</LabelBox>
-                <InputBox onClick={postCode} {...register("cafe")} />
+                <InputBox
+                  onClick={postCode}
+                  defaultValue={detail.data.cafe}
+                  {...register("cafe")}
+                />
               </FlexBox>{" "}
               <DaumPostBox ref={ref}></DaumPostBox>
             </Inputbox>{" "}
             <Buttonbox>
-              <Button>작성완료</Button>
+              <Button>수정완료</Button>
             </Buttonbox>
           </Formbox>
         </Wrap>

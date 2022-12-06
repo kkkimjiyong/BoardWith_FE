@@ -7,7 +7,7 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
   const [next, setNext] = useState(1);
   const doneTutorial = async () => {
     try {
-      const { data } = await userApi.editUser({ tutorial: true });
+      const { data } = await userApi.editUser({ tutorial: true, point: 3300 });
       console.log(data);
       setIsTutorial(true);
       setSelfCheck(true);

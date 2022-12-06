@@ -52,6 +52,7 @@ const Router = () => {
           <Route path="/prac" element={<PracPage />} />
           <Route path="/rank" element={<RankingPage />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/modify/:id" element={<Modify />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
