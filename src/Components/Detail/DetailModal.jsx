@@ -83,7 +83,8 @@ export const DetailModal = ({
       .closeParty(postid)
       .then((res) => {
         setIsClosed(true);
-        alert("파티원 모집이 마감되었습니다");
+        setAlert(true);
+        setContent("파티원 모집이 마감되었습니다.");
         console.log("성공", res);
         // console.log("isClosed", isClosed);
       })
@@ -106,7 +107,8 @@ export const DetailModal = ({
       })
       .then((res) => {
         setIsClosed(false);
-        alert("파티원 모집을 다시 시작합니다.");
+        setAlert(true);
+        setContent("파티원 모집을 다시 시작합니다.");
         console.log("성공", res);
       })
       .catch((error) => {
@@ -117,11 +119,14 @@ export const DetailModal = ({
   //코멘트 입력 핸들러-----------------------------------------
   const commentOnsumitHandler = () => {
     if (comment.comment === "") {
-      alert("댓글 내용을 입력해주세요");
+      setAlert(true);
+      setContent("댓글 내용을 입력해주세요.");
     } else {
       console.log("댓글입력");
       dispatch(__postComments({ comment, postid }));
       setComment(initialState);
+      setAlert(true);
+      setContent("참여 신청 완료!");
     }
   };
   //console.log("isCommentAuthor", isCommentAuthor);
@@ -631,8 +636,13 @@ const StCommentTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  > h3 {
+    margin: 0 15px;
+    max-width: 90%;
+  }
   > h5 {
     cursor: pointer;
+    min-width: 45px;
   }
 `;
 
@@ -680,6 +690,7 @@ const ListWrap = styled.div`
   .innerDiv {
     position: absolute;
     width: 100%;
+
     background-color: #d7d7d7;
     height: 30px;
     line-height: 30px;
