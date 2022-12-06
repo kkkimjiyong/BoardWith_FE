@@ -117,17 +117,6 @@ const MyPage = () => {
     setAddress("/");
   };
 
-  //? ----------------- 성별 보이게 안보이게 api --------------------------
-  const postVisible = async (value) => {
-    try {
-      const { data } = await userApi.editUser({ visible: value });
-      console.log(data.findUserData);
-      setUser(data.findUserData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   //? --------------------- 다음포스트  --------------------------
 
   useEffect(() => {

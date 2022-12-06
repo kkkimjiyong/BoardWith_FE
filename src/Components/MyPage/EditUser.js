@@ -45,7 +45,7 @@ const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
     //팝업창으로 사용시 해당 파라메터를 없애면 된다.
     onComplete: (data) => {
       // 데이터를 받아와서 set해주는 부분
-      setUser({ ...user, myPlace: data.address });
+      setUser({ ...user, myPlace: data.address.split(" ").slice(0, 2) });
       // 검색후 해당 컴포넌트를 다시 안보이게 하는 부분
       ref.current.style.display = "none";
     },
@@ -56,7 +56,7 @@ const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
     <Wrapper openEdit={openEdit}>
       <EditTxt>닉네임</EditTxt>
       <EditInput value={"수정불가"} name="nickName" onChange={onChange} />
-      <EditTxt>내 정보</EditTxt>
+      <EditTxt>비공개 설정</EditTxt>
       <EditBox>
         <div> 나이, 성별, 지역</div>
         <ToggleBox open={open}>
@@ -64,7 +64,8 @@ const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
         </ToggleBox>
       </EditBox>
       <EditTxt className="info">
-        앱에서 다른 사용자에게 나의 나이, 성별, 지역 정보를 노출할 수 있습니다.
+        앱에서 다른 사용자에게 나의 나이, 성별, 지역 정보를 비공개설정할 수
+        있습니다.
       </EditTxt>
       <EditTxt>나이</EditTxt>
 
