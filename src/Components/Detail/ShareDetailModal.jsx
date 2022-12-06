@@ -116,9 +116,11 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
 
   //useEffect 디테일 데이터 불러오기---------------------------------------
   useEffect(() => {
-    userApi.getUser().then((res) => {
-      setNickName(res.data.findUser.nickName);
-    });
+    if (sessionStorage.getItem("accessToken")) {
+      userApi.getUser().then((res) => {
+        setNickName(res.data.findUser.nickName);
+      });
+    }
 
     postApi.getDetailId(postid).then((res) => {
       setDetail(res.data);
@@ -146,6 +148,7 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
 
   useEffect(() => {
     // 파티장인지 확인
+
     if (detail?.data?.nickName === nickName) {
       setIsHost(true);
     } else if (detail?.data?.nickName !== nickName) {

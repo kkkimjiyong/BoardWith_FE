@@ -23,6 +23,7 @@ import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 import { BsPeopleFill, BsArrowUpCircle, BsChevronLeft } from "react-icons/bs";
 import AvatarBox from "../Avatar/AvatarBox";
 import Modify from "../../Pages/Main/Modify";
+import AlertModal from "../AlertModal";
 
 const { kakao } = window;
 export const DetailModal = ({
@@ -49,6 +50,8 @@ export const DetailModal = ({
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
+  const [alert, setAlert] = useState();
+  const [content, setContent] = useState();
 
   console.log(modifyModalOpen);
   // 수정
@@ -129,7 +132,8 @@ export const DetailModal = ({
     if (item?.confirmMember.includes(nickName)) {
       navigate(`/chat/${postid}`);
     } else {
-      alert("확정된 이후 들어갈 수 있습니다.");
+      setAlert(true);
+      setContent("확정된 이후 들어갈 수 있습니다.");
     }
   };
 
@@ -247,6 +251,7 @@ export const DetailModal = ({
 
   return (
     <BackGroudModal>
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       <StContainers onClick={() => setModalOpen(false)}>
         {loading ? (
           <>
@@ -293,7 +298,7 @@ export const DetailModal = ({
                             scale={0.2}
                             backScale={0.8}
                             circle={true}
-                            userSelect={item?.userAvatar}
+                            userSelect={detail?.data.userAvatar}
                           />
                         </StAvatarContainer>
                         <NickName>{item?.nickName}</NickName>
@@ -395,15 +400,7 @@ export const DetailModal = ({
                         >
                           예약현황 ( {item?.participant?.length} 명 )
                         </Stbutton>
-                        {/* {!closed ? (
-                          <Stbutton1 onClick={closePartyHandler}>
-                            마감하기
-                          </Stbutton1>
-                        ) : (
-                          <Stbutton1 onClick={openPartyHandler}>
-                            마감취소
-                          </Stbutton1>
-                        )} */}
+
                         <Stbutton1
                           onClick={
                             !isClosed ? closePartyHandler : openPartyHandler

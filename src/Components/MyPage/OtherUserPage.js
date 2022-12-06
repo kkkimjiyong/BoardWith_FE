@@ -299,6 +299,9 @@ const Arrow = styled.div`
   border: 7px solid transparent;
   border-top-color: var(--white);
   transform: rotate(90deg);
+  :hover {
+    cursor: pointer;
+  }
   &.left {
     margin-top: 7px;
     transform: rotate(270deg);
