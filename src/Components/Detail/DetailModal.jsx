@@ -25,9 +25,16 @@ import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 // import { BsArrowUpCircle } from "@react-icons/all-files/bs/BsArrowUpCircle";
 import { BsPeopleFill, BsArrowUpCircle, BsChevronLeft } from "react-icons/bs";
 import AvatarBox from "../Avatar/AvatarBox";
+import Modify from "../../Pages/Main/Modify";
 
 const { kakao } = window;
-export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
+export const DetailModal = ({
+  postid,
+  setModalOpen,
+  ModalOpen,
+  closed,
+  setItem,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const initialState = { comment: "" };
@@ -43,6 +50,7 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
   const [y, setY] = useState();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
+  const [modifyModalOpen, setModifyModalOpen] = useState(false);
 
   // 수정
 
@@ -268,8 +276,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
 
   // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
   // console.log("detail", detail?.data);\
-  console.log("댓글리스트", comments);
-  console.log("토큰", sessionStorage.getItem("accessToken"));
+  // console.log("댓글리스트", comments);
+  // console.log("토큰", sessionStorage.getItem("accessToken"));
+
+  // const sendProps = () => {
+  //   return <Modify postId={postId} />;
+  // };
 
   return (
     <BackGroudModal>
@@ -327,9 +339,12 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                       <StContentWrap>
                         {isHost && (
                           <FiEdit
-                            onClick={() =>
-                              navigate(`/modify/${detail?.data?._id}`)
-                            }
+
+                            onClick={() => {
+                              setModifyModalOpen(true);
+                           
+                            }}
+
                             style={{
                               fontSize: "26px",
                               color: "white",
@@ -464,7 +479,6 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                   <StCommentList></StCommentList>
                 </Wrap>
                 {/*상세페이지 끝-------------------------------------------------------- */}
-
                 {/*댓글 슬라이드 시작--------------------------------------------------------- */}
                 <ListWrap onClick={(e) => e.stopPropagation()} open={open}>
                   <StCommentTitle>
@@ -575,8 +589,17 @@ export const DetailModal = ({ postid, setModalOpen, ModalOpen, closed }) => {
                     ) : (
                       <></>
                     )}
-                  </div>
-                </ListWrap>
+                  </div>{" "}
+                  {modifyModalOpen && (
+                    <Modify
+                      detail={detail}
+                      setModalOpen={setModalOpen}
+                      setDetail={setDetail}
+                      setItem={setItem}
+                      setModifyModalOpen={setModifyModalOpen}
+                    />
+                  )}
+                </ListWrap>{" "}
               </Wrapper>
             </BackGroudModal>
             <StBackGroundColor onClick={() => setModalOpen(false)} />
