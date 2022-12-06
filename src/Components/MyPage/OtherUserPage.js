@@ -47,50 +47,6 @@ const OtherUserPage = () => {
     }
   };
 
-  //? --------------------  회원탈퇴  ---------------------
-
-  //? ----------------- 성별 보이게 안보이게 api --------------------------
-  const postVisible = async () => {
-    try {
-      const { data } = await userApi.editUser(
-        `${process.env.REACT_APP_BACK_SERVER}/users`,
-        { visible: !user.visible }
-      );
-      console.log(data.findUserData);
-      setUser(data.findUserData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //? ------------------  로그아웃 -------------------
-
-  //? ------------------  로그아웃 -------------------
-
-  const deleteUser = async () => {
-    try {
-      const { data } = await axios.delete(
-        `${process.env.REACT_APP_BACK_SERVER}/users`,
-        {
-          headers: {
-            Authorization: `${getCookie("accessToken")}`,
-          },
-        }
-      );
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deletUserHandler = (name) => {
-    deleteUser();
-    removeCookie(name);
-    navigate("/");
-  };
-
-  //? ----------------- 성별 보이게 안보이게 api --------------------------
-
   return (
     <Wrapper>
       <MainHeader>
@@ -111,16 +67,36 @@ const OtherUserPage = () => {
         <ProfileRow>
           <div>{user?.nickName}</div>{" "}
         </ProfileRow>
-        <ProfileRow>
-          {user?.age ? `${user?.age} 살` : "없음"}/
-          {user?.visible ? `${user?.gender}` : "숨김"}/
-          {user?.myPlace.length
-            ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-            : "없음"}{" "}
-        </ProfileRow>
+        {user?.visible == "V" && (
+          <ProfileRow>
+            <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
+            <div>{user?.gender ? `${user?.gender}` : "없음"} /</div>
+            <div>
+              {" "}
+              {user?.myPlace.length
+                ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+                : "없음"}
+            </div>
+
+            {/* <div className="visible">
+                {" "}
+                {user?.visible == "V" ? (
+                  <AiFillEye size="24" onClick={() => postVisible("H")} />
+                ) : (
+                  <AiFillEyeInvisible
+                    size="24"
+                    onClick={() => postVisible("V")}
+                  />
+                )}
+              </div> */}
+          </ProfileRow>
+        )}
+        {user?.visible == "H" && <div>비공개</div>}
         <LikeGameCtn>
           <LikeGameBox>
-            <LikeGame>#달무티</LikeGame>
+            {likeGame?.map((game) => {
+              return <LikeGame>{game}</LikeGame>;
+            })}
           </LikeGameBox>
 
           {/* 맵돌려야지~ */}

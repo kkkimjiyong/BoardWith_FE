@@ -43,7 +43,7 @@ const Ctn = styled.div`
   justify-content: space-between;
   align-items: center;
   border-radius: 20px;
-  padding: 2% 5%;
+  padding: 4% 5%;
 `;
 
 const Arrow = styled.div`

@@ -57,7 +57,7 @@ const SignUp3 = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { gender: "male" },
+    defaultValues: { gender: "남자" },
     resolver: yupResolver(formSchema),
   });
 
@@ -155,7 +155,7 @@ const SignUp3 = () => {
               <InputBirth
                 id="male"
                 type="radio"
-                value={"male"}
+                value={"남자"}
                 {...register("gender")}
               ></InputBirth>
 
@@ -163,7 +163,7 @@ const SignUp3 = () => {
               <InputBirth
                 id="female"
                 type="radio"
-                value={"female"}
+                value={"여자"}
                 {...register("gender")}
               ></InputBirth>
             </RowBox>

@@ -13,6 +13,12 @@ const instanceNoAuth = axios.create({
 
 //? ------------------------- axios interceptor  --------------------------
 
+instance.interceptors.request.use(function (config) {
+  const token = sessionStorage.getItem("accessToken");
+  config.headers.Authorization = token;
+  return config;
+});
+
 instance.interceptors.response.use(
   (response) => {
     return response;
