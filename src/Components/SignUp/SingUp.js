@@ -12,12 +12,16 @@ import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 import { useDispatch } from "react-redux";
 import { addUserData } from "../../redux/modules/postsSlice.js";
+import AlertModal from "../AlertModal.js";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dupId, setDupId] = useState(false);
   const [dupNickName, setDupNickName] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+  const [address, setAddress] = useState();
 
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({
@@ -50,37 +54,42 @@ const SignUp = () => {
       dispatch(addUserData(data));
       navigate("/signup1");
     } else {
-      alert("중복확인을 눌러주세요!");
+      setAlert(true);
+      setContent("중복확인을 눌러주세요!");
     }
   };
 
   const DupId = async () => {
+    setAlert(true);
     try {
       const { data } = await signUpApi.DupId({ userId: getValues().userId });
       console.log(data.findDupId);
-      alert(data.findDupId);
+      setContent(data.findDupId);
       setDupId(true);
     } catch (error) {
       console.log(error.response.data.message);
-      alert(error.response.data.message);
+      setContent(error.response.data.message);
     }
   };
 
   const DupNickname = async () => {
+    setAlert(true);
+
     try {
       const { data } = await signUpApi.DupNick({
         nickName: getValues().nickName,
       });
       console.log(data.findDupNick);
-      alert(data.findDupNick);
+      setContent(data.findDupNick);
       setDupNickName(true);
     } catch (error) {
       console.log(error.response.data.message);
-      alert(error.response.data.message);
+      setContent(error.response.data.message);
     }
   };
   return (
     <SignUpWrap>
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       <SignUpCtn>
         {" "}
         <SignUpHeader>
@@ -209,6 +218,9 @@ const Arrow = styled.div`
   border: 7px solid transparent;
   border-top-color: white;
   transform: rotate(90deg);
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const AlertError = styled.div`

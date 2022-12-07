@@ -33,10 +33,14 @@ const MyPage = () => {
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
   const [address, setAddress] = useState();
+  const [ModalOpen, setModalOpen] = useState();
   const navigate = useNavigate();
 
   //---------- 1초 로딩 후 렌더  ------------
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(1);
+    getUser();
+  }, [setModalOpen, ModalOpen]);
   //? -----------------  API  -----------------------
 
   const getUser = async () => {
@@ -64,21 +68,6 @@ const MyPage = () => {
       console.log(error);
     }
   };
-
-  //? ------------------  삭제 포스트 =========================
-
-  const deletHandler = async (id) => {
-    try {
-      const { data } = await postsApi.deletePost(id);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getUser();
-  }, []);
-  // console.log({ visible: !user.visible });
 
   //? ------------------  로그아웃 -------------------
 
@@ -113,7 +102,7 @@ const MyPage = () => {
 
     setContent("탈퇴 성공");
     deleteUser();
-    removeCookie(name);
+    sessionStorage.removeItem(name);
     setAddress("/");
   };
 
@@ -177,18 +166,6 @@ const MyPage = () => {
                   ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
                   : "없음"}
               </div>
-
-              {/* <div className="visible">
-                {" "}
-                {user?.visible == "V" ? (
-                  <AiFillEye size="24" onClick={() => postVisible("H")} />
-                ) : (
-                  <AiFillEyeInvisible
-                    size="24"
-                    onClick={() => postVisible("V")}
-                  />
-                )}
-              </div> */}
             </ProfileRow>
           )}
           {user?.visible == "H" && <div>비공개</div>}
@@ -209,7 +186,9 @@ const MyPage = () => {
                 {bookmark?.map((party) => {
                   return (
                     <MyPartyItem
-                      deletHandler={deletHandler}
+                      setModalOpen={setModalOpen}
+                      ModalOpen={ModalOpen}
+                      party={party}
                       title={party.title}
                       postId={party.postId}
                     />
@@ -226,7 +205,9 @@ const MyPage = () => {
                 {reservedParty?.map((party) => {
                   return (
                     <MyPartyItem
-                      deletHandler={deletHandler}
+                      setModalOpen={setModalOpen}
+                      ModalOpen={ModalOpen}
+                      party={party}
                       title={party.title}
                       postId={party._id}
                     />
@@ -243,7 +224,9 @@ const MyPage = () => {
                 {confirmParty?.map((party) => {
                   return (
                     <MyPartyItem
-                      deletHandler={deletHandler}
+                      setModalOpen={setModalOpen}
+                      ModalOpen={ModalOpen}
+                      party={party}
                       title={party.title}
                       postId={party._id}
                     />
@@ -324,6 +307,9 @@ const MainHeader = styled.div`
       0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
   }
   .closeBtn {
+    :hover {
+      cursor: pointer;
+    }
     margin-left: 2%;
   }
   .gap {
@@ -334,6 +320,9 @@ const MainHeader = styled.div`
 
 const RowBox = styled.div`
   display: flex;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const ProfileCtn = styled.div`
@@ -420,7 +409,7 @@ const MyPartyTitle = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10%;
-  :active {
+  :hover {
     cursor: pointer;
     text-decoration: underline;
   }

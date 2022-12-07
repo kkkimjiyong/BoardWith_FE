@@ -84,6 +84,17 @@ export const userApi = {
       },
     }),
 
+  avatarUser: (payload) =>
+    instance.post(
+      "/users/change/point",
+      { userAvatar: payload },
+      {
+        headers: {
+          Authorization: sessionStorage.getItem("accessToken"),
+        },
+      }
+    ),
+
   dailyUser: () =>
     instance.put("/users/check", {
       headers: {
@@ -95,6 +106,7 @@ export const userApi = {
 
 export const rankApi = {
   getRank: (payload) => instance.get(`/rank`),
+  getRankMyPoint: (payload) => instance.get(`/rank/mypoint`),
 };
 
 export const postApi = {

@@ -7,6 +7,7 @@ import Item from "./MainCard";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "./Skeleton";
 import { postsApi, userApi } from "../../instance";
+import MobileHeader from "../../style/MobileHeader";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Search = () => {
     setLoading(true);
     try {
       const { data } = await postsApi.getSearchTitle(keyWord);
+      console.log(data.data);
 
       setTitleSearch(data.data);
       setTimeout(() => {
@@ -31,6 +33,7 @@ const Search = () => {
     setLoading(true);
     try {
       const { data } = await postsApi.getSearchNickname(keyWord);
+      console.log(data.data);
       setNicknameSearch(data.data);
       setTimeout(() => {
         setLoading(false);
@@ -54,7 +57,6 @@ const Search = () => {
   const getUser = async () => {
     try {
       const { data } = await userApi.getUser();
-      console.log(data.findUser.bookmark);
       setBookmarked(data.findUser.bookmark);
     } catch (error) {
       console.log(error);
@@ -69,6 +71,7 @@ const Search = () => {
 
   return (
     <Layout>
+      <MobileHeader />
       <MainHeader>
         <Arrow className="head" onClick={() => navigate("/main")} />
         <div className="headtxt">검색</div>
@@ -85,38 +88,30 @@ const Search = () => {
           <Skeleton />
         ) : (
           titleSearch?.map((items, idx) => {
-            if (items.participant.length < items.partyMember && !items.closed) {
-              return (
-                <Item
-                  userBook={bookmarked}
-                  //   setModalOpen={setModalOpen}
-                  key={idx}
-                  item={items}
-                  //   Myaddress={Myaddress}
-                ></Item>
-              );
-            } else {
-              <div>마감되었습니다</div>;
-            }
+            return (
+              <Item
+                userBook={bookmarked}
+                //   setModalOpen={setModalOpen}
+                key={idx}
+                items={items}
+                //   Myaddress={Myaddress}
+              ></Item>
+            );
           })
         )}
         {loading ? (
           <Skeleton />
         ) : (
           nicknameSearch?.map((items, idx) => {
-            if (items.participant.length < items.partyMember && !items.closed) {
-              return (
-                <Item
-                  userBook={bookmarked}
-                  //   setModalOpen={setModalOpen}
-                  key={idx}
-                  item={items}
-                  //   Myaddress={Myaddress}
-                ></Item>
-              );
-            } else {
-              <div>마감되었습니다</div>;
-            }
+            return (
+              <Item
+                userBook={bookmarked}
+                //   setModalOpen={setModalOpen}
+                key={idx}
+                items={items}
+                //   Myaddress={Myaddress}
+              ></Item>
+            );
           })
         )}{" "}
       </MainListCtn>
@@ -171,6 +166,9 @@ const SearchInput = styled.input`
   margin-top: 5px;
 `;
 const Arrow = styled.div`
+  :hover {
+    cursor: pointer;
+  }
   position: relative;
   left: -47%;
   display: inline-block;

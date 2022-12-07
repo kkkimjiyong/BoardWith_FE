@@ -30,7 +30,7 @@ const RankCard = (rank, ranking) => {
           </StAvatar>
           <h5>{rank?.rank?.nickName}</h5>
         </div>
-        <span>{rank?.rank?.totalPoint}P</span>
+        <span>{rank?.rank?.totalPoint} P</span>
       </StContainer>
     </Wrap>
   );
@@ -54,6 +54,11 @@ const StContainer = styled.div`
   border-radius: 10px;
   height: 100%;
   justify-content: space-between;
+  > span {
+    display: flex;
+    min-width: 95px;
+    justify-content: flex-end;
+  }
   > div {
     width: 100%;
     gap: 10px;
@@ -81,4 +86,8 @@ const StAvatar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  :hover {
+    transform: scale(1.06);
+    cursor: pointer;
+  }
 `;

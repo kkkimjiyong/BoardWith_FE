@@ -15,6 +15,8 @@ import axios from "axios";
 import { postsApi } from "../../instance";
 
 const MainFilter = ({
+  setFilteredItems,
+  filteredItems,
   items,
   setItems,
   getData,
@@ -150,6 +152,7 @@ const MainFilter = ({
     const response = await postsApi.filterPost(filtered);
     console.log(response.data);
     setItems(response.data.data);
+    setFilteredItems(false);
     setOpen(!open);
   };
 

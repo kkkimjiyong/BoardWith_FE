@@ -6,13 +6,12 @@ import { userApi } from "../../instance";
 const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
   const [next, setNext] = useState(1);
   const doneTutorial = async () => {
+    setIsTutorial(true);
     try {
-      const { data } = await userApi.editUser({ tutorial: true });
+      const { data } = await userApi.editUser({ tutorial: true, point: 3300 });
       console.log(data);
-      setIsTutorial(true);
       setSelfCheck(true);
     } catch (error) {
-      setIsTutorial(true);
       console.log(error);
     }
   };
@@ -35,7 +34,7 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
       {next === 3 && (
         <Avatar onClick={() => setNext(4)}>
           <BottomContentBox className="right">
-            모임활동을 통해, 포인트를 얻어 아바타를 사입으세요!
+            모임활동을 통해, 포인트를 얻어 아바타를 구매하세요!
           </BottomContentBox>
         </Avatar>
       )}
@@ -46,7 +45,7 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
             {" "}
             <div className="headTxt1"> 보드게임 일원이 되신 것을</div>
             <div className="headTxt2"> 축하드립니다!</div>
-            <div> 튜토리얼 성공 +300P 지급! </div>
+            <div className="headTxt3"> 튜토리얼 성공 +300P 지급! </div>
             <DoneBtn>완료</DoneBtn>
           </DoneLine>
         </DoneModal>
@@ -172,19 +171,13 @@ const BottomContentBox = styled.div`
   }
 `;
 
-const MainCardModal = styled.div`
-  width: 90%;
-  height: 40%;
-  border: 2px solid var(--primary);
-  background-color: var(--black);
-`;
-
 const DoneModal = styled.div`
   position: absolute;
   border-radius: 5%;
   width: 80%;
   padding: 3%;
   height: 50%;
+
   background-color: var(--gray);
   display: flex;
   flex-direction: column;
@@ -199,6 +192,9 @@ const DoneModal = styled.div`
     margin-bottom: 50%;
     font-size: 20px;
     font-weight: 600;
+  }
+  .headTxt3 {
+    margin-bottom: 5%;
   }
 `;
 

@@ -18,14 +18,12 @@ import { AiOutlineCalendar } from "@react-icons/all-files/ai/AiOutlineCalendar";
 import { FiShare } from "@react-icons/all-files/fi/FiShare";
 import { FiMapPin } from "@react-icons/all-files/fi/FiMapPin";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
-// import { BsPeopleFill } from "@react-icons/all-files/bs/BsPeopleFill";
-// import { BsChevronLeft } from "@react-icons/all-files/bs/BsChevronLeft";
 import { FaBullhorn } from "@react-icons/all-files/fa/FaBullhorn";
 import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
-// import { BsArrowUpCircle } from "@react-icons/all-files/bs/BsArrowUpCircle";
 import { BsPeopleFill, BsArrowUpCircle, BsChevronLeft } from "react-icons/bs";
 import AvatarBox from "../Avatar/AvatarBox";
 import Modify from "../../Pages/Main/Modify";
+import AlertModal from "../AlertModal";
 
 const { kakao } = window;
 export const DetailModal = ({
@@ -34,6 +32,7 @@ export const DetailModal = ({
   ModalOpen,
   closed,
   setItem,
+  item,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,12 +50,15 @@ export const DetailModal = ({
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
+  const [alert, setAlert] = useState();
+  const [content, setContent] = useState();
 
+  console.log(modifyModalOpen);
   // 수정
 
   //? ---------------시간 (나중에 리팩토링) ----------------
-  const startDate = detail?.data.time?.[0];
-  const endDate = detail?.data.time?.[1];
+  const startDate = item?.time?.[0];
+  const endDate = item?.time?.[1];
   const getStartTime = (startDate) => {
     var m = moment(startDate).tz("Asia/Seoul").locale("ko");
     return m.format("MM.DD (ddd) HH:mm");
@@ -81,7 +83,8 @@ export const DetailModal = ({
       .closeParty(postid)
       .then((res) => {
         setIsClosed(true);
-        alert("파티원 모집이 마감되었습니다");
+        setAlert(true);
+        setContent("파티원 모집이 마감되었습니다.");
         console.log("성공", res);
         // console.log("isClosed", isClosed);
       })
@@ -90,13 +93,11 @@ export const DetailModal = ({
         // console.log("isClosed", isClosed);
       });
   };
-  // console.log(detail?.data?.closed);
-  // console.log(isClosed);
 
   //파티리오픈 핸들러-----------------------------------------
   const openPartyHandler = () => {
     // console.log("detailtime", detail?.data?.time[1]);
-    const time = { time: detail?.data?.time[1] };
+    const time = { time: item?.time[1] };
     // console.log("time", time);
     // console.log("리오픈");
     postApi
@@ -106,7 +107,8 @@ export const DetailModal = ({
       })
       .then((res) => {
         setIsClosed(false);
-        alert("파티원 모집을 다시 시작합니다.");
+        setAlert(true);
+        setContent("파티원 모집을 다시 시작합니다.");
         console.log("성공", res);
       })
       .catch((error) => {
@@ -117,11 +119,14 @@ export const DetailModal = ({
   //코멘트 입력 핸들러-----------------------------------------
   const commentOnsumitHandler = () => {
     if (comment.comment === "") {
-      alert("댓글 내용을 입력해주세요");
+      setAlert(true);
+      setContent("댓글 내용을 입력해주세요.");
     } else {
       console.log("댓글입력");
       dispatch(__postComments({ comment, postid }));
       setComment(initialState);
+      setAlert(true);
+      setContent("참여 신청 완료!");
     }
   };
   //console.log("isCommentAuthor", isCommentAuthor);
@@ -129,10 +134,11 @@ export const DetailModal = ({
   //todo나중에 participant가 아니라, confirm으로 바뀔듯
   //채팅 입장 핸들러-----------------------------------------
   const enterChatRoomHandler = () => {
-    if (detail.data.confirmMember.includes(nickName)) {
+    if (item?.confirmMember.includes(nickName)) {
       navigate(`/chat/${postid}`);
     } else {
-      alert("확정된 이후 들어갈 수 있습니다.");
+      setAlert(true);
+      setContent("확정된 이후 들어갈 수 있습니다.");
     }
   };
 
@@ -146,17 +152,11 @@ export const DetailModal = ({
       console.log(res.data);
     });
     dispatch(__getComments(postid));
-  }, [isClosed]);
-
-  // console.log(isClosed);
-
-  //useEffect 디테일 데이터 불러와지고 실행될 부분 (순서)---------------------
-  // console.log(detail?.data?.nickName);
-  // console.log(nickName);
+  }, [setModifyModalOpen, modifyModalOpen]);
 
   useEffect(() => {
     // 파티장인지 확인
-    detail?.data?.nickName === nickName ? setIsHost(true) : setIsHost(false);
+    item?.nickName === nickName ? setIsHost(true) : setIsHost(false);
 
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
     setX(detail?.data?.location?.x);
@@ -179,20 +179,6 @@ export const DetailModal = ({
       marker.setMap(map);
     }
 
-    //?-------------- 하  ------------------[]
-
-    const closeHandler = () => {
-      if (closed) {
-        if (sessionStorage.getItem("accessToken")) {
-          setOpen((open) => !open);
-        } else {
-          alert("로그인이 필요한 기능입니다.");
-        }
-      } else {
-        alert("마감된 모임입니다!");
-      }
-    };
-
     //접속자가 댓글작성자인지 확인
     comments?.forEach(
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
@@ -203,9 +189,9 @@ export const DetailModal = ({
 
   useEffect(() => {
     //파티 마감 상태
-    if (detail?.data?.closed === 0) {
+    if (item?.closed === 0) {
       setIsClosed(false);
-    } else if (detail?.data?.closed === 1) {
+    } else if (item?.closed === 1) {
       setIsClosed(true);
     } else {
       setIsClosed(false);
@@ -218,12 +204,6 @@ export const DetailModal = ({
     setLoading(false);
     dummy();
   }, []);
-
-  const api = async () => {
-    try {
-      setLoading(false);
-    } catch (e) {}
-  };
 
   const dummy = async () => {
     setLoading(true);
@@ -262,8 +242,8 @@ export const DetailModal = ({
       kakao.Link.sendDefault({
         objectType: "feed",
         content: {
-          title: detail?.data?.title,
-          description: detail?.data?.cafe,
+          title: item?.title,
+          description: item?.cafe,
           imageUrl: "https://i.ibb.co/4YJj0x9/image.png",
           link: {
             mobileWebUrl: `https://boardwith.vercel.app/posts/${postid}`,
@@ -274,17 +254,9 @@ export const DetailModal = ({
     }
   };
 
-  // console.log(process.env.REACT_APP_KAKAO_JSPKEY);
-  // console.log("detail", detail?.data);\
-  // console.log("댓글리스트", comments);
-  // console.log("토큰", sessionStorage.getItem("accessToken"));
-
-  // const sendProps = () => {
-  //   return <Modify postId={postId} />;
-  // };
-
   return (
     <BackGroudModal>
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       <StContainers onClick={() => setModalOpen(false)}>
         {loading ? (
           <>
@@ -323,7 +295,7 @@ export const DetailModal = ({
                         />
                         <StAvatarContainer
                           onClick={() =>
-                            navigate(`/userpage/${detail?.data?.nickName}`)
+                            navigate(`/userpage/${item?.nickName}`)
                           }
                         >
                           <AvatarBox
@@ -334,17 +306,14 @@ export const DetailModal = ({
                             userSelect={detail?.data.userAvatar}
                           />
                         </StAvatarContainer>
-                        <NickName>{detail?.data?.nickName}</NickName>
+                        <NickName>{item?.nickName}</NickName>
                       </ProfileBox>
                       <StContentWrap>
                         {isHost && (
                           <FiEdit
-
                             onClick={() => {
                               setModifyModalOpen(true);
-                           
                             }}
-
                             style={{
                               fontSize: "26px",
                               color: "white",
@@ -382,12 +351,12 @@ export const DetailModal = ({
                           lineHeight: "1.5",
                         }}
                       >
-                        {detail?.data?.title}
+                        {item?.title}
                       </h2>{" "}
                       {/* 제목 */}
                     </div>
                     <div>
-                      <h4>{detail?.data?.content}</h4> {/* 내용 */}
+                      <h4>{item?.content}</h4> {/* 내용 */}
                     </div>
                     <StContentWrap>
                       <FiMapPin
@@ -397,7 +366,7 @@ export const DetailModal = ({
                         size="23px"
                       />
                       <div />
-                      <h5>{detail?.data?.cafe}</h5> {/* 장소 */}
+                      <h5>{item?.cafe}</h5> {/* 장소 */}
                     </StContentWrap>
                     <StContentWrap>
                       <AiOutlineCalendar
@@ -419,8 +388,7 @@ export const DetailModal = ({
                       />
                       <div />
                       <h5>
-                        {detail?.data?.confirmMember?.length}/
-                        {detail?.data?.partyMember}명
+                        {item?.confirmMember?.length}/{item?.partyMember}명
                       </h5>{" "}
                       {/* 인원 */}
                     </StContentWrap>
@@ -435,17 +403,9 @@ export const DetailModal = ({
                             }
                           }}
                         >
-                          예약현황 ( {detail?.data?.participant?.length} 명 )
+                          예약현황 ( {item?.participant?.length} 명 )
                         </Stbutton>
-                        {/* {!closed ? (
-                          <Stbutton1 onClick={closePartyHandler}>
-                            마감하기
-                          </Stbutton1>
-                        ) : (
-                          <Stbutton1 onClick={openPartyHandler}>
-                            마감취소
-                          </Stbutton1>
-                        )} */}
+
                         <Stbutton1
                           onClick={
                             !isClosed ? closePartyHandler : openPartyHandler
@@ -491,7 +451,7 @@ export const DetailModal = ({
                         setOpen((open) => !open);
                       }}
                     />
-                    <h3>{detail?.data?.title}</h3>
+                    <h3>{item?.title}</h3>
                     {isHost ? (
                       <h5 onClick={postEditHandler}>
                         {!isEdit ? "편집" : "취소"}
@@ -567,6 +527,8 @@ export const DetailModal = ({
                           <input
                             value={comment.comment}
                             type="text"
+                            minlength="1"
+                            maxlength="20"
                             placeholder="신청 내용을 입력하세요"
                             onChange={(e) => {
                               const { value } = e.target;
@@ -592,6 +554,7 @@ export const DetailModal = ({
                   </div>{" "}
                   {modifyModalOpen && (
                     <Modify
+                      item={item}
                       detail={detail}
                       setModalOpen={setModalOpen}
                       setDetail={setDetail}
@@ -673,8 +636,13 @@ const StCommentTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  > h3 {
+    margin: 0 15px;
+    max-width: 90%;
+  }
   > h5 {
     cursor: pointer;
+    min-width: 45px;
   }
 `;
 
@@ -722,6 +690,7 @@ const ListWrap = styled.div`
   .innerDiv {
     position: absolute;
     width: 100%;
+
     background-color: #d7d7d7;
     height: 30px;
     line-height: 30px;
@@ -884,4 +853,5 @@ const Btnbox = styled.div`
 const StAvatarContainer = styled.div`
   position: relative;
   width: 100%;
+  cursor: pointer;
 `;

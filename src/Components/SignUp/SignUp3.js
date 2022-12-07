@@ -22,6 +22,7 @@ const SignUp3 = () => {
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
   const [address, setAddress] = useState();
+
   const navigate = useNavigate();
 
   //yup을 이용한 유효섬겅증방식

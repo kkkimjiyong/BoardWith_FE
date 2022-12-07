@@ -63,30 +63,26 @@ const AvatarSelect = () => {
 
   //? ------------------아바타 API  ----------------------
 
-  const postAvatar = async (point) => {
+  const avatarHandler = async (point) => {
     if (window.confirm(`총 ${point}가 남습니다. 구매하시겠습니까?`)) {
-      setAlert(true);
-      if (point < 0) {
-        setContent("포인트가 부족합니다!");
-        setPoint(initialpoint);
-      } else {
-        try {
-          const { data } = await userApi.editUser({
-            userAvatar: userSelect,
-            point,
-          });
-          setUserSelect(data.findUserData.userAvatar);
-          setInitialUserSelect(data.findUserData.userAvatar);
-          setContent("구매 성공!");
-          console.log(point);
-        } catch (error) {
-          console.log(error);
+      try {
+        const { data } = await userApi.avatarUser(userSelect);
+        setContent("구매 성공!");
+        console.log(data);
+      } catch (error) {
+        if (error.response.data.statusCode == 403) {
+          setContent("포인트가 부족합니다!");
+          setPoint(initialpoint);
+          setUserSelect(initialuserSelect);
         }
       }
     } else {
       setPoint(initialpoint);
+      setUserSelect(initialuserSelect);
     }
+    setAlert(true);
   };
+
   const getUser = async () => {
     try {
       const { data } = await userApi.getUser();
@@ -133,7 +129,7 @@ const AvatarSelect = () => {
       point -= 300;
     }
     setPoint(point);
-    return postAvatar(point);
+    return avatarHandler(point);
   };
 
   if (isLoading) {
@@ -151,7 +147,6 @@ const AvatarSelect = () => {
           {" "}
           <AvatarBox userSelect={userSelect} profile={false} />
         </AvatarCtn>
-
         <PointBox>
           <ImCoinDollar />
           {point}
@@ -273,6 +268,7 @@ const AvatarCtn = styled.div`
   background-color: var(--white);
 `;
 const PointBox = styled.div`
+  z-index: 20;
   position: absolute;
   color: var(--white);
   font-size: 1.5rem;
@@ -314,6 +310,10 @@ const ChangeBtn = styled.button`
   border: none;
   color: var(--white);
   background-color: var(--primary);
+  :hover {
+    cursor: pointer;
+    transform: scale(1.03);
+  }
 `;
 
 const ResetBtn = styled.button`
@@ -327,6 +327,10 @@ const ResetBtn = styled.button`
   border: none;
   color: var(--white);
   background-color: var(--gray);
+  :hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
 `;
 
 const AvatarCategory = styled.div`
@@ -347,6 +351,10 @@ const AvatarCategoryItem = styled.div`
   border-bottom: 2px solid var(--gray);
   &.selected {
     border-bottom: 2px solid var(--primary);
+  }
+  :hover {
+    cursor: pointer;
+    transform: scale(1.05);
   }
 `;
 
