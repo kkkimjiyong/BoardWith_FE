@@ -12,6 +12,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
 import { date } from "yup";
 import axios from "axios";
+import { postsApi } from "../../instance";
 
 const MainFilter = ({
   items,
@@ -146,10 +147,7 @@ const MainFilter = ({
     }
   };
   const getFiltered = async () => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BACK_SERVER}/posts/filterPosts`,
-      filtered
-    );
+    const response = await postsApi.filterPost(filtered);
     console.log(response.data);
     setItems(response.data.data);
     setOpen(!open);

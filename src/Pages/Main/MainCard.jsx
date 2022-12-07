@@ -101,8 +101,9 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
         onClick={() => setModalOpen(true)}
       >
         <ItemWrapBodySpaceBetween>
-          <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
+          <ItemProfile>
             <AvatarBox
+              onClick={() => navigate(`/userpage/${item.nickName}`)}
               userSelect={item?.userAvatar}
               scale={0.1}
               backScale={0.8}
@@ -132,14 +133,12 @@ const Item = ({ number, items, Myaddress, closed, userBook }) => {
             <ItemWrapBodyFlex2>
               <ItemWrapBodyTitle>
                 <AiFillCalendar
-
                   style={{
                     position: "relative",
                     left: "-6px",
                     top: "6px",
                     marginRight: "1%",
                   }}
-
                   size="5%"
                 />
                 {showTime}

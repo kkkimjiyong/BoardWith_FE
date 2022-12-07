@@ -162,4 +162,7 @@ export const postsApi = {
   updatePost: (payload) =>
     instance.patch(`/posts/${payload.postId}`, payload.post),
   bookMarkPost: (payload) => instance.put(`/users/bookmark/bookmark`, payload),
+  filterPost: (inputs) => {
+    return instance.post(`/posts/filterPosts`, inputs);
+  },
 };
