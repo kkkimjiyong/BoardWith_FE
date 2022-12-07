@@ -6,11 +6,15 @@ import { rankApi } from "../../instance";
 import Loading from "../../style/Loading";
 import AvatarBox from "../Avatar/AvatarBox";
 import { useNavigate } from "react-router-dom";
+import { userApi } from "../../instance";
 
 const Ranking = () => {
   const [loading, setLoading] = useState(true);
   const [rank, setRank] = useState();
   const [midrank, setMidRank] = useState();
+  const [myPoint, setMyPoint] = useState();
+  const [myAvatar, setMyAvatar] = useState();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +23,17 @@ const Ranking = () => {
       setRank(res?.data?.data);
       setTimeout(() => setLoading(false), 500);
       setMidRank(res?.data?.data?.slice(3, 27));
+    });
+
+    rankApi.getRankMyPoint().then((res) => {
+      //console.log("res", res?.data?.data?.totalPoint);
+      setMyPoint(res?.data?.data?.totalPoint);
+      setTimeout(() => setLoading(false), 500);
+
+      userApi.getUser().then((res) => {
+        // console.log("res", res?.data?.findUser?.userAvatar);
+        setMyAvatar(res?.data?.findUser?.userAvatar);
+      });
     });
   }, [loading]);
   // console.log("rank", rank);
@@ -67,7 +82,7 @@ const Ranking = () => {
                 </StAvatar>
                 <span>1위</span>
                 <p>{rank?.[0]?.nickName}</p>
-                <span>{rank?.[0]?.totalPoint}P</span>
+                <span>{rank?.[0]?.totalPoint} P</span>
               </StTopRanker>
               <div>
                 <StTopRanker>
@@ -94,7 +109,7 @@ const Ranking = () => {
                   </StAvatar>
                   <span>2위</span>
                   <p>{rank?.[1]?.nickName}</p>
-                  <span>{rank?.[1]?.totalPoint}P</span>
+                  <span>{rank?.[1]?.totalPoint} P</span>
                 </StTopRanker>
                 <StTopRanker>
                   <FaCrown
@@ -120,11 +135,39 @@ const Ranking = () => {
                   </StAvatar>
                   <span>3위</span>
                   <p>{rank?.[2]?.nickName}</p>
-                  <span>{rank?.[2]?.totalPoint}P</span>
+                  <span>{rank?.[2]?.totalPoint} P</span>
                 </StTopRanker>
               </div>
             </div>
           </StContainer>
+          <StWrap>
+            <StContainers>
+              <div>
+                <h4>my</h4>
+                <StAvatars
+                  onClick={() =>
+                    navigate(`/userpage/${sessionStorage.getItem("nickName")}`)
+                  }
+                >
+                  <AvatarBox
+                    profile={true}
+                    scale={0.15}
+                    backScale={0.8}
+                    circle={true}
+                    // styled={{ width: "10px" }}
+                    userSelect={{
+                      Eye: myAvatar?.Eye,
+                      Hair: myAvatar?.Hair,
+                      Mouth: myAvatar?.Mouth,
+                      Back: myAvatar?.Back,
+                    }}
+                  />
+                </StAvatars>
+                <h5>{sessionStorage.getItem("nickName")}</h5>
+              </div>
+              <span>{myPoint} P</span>
+            </StContainers>
+          </StWrap>
           {midrank?.map((rank) => (
             <RankCard key={rank.nickName} rank={rank} />
           ))}
@@ -204,5 +247,58 @@ const StTopRanker = styled.div`
   > span {
     font-size: 10px;
     color: #a6a6a6;
+  }
+`;
+const StWrap = styled.div`
+  width: 100%;
+  /* height: 30%; */
+`;
+
+const StContainers = styled.div`
+  border: 3px solid var(--primary);
+  background-color: var(--gray);
+  font-size: 14px;
+  font-weight: normal;
+  color: white;
+  padding: 0 10%;
+  margin: 3% 3%;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  height: 100%;
+  justify-content: space-between;
+  > span {
+    min-width: 95px;
+    color: var(--primary);
+  }
+  > div {
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    > h4 {
+      color: var(--primary);
+      margin-right: 3%;
+      font-size: 13px;
+      font-weight: normal;
+      width: 15px;
+    }
+    > h5 {
+      font-weight: normal;
+      font-size: 14px;
+    }
+  }
+`;
+const StAvatars = styled.div`
+  background-color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  :hover {
+    transform: scale(1.06);
+    cursor: pointer;
   }
 `;
