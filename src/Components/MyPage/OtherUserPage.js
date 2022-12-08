@@ -8,6 +8,7 @@ import axios from "axios";
 import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import AvatarBox from "../Avatar/AvatarBox";
 import MyPartyItem from "./MyPartyItem";
+import Loading from "../../style/Loading";
 
 const OtherUserPage = () => {
   const [user, setUser, onChange] = useInput();
@@ -18,18 +19,17 @@ const OtherUserPage = () => {
   const [confirmParty, setConfirmParty] = useState();
   const [bookmark, setBookmark] = useState([]);
   const [likeGame, setLikeGame] = useState();
-  const [openEdit, setOpenEdit] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState();
+  const [ModalOpen, setModalOpen] = useState();
+
   const navigate = useNavigate();
   const { nickname } = useParams();
-  console.log(bookmark);
-  console.log(confirmParty);
-  console.log(reservedParty);
+
   //---------- 1초 로딩 후 렌더  ------------
   useEffect(() => {
     getUser();
   }, []);
-  console.log(bookmark);
+
   //? -----------------  API  -----------------------
 
   const getUser = async () => {
@@ -46,101 +46,114 @@ const OtherUserPage = () => {
       console.log(error);
     }
   };
-
-  return (
-    <Wrapper>
-      <MainHeader>
-        <Arrow className="head" onClick={() => navigate("/main")} />
-        <div className="headtxt">{user?.nickName}님</div>
-        <div></div>
-      </MainHeader>
-      <AvatarCtn>
-        {" "}
-        <AvatarBox
-          userSelect={user?.userAvatar}
-          circle={true}
-          backScale={0.7}
-          scale={0.7}
-        />
-      </AvatarCtn>
-      <ProfileCtn>
-        <ProfileRow>
-          <div>{user?.nickName}</div>{" "}
-        </ProfileRow>
-        {user?.visible == "V" && (
+  if (isLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <Wrapper>
+        <MainHeader>
+          <Arrow className="head" onClick={() => navigate("/main")} />
+          <div className="headtxt">{user?.nickName}님</div>
+          <div></div>
+        </MainHeader>
+        <AvatarCtn>
+          {" "}
+          <AvatarBox
+            userSelect={user?.userAvatar}
+            circle={true}
+            backScale={0.7}
+            scale={0.7}
+          />
+        </AvatarCtn>
+        <ProfileCtn>
           <ProfileRow>
-            <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
-            <div>{user?.gender ? `${user?.gender}` : "없음"} /</div>
-            <div>
-              {" "}
-              {user?.myPlace.length
-                ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
-                : "없음"}
-            </div>
-
-            {/* <div className="visible">
-                {" "}
-                {user?.visible == "V" ? (
-                  <AiFillEye size="24" onClick={() => postVisible("H")} />
-                ) : (
-                  <AiFillEyeInvisible
-                    size="24"
-                    onClick={() => postVisible("V")}
-                  />
-                )}
-              </div> */}
+            <div>{user?.nickName}</div>{" "}
           </ProfileRow>
-        )}
-        {user?.visible == "H" && <div>비공개</div>}
-        <LikeGameCtn>
-          <LikeGameBox>
-            {likeGame?.map((game) => {
-              return <LikeGame>{game}</LikeGame>;
-            })}
-          </LikeGameBox>
+          {user?.visible == "V" && (
+            <ProfileRow>
+              <div>{user?.age ? `${user?.age} 살` : "없음"} /</div>
+              <div>{user?.gender ? `${user?.gender}` : "없음"} /</div>
+              <div>
+                {" "}
+                {user?.myPlace.length
+                  ? `${user?.myPlace[0]} ${user?.myPlace[1]}`
+                  : "없음"}
+              </div>
+            </ProfileRow>
+          )}
+          {user?.visible == "H" && <div>비공개</div>}
+          <LikeGameCtn>
+            <LikeGameBox>
+              {likeGame?.map((game) => {
+                return <LikeGame>{game}</LikeGame>;
+              })}
+            </LikeGameBox>
 
-          {/* 맵돌려야지~ */}
-        </LikeGameCtn>
-        <MyPartyCtn>
-          <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
-            내가 찜한 모임
-            <Arrow className={isOpen ? "open" : null} />
-          </MyPartyTitle>
-          {isOpen && (
-            <MyPartyBox>
-              {bookmark?.map((party) => {
-                return (
-                  <MyPartyItem title={party.title} postId={party.postId} />
-                );
-              })}
-            </MyPartyBox>
-          )}
-          <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
-            참여 신청 중인 모임
-            <Arrow className={isOpen1 ? "open" : null} />
-          </MyPartyTitle>
-          {isOpen1 && (
-            <MyPartyBox>
-              {reservedParty?.map((party) => {
-                return <MyPartyItem title={party.title} postId={party._id} />;
-              })}
-            </MyPartyBox>
-          )}
-          <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
-            참여 확정 모임
-            <Arrow className={isOpen2 ? "open" : null} />
-          </MyPartyTitle>
-          {isOpen2 && (
-            <MyPartyBox>
-              {confirmParty?.map((party) => {
-                return <MyPartyItem title={party.title} postId={party._id} />;
-              })}
-            </MyPartyBox>
-          )}{" "}
-        </MyPartyCtn>{" "}
-      </ProfileCtn>{" "}
-    </Wrapper>
-  );
+            {/* 맵돌려야지~ */}
+          </LikeGameCtn>
+          <MyPartyCtn>
+            <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
+              내가 찜한 모임
+              <Arrow className={isOpen ? "open" : null} />
+            </MyPartyTitle>
+            {isOpen && (
+              <MyPartyBox>
+                {bookmark?.map((party) => {
+                  return (
+                    <MyPartyItem
+                      ModalOpen={ModalOpen}
+                      setModalOpen={setModalOpen}
+                      title={party.title}
+                      party={party}
+                      postId={party.postId}
+                    />
+                  );
+                })}
+              </MyPartyBox>
+            )}
+            <MyPartyTitle onClick={() => SetisOpen1(!isOpen1)}>
+              참여 신청 중인 모임
+              <Arrow className={isOpen1 ? "open" : null} />
+            </MyPartyTitle>
+            {isOpen1 && (
+              <MyPartyBox>
+                {reservedParty?.map((party) => {
+                  return (
+                    <MyPartyItem
+                      ModalOpen={ModalOpen}
+                      setModalOpen={setModalOpen}
+                      title={party.title}
+                      party={party}
+                      postId={party._id}
+                    />
+                  );
+                })}
+              </MyPartyBox>
+            )}
+            <MyPartyTitle onClick={() => SetisOpen2(!isOpen2)}>
+              참여 확정 모임
+              <Arrow className={isOpen2 ? "open" : null} />
+            </MyPartyTitle>
+            {isOpen2 && (
+              <MyPartyBox>
+                {confirmParty?.map((party) => {
+                  return (
+                    <MyPartyItem
+                      ModalOpen={ModalOpen}
+                      setModalOpen={setModalOpen}
+                      title={party.title}
+                      party={party}
+                      postId={party._id}
+                    />
+                  );
+                })}
+              </MyPartyBox>
+            )}{" "}
+          </MyPartyCtn>{" "}
+        </ProfileCtn>{" "}
+      </Wrapper>
+    );
+  }
 };
 const AvatarCtn = styled.div`
   display: flex;
