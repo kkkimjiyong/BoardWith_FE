@@ -87,7 +87,7 @@ const MainSlide = () => {
 
   const nearFilterHandler = () => {
     if (Myaddress) {
-      setItems(neardata);
+      // setItems(neardata);
       setNearModalOpen(true);
     } else {
       setAlert(true);
@@ -270,10 +270,12 @@ const MainHeader = styled.div`
     }
   }
   .headtxt {
-    font-size: 22px;
+    font-size: 20px;
+    font-weight: 600;
     color: #fff;
-    text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
-      0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
+    text-shadow: 0 0 7px #d90368, 0 0 10px #d90368, 0 0 21px #fff,
+      0 0 42px #d90368, 0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368,
+      0 0 151px #d90368;
   }
 `;
 

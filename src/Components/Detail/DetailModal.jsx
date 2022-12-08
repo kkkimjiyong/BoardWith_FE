@@ -57,8 +57,8 @@ export const DetailModal = ({
   // 수정
 
   //? ---------------시간 (나중에 리팩토링) ----------------
-  const startDate = item?.time?.[0];
-  const endDate = item?.time?.[1];
+  const startDate = detail?.data?.time?.[0];
+  const endDate = detail?.data?.time?.[1];
   const getStartTime = (startDate) => {
     var m = moment(startDate).tz("Asia/Seoul").locale("ko");
     return m.format("MM.DD (ddd) HH:mm");
@@ -96,7 +96,7 @@ export const DetailModal = ({
   //파티리오픈 핸들러-----------------------------------------
   const openPartyHandler = () => {
     // console.log("detailtime", detail?.data?.time[1]);
-    const time = { time: item?.time[1] };
+    const time = { time: detail?.data?.time[1] };
     // console.log("time", time);
     // console.log("리오픈");
     postApi
@@ -129,7 +129,7 @@ export const DetailModal = ({
   //todo나중에 participant가 아니라, confirm으로 바뀔듯
   //채팅 입장 핸들러-----------------------------------------
   const enterChatRoomHandler = () => {
-    if (item?.confirmMember.includes(nickName)) {
+    if (detail?.data?.confirmMember.includes(nickName)) {
       navigate(`/chat/${postid}`);
     } else {
       setAlert(true);
@@ -290,7 +290,7 @@ export const DetailModal = ({
                         />
                         <StAvatarContainer
                           onClick={() =>
-                            navigate(`/userpage/${item?.nickName}`)
+                            navigate(`/userpage/${detail?.data?.nickName}`)
                           }
                         >
                           <AvatarBox
@@ -301,7 +301,7 @@ export const DetailModal = ({
                             userSelect={detail?.data.userAvatar}
                           />
                         </StAvatarContainer>
-                        <NickName>{item?.nickName}</NickName>
+                        <NickName>{detail?.data?.nickName}</NickName>
                       </ProfileBox>
                       <StContentWrap>
                         {isHost && (
@@ -351,7 +351,7 @@ export const DetailModal = ({
                       {/* 제목 */}
                     </div>
                     <div>
-                      <h4>{item?.content}</h4> {/* 내용 */}
+                      <h4>{detail?.data?.content}</h4> {/* 내용 */}
                     </div>
                     <StContentWrap>
                       <FiMapPin
@@ -361,7 +361,7 @@ export const DetailModal = ({
                         size="23px"
                       />
                       <div />
-                      <h5>{item?.cafe}</h5> {/* 장소 */}
+                      <h5>{detail?.data?.cafe}</h5> {/* 장소 */}
                     </StContentWrap>
                     <StContentWrap>
                       <AiOutlineCalendar
@@ -383,7 +383,8 @@ export const DetailModal = ({
                       />
                       <div />
                       <h5>
-                        {item?.confirmMember?.length}/{item?.partyMember}명
+                        {detail?.data?.confirmMember?.length}/
+                        {detail?.data?.partyMember}명
                       </h5>{" "}
                       {/* 인원 */}
                     </StContentWrap>
@@ -398,7 +399,7 @@ export const DetailModal = ({
                             }
                           }}
                         >
-                          예약현황 ( {item?.participant?.length} 명 )
+                          예약현황 ( {detail?.data?.participant?.length} 명 )
                         </Stbutton>
 
                         <Stbutton1
