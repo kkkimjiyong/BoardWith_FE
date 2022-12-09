@@ -54,7 +54,7 @@ const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
   return (
     <Wrapper openEdit={openEdit}>
       <EditTxt>닉네임</EditTxt>
-      <EditInput value={"수정불가"} name="nickName" onChange={onChange} />
+      <EditInput value={user.nickName} name="nickName" onChange={onChange} />
       <EditTxt>비공개 설정</EditTxt>
       <EditBox>
         <div> 나이, 성별, 지역</div>

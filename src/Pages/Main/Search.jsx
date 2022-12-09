@@ -16,6 +16,7 @@ const Search = () => {
   const [nicknameSearch, setNicknameSearch] = useState([]);
   const [loading, setLoading] = useState(false);
   const [bookmarked, setBookmarked] = useState();
+  const [ModalOpen, setModalOpen] = useState();
 
   const creatTitlePost = async () => {
     setLoading(true);
@@ -83,7 +84,6 @@ const Search = () => {
         value={keyWord}
       ></SearchInput>{" "}
       <MainListCtn>
-        {" "}
         {loading ? (
           <Skeleton />
         ) : (
@@ -91,9 +91,10 @@ const Search = () => {
             return (
               <Item
                 userBook={bookmarked}
-                //   setModalOpen={setModalOpen}
+                setModalOpen={setModalOpen}
                 key={idx}
                 items={items}
+                ModalOpen={ModalOpen}
                 //   Myaddress={Myaddress}
               ></Item>
             );
@@ -134,6 +135,12 @@ const MainHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 0 7px #d90368, 0 0 10px #d90368, 0 0 21px #fff,
+    0 0 42px #d90368, 0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368,
+    0 0 151px #d90368;
 `;
 
 const MainListCtn = styled.div`
@@ -142,17 +149,15 @@ const MainListCtn = styled.div`
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
-  @media only screen and (min-width: 1200px) {
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #898989;
-      //스크롤바에 마진준것처럼 보이게
-      background-clip: padding-box;
-      border: 4px solid transparent;
-      border-radius: 15px;
-    }
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #898989;
+    //스크롤바에 마진준것처럼 보이게
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 15px;
   }
 `;
 

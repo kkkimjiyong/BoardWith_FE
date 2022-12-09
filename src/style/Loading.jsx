@@ -30,7 +30,7 @@ const StContainer = styled.div`
   top: 0;
   left: 0;
   background: #0000009c;
-  z-index: 999;
+  z-index: 997;
   position: relative;
   display: flex;
   justify-content: center;

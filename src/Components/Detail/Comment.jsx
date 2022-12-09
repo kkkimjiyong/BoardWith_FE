@@ -28,7 +28,6 @@ const Comments = ({
   const [isPartyAccept, setIsPartyAccept] = useState(false);
   const [alert, setAlert] = useState();
   const [content, setContent] = useState();
-
   const navigate = useNavigate();
 
   const commentId = comments._id;

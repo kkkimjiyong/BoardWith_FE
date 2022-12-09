@@ -111,7 +111,7 @@ const Item = ({
     <Wrap>
       <div
         className={!closed ? "ItemWrap" : "ClosedItemWrap"}
-        onClick={() => setModalOpen(item._id)}
+        onClick={() => setModalOpen(item?._id)}
       >
         <ItemWrapBodySpaceBetween>
           <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
@@ -214,7 +214,7 @@ const Wrap = styled.div`
   }
 
   .ClosedItemWrap {
-    color: #8a8a8a;
+    color: #494949;
     width: 100%;
     height: 100%;
     display: flex;
@@ -228,6 +228,7 @@ const Wrap = styled.div`
     margin: 5% 0%;
     :hover {
       color: var(--gray);
+      cursor: pointer;
       /* box-shadow: 5px 5px 10px 2px #d90368; */
     }
   }
