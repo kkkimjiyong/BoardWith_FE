@@ -259,18 +259,6 @@ const MyPage = () => {
           openEdit={openEdit}
           setOpenEdit={setOpenEdit}
         />
-        {/* <FormButton onClick={() => setFormModalOpen(true)}>
-            <FontAwesomeIcon
-              style={{
-                color: "white",
-              }}
-              size="2x"
-              icon={faPenToSquare}
-            />
-          </FormButton>
- {formModalOpen && (
-          <Form setItems={setItems} setFormModalOpen={setFormModalOpen} />
-        )} */}
       </Wrapper>
     );
   }
@@ -301,10 +289,12 @@ const MainHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   .headtxt {
-    margin-left: 10px;
+    font-size: 20px;
+    font-weight: 600;
     color: #fff;
-    text-shadow: 0 0 7px black, 0 0 10px black, 0 0 21px #fff, 0 0 42px #d90368,
-      0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368, 0 0 151px #d90368;
+    text-shadow: 0 0 7px #d90368, 0 0 10px #d90368, 0 0 21px #fff,
+      0 0 42px #d90368, 0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368,
+      0 0 151px #d90368;
   }
   .closeBtn {
     :hover {

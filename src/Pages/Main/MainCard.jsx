@@ -361,6 +361,7 @@ const ItemProfile = styled.div`
   :hover {
     margin-left: 2%;
     transform: scale(1.06);
+    color: var(--primary);
     cursor: pointer;
   }
   .nickNameTxt {
