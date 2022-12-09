@@ -43,7 +43,7 @@ const MobileHeaderCtn = styled.div`
     cursor: pointer;
   }
   .logo {
-    width: 7%;
+    width: 6.7%;
     margin: 0 6%;
     @media only screen and (min-width: 1200px) {
       width: 6.5%;

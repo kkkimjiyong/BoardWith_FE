@@ -31,7 +31,7 @@ const SignUp3 = () => {
       .number()
       .typeError("숫자만 입력 가능합니다.")
       .required("나이를 입력해주세요")
-      .max(2, "최대 99살까지만 가능합니다"),
+      .max(99, "최대 99살까지만 가능합니다"),
     address: yup.string().required("주소를 입력해주세요!"),
     gender: yup.string().required("성별을 선택해주세요!"),
   });

@@ -72,7 +72,7 @@ const SignUp2 = () => {
       );
       if (data == "success") {
         setContent("인증성공!");
-        navigate("/signup3");
+        setAddress("/signup3");
       } else {
         setContent("틀려요!");
       }
@@ -85,7 +85,9 @@ const SignUp2 = () => {
   return (
     <Layout>
       <SignUpWrap>
-        {alert && <AlertModal setAlert={setAlert} content={content} />}
+        {alert && (
+          <AlertModal setAlert={setAlert} address={address} content={content} />
+        )}
         <SignUpCtn>
           <SignUpHeader>
             <Arrow onClick={() => navigate("/signup1")} />
