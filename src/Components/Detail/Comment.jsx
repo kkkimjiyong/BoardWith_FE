@@ -25,7 +25,6 @@ const Comments = ({
   const [isEdit, setEdit] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
   const [isPartyAccept, setIsPartyAccept] = useState(false);
-
   const navigate = useNavigate();
 
   const commentId = comments._id;
