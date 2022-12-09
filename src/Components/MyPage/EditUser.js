@@ -13,6 +13,7 @@ import { signUpApi } from "../../instance";
 import AlertModal from "../AlertModal";
 
 const EditUser = ({
+  initialUser,
   setOpenEdit,
   openEdit,
   user,
@@ -24,7 +25,7 @@ const EditUser = ({
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
 
-  console.log(user);
+  console.log(initialUser);
 
   const toggleHandler = () => {
     let payload = "";
@@ -50,17 +51,21 @@ const EditUser = ({
 
   //? ------------------  닉네임 중복확인  ----------------------
   const DupNickname = async () => {
-    setAlert(true);
-    try {
-      const { data } = await signUpApi.DupNick({
-        nickName: user.nickName,
-      });
-      console.log(data.findDupNick);
-      setContent(data.findDupNick);
+    if (user.nickName === initialUser.nickName) {
       setDupNickName(true);
-    } catch (error) {
-      console.log(error.response.data.message);
-      setContent(error.response.data.message);
+    } else {
+      setAlert(true);
+      try {
+        const { data } = await signUpApi.DupNick({
+          nickName: user.nickName,
+        });
+        console.log(data.findDupNick);
+        setContent(data.findDupNick);
+        setDupNickName(true);
+      } catch (error) {
+        console.log(error.response.data.message);
+        setContent(error.response.data.message);
+      }
     }
   };
 

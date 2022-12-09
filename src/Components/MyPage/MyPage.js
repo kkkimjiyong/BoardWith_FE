@@ -35,6 +35,12 @@ const MyPage = () => {
   const [address, setAddress] = useState();
   const [ModalOpen, setModalOpen] = useState();
   const [dupNickName, setDupNickName] = useState(false);
+  const [initialUser, setinitialUser] = useState();
+  const [confirmAlert, setConfirmAlert] = useState(false);
+  const [confirmAdress, setconfirmAdress] = useState();
+  const [confirmContent, setconfirmContent] = useState();
+  const [cancelContent, setcancelContent] = useState();
+  const [cancelAddress, setcancelAddress] = useState();
 
   const navigate = useNavigate();
 
@@ -48,6 +54,7 @@ const MyPage = () => {
     try {
       const { data } = await userApi.getUser();
       console.log(data);
+      setinitialUser(data.findUser);
       setLikeGame(data.findUser.likeGame);
       setUser(data.findUser);
       setReservedParty(data.partyReserved);
@@ -76,12 +83,12 @@ const MyPage = () => {
 
   //? ------------------  로그아웃 -------------------
 
-  const logoutHandler = (name) => {
+  const logoutHandler = () => {
     setAlert(true);
-    setContent("로그아웃 성공");
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("refreshToken");
-    setAddress("/");
+    setContent("로그아웃 하시겠습니까?");
+    setconfirmContent("로그아웃");
+    setcancelContent("취소");
+    setconfirmAdress("/");
   };
 
   //? --------------------  회원탈퇴  ---------------------
@@ -102,12 +109,22 @@ const MyPage = () => {
     }
   };
 
-  const deletUserHandler = (name) => {
+  const deletUserHandler = () => {
     setAlert(true);
-    setContent("탈퇴 성공");
-    deleteUser();
-    sessionStorage.removeItem(name);
-    setAddress("/");
+    setContent("회원 탈퇴하시겠습니까?");
+    setconfirmContent("탈퇴");
+    setcancelContent("취소");
+    setconfirmAdress("/");
+  };
+
+  const confirmFunction = () => {
+    if (confirmContent === "탈퇴") {
+      deleteUser();
+    }
+
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("nickName");
   };
 
   //? --------------------- 다음포스트  --------------------------
@@ -123,14 +140,22 @@ const MyPage = () => {
     }
   }, []);
 
+  console.log(user?.nickName === initialUser?.nickName);
+
   const editHandler = () => {
-    if (dupNickName) {
+    if (user.nickName === initialUser.nickName || dupNickName) {
+      sessionStorage.setItem("nickName", user.nickName);
       editUser();
       setOpenEdit(false);
     } else {
       setAlert(true);
       setContent("중복확인을 눌러주세요!");
     }
+  };
+
+  const closeHandler = () => {
+    setOpenEdit(!openEdit);
+    setUser(initialUser);
   };
 
   if (isLoading) {
@@ -154,13 +179,24 @@ const MyPage = () => {
     return (
       <Wrapper>
         {alert && (
-          <AlertModal setAlert={setAlert} address={address} content={content} />
+          <AlertModal
+            confirmFunction={confirmFunction}
+            setConfirmAlert={setConfirmAlert}
+            setAlert={setAlert}
+            address={address}
+            confirm
+            confirmAddress={confirmAdress}
+            confirmContent={confirmContent}
+            cancelContent={cancelContent}
+            cancelAddress={cancelAddress}
+            content={content}
+          />
         )}
         <MainHeader>
           {openEdit ? (
             <AiOutlineClose
               size={"24"}
-              onClick={() => setOpenEdit(!openEdit)}
+              onClick={closeHandler}
               className="closeBtn"
             />
           ) : (
@@ -286,6 +322,7 @@ const MyPage = () => {
           </BottomTxt>
         </ProfileCtn>{" "}
         <EditUser
+          initialUser={initialUser}
           setDupNickName={setDupNickName}
           user={user}
           onChange={onChange}

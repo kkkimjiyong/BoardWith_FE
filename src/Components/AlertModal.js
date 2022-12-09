@@ -14,7 +14,7 @@ const AlertModal = ({
   confirmAddress,
   confirm,
   cancelAddress,
-  confirmLogic,
+  confirmFunction,
 }) => {
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ const AlertModal = ({
   const confirmHandler = () => {
     setAlert(false);
     navigate(confirmAddress);
-    confirmLogic();
+    confirmFunction();
   };
   const cancelHandler = () => {
     setAlert(false);
