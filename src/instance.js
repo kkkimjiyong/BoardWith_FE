@@ -34,7 +34,7 @@ instance.interceptors.response.use(
     if (data.code === 419) {
       try {
         console.log("여기 419 떳어요!!");
-        const { data } = await axios.post(
+        const { data } = await axios.get(
           `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
 
           // {
