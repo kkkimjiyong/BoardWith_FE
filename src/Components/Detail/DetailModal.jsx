@@ -656,7 +656,7 @@ const StCommentbull = styled.div`
 `;
 
 const StCommentTitle = styled.div`
-  padding: 0 3%;
+  padding: 4%;
   display: flex;
   justify-content: space-between;
   align-items: center;
