@@ -65,6 +65,7 @@ const AvatarSelect = () => {
 
   const avatarHandler = async (point) => {
     if (window.confirm(`총 ${point}가 남습니다. 구매하시겠습니까?`)) {
+      setAlert(true);
       try {
         const { data } = await userApi.avatarUser(userSelect);
         setContent("구매 성공!");
@@ -80,7 +81,6 @@ const AvatarSelect = () => {
       setPoint(initialpoint);
       setUserSelect(initialuserSelect);
     }
-    setAlert(true);
   };
 
   const getUser = async () => {

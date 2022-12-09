@@ -284,6 +284,7 @@ const MainBox = styled.div`
 
 const MainHeader = styled.div`
   position: sticky;
+  font-size: 20px;
   top: 0;
   width: 100%;
   background-color: var(--black);

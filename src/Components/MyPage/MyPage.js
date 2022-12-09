@@ -60,7 +60,7 @@ const MyPage = () => {
       setReservedParty(data.partyReserved);
       setConfirmParty(data.partyGo);
       setBookmark(data.findUser.bookmarkData);
-      setTimeout(() => setIsLoading(false), 1000);
+      setTimeout(() => setIsLoading(false), 700);
     } catch (error) {
       if (!sessionStorage.getItem("accessToken")) {
         setAlert(true);
@@ -71,7 +71,7 @@ const MyPage = () => {
   };
 
   const editUser = async () => {
-    if (user.nickName.trim(" "))
+    if (user.nickName.trim(" ") && user.nickName !== initialUser.nickName) {
       try {
         const { data } = await userApi.editUser(user);
         console.log(data.findUserData);
@@ -79,6 +79,7 @@ const MyPage = () => {
       } catch (error) {
         console.log(error);
       }
+    }
   };
 
   //? ------------------  로그아웃 -------------------
@@ -493,6 +494,10 @@ const BottomTxt = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media only screen and (max-width: 400px) {
+    font-size: 11px;
+  }
+
   :hover {
     cursor: pointer;
   }

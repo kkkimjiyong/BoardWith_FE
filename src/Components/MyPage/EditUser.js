@@ -51,10 +51,11 @@ const EditUser = ({
 
   //? ------------------  닉네임 중복확인  ----------------------
   const DupNickname = async () => {
+    setAlert(true);
     if (user.nickName === initialUser.nickName) {
       setDupNickName(true);
+      setContent("이미 본인 닉네임입니다");
     } else {
-      setAlert(true);
       try {
         const { data } = await signUpApi.DupNick({
           nickName: user.nickName,
@@ -124,8 +125,8 @@ const EditUser = ({
       <EditTxt>성별</EditTxt>
 
       <EditSelect value={user.gender} name="gender" onChange={onChange}>
-        <Option value="female">여자</Option>
-        <Option value="male">남자</Option>
+        <Option value="여자">여자</Option>
+        <Option value="남자">남자</Option>
       </EditSelect>
       <EditTxt>지역</EditTxt>
 
