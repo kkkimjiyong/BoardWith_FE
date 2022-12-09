@@ -154,8 +154,6 @@ const Comments = ({
       });
   };
 
-  console.log("댓글카드", comments);
-
   useEffect(() => {
     //참가 확정 받은 유저인지
     comments?.confirmOrNot ? setIsPartyAccept(true) : setIsPartyAccept(false);
@@ -261,13 +259,16 @@ const Comments = ({
             ) : (
               <>
                 <StText
-                  placeholder="수정할 댓글내용을 입력하세요"
-                  value={comment.comment}
+                  minlength="1"
+                  maxlength="20"
+                  defaultValue={comments.comment}
+                  value={Comments.comment}
+                  edit={comment.comment}
                   onChange={(e) => {
-                    const { value } = e.target;
+                    const { edit } = e.target;
                     setComment({
                       ...comment,
-                      comment: value,
+                      comment: edit,
                     });
                   }}
                 ></StText>
