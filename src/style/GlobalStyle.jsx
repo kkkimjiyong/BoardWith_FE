@@ -39,6 +39,10 @@ font-family: 'GmarketSansMedium';    box-sizing: border-box;
     display: block;
   }
 
+  button{
+    cursor: pointer;
+  }
+
   input {
     font-size: 14px;
   }
