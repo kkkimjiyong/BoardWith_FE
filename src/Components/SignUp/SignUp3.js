@@ -28,7 +28,8 @@ const SignUp3 = () => {
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({
     age: yup
-      .string()
+      .number()
+      .typeError("숫자만 입력 가능합니다.")
       .required("나이를 입력해주세요")
       .max(2, "최대 99살까지만 가능합니다"),
     address: yup.string().required("주소를 입력해주세요!"),

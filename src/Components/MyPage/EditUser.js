@@ -9,9 +9,21 @@ import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
+import { signUpApi } from "../../instance";
+import AlertModal from "../AlertModal";
 
-const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
+const EditUser = ({
+  setOpenEdit,
+  openEdit,
+  user,
+  setUser,
+  onChange,
+  setDupNickName,
+}) => {
   const [open, setOpen] = useState(user.visible == "H");
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
+
   console.log(user);
 
   const toggleHandler = () => {
@@ -36,6 +48,22 @@ const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
     }
   };
 
+  //? ------------------  닉네임 중복확인  ----------------------
+  const DupNickname = async () => {
+    setAlert(true);
+    try {
+      const { data } = await signUpApi.DupNick({
+        nickName: user.nickName,
+      });
+      console.log(data.findDupNick);
+      setContent(data.findDupNick);
+      setDupNickName(true);
+    } catch (error) {
+      console.log(error.response.data.message);
+      setContent(error.response.data.message);
+    }
+  };
+
   //? --------------------- 다음포스트  --------------------------
 
   const ref = useRef(null);
@@ -53,8 +81,22 @@ const EditUser = ({ setOpenEdit, openEdit, user, setUser, onChange }) => {
 
   return (
     <Wrapper openEdit={openEdit}>
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       <EditTxt>닉네임</EditTxt>
-      <EditInput value={"수정불가"} name="nickName" onChange={onChange} />
+      <EditBox
+        className="nickName
+      "
+      >
+        {" "}
+        <EditInput
+          className="nickName"
+          value={user.nickName}
+          name="nickName"
+          onChange={onChange}
+        />
+        <VerifyBtn onClick={DupNickname}>중복확인</VerifyBtn>
+      </EditBox>
+
       <EditTxt>비공개 설정</EditTxt>
       <EditBox>
         <div> 나이, 성별, 지역</div>
@@ -116,6 +158,24 @@ const EditInput = styled.input`
   margin-top: 3%;
   padding: 0% 5%;
   color: var(--white);
+  &.nickName {
+    width: 70%;
+    margin-right: 3%;
+  }
+`;
+
+const VerifyBtn = styled.div`
+  width: 30%;
+  height: 50px;
+  border-radius: 10px;
+  padding: 0% 5%;
+  margin-top: 3%;
+  background-color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const EditSelect = styled.select`
@@ -146,6 +206,10 @@ const EditBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  &.nickName {
+    background-color: transparent;
+    padding: 0%;
+  }
   :hover {
     cursor: pointer;
   }

@@ -17,6 +17,7 @@ import { AiOutlineNotification } from "@react-icons/all-files/ai/AiOutlineNotifi
 import { FaArrowAltCircleUp } from "@react-icons/all-files/fa/FaArrowAltCircleUp";
 import AvatarBox from "../Avatar/AvatarBox";
 import { GiSiren } from "@react-icons/all-files/gi/GiSiren";
+import AlertModal from "../AlertModal";
 
 const ChatRoom = () => {
   const socket = io(process.env.REACT_APP_BACK_SERVER);
@@ -34,6 +35,8 @@ const ChatRoom = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [owner, setOwner] = useState({});
   const [detail, setDetail] = useState();
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
 
   const moment = require("moment-timezone");
   const getStartTime = (startDate) => {
@@ -73,21 +76,20 @@ const ChatRoom = () => {
   useEffect(() => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   }, [chatArr]);
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log("chatMessage", {
-      nickName: owner.nickName,
-      message: message.message,
-      room: roomid,
-      userAvatar: owner.userAvatar,
-    });
-    socket.emit("chatMessage", {
-      nickName: owner.nickName,
-      message: message.message,
-      room: roomid,
-      userAvatar: owner.userAvatar,
-    });
+    console.log(message.message);
+    if (message.message.trim(" ").length !== 0) {
+      socket.emit("chatMessage", {
+        nickName: owner.nickName,
+        message: message.message,
+        room: roomid,
+        userAvatar: owner.userAvatar,
+      });
+    } else {
+      setAlert(true);
+      setContent("메세지를 입력해주세요!");
+    }
     setMessage({ message: "" });
   };
 
@@ -155,9 +157,10 @@ const ChatRoom = () => {
       }
     });
   }, [getUser]);
-  console.log(users[0]);
+
   return (
     <>
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       <Wrapper>
         <UserWrap
           isEdit={isEdit}
@@ -165,7 +168,6 @@ const ChatRoom = () => {
             SetisEdit(!isEdit);
           }}
         >
-          {" "}
           <UserCtn onClick={(e) => e.stopPropagation()} isEdit={isEdit}>
             <DrawerHead>{detail?.title}</DrawerHead>
             {users?.map((user) => {
@@ -181,13 +183,15 @@ const ChatRoom = () => {
                     />
                     <div className="avatar">{user.nickName}</div>
                   </div>
-                  {owner?.nickName == detail?.nickName && (
+                  {owner?.nickName === detail?.nickName && (
                     <UserBtn
                       onClick={() => {
                         ban(user);
                       }}
                     >
-                      <GiSiren size={30} />
+                      {owner?.nickName !== user.nickName && (
+                        <GiSiren size={30} />
+                      )}
                     </UserBtn>
                   )}
                 </UserBox>
@@ -288,7 +292,7 @@ const DrawerHead = styled.div`
 const RoomInfo = styled.div`
   z-index: 29;
   position: absolute;
-  top: 8%;
+  top: ${({ isOpen }) => (isOpen ? "10%" : "8%")};
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -307,7 +311,7 @@ const RoomInfoHeader = styled.div`
   position: absolute;
   width: 90%;
   top: 6%;
-  height: 5%;
+  height: 6%;
   align-items: center;
   justify-content: space-between;
   background-color: var(--primary);
@@ -336,6 +340,9 @@ const RoomBtn = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #e34079;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const Arrow = styled.div`
@@ -351,6 +358,9 @@ const Arrow = styled.div`
   &.UpArrow {
     transform: rotate(180deg);
     margin-bottom: 25px;
+  }
+  :hover {
+    cursor: pointer;
   }
 `;
 
@@ -414,17 +424,16 @@ const ChatCtn = styled.div`
   overflow: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
-  @media only screen and (min-width: 1200px) {
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #898989;
-      //스크롤바에 마진준것처럼 보이게
-      background-clip: padding-box;
-      border: 4px solid transparent;
-      border-radius: 15px;
-    }
+
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #898989;
+    //스크롤바에 마진준것처럼 보이게
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 15px;
   }
 `;
 

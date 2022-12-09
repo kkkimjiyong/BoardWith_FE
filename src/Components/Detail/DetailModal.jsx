@@ -52,6 +52,10 @@ export const DetailModal = ({
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
   const [alert, setAlert] = useState();
   const [content, setContent] = useState();
+  const [confirm, setConfirm] = useState();
+  const [confirmAdress, setconfirmAdress] = useState();
+  const [confirmContent, setconfirmContent] = useState();
+  const [cancelContent, setcancelContent] = useState();
 
   console.log(modifyModalOpen);
   // 수정
@@ -256,7 +260,16 @@ export const DetailModal = ({
 
   return (
     <BackGroudModal>
-      {alert && <AlertModal setAlert={setAlert} content={content} />}
+      {alert && (
+        <AlertModal
+          setAlert={setAlert}
+          content={content}
+          confirmAddress={confirmAdress}
+          cancelContent={cancelContent}
+          confirmContent={confirmContent}
+          confirm={confirm}
+        />
+      )}
       <StContainers onClick={() => setModalOpen(false)}>
         {loading ? (
           <>
@@ -424,10 +437,20 @@ export const DetailModal = ({
                             if (sessionStorage.getItem("accessToken")) {
                               setOpen((open) => !open);
                             } else {
-                              alert("로그인이 필요한 기능입니다.");
+                              setAlert(true);
+                              setContent("로그인이 필요한 기능입니다.");
+                              setConfirm(true);
+                              setconfirmContent("확인");
+                              setconfirmAdress("/");
+                              setcancelContent("취소");
                             }
                           } else {
-                            alert("마감된 모임입니다!");
+                            setAlert(true);
+                            setContent("마감된 모임입니다!");
+                            setConfirm(true);
+                            setconfirmContent("확인");
+                            setconfirmAdress("/");
+                            setcancelContent("취소");
                           }
                         }}
                       >

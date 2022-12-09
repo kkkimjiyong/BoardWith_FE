@@ -34,11 +34,12 @@ const MyPage = () => {
   const [content, setContent] = useState();
   const [address, setAddress] = useState();
   const [ModalOpen, setModalOpen] = useState();
+  const [dupNickName, setDupNickName] = useState(false);
+
   const navigate = useNavigate();
 
   //---------- 1초 로딩 후 렌더  ------------
   useEffect(() => {
-    console.log(1);
     getUser();
   }, [setModalOpen, ModalOpen]);
   //? -----------------  API  -----------------------
@@ -47,7 +48,6 @@ const MyPage = () => {
     try {
       const { data } = await userApi.getUser();
       console.log(data);
-
       setLikeGame(data.findUser.likeGame);
       setUser(data.findUser);
       setReservedParty(data.partyReserved);
@@ -55,18 +55,23 @@ const MyPage = () => {
       setBookmark(data.findUser.bookmarkData);
       setTimeout(() => setIsLoading(false), 1000);
     } catch (error) {
+      if (!sessionStorage.getItem("accessToken")) {
+        setAlert(true);
+        setContent("로그인이 필요한 페이지입니다!");
+      }
       console.log(error);
     }
   };
 
   const editUser = async () => {
-    try {
-      const { data } = await userApi.editUser(user);
-      console.log(data.findUserData);
-      setUser(data.findUserData);
-    } catch (error) {
-      console.log(error);
-    }
+    if (user.nickName.trim(" "))
+      try {
+        const { data } = await userApi.editUser(user);
+        console.log(data.findUserData);
+        setUser(data.findUserData);
+      } catch (error) {
+        console.log(error);
+      }
   };
 
   //? ------------------  로그아웃 -------------------
@@ -99,7 +104,6 @@ const MyPage = () => {
 
   const deletUserHandler = (name) => {
     setAlert(true);
-
     setContent("탈퇴 성공");
     deleteUser();
     sessionStorage.removeItem(name);
@@ -120,12 +124,32 @@ const MyPage = () => {
   }, []);
 
   const editHandler = () => {
-    editUser();
-    setOpenEdit(false);
+    if (dupNickName) {
+      editUser();
+      setOpenEdit(false);
+    } else {
+      setAlert(true);
+      setContent("중복확인을 눌러주세요!");
+    }
   };
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <>
+        {alert && (
+          <AlertModal
+            setAlert={setAlert}
+            content={content}
+            confirm
+            confirmAddress={"/"}
+            confirmContent={"로그인"}
+            cancelContent={"취소"}
+            cancelAddress={-1}
+          />
+        )}
+        <Loading />
+      </>
+    );
   } else {
     return (
       <Wrapper>
@@ -183,6 +207,9 @@ const MyPage = () => {
             </MyPartyTitle>
             {isOpen && (
               <MyPartyBox>
+                {bookmark?.length === 0 && (
+                  <div className="fontweight">비어있습니다.</div>
+                )}
                 {bookmark?.map((party) => {
                   return (
                     <MyPartyItem
@@ -202,6 +229,9 @@ const MyPage = () => {
             </MyPartyTitle>
             {isOpen1 && (
               <MyPartyBox>
+                {reservedParty?.length === 0 && (
+                  <div className="fontweight">비어있습니다.</div>
+                )}
                 {reservedParty?.map((party) => {
                   return (
                     <MyPartyItem
@@ -221,6 +251,9 @@ const MyPage = () => {
             </MyPartyTitle>
             {isOpen2 && (
               <MyPartyBox>
+                {confirmParty?.length === 0 && (
+                  <div className="fontweight">비어있습니다.</div>
+                )}
                 {confirmParty?.map((party) => {
                   return (
                     <MyPartyItem
@@ -253,6 +286,7 @@ const MyPage = () => {
           </BottomTxt>
         </ProfileCtn>{" "}
         <EditUser
+          setDupNickName={setDupNickName}
           user={user}
           onChange={onChange}
           setUser={setUser}
@@ -333,17 +367,15 @@ const ProfileCtn = styled.div`
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
-  @media only screen and (min-width: 1200px) {
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #898989;
-      //스크롤바에 마진준것처럼 보이게
-      background-clip: padding-box;
-      border: 4px solid transparent;
-      border-radius: 15px;
-    }
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #898989;
+    //스크롤바에 마진준것처럼 보이게
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 15px;
   }
 `;
 
@@ -411,6 +443,9 @@ const MyPartyBox = styled.div`
   flex-direction: column;
   width: 90%;
   max-height: 50%;
+  .fontweight {
+    font-weight: 600;
+  }
 `;
 const BottomTxt = styled.div`
   margin-top: 15%;

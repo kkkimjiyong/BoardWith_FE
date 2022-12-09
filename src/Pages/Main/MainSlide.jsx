@@ -24,7 +24,6 @@ import AlertModal from "../../Components/AlertModal";
 import MobileHeader from "../../style/MobileHeader";
 
 const MainSlide = () => {
-  const navigate = useNavigate();
   const [targetMargin, setTargetMargin] = useState(0);
   const [NearModalOpen, setNearModalOpen] = useState(false);
   const [ModalOpen, setModalOpen] = useState(false);
@@ -40,6 +39,10 @@ const MainSlide = () => {
   const [content, setContent] = useState();
   const [filteredItems, setFilteredItems] = useState(true);
   const [initialItems, setInitialItems] = useState([]);
+  const [confirm, setConfirm] = useState();
+  const [confirmAdress, setconfirmAdress] = useState();
+  const [confirmContent, setconfirmContent] = useState();
+  const [cancelContent, setcancelContent] = useState();
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
@@ -84,6 +87,11 @@ const MainSlide = () => {
 
   // *이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   const neardata = new2.sort((a, b) => a.distance - b.distance);
+  const exceptUser = neardata.filter(
+    (post) => post.nickName !== sessionStorage.getItem("nickName")
+  );
+
+  console.log(exceptUser);
 
   const nearFilterHandler = () => {
     if (Myaddress) {
@@ -109,15 +117,12 @@ const MainSlide = () => {
   useEffect(() => {
     getUser();
   }, []);
-  console.log(filteredItems);
-  //? --------------------------------------------------------------------------
+
+  //? -------------------------- 무한스크롤 -------------------------
 
   const [items, setItems] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   let page = useRef(0);
-  console.log(page);
-  const [target, setTarget] = useState(null);
-  console.log(items);
   const getData = async () => {
     try {
       const response = await postsApi.getPosts(page.current);
@@ -146,14 +151,35 @@ const MainSlide = () => {
     setItems(initialItems);
     setFilteredItems(true);
   };
+
+  const formButtonHandler = () => {
+    if (sessionStorage.getItem("accessToken")) {
+      setFormModalOpen(true);
+    } else {
+      setAlert(true);
+      setContent("로그인이 필요합니다.");
+      setcancelContent("취소");
+      setconfirmContent("확인");
+      setConfirm("확인");
+      setconfirmAdress("/");
+    }
+  };
   if (loading) {
     return <Loading />;
   } else {
     return (
       <>
-        {/* getuser로 유저정보 가져와서 출석체크 여부 확인  */}
-        {alert && <AlertModal setAlert={setAlert} content={content} />}
-        {!isTutorial && (
+        {alert && (
+          <AlertModal
+            setAlert={setAlert}
+            content={content}
+            confirmAddress={confirmAdress}
+            cancelContent={cancelContent}
+            confirmContent={confirmContent}
+            confirm={confirm}
+          />
+        )}
+        {sessionStorage.getItem("accessToken") && !isTutorial && (
           <Tutorial setSelfCheck={setSelfCheck} setIsTutorial={setIsTutorial} />
         )}
         <MainBox className="Scroll">
@@ -196,7 +222,7 @@ const MainSlide = () => {
             <Target ref={ref}>target? </Target>{" "}
           </MainListCtn>{" "}
         </MainBox>{" "}
-        <FormButton onClick={() => setFormModalOpen(true)}>
+        <FormButton onClick={formButtonHandler}>
           <FontAwesomeIcon
             style={{
               color: "white",
@@ -219,15 +245,20 @@ const MainSlide = () => {
         {/* //! 가장 가까운 모임 보여주는 모달창 */}
         {NearModalOpen && (
           <DetailModal
-            item={neardata[0]}
-            postid={neardata[0]._id}
+            item={exceptUser[0]}
+            postid={exceptUser[0]._id}
             setModalOpen={setNearModalOpen}
             setModifyModalOpen={setModifyModalOpen}
           />
         )}
         {/* 게시글 폼페이지 모달창 */}
         {formModalOpen && (
-          <Form setItems={setItems} setFormModalOpen={setFormModalOpen} />
+          <Form
+            setItems={setItems}
+            setFormModalOpen={setFormModalOpen}
+            setAlert={setAlert}
+            setContent={setContent}
+          />
         )}
       </>
     );
@@ -285,17 +316,16 @@ const MainListCtn = styled.div`
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
-  @media only screen and (min-width: 1200px) {
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #898989;
-      //스크롤바에 마진준것처럼 보이게
-      background-clip: padding-box;
-      border: 4px solid transparent;
-      border-radius: 15px;
-    }
+
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #898989;
+    //스크롤바에 마진준것처럼 보이게
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 15px;
   }
 `;
 

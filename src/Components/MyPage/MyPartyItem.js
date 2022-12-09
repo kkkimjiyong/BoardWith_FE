@@ -14,17 +14,13 @@ const MyPartyItem = ({
   console.log(party);
   return (
     <Wrap>
+      {ModalOpen === postId && (
+        <DetailModal postid={postId} item={party} setModalOpen={setModalOpen} />
+      )}
       <Ctn onClick={() => setModalOpen(postId)}>
         {title}
 
         <Arrow className="left" />
-        {ModalOpen === postId && (
-          <DetailModal
-            postid={postId}
-            item={party}
-            setModalOpen={setModalOpen}
-          />
-        )}
       </Ctn>
     </Wrap>
   );

@@ -88,8 +88,6 @@ const OtherUserPage = () => {
                 return <LikeGame>{game}</LikeGame>;
               })}
             </LikeGameBox>
-
-            {/* 맵돌려야지~ */}
           </LikeGameCtn>
           <MyPartyCtn>
             <MyPartyTitle onClick={() => SetisOpen(!isOpen)}>
@@ -98,6 +96,10 @@ const OtherUserPage = () => {
             </MyPartyTitle>
             {isOpen && (
               <MyPartyBox>
+                {" "}
+                {bookmark?.length === 0 && (
+                  <div className="fontweight">비어있습니다.</div>
+                )}
                 {bookmark?.map((party) => {
                   return (
                     <MyPartyItem
@@ -117,6 +119,9 @@ const OtherUserPage = () => {
             </MyPartyTitle>
             {isOpen1 && (
               <MyPartyBox>
+                {reservedParty?.length === 0 && (
+                  <div className="fontweight">비어있습니다.</div>
+                )}
                 {reservedParty?.map((party) => {
                   return (
                     <MyPartyItem
@@ -136,6 +141,9 @@ const OtherUserPage = () => {
             </MyPartyTitle>
             {isOpen2 && (
               <MyPartyBox>
+                {confirmParty?.length === 0 && (
+                  <div className="fontweight">비어있습니다.</div>
+                )}
                 {confirmParty?.map((party) => {
                   return (
                     <MyPartyItem

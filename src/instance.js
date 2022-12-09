@@ -36,9 +36,9 @@ instance.interceptors.response.use(
         console.log("여기 419 떳어요!!");
         const { data } = await axios.post(
           `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
+
           {
             refresh_token: sessionStorage.getItem("refreshToken"),
-            nickName: sessionStorage.getItem("nickName"),
           }
         );
         console.log(data);
@@ -47,7 +47,6 @@ instance.interceptors.response.use(
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.accessToken}`,
         };
-        window.location.reload();
         return await axios(prevRequest);
       } catch (err) {
         console.log(err);
