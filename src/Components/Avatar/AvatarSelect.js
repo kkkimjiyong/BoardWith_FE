@@ -140,7 +140,7 @@ const AvatarSelect = () => {
         {alert && <AlertModal setAlert={setAlert} content={content} />}
         <AvatarHeader>
           <div></div>
-          <div>캐릭터</div>
+          <div className="headtxt">아바타</div>
           <div></div>
         </AvatarHeader>
         <AvatarCtn>
@@ -253,9 +253,13 @@ const AvatarHeader = styled.div`
   font-size: 1.5rem;
   color: var(--white);
   background-color: var(--black);
-  .postBtn {
-    position: absolute;
-    right: -15%;
+  .headtxt {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 0 7px #d90368, 0 0 10px #d90368, 0 0 21px #fff,
+      0 0 42px #d90368, 0 0 82px #d90368, 0 0 92px #d90368, 0 0 102px #d90368,
+      0 0 151px #d90368;
   }
 `;
 
