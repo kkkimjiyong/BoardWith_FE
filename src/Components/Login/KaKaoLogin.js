@@ -128,7 +128,7 @@ const KaKaoLogin = () => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: { gender: "male" },
+    defaultValues: { gender: "남자" },
     resolver: yupResolver(formSchema),
   });
   console.log(watch());
