@@ -34,6 +34,8 @@ const MyPage = () => {
   const [content, setContent] = useState();
   const [address, setAddress] = useState();
   const [ModalOpen, setModalOpen] = useState();
+  const [dupNickName, setDupNickName] = useState(false);
+
   const navigate = useNavigate();
 
   //---------- 1초 로딩 후 렌더  ------------
@@ -62,13 +64,14 @@ const MyPage = () => {
   };
 
   const editUser = async () => {
-    try {
-      const { data } = await userApi.editUser(user);
-      console.log(data.findUserData);
-      setUser(data.findUserData);
-    } catch (error) {
-      console.log(error);
-    }
+    if (user.nickName.trim(" "))
+      try {
+        const { data } = await userApi.editUser(user);
+        console.log(data.findUserData);
+        setUser(data.findUserData);
+      } catch (error) {
+        console.log(error);
+      }
   };
 
   //? ------------------  로그아웃 -------------------
@@ -121,8 +124,13 @@ const MyPage = () => {
   }, []);
 
   const editHandler = () => {
-    editUser();
-    setOpenEdit(false);
+    if (dupNickName) {
+      editUser();
+      setOpenEdit(false);
+    } else {
+      setAlert(true);
+      setContent("중복확인을 눌러주세요!");
+    }
   };
 
   if (isLoading) {
@@ -278,6 +286,7 @@ const MyPage = () => {
           </BottomTxt>
         </ProfileCtn>{" "}
         <EditUser
+          setDupNickName={setDupNickName}
           user={user}
           onChange={onChange}
           setUser={setUser}
