@@ -81,10 +81,8 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
   const {
     control,
     register,
-    watch,
     setValue,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",

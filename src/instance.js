@@ -34,17 +34,11 @@ instance.interceptors.response.use(
     if (data.code === 419) {
       try {
         console.log("여기 419 떳어요!!");
-        const { data } = await axios.get(
+        const { data } = await axios.post(
           `${process.env.REACT_APP_BACK_SERVER}/users/refresh`,
 
-          // {
-          //   refresh_token: sessionStorage.getItem("refreshToken"),
-          //   nickName: sessionStorage.getItem("nickName"),
-          // },
           {
-            headers: {
-              Authorization: sessionStorage.getItem("refreshToken"),
-            },
+            refresh_token: sessionStorage.getItem("refreshToken"),
           }
         );
         console.log(data);
@@ -53,7 +47,6 @@ instance.interceptors.response.use(
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.accessToken}`,
         };
-        window.location.reload();
         return await axios(prevRequest);
       } catch (err) {
         console.log(err);
