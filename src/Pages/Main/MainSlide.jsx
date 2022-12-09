@@ -253,7 +253,12 @@ const MainSlide = () => {
         )}
         {/* 게시글 폼페이지 모달창 */}
         {formModalOpen && (
-          <Form setItems={setItems} setFormModalOpen={setFormModalOpen} />
+          <Form
+            setItems={setItems}
+            setFormModalOpen={setFormModalOpen}
+            setAlert={setAlert}
+            setContent={setContent}
+          />
         )}
       </>
     );

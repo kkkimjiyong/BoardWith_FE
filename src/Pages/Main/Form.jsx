@@ -23,9 +23,10 @@ import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postsApi } from "../../instance";
+import AlertModal from "../../Components/AlertModal";
 
 const { kakao } = window;
-function Form({ setFormModalOpen, setItems }) {
+function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
   const [location, Setlocation] = useState();
 
   //카카오 Map API
@@ -53,18 +54,6 @@ function Form({ setFormModalOpen, setItems }) {
     startTime.setHours(data.startTime.split(":")[0]);
     endTime.setHours(data.endTime.split(":")[0]);
 
-    // console.log(startTime.toISOString());
-    // console.log(endTime.toISOString());
-    console.log("submit", {
-      title: data.title,
-      content: data.content,
-      partyMember: data.partyMember,
-      date: "임시",
-      cafe: data.cafe,
-      location: location,
-      map: data.cafe.split(" ")[1],
-      time: [startTime.toISOString(), endTime.toISOString()],
-    });
     creatPost({
       title: data.title,
       content: data.content,
@@ -82,10 +71,9 @@ function Form({ setFormModalOpen, setItems }) {
   const creatPost = async (payload) => {
     try {
       const { data } = await postsApi.creatPost(payload);
-      console.log("formpayload", payload);
-      console.log("formdata", data);
       setItems((prev) => [data.createPost, ...prev]);
-      alert("파티모집글 작성이 완료되었습니다.");
+      setAlert(true);
+      setContent("파티모집글 작성이 완료되었습니다.");
       setFormModalOpen(false);
     } catch (error) {}
   };
@@ -109,7 +97,6 @@ function Form({ setFormModalOpen, setItems }) {
   //사용자가 검색한 값을 좌표값으로 넘겨준다.
   var callback = function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
-      console.log(result[0].x, result[0].y);
       Setlocation({ x: result[0].x, y: result[0].y });
     }
   };
@@ -127,7 +114,6 @@ function Form({ setFormModalOpen, setItems }) {
   };
 
   const postCode = ReactDaumPost(postConfig);
-  console.log(watch());
 
   return (
     <BackGroudModal>
