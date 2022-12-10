@@ -10,6 +10,7 @@ import MyLogo from "../../Assets/MainLogo.png";
 import cookie from "react-cookies";
 import naverButton from "../../Assets/naverButton.png";
 import AlertModal from "../AlertModal";
+import { set } from "react-hook-form";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -90,7 +91,10 @@ const Login = () => {
         <NaverLogin
           //
           // href={NAVER_LOGIN_URL}
-          onClick={() => alert("현재 개발중입니다!")}
+          onClick={() => {
+            setContent("현재 개발중입니다!");
+            setAlert(true);
+          }}
         ></NaverLogin>
         <KaKaoLogin href={KAKAO_AUTH_URL}></KaKaoLogin>
         <LoginGoogle href={GOOGLE_LOGIN_URL}></LoginGoogle>

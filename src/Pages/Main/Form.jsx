@@ -35,7 +35,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
   const formSchema = yup.object({
     title: yup.string().required("제목을 입력해주세요 😰"),
     content: yup.string().max(25, "내용은 25자 이내로 입력해주세요"),
-    location: yup.string(),
+    location: yup.string().required("위치을 입력해주세요 😰"),
     cafe: yup.string(),
     date: yup.string(),
     map: yup.string(),
@@ -45,7 +45,6 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
   const onSubmit = (data) => {
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
-
     data.fullday.setMinutes(0);
     data.fullday.setSeconds(0);
     data.fullday.setMilliseconds(0);
@@ -137,6 +136,11 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                 <LabelBox>파티명</LabelBox>
                 <InputBox {...register("title")} />
               </FlexBox>
+              {errors.title && (
+                <small role="alert" style={{ color: "var(--primary)" }}>
+                  {errors.title.message}
+                </small>
+              )}
               <FlexBox>
                 <LabelBox>내용</LabelBox>
                 <TextareaBox

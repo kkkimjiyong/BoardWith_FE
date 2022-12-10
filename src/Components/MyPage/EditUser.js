@@ -13,6 +13,7 @@ import { signUpApi } from "../../instance";
 import AlertModal from "../AlertModal";
 
 const EditUser = ({
+  initialUser,
   setOpenEdit,
   openEdit,
   user,
@@ -24,7 +25,7 @@ const EditUser = ({
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
 
-  console.log(user);
+  console.log(initialUser);
 
   const toggleHandler = () => {
     let payload = "";
@@ -51,16 +52,21 @@ const EditUser = ({
   //? ------------------  닉네임 중복확인  ----------------------
   const DupNickname = async () => {
     setAlert(true);
-    try {
-      const { data } = await signUpApi.DupNick({
-        nickName: user.nickName,
-      });
-      console.log(data.findDupNick);
-      setContent(data.findDupNick);
+    if (user.nickName === initialUser.nickName) {
       setDupNickName(true);
-    } catch (error) {
-      console.log(error.response.data.message);
-      setContent(error.response.data.message);
+      setContent("이미 본인 닉네임입니다");
+    } else {
+      try {
+        const { data } = await signUpApi.DupNick({
+          nickName: user.nickName,
+        });
+        console.log(data.findDupNick);
+        setContent(data.findDupNick);
+        setDupNickName(true);
+      } catch (error) {
+        console.log(error.response.data.message);
+        setContent(error.response.data.message);
+      }
     }
   };
 
@@ -119,8 +125,8 @@ const EditUser = ({
       <EditTxt>성별</EditTxt>
 
       <EditSelect value={user.gender} name="gender" onChange={onChange}>
-        <Option value="female">여자</Option>
-        <Option value="male">남자</Option>
+        <Option value="여자">여자</Option>
+        <Option value="남자">남자</Option>
       </EditSelect>
       <EditTxt>지역</EditTxt>
 
