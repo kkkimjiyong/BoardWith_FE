@@ -13,6 +13,7 @@ import { AiFillCalendar } from "@react-icons/all-files/ai/AiFillCalendar";
 import AvatarBox from "../../Components/Avatar/AvatarBox";
 
 const Item = ({
+  setNearPost,
   items,
   Myaddress,
   closed,
@@ -22,7 +23,6 @@ const Item = ({
   ModalOpen,
 }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [item, setItem] = useState(items);
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
 
@@ -48,12 +48,11 @@ const Item = ({
   }, [setItems, items]);
 
   useEffect(() => {
-    //*각 카드별로 현위치에서의 거리를 구한값을 넣어, 전역state값에 다시 넣어준다.
-    //*부모컴포넌트에서 쓰기위해서 redux를 썻는데, 다른방법은 없나?
+    //*각 카드별로 현위치에서의 거리를 구한값을 넣어, nearPost값에 다시 넣어준다.
 
     if (Myaddress) {
-      dispatch(
-        addDistance({
+      setNearPost((prev) =>
+        prev.concat({
           ...item,
           distance: getDistance(
             { latitude: item.location?.y, longitude: item.location?.x },

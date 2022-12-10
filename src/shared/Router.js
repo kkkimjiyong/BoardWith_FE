@@ -30,7 +30,7 @@ const Mypage = lazy(() => import("../Pages/Mypage"));
 const Router = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>안녕!</div>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/main" element={<MainPage />} />
           <Route path="/signup" element={<SignUpPage />} />

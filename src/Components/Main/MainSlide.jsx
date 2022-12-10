@@ -37,6 +37,7 @@ const MainSlide = () => {
   const [confirmAdress, setconfirmAdress] = useState();
   const [confirmContent, setconfirmContent] = useState();
   const [cancelContent, setcancelContent] = useState();
+  const [nearPost, setNearPost] = useState([]);
 
   //?---------------  스크롤높이가 0인 지점으로 올라감  -----------------
   const scrollToTop = () => {
@@ -49,6 +50,7 @@ const MainSlide = () => {
   //?-----------------------------가장 가까운 모임 기능--------------------------
   //초기값은 스파르타코딩클럽 본사위치로
   const [Myaddress, SetMyaddress] = useState();
+
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -75,9 +77,9 @@ const MainSlide = () => {
   }, []);
 
   //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
-  const newcardData = useSelector((state) => state.posts.distance);
+
   //!복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
-  const new2 = [...newcardData];
+  const new2 = [...nearPost];
 
   // *이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   const neardata = new2.sort((a, b) => a.distance - b.distance);
@@ -158,6 +160,8 @@ const MainSlide = () => {
       setconfirmAdress("/");
     }
   };
+
+  console.log("리덕스 안써도된다!", nearPost);
   if (loading) {
     return <Loading />;
   } else {
@@ -202,6 +206,7 @@ const MainSlide = () => {
             {items?.map((items, idx) => {
               return (
                 <Item
+                  setNearPost={setNearPost}
                   userBook={userBook}
                   closed={items.closed}
                   setModalOpen={setModalOpen}
