@@ -104,6 +104,7 @@ export const userApi = {
 
 export const rankApi = {
   getRank: (payload) => instance.get(`/rank`),
+  getRankMyPoint: (payload) => instance.get(`/rank/mypoint`),
 };
 
 export const postApi = {

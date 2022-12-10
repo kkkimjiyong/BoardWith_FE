@@ -12,6 +12,7 @@ import { BiEditAlt } from "@react-icons/all-files/bi/BiEditAlt";
 import { FiTrash2 } from "@react-icons/all-files/fi/FiTrash2";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import AvatarBox from "../Avatar/AvatarBox";
+import AlertModal from "../AlertModal";
 
 const Comments = ({
   comments,
@@ -25,6 +26,8 @@ const Comments = ({
   const [isEdit, setEdit] = useState(false);
   const [isBanUser, setIsBanUser] = useState(false);
   const [isPartyAccept, setIsPartyAccept] = useState(false);
+  const [alert, setAlert] = useState();
+  const [content, setContent] = useState();
   const navigate = useNavigate();
 
   const commentId = comments._id;
@@ -47,9 +50,11 @@ const Comments = ({
   const onEditHandler = () => {
     // console.log("comment", comment);
     if (comment.comment === "") {
-      alert("수정할 내용을 입력해주세요");
+      setAlert(true);
+      setContent("수정할 내용을 입력해주세요.");
     } else {
-      alert("수정을 완료하였습니다.");
+      setAlert(true);
+      setContent("수정을 완료 하였습니다.");
       dispatch(__editComment({ comment, commentId }));
       setComment(initialState);
       setEdit(false);
@@ -66,10 +71,11 @@ const Comments = ({
       "삭제하시면 참여 신청이 취소됩니다.\n정말로 삭제하시겠습니까?"
     );
     if (result) {
+      setAlert(true);
+      setContent("참여 신청을 취소하였습니다.");
       // console.log("comments", comments._id);
       dispatch(__deleteComment(comments._id));
       setModalOpen((ModalOpen) => !ModalOpen);
-      alert("참여 신청을 취소했습니다.");
     } else {
       return;
     }
@@ -86,16 +92,19 @@ const Comments = ({
         console.log("성공", res);
         if (isPartyAccept === false) {
           setIsPartyAccept(true);
-          alert("참가를 수락하였습니다.");
+          setAlert(true);
+          setContent("참가를 수락 하였습니다.");
         } else {
           setIsPartyAccept(false);
-          alert("참가 수락을 취소하였습니다.");
+          setAlert(true);
+          setContent("참가 수락을 취소하였습니다.");
         }
         // setModalOpen(false);
       })
       .catch((error) => {
         if (error.response.status === 401) {
-          alert("로그인이 필요합니다.");
+          setAlert(true);
+          setContent("로그인이 필요합니다.");
         }
       });
   };
@@ -113,13 +122,15 @@ const Comments = ({
       postApi
         .kickingParty({ postid: postid, nickName: nickName })
         .then((res) => {
-          alert("파티원을 강제퇴장시켰습니다.");
+          setAlert(true);
+          setContent("파티원을 강제 퇴장 시켰습니다.");
           console.log("성공", res);
           setIsBanUser(true);
         })
         .catch((error) => {
           if (error.response.status === 401) {
-            alert("로그인이 필요합니다.");
+            setAlert(true);
+            setContent("로그인이 필요합니다.");
           }
           console.log("에러", error.response.status);
         });
@@ -133,7 +144,8 @@ const Comments = ({
     postApi
       .kickingPartyCancel({ postid: postid, nickName: nickName })
       .then((res) => {
-        alert("파티원 강제퇴장을 취소했습니다.");
+        setAlert(true);
+        setContent("파티원 강제퇴장을 취소했습니다");
         console.log("성공", res);
         setIsBanUser(false);
       })
@@ -141,8 +153,6 @@ const Comments = ({
         console.log("에러", error);
       });
   };
-
-  console.log("댓글카드", comments);
 
   useEffect(() => {
     //참가 확정 받은 유저인지
@@ -155,6 +165,7 @@ const Comments = ({
 
   return (
     <>
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       {/* 강퇴 당한 유저가 아니라면 */}
       {!isBanUser ? (
         <>
@@ -248,13 +259,16 @@ const Comments = ({
             ) : (
               <>
                 <StText
-                  placeholder="수정할 댓글내용을 입력하세요"
-                  value={comment.comment}
+                  minlength="1"
+                  maxlength="20"
+                  defaultValue={comments.comment}
+                  value={Comments.comment}
+                  edit={comment.comment}
                   onChange={(e) => {
-                    const { value } = e.target;
+                    const { edit } = e.target;
                     setComment({
                       ...comment,
-                      comment: value,
+                      comment: edit,
                     });
                   }}
                 ></StText>
@@ -344,7 +358,7 @@ export default Comments;
 const StButton = styled.button`
   padding: 0;
   background-color: var(--primary);
-  width: 90px;
+  min-width: 90px;
   height: 65px;
   border-radius: 15px;
   font-size: large;
@@ -360,7 +374,7 @@ const StCancelButton = styled.button`
   padding: 0;
   background-color: transparent;
   border: 2px solid var(--primary);
-  width: 90px;
+  min-width: 90px;
   height: 65px;
   border-radius: 15px;
   font-size: large;
@@ -374,7 +388,7 @@ const StCancelButton = styled.button`
 
 const StButton2 = styled.button`
   background-color: var(--primary);
-  width: 90px;
+  min-width: 90px;
   height: 65px;
   border-radius: 15px;
   font-size: large;
@@ -382,21 +396,6 @@ const StButton2 = styled.button`
   cursor: pointer;
   color: var(--black);
   border: none;
-  &:active {
-    scale: 95%;
-  }
-`;
-
-const StBanButton = styled.button`
-  background-color: var(--primary);
-  width: 90px;
-  height: 65px;
-  border-radius: 15px;
-  border: none;
-  font-size: large;
-  font-weight: bold;
-  cursor: pointer;
-  color: white;
   &:active {
     scale: 95%;
   }
@@ -433,7 +432,7 @@ const StCommentBody = styled.div`
   max-width: 100%;
 `;
 
-const Stspan = styled.span`
+const Stspan = styled.div`
   display: flex;
   font-size: 15px;
   width: 100%;
@@ -471,4 +470,5 @@ const StAvatar = styled.div`
   background-color: white;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
