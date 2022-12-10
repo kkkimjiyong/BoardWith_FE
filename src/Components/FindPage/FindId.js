@@ -22,20 +22,22 @@ const FindId = () => {
   //* ------------ 서버로 인증코드 및 전번 보내기 ---------------------
 
   const postPhone = async () => {
+    setAlert(true);
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACK_SERVER}/sms/sendID`,
         { phoneNumber: findUser.phoneNumber }
       );
-      setAlert(true);
       setContent(data.message);
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      setContent(error.response.data.message);
     }
   };
 
   const postVerify = async () => {
+    setAlert(true);
+
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACK_SERVER}/sms/verifyID`,
@@ -43,13 +45,12 @@ const FindId = () => {
       );
       console.log(data);
       if (data) {
-        setAlert(true);
         setContent(`아이디는 ${data}입니다!`);
         setAddress("/");
       }
     } catch (error) {
       console.log(error);
-      alert("다시 시도해주세요!");
+      setContent("다시 시도해주세요!");
     }
   };
 

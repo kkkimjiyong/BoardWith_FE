@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import LayoutLogo from "../Assets/LayoutLogo.png";
+import LayoutLogo from "../Assets/MainLogo.webp";
 
 const Layout = ({ children }) => {
   return (
@@ -33,10 +33,8 @@ const LogoBox = styled.img`
     display: block;
     position: absolute;
     width: 20%;
-    /* border: 2px solid white; */
     left: 13%;
     top: 35%;
-    /* background-image: url(../Assets/LogoLayout.png); */
   }
   display: none;
 `;
