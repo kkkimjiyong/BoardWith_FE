@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { userApi } from "../../instance";
 import styled from "styled-components";
 import useInput from "../../hooks/UseInput";
-import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
+
 import AvatarBox from "../Avatar/AvatarBox";
 import MyPartyItem from "./MyPartyItem";
 import Loading from "../../style/Loading";

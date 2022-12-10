@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../style/Layout";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import useInput from "../../hooks/UseInput";
-import { acyncCreatePosts } from "../../redux/modules/postsSlice";
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller } from "react-hook-form";
-import Datepicker from "react-datepicker";
-import axios from "axios";
-import { getCookie } from "../../hooks/CookieHook";
 import { useForm } from "react-hook-form";
 import Slider from "@mui/material/Slider";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -23,28 +16,28 @@ import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postsApi } from "../../instance";
-import AlertModal from "../../Components/AlertModal";
+import { postApi } from "../../instance";
+import { useParams } from "react-router-dom";
 
 const { kakao } = window;
-function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
-  const [location, Setlocation] = useState();
-
+function Modify({ setModifyModalOpen, setItem, item }) {
+  const [location, Setlocation] = useState(item.location);
   //카카오 Map API
   var geocoder = new kakao.maps.services.Geocoder();
 
   const formSchema = yup.object({
     title: yup.string().required("제목을 입력해주세요 😰"),
     content: yup.string().max(25, "내용은 25자 이내로 입력해주세요"),
-    location: yup.string().required("위치을 입력해주세요 😰"),
+    location: yup.string(),
     cafe: yup.string(),
     date: yup.string(),
     map: yup.string(),
     partyMember: yup.number(),
   });
-
   const onSubmit = (data) => {
     //사용자가 검색한 값의 두번째 추출 => 지역구
     //location 키값으로 좌표값을 객체로 전송
+
     data.fullday.setMinutes(0);
     data.fullday.setSeconds(0);
     data.fullday.setMilliseconds(0);
@@ -53,40 +46,55 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
     startTime.setHours(data.startTime.split(":")[0]);
     endTime.setHours(data.endTime.split(":")[0]);
 
-    creatPost({
-      title: data.title,
-      content: data.content,
-      partyMember: data.partyMember,
-      date: "임시",
-      cafe: data.cafe,
-      location: location,
-      map: data.cafe.split(" ")[1],
-      time: [startTime.toISOString(), endTime.toISOString()],
+    putPost({
+      postId: item._id,
+      postPayload: {
+        data: {
+          ...item,
+          title: data.title,
+          content: data.content,
+          partyMember: data.partyMember,
+          date: "임시",
+          cafe: data.cafe,
+          location: location,
+          map: data.cafe.split(" ")[1],
+          time: [startTime.toISOString(), endTime.toISOString()],
+        },
+      },
     });
   };
-
   //useForm 설정
 
-  const creatPost = async (payload) => {
+  const putPost = async (payload) => {
     try {
-      const { data } = await postsApi.creatPost(payload);
-      setItems((prev) => [data.createPost, ...prev]);
-      setAlert(true);
-      setContent("파티모집글 작성이 완료되었습니다.");
-      setFormModalOpen(false);
+      console.log(payload);
+      const { data } = await postsApi.putPost(payload);
+      console.log(data);
+      alert("파티모집글 수정이 완료되었습니다.");
+      setItem(payload.postPayload.data);
+      setModifyModalOpen(false);
+      // setModalOpen(false);
     } catch (error) {}
   };
+
+  const timeStart = item.time[0];
+  const time1 = new Date(timeStart);
 
   const {
     control,
     register,
+    watch,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(formSchema),
-    defaultValues: { fullday: new Date(), partyMember: "10" },
+    defaultValues: {
+      fullday: new Date(item.time[0]),
+      partyMember: `${item.partyMember}`,
+    },
   });
 
   // console.log(location);
@@ -94,6 +102,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
   //사용자가 검색한 값을 좌표값으로 넘겨준다.
   var callback = function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
+      console.log(result[0].x, result[0].y);
       Setlocation({ x: result[0].x, y: result[0].y });
     }
   };
@@ -111,13 +120,18 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
   };
 
   const postCode = ReactDaumPost(postConfig);
+  console.log(watch());
 
   return (
     <BackGroudModal>
       <Layout>
         <Wrap>
           <div>
-            <Sth onClick={() => setFormModalOpen(false)}>
+            <Sth
+              onClick={() => {
+                setModifyModalOpen(false);
+              }}
+            >
               <FontAwesomeIcon
                 style={{
                   color: "white",
@@ -127,20 +141,15 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                 cursor="pointer"
               />
             </Sth>{" "}
-            <FormHeader>새로운 파티</FormHeader>
+            <FormHeader>파티 내용 수정</FormHeader>
           </div>
 
           <Formbox onSubmit={handleSubmit(onSubmit)}>
             <Inputbox>
               <FlexBox>
                 <LabelBox>파티명</LabelBox>
-                <InputBox {...register("title")} />
+                <InputBox defaultValue={item.title} {...register("title")} />
               </FlexBox>
-              {errors.title && (
-                <small role="alert" style={{ color: "var(--primary)" }}>
-                  {errors.title.message}
-                </small>
-              )}
               <FlexBox>
                 <LabelBox>내용</LabelBox>
                 <TextareaBox
@@ -148,6 +157,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                     height: "80px",
                   }}
                   maxLength={50}
+                  defaultValue={item.content}
                   {...register("content")}
                 />
                 {errors.content && (
@@ -164,6 +174,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                     name="fullday"
                     render={({ field: { onChange, value } }) => (
                       <DatePicker
+                        defaultValue={`${new Date(item.time[0])}`}
                         inputFormat={"yyyy-MM-dd"}
                         mask={"____-__-__"}
                         value={value}
@@ -188,7 +199,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                   <TimeSelect
                     name="startTime"
                     size={1}
-                    defaultValue={timeSelect[0].value}
+                    defaultValue={`${new Date(item.time[0]).getHours()}:00`}
                     {...register("startTime")}
                   >
                     {timeSelect.map((time) => {
@@ -203,7 +214,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                     name="endTime"
                     size={1}
                     // onChange={onChange}
-                    defaultValue={timeSelect[23].value}
+                    defaultValue={`${new Date(item.time[1]).getHours()}:00`}
                     {...register("endTime")}
                   >
                     {timeSelect.map((time) => {
@@ -224,7 +235,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                   name="partyMember"
                   render={({ field: { onChange } }) => (
                     <MemberSlider
-                      defaultValue={10}
+                      defaultValue={`${item.partyMember}`}
                       onChange={(e) => {
                         onChange(e.target.value);
                       }}
@@ -240,12 +251,16 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
               </FlexBox>
               <FlexBox>
                 <LabelBox>지도</LabelBox>
-                <InputBox onClick={postCode} {...register("cafe")} />
+                <InputBox
+                  onClick={postCode}
+                  defaultValue={item.cafe}
+                  {...register("cafe")}
+                />
               </FlexBox>{" "}
               <DaumPostBox ref={ref}></DaumPostBox>
             </Inputbox>{" "}
             <Buttonbox>
-              <Button>작성완료</Button>
+              <Button>수정완료</Button>
             </Buttonbox>
           </Formbox>
         </Wrap>
@@ -253,7 +268,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
     </BackGroudModal>
   );
 }
-export default Form;
+export default Modify;
 
 const DatePicker = styled(MobileDatePicker)(({ theme }) => ({
   "& input": {

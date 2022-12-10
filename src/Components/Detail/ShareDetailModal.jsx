@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { json, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "../../style/Loading";
@@ -28,8 +27,6 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
-import { getCookie } from "../../hooks/CookieHook";
-
 const { kakao } = window;
 export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
   const dispatch = useDispatch();

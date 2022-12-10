@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
-
 const AvatarBox = ({
   userSelect,
   avatarScale,
