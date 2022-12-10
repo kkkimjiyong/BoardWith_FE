@@ -22,6 +22,8 @@ const FindPw = () => {
   //* ------------ 서버로 인증코드 및 전번 보내기 ---------------------
 
   const postPw = async () => {
+    setAlert(true);
+
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACK_SERVER}/sms/sendPW`,
@@ -30,15 +32,15 @@ const FindPw = () => {
           phoneNumber: findUser.phoneNumber,
         }
       );
-      setAlert(true);
       setContent(data.message);
     } catch (error) {
       console.log(error);
-      alert(error.message);
+      setContent(error.response.data.message);
     }
   };
 
   const postVerify = async () => {
+    setAlert(true);
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACK_SERVER}/sms/verify`,
@@ -49,31 +51,28 @@ const FindPw = () => {
         }
       );
       if (data == "success") {
-        setAlert(true);
-
         setContent("인증성공!");
       }
     } catch (error) {
       console.log(error);
-      setAlert(true);
       setContent("다시 시도해주세요!");
     }
   };
 
   const postChangePw = async () => {
+    setAlert(true);
+
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_BACK_SERVER}/users/change/password`,
         findUser
       );
       console.log(data);
-      setAlert(true);
       setContent(data.message);
       setAddress("/");
     } catch (error) {
-      setAlert(true);
       console.log(error);
-      setContent(error.message);
+      setContent(error.response.data.message);
     }
   };
 

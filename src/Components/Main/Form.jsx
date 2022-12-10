@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Layout from "../../style/Layout";
-
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";

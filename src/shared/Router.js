@@ -1,13 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Main from "../Components/Main/Main";
 import SignUpPage from "../Pages/SignUpPage";
 import LoginPage from "../Pages/LoginPage";
-import Mypage from "../Pages/Mypage";
+// import Mypage from "../Pages/Mypage";
 import Form from "../Components/Main/Form";
 import KaKaoLogin from "../Components/Login/KaKaoLogin";
 import ChatPage from "../Pages/ChatPage";
-import AvatarPage from "../Pages/AvatarPage";
+// import AvatarPage from "../Pages/AvatarPage";
 import FindPage from "../Pages/FindPage";
 import PracPage from "../Pages/PracPage";
 import RankingPage from "../Pages/RankingPage";
@@ -22,16 +21,16 @@ import SignUp2 from "../Components/SignUp/SingUp2";
 import SignUp3 from "../Components/SignUp/SignUp3";
 import NaverLogin from "../Components/Login/NaverLogin";
 import Modify from "../Components/Main/Modify";
-import MainPage from "../Pages/MainPage";
+// import MainPage from "../Pages/MainPage";
 
-// const Main = lazy(() => import("../Pages/Main/Main"));
-// const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
-// const Mypage = lazy(() => import("../Pages/Mypage"));
+const MainPage = lazy(() => import("../Components/Main/Main"));
+const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
+const Mypage = lazy(() => import("../Pages/Mypage"));
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<div>안녕!</div>}>
         <Routes>
           <Route path="/main" element={<MainPage />} />
           <Route path="/signup" element={<SignUpPage />} />

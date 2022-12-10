@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_레이어_1" data-name="레이어 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 450">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f1f1f1;
+        stroke: #231815;
+        stroke-linejoin: round;
+        stroke-width: 1.15px;
+      }
+    </style>
+  </defs>
+  <g>
+    <ellipse class="cls-1" cx="253.78" cy="198.17" rx="20.3" ry="20.33"/>
+    <polygon class="cls-1" points="241.01 198.17 253.77 185.39 266.54 198.17 253.78 210.95 241.01 198.17"/>
+  </g>
+  <g>
+    <ellipse class="cls-1" cx="175.65" cy="198.17" rx="20.3" ry="20.33"/>
+    <polygon class="cls-1" points="162.88 198.17 175.65 185.39 188.41 198.17 175.65 210.95 162.88 198.17"/>
+  </g>
+</svg>
