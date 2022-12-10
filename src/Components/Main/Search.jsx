@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Skeleton from "./Skeleton";
 import { postsApi, userApi } from "../../instance";
 import MobileHeader from "../../style/MobileHeader";
+import Loading from "../../style/Loading";
+import AlertModal from "../AlertModal";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -15,6 +17,8 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
   const [bookmarked, setBookmarked] = useState();
   const [ModalOpen, setModalOpen] = useState();
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState();
 
   const creatTitlePost = async () => {
     setLoading(true);
@@ -26,6 +30,10 @@ const Search = () => {
       setTimeout(() => {
         setLoading(false);
       }, 1000);
+      if (data.data.length === 0) {
+        setAlert(true);
+        setContent("검색한 정보가 없습니다.");
+      }
     } catch (error) {}
   };
   const creatNicknamePost = async () => {
@@ -37,6 +45,10 @@ const Search = () => {
       setTimeout(() => {
         setLoading(false);
       }, 1000);
+      if (data.data.length === 0) {
+        setAlert(true);
+        setContent("검색한 정보가 없습니다.");
+      }
     } catch (error) {}
   };
 
@@ -66,11 +78,12 @@ const Search = () => {
     getUser();
   }, []);
 
-  console.log(bookmarked);
+  console.log(titleSearch.length);
 
   return (
     <Layout>
       <MobileHeader />
+      {alert && <AlertModal setAlert={setAlert} content={content} />}
       <MainHeader>
         <Arrow className="head" onClick={() => navigate("/main")} />
         <div className="headtxt">검색</div>
@@ -101,7 +114,15 @@ const Search = () => {
           <Skeleton />
         ) : (
           nicknameSearch?.map((items, idx) => {
-            return <Item userBook={bookmarked} key={idx} items={items}></Item>;
+            return (
+              <Item
+                userBook={bookmarked}
+                setModalOpen={setModalOpen}
+                key={idx}
+                items={items}
+                ModalOpen={ModalOpen}
+              ></Item>
+            );
           })
         )}{" "}
       </MainListCtn>
@@ -179,4 +200,11 @@ const Arrow = styled.div`
   &.head {
     border-top-color: white;
   }
+`;
+
+const NoneTxt = styled.div`
+  z-index: 200;
+  height: 200px;
+  background-color: var(--primary);
+  border: 2px solid var(--primary);
 `;

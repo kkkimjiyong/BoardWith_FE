@@ -66,9 +66,9 @@ const PostsSlice = createSlice({
   initialState,
   //? 김지용이 쓰는 중.
   reducers: {
-    addDistance: (state, action) => {
-      state.distance.push(action.payload);
-    },
+    // addDistance: (state, action) => {
+    //   state.distance.push(action.payload);
+    // },
     addUserData: (state, action) => {
       state.user = { ...state.user, ...action.payload };
     },
