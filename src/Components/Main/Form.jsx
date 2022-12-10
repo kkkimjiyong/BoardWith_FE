@@ -7,7 +7,7 @@ import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller } from "react-hook-form";
-
+import AlertModal from "../AlertModal";
 import { useForm } from "react-hook-form";
 import Slider from "@mui/material/Slider";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -29,7 +29,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
   const formSchema = yup.object({
     title: yup.string().required("제목을 입력해주세요 😰"),
     content: yup.string().max(25, "내용은 25자 이내로 입력해주세요"),
-    location: yup.string().required("위치을 입력해주세요 😰"),
+    location: yup.string(),
     cafe: yup.string(),
     date: yup.string(),
     map: yup.string(),
@@ -46,6 +46,8 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
     let endTime = new Date(data.fullday);
     startTime.setHours(data.startTime.split(":")[0]);
     endTime.setHours(data.endTime.split(":")[0]);
+
+    console.log(1);
 
     creatPost({
       title: data.title,
@@ -68,7 +70,9 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
       setAlert(true);
       setContent("파티모집글 작성이 완료되었습니다.");
       setFormModalOpen(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const {
@@ -378,6 +382,9 @@ const Button = styled.button`
   border-radius: 20px;
   border: none;
   font-size: 18px;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const DaumPostBox = styled.div`
