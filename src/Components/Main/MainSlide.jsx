@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Item from "../Main/MainCard";
-import axios from "axios";
 import MainFilter from "./MainFilter";
 import { useRef } from "react";
 import { BiCurrentLocation } from "@react-icons/all-files/bi/BiCurrentLocation";
@@ -12,16 +10,12 @@ import { FiFilter } from "@react-icons/all-files/fi/FiFilter";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import Form from "./Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getCookie } from "../../hooks/CookieHook";
 import { postsApi, userApi } from "../../instance";
 import { useInView } from "react-intersection-observer";
-import { Skeleton } from "@mui/material";
 import Tutorial from "../../Components/Tutorial/Tutorial";
-import Loading from "../../style/Loading";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
-import Modify from "./Modify";
 import AlertModal from "../../Components/AlertModal";
-import MobileHeader from "../../style/MobileHeader";
+import Loading from "../../style/Loading";
 
 const MainSlide = () => {
   const [targetMargin, setTargetMargin] = useState(0);

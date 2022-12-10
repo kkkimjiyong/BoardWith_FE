@@ -1,13 +1,11 @@
 import React, { useRef } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import { getCookie, setCookie } from "../../hooks/CookieHook";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import Layout from "../../style/Layout";
 import ReactDaumPost from "react-daumpost-hook";
-import useInput from "../../hooks/UseInput";
 import Loading from "../../style/Loading";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

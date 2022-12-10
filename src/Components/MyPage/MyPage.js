@@ -2,17 +2,8 @@ import React, { useEffect, useState } from "react";
 import { userApi } from "../../instance";
 import styled from "styled-components";
 import useInput from "../../hooks/UseInput";
-import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AiFillEye } from "@react-icons/all-files/ai/AiFillEye";
-import { AiFillEyeInvisible } from "@react-icons/all-files/ai/AiFillEyeInvisible";
-import { ImExit } from "@react-icons/all-files/im/ImExit";
-import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
-import ReactDaumPost from "react-daumpost-hook";
-import { useRef } from "react";
 import MyPartyItem from "./MyPartyItem";
-import { postsApi } from "../../instance";
 import AvatarBox from "../Avatar/AvatarBox";
 import Loading from "../../style/Loading";
 import EditUser from "./EditUser";
@@ -41,8 +32,6 @@ const MyPage = () => {
   const [confirmContent, setconfirmContent] = useState();
   const [cancelContent, setcancelContent] = useState();
   const [cancelAddress, setcancelAddress] = useState();
-
-  const navigate = useNavigate();
 
   //---------- 1초 로딩 후 렌더  ------------
   useEffect(() => {
@@ -196,7 +185,7 @@ const MyPage = () => {
         <MainHeader>
           {openEdit ? (
             <AiOutlineClose
-              size={"24"}
+              size={"26"}
               onClick={closeHandler}
               className="closeBtn"
             />
@@ -372,7 +361,7 @@ const MainHeader = styled.div`
     :hover {
       cursor: pointer;
     }
-    margin-left: 2%;
+    margin-left: 2.8%;
   }
   .gap {
     width: 30px;

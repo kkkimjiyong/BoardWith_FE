@@ -1,29 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/esm/locale";
 import Slider from "@mui/material/Slider";
-import { seoulGu, timeSelect } from "../../tools/select";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
+import { timeSelect } from "../../tools/select";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
-import { date } from "yup";
 import axios from "axios";
 
-const MainFilter = ({
-  setFilteredItems,
-  filteredItems,
-  items,
-  setItems,
-  getData,
-  setTargetMargin,
-  targetMargin,
-  open,
-  setOpen,
-}) => {
+const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
   //시작 날짜 받기
   const onDateChange = (date) => {
     filtered.time[0].setFullYear(
@@ -41,17 +27,22 @@ const MainFilter = ({
       ...filtered,
     });
   };
+  let timeSelect2 = timeSelect.slice(0, 23);
+
   //시작 시간 받기
   const onTimeChange1 = (e) => {
     const { value } = e.target;
     filtered.time[0].setHours(value.split(":")[0]);
+    timeSelect2 = timeSelect.slice(value, 23);
     setFiltered({
       ...filtered,
     });
   };
+  console.log(timeSelect2);
   //종료 시간 받기
   const onTimeChange2 = (e) => {
     const { value } = e.target;
+
     filtered.time[1].setHours(value.split(":")[0]);
     setFiltered({
       ...filtered,
@@ -99,23 +90,6 @@ const MainFilter = ({
     partyMember: [1, 10],
     map: "강남구",
   });
-
-  // const filteredItems = items?.filter(
-  //   (item) =>
-  //     filtered.time[0] <= new Date(item.time) &&
-  //     new Date(item.time) <= filtered.time[1] &&
-  //     filtered.partyMember[0] <= item.partyMember &&
-  //     item.partyMember <= filtered.partyMember[1]
-  // item.map.includes(filtered.map)
-  // );
-  // console.log(items);
-  //필터 선택하기
-  // const filterhandler = () => {
-  //   setItems(filteredItems);
-  //   if (filteredItems.length < 5) {
-  //     setTargetMargin((5 - filteredItems.length) * 200);
-  //   }
-  // };
 
   //양방향 인원 체크
   function valuetext(value) {

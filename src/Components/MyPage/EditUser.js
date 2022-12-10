@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { userApi } from "../../instance";
 import styled from "styled-components";
-import useInput from "../../hooks/UseInput";
-import { getCookie, setCookie, removeCookie } from "../../hooks/CookieHook";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { BsPencil } from "@react-icons/all-files/bs/BsPencil";
-import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
+
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 import { signUpApi } from "../../instance";

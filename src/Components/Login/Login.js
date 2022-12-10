@@ -3,15 +3,9 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import useInput from "../../hooks/UseInput";
 import { loginApi } from "../../instance";
-import { setCookie } from "../../hooks/CookieHook";
-import NotifModal from "../../tools/NotifModal";
 import { ReactComponent as MainLogo } from "../../Assets/MyLogo.svg";
-import MyLogo from "../../Assets/MainLogo.png";
-import cookie from "react-cookies";
 import naverButton from "../../Assets/naverButton.png";
 import AlertModal from "../AlertModal";
-import { set } from "react-hook-form";
-
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState();
@@ -24,8 +18,6 @@ const Login = () => {
     password: "",
   };
   const [login, setLogin, onChangehandler] = useInput(initialState);
-
-  const state = "boardwith";
 
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
   const GOOGLE_LOGIN_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;

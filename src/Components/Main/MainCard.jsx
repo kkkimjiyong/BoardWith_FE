@@ -11,7 +11,6 @@ import { AiOutlineStar } from "@react-icons/all-files/ai/AiOutlineStar";
 import { ImLocation } from "@react-icons/all-files/im/ImLocation";
 import { AiFillCalendar } from "@react-icons/all-files/ai/AiFillCalendar";
 import AvatarBox from "../../Components/Avatar/AvatarBox";
-import Modify from "./Modify";
 
 const Item = ({
   items,

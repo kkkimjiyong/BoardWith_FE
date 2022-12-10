@@ -6,11 +6,8 @@ import ChatMessage from "./ChatMessage";
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import FireNotification from "../../tools/useNotification";
 import { userApi } from "../../instance";
-import { setCookie } from "../../hooks/CookieHook";
 import { postApi } from "../../instance";
-import moment from "moment-timezone";
 import "moment/locale/ko";
 import { BiAlignRight } from "@react-icons/all-files/bi/BiAlignRight";
 import { AiOutlineNotification } from "@react-icons/all-files/ai/AiOutlineNotification";
@@ -27,7 +24,6 @@ const ChatRoom = () => {
   // }
   const { roomid } = useParams();
   const [message, setMessage, onChange] = useInput();
-  const [notice, setNotice] = useState([]);
   const [users, setUsers] = useState([]);
   const [isEdit, SetisEdit] = useState(false);
   const scrollRef = useRef();

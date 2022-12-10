@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import Layout from "../../style/Layout";
-import axios from "axios";
-import { getCookie } from "../../hooks/CookieHook";
 import { useEffect, useState } from "react";
 import Item from "./MainCard";
 import { useNavigate } from "react-router-dom";
@@ -95,7 +93,6 @@ const Search = () => {
                 key={idx}
                 items={items}
                 ModalOpen={ModalOpen}
-                //   Myaddress={Myaddress}
               ></Item>
             );
           })
@@ -104,15 +101,7 @@ const Search = () => {
           <Skeleton />
         ) : (
           nicknameSearch?.map((items, idx) => {
-            return (
-              <Item
-                userBook={bookmarked}
-                //   setModalOpen={setModalOpen}
-                key={idx}
-                items={items}
-                //   Myaddress={Myaddress}
-              ></Item>
-            );
+            return <Item userBook={bookmarked} key={idx} items={items}></Item>;
           })
         )}{" "}
       </MainListCtn>

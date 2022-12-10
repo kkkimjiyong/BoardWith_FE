@@ -22,7 +22,7 @@ import { FaBullhorn } from "@react-icons/all-files/fa/FaBullhorn";
 import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 import { BsPeopleFill, BsArrowUpCircle, BsChevronLeft } from "react-icons/bs";
 import AvatarBox from "../Avatar/AvatarBox";
-import Modify from "../../Pages/Main/Modify";
+import Modify from "../Main/Modify";
 import AlertModal from "../AlertModal";
 
 const { kakao } = window;

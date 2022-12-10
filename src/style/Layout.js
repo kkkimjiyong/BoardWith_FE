@@ -6,7 +6,6 @@ const Layout = ({ children }) => {
   return (
     <Wrap>
       <LogoBox src={LayoutLogo} alt={"로고"} />
-      {/* <img src={LayoutLogo} /> */}
       <Container>{children}</Container>
     </Wrap>
   );
