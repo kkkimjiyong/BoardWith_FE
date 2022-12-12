@@ -62,7 +62,7 @@ const Item = ({
         })
       );
     }
-  }, []);
+  }, [Myaddress, setNearPost]);
 
   //요일시간 표기
   const IsoStartDate = item?.time?.[0];

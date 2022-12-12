@@ -82,9 +82,9 @@ const MainSlide = () => {
 
   // *이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   const neardata = new2.sort((a, b) => a.distance - b.distance);
-  const exceptUser = neardata.filter(
-    (post) => post.nickName !== sessionStorage.getItem("nickName")
-  );
+  const [exceptUser] = neardata
+    .filter((post) => post.nickName !== sessionStorage.getItem("nickName"))
+    .slice(0, 1);
 
   console.log(exceptUser);
 
@@ -244,8 +244,8 @@ const MainSlide = () => {
         {/* //! 가장 가까운 모임 보여주는 모달창 */}
         {NearModalOpen && (
           <DetailModal
-            item={exceptUser[0]}
-            postid={exceptUser[0]._id}
+            item={exceptUser}
+            postid={exceptUser._id}
             setModalOpen={setNearModalOpen}
             setModifyModalOpen={setModifyModalOpen}
           />
