@@ -27,9 +27,12 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
 
   const formSchema = yup.object({
     title: yup.string().required("제목을 입력해주세요 😰"),
-    content: yup.string().max(25, "내용은 25자 이내로 입력해주세요"),
+    content: yup
+      .string()
+      .max(25, "내용은 25자 이내로 입력해주세요")
+      .required("내용을 입력해주세요 😰"),
     location: yup.string(),
-    cafe: yup.string(),
+    cafe: yup.string().required("주소를 입력해주세요 😰"),
     date: yup.string(),
     map: yup.string(),
     partyMember: yup.number(),
@@ -46,7 +49,7 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
     startTime.setHours(data.startTime.split(":")[0]);
     endTime.setHours(data.endTime.split(":")[0]);
 
-    console.log(1);
+    console.log(errors);
 
     creatPost({
       title: data.title,
@@ -238,6 +241,11 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
               <FlexBox>
                 <LabelBox>지도</LabelBox>
                 <InputBox onClick={postCode} {...register("cafe")} />
+                {errors.cafe && (
+                  <small role="alert" style={{ color: "var(--primary)" }}>
+                    {errors.cafe.message}
+                  </small>
+                )}
               </FlexBox>{" "}
               <DaumPostBox ref={ref}></DaumPostBox>
             </Inputbox>{" "}

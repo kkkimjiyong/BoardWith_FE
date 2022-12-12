@@ -156,17 +156,23 @@ export const DetailModal = ({
       console.log(res.data);
     });
     dispatch(__getComments(postid));
-  }, [setModifyModalOpen, modifyModalOpen]);
+  }, [setModifyModalOpen, modifyModalOpen, x, y]);
 
   useEffect(() => {
     // 파티장인지 확인
     item?.nickName === nickName ? setIsHost(true) : setIsHost(false);
 
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
-    setX(detail?.data?.location?.x);
-    setY(detail?.data?.location?.y);
+    // setX(detail?.data.location?.x);
+    // setY(detail?.data?.location?.y);
+    setX(detail?.data.location?.x);
+    setY(detail?.data.location?.y);
+    console.log("안녕");
+
     // 카카오맵 api 사용해서 지도 띄우기
-    if (loading === false) {
+    if (document?.getElementById("map")) {
+      console.log(x, y);
+      console.log("안녕");
       const container = document?.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(y, x),
@@ -188,7 +194,7 @@ export const DetailModal = ({
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
     );
   }, [postApi.getDetailId(postid)]);
-
+  //
   // console.log("comments", comments);
 
   useEffect(() => {
@@ -200,7 +206,7 @@ export const DetailModal = ({
     } else {
       setIsClosed(false);
     }
-  }, []);
+  }, [item]);
 
   // console.log(isHost);
 
@@ -724,17 +730,16 @@ const ListWrap = styled.div`
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
-  @media only screen and (min-width: 1200px) {
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #898989;
-      //스크롤바에 마진준것처럼 보이게
-      background-clip: padding-box;
-      border: 4px solid transparent;
-      border-radius: 15px;
-    }
+
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #898989;
+    //스크롤바에 마진준것처럼 보이게
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 15px;
   }
 `;
 
