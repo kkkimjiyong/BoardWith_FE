@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import detail from "../../Test/DetailPostsSlice";
 import comments from "../modules/CommentsSlice";
-import posts from "../modules/postsSlice";
 
 const store = configureStore({
   reducer: {
-    posts,
     detail: detail,
     comments: comments,
   },

@@ -343,7 +343,7 @@ const MainHeader = styled.div`
   width: 100%;
   background-color: var(--black);
   box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 20;
+  z-index: 2;
   color: white;
   padding: 3.5% 4% 3.5% 3%;
   display: flex;

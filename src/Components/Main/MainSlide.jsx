@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Item from "../Main/MainCard";
 import MainFilter from "./MainFilter";
