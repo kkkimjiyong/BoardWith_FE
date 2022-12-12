@@ -54,6 +54,11 @@ instance.interceptors.response.use(
           alert("로그인을 다시 해주세요");
           window.location.replace("/");
         }
+        if (err.response.data.code === 999) {
+          console.log("여기 999이에요!!!");
+          alert("이미 다른 곳에서 로그인 되어있습니다!");
+          window.location.replace("/");
+        }
         new Error(err);
       }
     }
