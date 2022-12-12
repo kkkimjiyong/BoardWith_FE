@@ -453,10 +453,6 @@ export const DetailModal = ({
                           } else {
                             setAlert(true);
                             setContent("마감된 모임입니다!");
-                            setConfirm(true);
-                            setconfirmContent("확인");
-                            setconfirmAdress("/");
-                            setcancelContent("취소");
                           }
                         }}
                       >
