@@ -222,7 +222,7 @@ const MyPage = () => {
           <LikeGameCtn>
             <LikeGameBox>
               {likeGame?.map((game) => {
-                if (likeGame.length >= 2) return <LikeGame>{game}</LikeGame>;
+                return <LikeGame>{game}</LikeGame>;
               })}
             </LikeGameBox>
           </LikeGameCtn>
@@ -338,12 +338,12 @@ const Wrapper = styled.div`
 `;
 
 const MainHeader = styled.div`
-  position: sticky;
+  position: absolute;
   top: 0;
   width: 100%;
   background-color: var(--black);
   box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 100;
+  z-index: 20;
   color: white;
   padding: 3.5% 4% 3.5% 3%;
   display: flex;

@@ -99,18 +99,19 @@ const MainSlide = () => {
     }
   };
   //? --------------- get User --------------------
-  const getUser = async () => {
-    try {
-      const { data } = await userApi.getUser();
-      console.log(data.findUser.bookmarkData);
-      setUserBook(data.findUser.bookmark);
-      setIsTutorial(data.findUser.tutorial);
-      setSelfCheck(data.findUser.loginCheck);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { data } = await userApi.getUser();
+        console.log(data.findUser.bookmarkData);
+        setUserBook(data.findUser.bookmark);
+        setIsTutorial(data.findUser.tutorial);
+        setSelfCheck(data.findUser.loginCheck);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getUser();
   }, []);
 
