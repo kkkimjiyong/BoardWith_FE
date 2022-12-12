@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getDistance } from "geolib";
-import { useDispatch } from "react-redux";
-import { addDistance } from "../../redux/modules/postsSlice";
 import { useNavigate } from "react-router-dom";
 import { DetailModal } from "../../Components/Detail/DetailModal";
 import { postsApi } from "../../instance";

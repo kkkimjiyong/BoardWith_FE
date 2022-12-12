@@ -12,7 +12,7 @@ import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 import Layout from "../../style/Layout.js";
 import { useDispatch } from "react-redux";
-import { addUserData } from "../../redux/modules/postsSlice.js";
+import { addUserData } from "../../redux/modules/CommentsSlice.js";
 
 const SignUp1 = () => {
   const navigate = useNavigate();

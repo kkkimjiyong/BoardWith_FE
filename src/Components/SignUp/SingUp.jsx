@@ -11,7 +11,7 @@ import { useState } from "react";
 import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
 import { useDispatch } from "react-redux";
-import { addUserData } from "../../redux/modules/postsSlice.js";
+import { addUserData } from "../../redux/modules/CommentsSlice.js";
 import AlertModal from "../AlertModal.js";
 
 const SignUp = () => {
@@ -21,7 +21,6 @@ const SignUp = () => {
   const [dupNickName, setDupNickName] = useState(false);
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
-  const [address, setAddress] = useState();
 
   //yup을 이용한 유효섬겅증방식
   const formSchema = yup.object({

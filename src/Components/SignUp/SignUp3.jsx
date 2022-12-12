@@ -8,16 +8,13 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpApi } from "../../instance.js";
 import { useState } from "react";
-import axios from "axios";
-import useInput from "../../hooks/UseInput.js";
+
 import Layout from "../../style/Layout.js";
 import { useSelector } from "react-redux";
 import AlertModal from "../AlertModal.js";
 
 const SignUp3 = () => {
-  const initialState = { phoneNumber: "", verifyCode: "" };
-  const [user, setUser, onChange] = useInput(initialState);
-  const userInfo = useSelector((state) => state.posts.user);
+  const userInfo = useSelector((state) => state.comments.user);
 
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
