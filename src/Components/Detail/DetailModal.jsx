@@ -170,7 +170,7 @@ export const DetailModal = ({
     console.log("안녕");
 
     // 카카오맵 api 사용해서 지도 띄우기
-    if (document?.getElementById("map")) {
+    if (loading === false) {
       console.log(x, y);
       console.log("안녕");
       const container = document?.getElementById("map");
