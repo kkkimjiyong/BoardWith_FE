@@ -147,7 +147,8 @@ const ChatRoom = () => {
     socket.on("banUsers", (msg) => {
       console.log("밴강퇴", msg, owner?.nickName);
       if (msg == owner?.nickName) {
-        alert("강퇴되었습니다!");
+        setAlert(true);
+        setContent("강퇴되었습니다!");
         navigate("/main");
         socket.disconnect();
       }

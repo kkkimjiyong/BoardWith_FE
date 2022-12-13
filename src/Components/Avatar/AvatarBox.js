@@ -113,6 +113,8 @@ const SqrCtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform: translateZ(-5px);
 `;
 
 const HairCtn = styled.div`

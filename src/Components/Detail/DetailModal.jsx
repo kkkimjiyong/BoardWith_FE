@@ -632,6 +632,9 @@ const BackGroudModal = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 998;
+  //모바일 z-index 이슈 해결
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform: translateZ(-5px);
   /* position: fixed;
   left: 50%;
   top: 50vh;
