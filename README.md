@@ -24,13 +24,13 @@
 
 
 |**팀원**|**블로그**|**깃허브**|
-|:--------:|:---:|:---:|
-|김지용|https://haardy.tistory.com/|https://github.com/kkkimjiyong|
-|김수진|https://resolute-wineberry-8e7.notion.site/99-d5e1109ce701429f9cc2c932a4b92285|https://github.com/kasucco|
-|정원지|https://1zung.tistory.com/|https://github.com/jee09|
-|조민수|https://iceflower.tistory.com/|https://github.com/talli0505|
-|서수형|https://velog.io/@seosu2000|https://github.com/SoohyungSeo|
-|백이현|https://mement-m0ri.tistory.com/|https://github.com/JadeBeck|
+|:-------:|:---:|:---:|
+|김지용|[김지용의 블로그](https://haardy.tistory.com/)|[김지용의 깃허브](https://github.com/kkkimjiyong)|
+|김수진|[김수진의 블로그](https://resolute-wineberry-8e7.notion.site/99-d5e1109ce701429f9cc2c932a4b92285)|[김수진의 깃허브](https://github.com/kasucco)|
+|정원지|[정원지의 블로그](https://1zung.tistory.com/)|[정원지의 깃허브](https://github.com/jee09)|
+|조민수|[조민수의 블로그](https://iceflower.tistory.com/)|[조민수의 깃허브](https://github.com/talli0505)|
+|서수형|[서수형의 블로그](https://velog.io/@seosu2000)|[서수형의 깃허브](https://github.com/SoohyungSeo)|
+|백이현|[백이현의 블로그](https://mement-m0ri.tistory.com/)|[백이현의 깃허브](https://github.com/JadeBeck)|
 
 <br>
 
