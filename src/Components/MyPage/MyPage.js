@@ -338,12 +338,12 @@ const Wrapper = styled.div`
 `;
 
 const MainHeader = styled.div`
-  position: sticky;
+  position: absolute;
   top: 0;
   width: 100%;
   background-color: var(--black);
   box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 100;
+  z-index: 7;
   color: white;
   padding: 3.5% 4% 3.5% 3%;
   display: flex;
@@ -377,7 +377,7 @@ const RowBox = styled.div`
 `;
 
 const ProfileCtn = styled.div`
-  z-index: 10;
+  z-index: 5;
   width: 100%;
   display: flex;
   flex-direction: column;
