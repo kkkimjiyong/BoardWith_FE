@@ -18,8 +18,8 @@ const Search = () => {
   const [ModalOpen, setModalOpen] = useState();
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
-  const [search, setSearch] = useState(false);
-  const [search1, setSearch1] = useState(false);
+  const [search, setSearch] = useState(true);
+  const [search1, setSearch1] = useState(true);
 
   const creatTitlePost = async () => {
     setLoading(true);
