@@ -136,7 +136,7 @@ const EditUser = ({
 };
 
 const Wrapper = styled.div`
-  z-index: 12;
+  z-index: 1;
   bottom: ${({ openEdit }) => (openEdit ? "0%" : "-30%")};
   position: absolute;
   display: flex;
