@@ -90,17 +90,6 @@
 <br>
 <img alt="Socket.io" src ="https://img.shields.io/badge/Socket.io-010101.svg?&style=for-the-badge&logo=Socket.io&logoColor=white"/> <img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white"/> <img alt="Amazon EC2" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=Amazon EC2&logoColor=white"/> <img alt="social login KakaoTalk" src ="https://img.shields.io/badge/social login KakaoTalk-FFCD00.svg?&style=for-the-badge&logo=KakaoTalk&logoColor=black"/> <img alt="Express" src ="https://img.shields.io/badge/Express-000000.svg?&style=for-the-badge&logo=Express&logoColor=white"/>
 
-#### 🕹 ERD
-<details>
-  <summary>ERD 사진</summary>
-  <img src="https://user-images.githubusercontent.com/87609692/205525590-c0404b20-0476-44af-a413-626bee28ac20.png"></img>
-</details>
-
-#### 🕹 Swagger
-<details>
-  <summary>Swagger 사진</summary>
-  <img src="https://user-images.githubusercontent.com/87609692/205597720-e52a5fcb-51f1-4235-be2f-f27884619695.png"></img>
-</details>
 
 #### 🕹 트러블 슈팅
 <h3>BE</h3>
