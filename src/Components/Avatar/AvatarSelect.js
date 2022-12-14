@@ -205,14 +205,13 @@ const AvatarSelect = () => {
               onMouseUp={onDragEnd}
               onMouseLeave={onDragEnd}
             >
-              {" "}
               {ImgList.map((Img) => {
-                if (Img.Category == selectCategory)
+                if (Img.Category === selectCategory)
                   return (
                     <ImgItemCtn
                       className={
-                        select.Num == Img.Num &&
-                        select.Category == Img.Category &&
+                        select.Num === Img.Num &&
+                        select.Category === Img.Category &&
                         "selected"
                       }
                     >
@@ -234,7 +233,7 @@ const AvatarSelect = () => {
                       </div>
                     </ImgItemCtn>
                   );
-              })}{" "}
+              })}
             </AvatarItemListCtn>
             <AvatarBtnSet>
               <ChangeBtn onClick={discountPoint}>변경하기</ChangeBtn>
@@ -243,7 +242,7 @@ const AvatarSelect = () => {
                 초기화
               </ResetBtn>
             </AvatarBtnSet>
-          </AvatarItemCtn>{" "}
+          </AvatarItemCtn>
         </AvatarSelectCtn>
       </Wrap>
     );
