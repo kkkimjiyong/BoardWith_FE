@@ -11,7 +11,6 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
-import moment from "moment-timezone";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import { AiOutlineMessage } from "@react-icons/all-files/ai/AiOutlineMessage";
 import { AiOutlineCalendar } from "@react-icons/all-files/ai/AiOutlineCalendar";
@@ -60,20 +59,25 @@ export const DetailModal = ({
   console.log(modifyModalOpen);
   // 수정
 
-  //? ---------------시간 (나중에 리팩토링) ----------------
-  const startDate = detail?.data?.time?.[0];
-  const endDate = detail?.data?.time?.[1];
-  const getStartTime = (startDate) => {
-    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
-    return m.format("MM.DD (ddd) HH:mm");
-  };
-  const getEndTime = (endDate) => {
-    var m = moment(endDate).tz("Asia/Seoul");
-    return m.format("HH:mm");
-  };
-  const realStartTime = getStartTime(startDate);
-  const realEndTime = getEndTime(endDate);
-  // console.log(realStartTime, realEndTime);
+  //요일시간 표기
+  const IsoStartDate = item?.time?.[0];
+  const IsoendDate = item?.time?.[1];
+  const startDate = new Date(IsoStartDate);
+  const endDate = new Date(IsoendDate);
+
+  const week = ["일", "월", "화", "수", "목", "금", "토"];
+
+  const showTime =
+    ("0" + (startDate.getMonth() + 1)).slice(-2) +
+    "." +
+    ("0" + startDate.getDate()).slice(-2) +
+    " (" +
+    week[startDate.getDay()] +
+    ") " +
+    startDate.getHours() +
+    ":00 ~ " +
+    endDate.getHours() +
+    ":00";
   // console.log(startDate, endDate);
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
@@ -87,7 +91,8 @@ export const DetailModal = ({
       .closeParty(postid)
       .then((res) => {
         setIsClosed(true);
-        alert("파티원 모집이 마감되었습니다");
+        setAlert(true);
+        setContent("파티원 모집이 마감되었습니다.");
         console.log("성공", res);
         // console.log("isClosed", isClosed);
       })
@@ -110,7 +115,8 @@ export const DetailModal = ({
       })
       .then((res) => {
         setIsClosed(false);
-        alert("파티원 모집을 다시 시작합니다.");
+        setAlert(true);
+        setContent("파티원 모집을 다시 시작합니다.");
         console.log("성공", res);
       })
       .catch((error) => {
@@ -121,11 +127,14 @@ export const DetailModal = ({
   //코멘트 입력 핸들러-----------------------------------------
   const commentOnsumitHandler = () => {
     if (comment.comment === "") {
-      alert("댓글 내용을 입력해주세요");
+      setAlert(true);
+      setContent("댓글 내용을 입력해주세요.");
     } else {
       console.log("댓글입력");
       dispatch(__postComments({ comment, postid }));
       setComment(initialState);
+      setAlert(true);
+      setContent("참여 신청 완료!");
     }
   };
   //console.log("isCommentAuthor", isCommentAuthor);
@@ -151,17 +160,23 @@ export const DetailModal = ({
       console.log(res.data);
     });
     dispatch(__getComments(postid));
-  }, [setModifyModalOpen, modifyModalOpen]);
+  }, [setModifyModalOpen, modifyModalOpen, x, y]);
 
   useEffect(() => {
     // 파티장인지 확인
     item?.nickName === nickName ? setIsHost(true) : setIsHost(false);
 
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
-    setX(detail?.data?.location?.x);
-    setY(detail?.data?.location?.y);
+    // setX(detail?.data.location?.x);
+    // setY(detail?.data?.location?.y);
+    setX(detail?.data.location?.x);
+    setY(detail?.data.location?.y);
+    console.log("안녕");
+
     // 카카오맵 api 사용해서 지도 띄우기
     if (loading === false) {
+      console.log(x, y);
+      console.log("안녕");
       const container = document?.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(y, x),
@@ -183,7 +198,7 @@ export const DetailModal = ({
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
     );
   }, [postApi.getDetailId(postid)]);
-
+  //
   // console.log("comments", comments);
 
   useEffect(() => {
@@ -195,7 +210,7 @@ export const DetailModal = ({
     } else {
       setIsClosed(false);
     }
-  }, []);
+  }, [item]);
 
   // console.log(isHost);
 
@@ -384,7 +399,7 @@ export const DetailModal = ({
                         size="23px"
                       />
                       <div />
-                      <h5>{realStartTime + " ~ " + realEndTime}</h5>{" "}
+                      <h5>{showTime}</h5>
                       {/* 날짜 */}
                     </StContentWrap>
                     <StContentWrap>
@@ -442,10 +457,6 @@ export const DetailModal = ({
                           } else {
                             setAlert(true);
                             setContent("마감된 모임입니다!");
-                            setConfirm(true);
-                            setconfirmContent("확인");
-                            setconfirmAdress("/");
-                            setcancelContent("취소");
                           }
                         }}
                       >
@@ -546,6 +557,8 @@ export const DetailModal = ({
                           <input
                             value={comment.comment}
                             type="text"
+                            minlength="1"
+                            maxlength="20"
                             placeholder="신청 내용을 입력하세요"
                             onChange={(e) => {
                               const { value } = e.target;
@@ -652,12 +665,17 @@ const StCommentbull = styled.div`
 `;
 
 const StCommentTitle = styled.div`
-  padding: 0 3%;
+  padding: 4%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  > h3 {
+    margin: 0 15px;
+    max-width: 90%;
+  }
   > h5 {
     cursor: pointer;
+    min-width: 45px;
   }
 `;
 
@@ -701,10 +719,11 @@ const ListWrap = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-  transition: height 400ms ease-in-out;
+  transition: height 4000ms ease-in-out;
   .innerDiv {
     position: absolute;
     width: 100%;
+
     background-color: #d7d7d7;
     height: 30px;
     line-height: 30px;
@@ -865,4 +884,5 @@ const Btnbox = styled.div`
 const StAvatarContainer = styled.div`
   position: relative;
   width: 100%;
+  cursor: pointer;
 `;

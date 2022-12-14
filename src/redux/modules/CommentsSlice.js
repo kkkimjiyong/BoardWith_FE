@@ -6,6 +6,7 @@ const initialState = {
   comments: [],
   isLoading: false,
   error: null,
+  user: {},
 };
 //댓글가져오기
 export const __getComments = createAsyncThunk(
@@ -79,7 +80,11 @@ export const __editComment = createAsyncThunk(
 export const CommentsSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {},
+  reducers: {
+    addUserData: (state, action) => {
+      state.user = { ...state.user, ...action.payload };
+    },
+  },
   extraReducers: {
     [__getComments.pending]: (state) => {
       state.isLoading = true;
@@ -172,5 +177,5 @@ export const CommentsSlice = createSlice({
   },
 });
 
-export const {} = CommentsSlice.actions;
+export const { addUserData } = CommentsSlice.actions;
 export default CommentsSlice.reducer;

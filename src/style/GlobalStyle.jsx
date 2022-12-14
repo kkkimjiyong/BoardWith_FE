@@ -21,19 +21,36 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'SpoqaHanSansNeo-Regular';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff') format('woff');
     font-display: swap
+    font-weight: normal;
+    font-style: normal;
 }
-  *, *::before, *::after {
-font-family: 'NanumSquare';    box-sizing: border-box;
+ 
+  @font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap
+}
+
+
+
+*, *::before, *::after {
+font-family: 'GmarketSansMedium';    box-sizing: border-box;
   }
 
   body { 
     margin:0;
     overflow-x: hidden;
-    font-family: 'NanumSquare';
+    font-family: 'GmarketSansMedium';
     font-size: 17px;
     line-height: 24px;
     color: var(--gray-900);
     display: block;
+  }
+
+  button{
+    cursor: pointer;
   }
 
   input {

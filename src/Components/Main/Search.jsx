@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import Skeleton from "./Skeleton";
 import { postsApi, userApi } from "../../instance";
 import MobileHeader from "../../style/MobileHeader";
-import Loading from "../../style/Loading";
 import AlertModal from "../AlertModal";
 
 const Search = () => {
@@ -19,36 +18,45 @@ const Search = () => {
   const [ModalOpen, setModalOpen] = useState();
   const [alert, setAlert] = useState(false);
   const [content, setContent] = useState();
+  const [search, setSearch] = useState(true);
+  const [search1, setSearch1] = useState(true);
 
   const creatTitlePost = async () => {
     setLoading(true);
     try {
       const { data } = await postsApi.getSearchTitle(keyWord);
       console.log(data.data);
-
       setTitleSearch(data.data);
+      if (data.data.length === 0) {
+        setSearch(false);
+      }
       setTimeout(() => {
         setLoading(false);
       }, 1000);
-      if (data.data.length === 0) {
-        setAlert(true);
-        setContent("검색한 정보가 없습니다.");
-      }
     } catch (error) {}
   };
+
+  useEffect(() => {
+    if (!search1 && !search) {
+      setAlert(true);
+      setContent("검색한 정보가 없습니다.");
+      setSearch(true);
+      setSearch1(true);
+    }
+  }, [search1, search, nicknameSearch, titleSearch]);
+
   const creatNicknamePost = async () => {
     setLoading(true);
     try {
       const { data } = await postsApi.getSearchNickname(keyWord);
       console.log(data.data);
       setNicknameSearch(data.data);
+      if (data.data.length === 0) {
+        setSearch1(false);
+      }
       setTimeout(() => {
         setLoading(false);
       }, 1000);
-      if (data.data.length === 0) {
-        setAlert(true);
-        setContent("검색한 정보가 없습니다.");
-      }
     } catch (error) {}
   };
 

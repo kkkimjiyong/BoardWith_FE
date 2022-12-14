@@ -50,7 +50,7 @@ const OtherUserPage = () => {
     return (
       <Wrapper>
         <MainHeader>
-          <Arrow className="head" onClick={() => navigate("/main")} />
+          <Arrow className="head" onClick={() => navigate(-1)} />
           <div className="headtxt">{user?.nickName}님</div>
           <div></div>
         </MainHeader>

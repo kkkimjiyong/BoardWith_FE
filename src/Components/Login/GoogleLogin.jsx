@@ -194,7 +194,7 @@ const KaKaoLogin = () => {
                 <InputBirth
                   id="male"
                   type="radio"
-                  value={"male"}
+                  value={"남자"}
                   {...register("gender")}
                 ></InputBirth>
 
@@ -202,7 +202,7 @@ const KaKaoLogin = () => {
                 <InputBirth
                   id="female"
                   type="radio"
-                  value={"female"}
+                  value={"여자"}
                   {...register("gender")}
                 ></InputBirth>
               </RowBox>

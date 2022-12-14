@@ -182,7 +182,7 @@ const MyPage = () => {
             content={content}
           />
         )}
-        <MainHeader>
+        <MainHeader ModalOpen={ModalOpen}>
           {openEdit ? (
             <AiOutlineClose
               size={"26"}
@@ -222,7 +222,7 @@ const MyPage = () => {
           <LikeGameCtn>
             <LikeGameBox>
               {likeGame?.map((game) => {
-                if (likeGame.length >= 2) return <LikeGame>{game}</LikeGame>;
+                return <LikeGame>{game}</LikeGame>;
               })}
             </LikeGameBox>
           </LikeGameCtn>
@@ -343,7 +343,7 @@ const MainHeader = styled.div`
   width: 100%;
   background-color: var(--black);
   box-shadow: 0px 0.5px 15px 0.1px black;
-  z-index: 7;
+  z-index: ${({ ModalOpen }) => (ModalOpen ? 19 : 21)};
   color: white;
   padding: 3.5% 4% 3.5% 3%;
   display: flex;
@@ -377,7 +377,7 @@ const RowBox = styled.div`
 `;
 
 const ProfileCtn = styled.div`
-  z-index: 5;
+  z-index: 20;
   width: 100%;
   display: flex;
   flex-direction: column;

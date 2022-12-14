@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Item from "../Main/MainCard";
 import MainFilter from "./MainFilter";
@@ -16,6 +15,7 @@ import Tutorial from "../../Components/Tutorial/Tutorial";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import AlertModal from "../../Components/AlertModal";
 import Loading from "../../style/Loading";
+import { load } from "react-cookies";
 
 const MainSlide = () => {
   const [targetMargin, setTargetMargin] = useState(0);
@@ -70,7 +70,9 @@ const MainSlide = () => {
   }
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(success, error, options);
+    if (loading) {
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    }
 
     //로딩화면을 보여주고, 메인페이지를 불러오자. (로고도 보여줄겸)
     setTimeout(() => setLoading(false), 1000);
@@ -78,39 +80,41 @@ const MainSlide = () => {
 
   //newcardData는 기존 배열에 distance값이 추가된 배열입니다.
 
-  //!복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
   const new2 = [...nearPost];
 
   // *이건 가장 가까운순으로 정렬한 배열 => 사용자가 버튼을 누르면 이 배열로 map이 돌아가야함.
   const neardata = new2.sort((a, b) => a.distance - b.distance);
-  const exceptUser = neardata.filter(
-    (post) => post.nickName !== sessionStorage.getItem("nickName")
-  );
+  const [exceptUser] = neardata
+    .filter((post) => post.nickName !== sessionStorage.getItem("nickName"))
+    .slice(0, 1);
+
+  //!복사를 해주지않으면, 첫 랜더링시에 아래 sort함수가 작동하지않습니다. (이유는 좀 더 찾아봐야함)
 
   console.log(exceptUser);
 
   const nearFilterHandler = () => {
     if (Myaddress) {
-      // setItems(neardata);
       setNearModalOpen(true);
+      // setItems(neardata);
     } else {
       setAlert(true);
       setContent("위치 허용을 누르셔야 이용가능합니다!");
     }
   };
   //? --------------- get User --------------------
-  const getUser = async () => {
-    try {
-      const { data } = await userApi.getUser();
-      console.log(data.findUser.bookmarkData);
-      setUserBook(data.findUser.bookmark);
-      setIsTutorial(data.findUser.tutorial);
-      setSelfCheck(data.findUser.loginCheck);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { data } = await userApi.getUser();
+        console.log(data.findUser.bookmarkData);
+        setUserBook(data.findUser.bookmark);
+        setIsTutorial(data.findUser.tutorial);
+        setSelfCheck(data.findUser.loginCheck);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getUser();
   }, []);
 
@@ -244,8 +248,8 @@ const MainSlide = () => {
         {/* //! 가장 가까운 모임 보여주는 모달창 */}
         {NearModalOpen && (
           <DetailModal
-            item={exceptUser[0]}
-            postid={exceptUser[0]._id}
+            item={exceptUser}
+            postid={exceptUser._id}
             setModalOpen={setNearModalOpen}
             setModifyModalOpen={setModifyModalOpen}
           />
