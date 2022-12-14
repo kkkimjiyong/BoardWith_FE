@@ -1,15 +1,15 @@
-# 🎮 보드 윗(Board With) 🎮
+## 🎮 보드 윗(Board With) 🎮
 
 <p align='center'>
 <img  width="80%" src="https://i.ibb.co/R0Tw1Fs/Kakao-Talk-20221208-232135692.png" alt="Kakao-Talk-20221208-232135692" border="0">
 </p>
 <br>
 
-# 🎁[보드 윗 노션 바로가기](https://brief-efraasia-82e.notion.site/board-with-c923e853540941589be0f4f4984022f4)
+### 🎁[보드 윗 노션 바로가기](https://brief-efraasia-82e.notion.site/board-with-c923e853540941589be0f4f4984022f4)
 
 <br>
 
-# 🕹 팀원 소개
+### 🕹 팀원 소개
 
 |**팀원**|**주특기**|**맡은 파트**|
 |:-----:|:-----:|:-----:|
@@ -35,7 +35,7 @@
 
 <br>
 
-# 🕹 프로젝트 소개
+### 🕹 프로젝트 소개
 
 평범한 일상 속에서 보드게임을 한다고 가정 해볼까요?
 
@@ -51,7 +51,7 @@
 
 <br>
 
-# 🕹 페이지 소개
+### 🕹 페이지 소개
 
 |`로그인 페이지`|`메인 페이지`|`상세 페이지`|`신청 페이지`|
 |:-----:|:-----:|:-----:|:-----:|
@@ -63,7 +63,7 @@
 
 <br>
 
-# 🕹 기능 소개
+### 🕹 기능 소개
 
 **회원가입**
 - 기본 회원 가입과 소셜을 통한 회원가입
@@ -87,7 +87,7 @@
 
 <br>
 
-# 🕹 깃허브
+### 🕹 깃허브
 
 ### 💻 Front-End
 
@@ -103,32 +103,32 @@
 
 <br>
 
-# 🕹 Front-End Tool
+### 🕹 Front-End Tool
   <img src='https://img.shields.io/badge/React-v17.0.2-61DAFB?logo=React'/><img src='https://img.shields.io/badge/ReactRouter-v5.2.1-CA4245?logo=React Router'/><img src='https://img.shields.io/badge/StyledComponents-v5.3.3-DB7093?logo=styled-components'/>
   <img src='https://img.shields.io/badge/Redux-v4.1.2-764ABC?logo=Redux'/>
   <img src='https://img.shields.io/badge/immer-v9.0.12-00E7C3?logo=immer'/>
   <img src='https://img.shields.io/badge/yarn-v1.22.15-blue?logo=yarn'/>
   <img src='https://img.shields.io/badge/prettier-v9.5.0-F7B93E?logo=prettier'/>
   <img src='https://img.shields.io/badge/eslint-v7.11.0-4B32C3?logo=eslint'/>
-# 🕹 Back-End Tool
+### 🕹 Back-End Tool
 
 <img alt="JavaScript" src ="https://img.shields.io/badge/JavaScriipt-F7DF1E.svg?&style=for-the-badge&logo=JavaScript&logoColor=black"/> <img alt="Pm2" src ="https://img.shields.io/badge/pm2-2B037A.svg?&style=for-the-badge&logo=pm2&logoColor=white"/> <img alt="Nginx" src ="https://img.shields.io/badge/nginx-009639.svg?&style=for-the-badge&logo=nginx&logoColor=white"/> <img alt="JSON Web Tokens" src ="https://img.shields.io/badge/JSON Web Tokens-000000.svg?&style=for-the-badge&logo=JSON Web Tokens&logoColor=white"/> <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-47A248.svg?&style=for-the-badge&logo=MongoDB&logoColor=white"/> <img alt="Node.js" src ="https://img.shields.io/badge/Node.js-339933.svg?&style=for-the-badge&logo=Node.js&logoColor=white"/>
 <br>
 <img alt="Socket.io" src ="https://img.shields.io/badge/Socket.io-010101.svg?&style=for-the-badge&logo=Socket.io&logoColor=white"/> <img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white"/> <img alt="Amazon EC2" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=Amazon EC2&logoColor=white"/> <img alt="social login KakaoTalk" src ="https://img.shields.io/badge/social login KakaoTalk-FFCD00.svg?&style=for-the-badge&logo=KakaoTalk&logoColor=black"/> <img alt="Express" src ="https://img.shields.io/badge/Express-000000.svg?&style=for-the-badge&logo=Express&logoColor=white"/>
 
-## 🕹 ERD
+#### 🕹 ERD
 <details>
   <summary>ERD 사진</summary>
   <img src="https://user-images.githubusercontent.com/87609692/205525590-c0404b20-0476-44af-a413-626bee28ac20.png"></img>
 </details>
 
-## 🕹 Swagger
+#### 🕹 Swagger
 <details>
   <summary>Swagger 사진</summary>
   <img src="https://user-images.githubusercontent.com/87609692/205597720-e52a5fcb-51f1-4235-be2f-f27884619695.png"></img>
 </details>
 
-## 🕹 트러블 슈팅
+#### 🕹 트러블 슈팅
 <h3>BE</h3>
 <details>
   <summary>MySQL -> MongoDB</summary>
