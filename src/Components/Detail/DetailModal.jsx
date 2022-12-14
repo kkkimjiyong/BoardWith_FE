@@ -22,7 +22,7 @@ import { FaBullhorn } from "@react-icons/all-files/fa/FaBullhorn";
 import { FaCrown } from "@react-icons/all-files/fa/FaCrown";
 import { BsPeopleFill, BsArrowUpCircle, BsChevronLeft } from "react-icons/bs";
 import AvatarBox from "../Avatar/AvatarBox";
-import Modify from "../../Pages/Main/Modify";
+import Modify from "../Main/Modify";
 import AlertModal from "../AlertModal";
 
 const { kakao } = window;
@@ -52,6 +52,10 @@ export const DetailModal = ({
   const [modifyModalOpen, setModifyModalOpen] = useState(false);
   const [alert, setAlert] = useState();
   const [content, setContent] = useState();
+  const [confirm, setConfirm] = useState();
+  const [confirmAdress, setconfirmAdress] = useState();
+  const [confirmContent, setconfirmContent] = useState();
+  const [cancelContent, setcancelContent] = useState();
 
   console.log(modifyModalOpen);
   // 수정
@@ -152,17 +156,23 @@ export const DetailModal = ({
       console.log(res.data);
     });
     dispatch(__getComments(postid));
-  }, [setModifyModalOpen, modifyModalOpen]);
+  }, [setModifyModalOpen, modifyModalOpen, x, y]);
 
   useEffect(() => {
     // 파티장인지 확인
     item?.nickName === nickName ? setIsHost(true) : setIsHost(false);
 
     //받은 게시글 데이터에서 위치의 위도, 경도 저장
-    setX(detail?.data?.location?.x);
-    setY(detail?.data?.location?.y);
+    // setX(detail?.data.location?.x);
+    // setY(detail?.data?.location?.y);
+    setX(detail?.data.location?.x);
+    setY(detail?.data.location?.y);
+    console.log("안녕");
+
     // 카카오맵 api 사용해서 지도 띄우기
     if (loading === false) {
+      console.log(x, y);
+      console.log("안녕");
       const container = document?.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(y, x),
@@ -184,7 +194,7 @@ export const DetailModal = ({
       (comment) => nickName === comment?.nickName && setIsCommentAuthor(true)
     );
   }, [postApi.getDetailId(postid)]);
-
+  //
   // console.log("comments", comments);
 
   useEffect(() => {
@@ -196,7 +206,7 @@ export const DetailModal = ({
     } else {
       setIsClosed(false);
     }
-  }, []);
+  }, [item]);
 
   // console.log(isHost);
 
@@ -256,7 +266,16 @@ export const DetailModal = ({
 
   return (
     <BackGroudModal>
-      {alert && <AlertModal setAlert={setAlert} content={content} />}
+      {alert && (
+        <AlertModal
+          setAlert={setAlert}
+          content={content}
+          confirmAddress={confirmAdress}
+          cancelContent={cancelContent}
+          confirmContent={confirmContent}
+          confirm={confirm}
+        />
+      )}
       <StContainers onClick={() => setModalOpen(false)}>
         {loading ? (
           <>
@@ -424,10 +443,16 @@ export const DetailModal = ({
                             if (sessionStorage.getItem("accessToken")) {
                               setOpen((open) => !open);
                             } else {
-                              alert("로그인이 필요한 기능입니다.");
+                              setAlert(true);
+                              setContent("로그인이 필요한 기능입니다.");
+                              setConfirm(true);
+                              setconfirmContent("확인");
+                              setconfirmAdress("/");
+                              setcancelContent("취소");
                             }
                           } else {
-                            alert("마감된 모임입니다!");
+                            setAlert(true);
+                            setContent("마감된 모임입니다!");
                           }
                         }}
                       >
@@ -607,6 +632,9 @@ const BackGroudModal = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 998;
+  //모바일 z-index 이슈 해결
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform: translateZ(-5px);
   /* position: fixed;
   left: 50%;
   top: 50vh;
@@ -633,7 +661,7 @@ const StCommentbull = styled.div`
 `;
 
 const StCommentTitle = styled.div`
-  padding: 0 3%;
+  padding: 4%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -701,17 +729,16 @@ const ListWrap = styled.div`
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
-  @media only screen and (min-width: 1200px) {
-    ::-webkit-scrollbar {
-      width: 15px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #898989;
-      //스크롤바에 마진준것처럼 보이게
-      background-clip: padding-box;
-      border: 4px solid transparent;
-      border-radius: 15px;
-    }
+
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #898989;
+    //스크롤바에 마진준것처럼 보이게
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 15px;
   }
 `;
 

@@ -2,9 +2,12 @@ import { style } from "@mui/system";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { userApi } from "../../instance";
+import AvatarBox from "../Avatar/AvatarBox";
+import Item from "../Main/MainCard";
 
 const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
   const [next, setNext] = useState(1);
+  const initialAvatar = { Eye: 1, Hair: 1, Back: 1, Mouth: 1 };
   const doneTutorial = async () => {
     setIsTutorial(true);
     try {
@@ -32,14 +35,22 @@ const Tutorial = ({ setIsTutorial, setSelfCheck }) => {
         </Filter>
       )}
       {next === 3 && (
-        <Avatar onClick={() => setNext(4)}>
+        <Avatar onClick={() => setNext(6)}>
           <BottomContentBox className="right">
             모임활동을 통해, 포인트를 얻어 아바타를 구매하세요!
           </BottomContentBox>
         </Avatar>
       )}
 
-      {next === 4 && (
+      {/* {next === 4 && (
+        <ModalBox onClick={() => setNext(5)}>모임을 클릭하세요!</ModalBox>
+      )} */}
+      {/* {next === 5 && (
+        <Item
+        // 여기에 더미데이터가 들어감.
+        />
+      )} */}
+      {next === 6 && (
         <DoneModal onClick={doneTutorial}>
           <DoneLine>
             {" "}
@@ -223,6 +234,27 @@ const DoneBtn = styled.div`
   align-items: center;
   background-color: var(--primary);
   :hover {
+    cursor: pointer;
+  }
+`;
+
+const ModalBox = styled.div`
+  position: absolute;
+  bottom: 23%;
+  right: 8%;
+  width: 87%;
+  height: 20%;
+  background-color: transparent;
+  border-radius: 10px;
+  display: flex;
+  color: white;
+  box-shadow: 0px 3px 5px 0px var(--primary);
+  justify-content: center;
+  align-items: center;
+  :hover {
+    box-shadow: 0px 3px 10px 0px var(--primary);
+
+    transform: scale(1.02);
     cursor: pointer;
   }
 `;

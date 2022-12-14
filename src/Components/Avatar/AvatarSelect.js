@@ -65,6 +65,7 @@ const AvatarSelect = () => {
 
   const avatarHandler = async (point) => {
     if (window.confirm(`총 ${point}가 남습니다. 구매하시겠습니까?`)) {
+      setAlert(true);
       try {
         const { data } = await userApi.avatarUser(userSelect);
         setContent("구매 성공!");
@@ -80,7 +81,6 @@ const AvatarSelect = () => {
       setPoint(initialpoint);
       setUserSelect(initialuserSelect);
     }
-    setAlert(true);
   };
 
   const getUser = async () => {
@@ -98,6 +98,10 @@ const AvatarSelect = () => {
       ]);
       setTimeout(() => setIsLoading(false), 1000);
     } catch (error) {
+      if (!sessionStorage.getItem("accessToken")) {
+        setAlert(true);
+        setContent("로그인이 필요한 페이지입니다!");
+      }
       console.log(error);
     }
   };
@@ -133,7 +137,22 @@ const AvatarSelect = () => {
   };
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <>
+        {alert && (
+          <AlertModal
+            setAlert={setAlert}
+            content={content}
+            confirm
+            confirmAddress={"/"}
+            confirmContent={"로그인"}
+            cancelContent={"취소"}
+            cancelAddress={-1}
+          />
+        )}
+        <Loading />
+      </>
+    );
   } else {
     return (
       <Wrap>
@@ -149,7 +168,7 @@ const AvatarSelect = () => {
         </AvatarCtn>
         <PointBox>
           <ImCoinDollar />
-          {point}
+          {point > 0 ? point : initialpoint}
         </PointBox>
         <AvatarSelectCtn>
           <AvatarCategory>
@@ -254,7 +273,7 @@ const AvatarHeader = styled.div`
   color: var(--white);
   background-color: var(--black);
   .headtxt {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     color: #fff;
     text-shadow: 0 0 7px #d90368, 0 0 10px #d90368, 0 0 21px #fff,

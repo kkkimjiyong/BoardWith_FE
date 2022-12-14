@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Avatar } from "../../Assets/Avatar/Standard.svg";
-
 const AvatarBox = ({
   userSelect,
   avatarScale,
@@ -115,6 +113,8 @@ const SqrCtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform: translateZ(-5px);
 `;
 
 const HairCtn = styled.div`

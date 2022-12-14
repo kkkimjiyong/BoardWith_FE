@@ -5,12 +5,32 @@ import { userApi } from "../instance";
 import LayoutLogo from "../Assets/MainLogo.png";
 import { useNavigate } from "react-router-dom";
 
-const AlertModal = ({ content, setAlert, address }) => {
+const AlertModal = ({
+  content,
+  setAlert,
+  address,
+  confirmContent,
+  cancelContent,
+  confirmAddress,
+  confirm,
+  cancelAddress,
+  confirmFunction,
+}) => {
   const navigate = useNavigate();
 
   const buttonHandler = () => {
     setAlert(false);
     navigate(address);
+  };
+
+  const confirmHandler = () => {
+    setAlert(false);
+    navigate(confirmAddress);
+    confirmFunction();
+  };
+  const cancelHandler = () => {
+    setAlert(false);
+    navigate(cancelAddress);
   };
 
   return (
@@ -21,9 +41,20 @@ const AlertModal = ({ content, setAlert, address }) => {
           <div>Board With</div>
           <CheckBox>
             <div>{content}</div>{" "}
-            <ContentBox className="Btn" onClick={() => buttonHandler()}>
-              확인
-            </ContentBox>
+            {confirm ? (
+              <ConfirmBox>
+                <ConfirmBtn onClick={confirmHandler}>
+                  {confirmContent}
+                </ConfirmBtn>
+                <ConfirmBtn className="right" onClick={cancelHandler}>
+                  {cancelContent}
+                </ConfirmBtn>
+              </ConfirmBox>
+            ) : (
+              <ContentBox className="Btn" onClick={buttonHandler}>
+                확인
+              </ContentBox>
+            )}
           </CheckBox>{" "}
           {/* <div className="btmTxt">누르면 메인페이지로 넘어갑니다.</div> */}
         </CheckCtn>
@@ -111,6 +142,31 @@ const ContentBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+`;
+
+const ConfirmBox = styled.div`
+  color: white;
+  position: absolute;
+  bottom: 0%;
+  margin: 0% 2.5%;
+  width: 100%;
+  height: 20%;
+  display: flex;
+`;
+const ConfirmBtn = styled.div`
+  background-color: var(--primary);
+  width: 50%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  :hover {
+    cursor: pointer;
+  }
+  &.right {
+    background-color: #9e9e9e;
+    margin-left: 5%;
   }
 `;
 

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { json, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "../../style/Layout";
 import Comments from "./Comment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "../../style/Loading";
+import AlertModal from "../AlertModal";
 
 import {
   faCalendar,
@@ -27,8 +27,6 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
-import { getCookie } from "../../hooks/CookieHook";
-
 const { kakao } = window;
 export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
   const dispatch = useDispatch();
@@ -46,6 +44,8 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
   const [y, setY] = useState();
   const [loading, setLoading] = useState(true);
   const [detail, setDetail] = useState();
+  const [alert, setAlert] = useState();
+  const [content, setContent] = useState();
   const { postid } = useParams();
 
   //게시글 편집 상태 핸들러
@@ -219,6 +219,17 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
 
   return (
     <BackGroudModal>
+      {alert && (
+        <AlertModal
+          setAlert={setAlert}
+          content={content}
+          confirm
+          confirmAddress={"/"}
+          confirmContent={"로그인"}
+          cancelContent={"취소"}
+          cancelAddress={"/main"}
+        />
+      )}
       <StContainers onClick={() => navigate("/main")}>
         {loading ? (
           <>
@@ -333,10 +344,13 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
                       <StButtonWrap>
                         <Stbutton
                           onClick={() => {
-                            if (getCookie("accesstoken") !== null) {
+                            if (
+                              sessionStorage.getItem("accesstoken") !== null
+                            ) {
                               setOpen((open) => !open);
                             } else {
-                              alert("로그인이 필요한 기능입니다.");
+                              setAlert(true);
+                              setContent("로그인이 필요한 기능입니다.");
                             }
                           }}
                         >
@@ -357,10 +371,11 @@ export const ShareDetailModal = ({ setModalOpen, ModalOpen }) => {
                       <Stbutton
                         className="innerDiv"
                         onClick={() => {
-                          if (getCookie("accesstoken") !== null) {
+                          if (sessionStorage.getItem("accesstoken") !== null) {
                             setOpen((open) => !open);
                           } else {
-                            alert("로그인이 필요한 기능입니다.");
+                            setAlert(true);
+                            setContent("로그인이 필요한 기능입니다.");
                           }
                         }}
                       >

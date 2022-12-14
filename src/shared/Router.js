@@ -1,19 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Main from "../Pages/Main/Main";
 import SignUpPage from "../Pages/SignUpPage";
 import LoginPage from "../Pages/LoginPage";
-import Mypage from "../Pages/Mypage";
-import Form from "../Pages/Main/Form";
+// import Mypage from "../Pages/Mypage";
+import Form from "../Components/Main/Form";
 import KaKaoLogin from "../Components/Login/KaKaoLogin";
 import ChatPage from "../Pages/ChatPage";
-import AvatarPage from "../Pages/AvatarPage";
+// import AvatarPage from "../Pages/AvatarPage";
 import FindPage from "../Pages/FindPage";
 import PracPage from "../Pages/PracPage";
 import RankingPage from "../Pages/RankingPage";
 import UserPage from "../Pages/UserPage";
 import SharePage from "../Pages/SharePage";
-import Search from "../Pages/Main/Search";
+import Search from "../Components/Main/Search";
 import { Suspense, lazy } from "react";
 import Loading from "../style/Loading";
 import LoginGoogle from "../Components/Login/GoogleLogin";
@@ -21,18 +20,19 @@ import SignUp1 from "../Components/SignUp/SignUp1";
 import SignUp2 from "../Components/SignUp/SingUp2";
 import SignUp3 from "../Components/SignUp/SignUp3";
 import NaverLogin from "../Components/Login/NaverLogin";
-import Modify from "../Pages/Main/Modify";
+import Modify from "../Components/Main/Modify";
+// import MainPage from "../Pages/MainPage";
 
-// const Main = lazy(() => import("../Pages/Main/Main"));
-// const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
-// const Mypage = lazy(() => import("../Pages/Mypage"));
+const MainPage = lazy(() => import("../Components/Main/Main"));
+const AvatarPage = lazy(() => import("../Pages/AvatarPage"));
+const Mypage = lazy(() => import("../Pages/Mypage"));
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/main" element={<Main />} />
+          <Route path="/main" element={<MainPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/signup1" element={<SignUp1 />} />
           <Route path="/signup2" element={<SignUp2 />} />
