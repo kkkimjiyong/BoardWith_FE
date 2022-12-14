@@ -11,7 +11,6 @@ import {
 } from "../../redux/modules/CommentsSlice";
 import { userApi } from "../../instance";
 import { postApi } from "../../instance";
-import moment from "moment-timezone";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import { AiOutlineMessage } from "@react-icons/all-files/ai/AiOutlineMessage";
 import { AiOutlineCalendar } from "@react-icons/all-files/ai/AiOutlineCalendar";
@@ -60,20 +59,25 @@ export const DetailModal = ({
   console.log(modifyModalOpen);
   // 수정
 
-  //? ---------------시간 (나중에 리팩토링) ----------------
-  const startDate = detail?.data?.time?.[0];
-  const endDate = detail?.data?.time?.[1];
-  const getStartTime = (startDate) => {
-    var m = moment(startDate).tz("Asia/Seoul").locale("ko");
-    return m.format("MM.DD (ddd) HH:mm");
-  };
-  const getEndTime = (endDate) => {
-    var m = moment(endDate).tz("Asia/Seoul");
-    return m.format("HH:mm");
-  };
-  const realStartTime = getStartTime(startDate);
-  const realEndTime = getEndTime(endDate);
-  // console.log(realStartTime, realEndTime);
+  //요일시간 표기
+  const IsoStartDate = item?.time?.[0];
+  const IsoendDate = item?.time?.[1];
+  const startDate = new Date(IsoStartDate);
+  const endDate = new Date(IsoendDate);
+
+  const week = ["일", "월", "화", "수", "목", "금", "토"];
+
+  const showTime =
+    ("0" + (startDate.getMonth() + 1)).slice(-2) +
+    "." +
+    ("0" + startDate.getDate()).slice(-2) +
+    " (" +
+    week[startDate.getDay()] +
+    ") " +
+    startDate.getHours() +
+    ":00 ~ " +
+    endDate.getHours() +
+    ":00";
   // console.log(startDate, endDate);
   //게시글 편집 상태 핸들러
   const postEditHandler = () => {
@@ -395,7 +399,7 @@ export const DetailModal = ({
                         size="23px"
                       />
                       <div />
-                      <h5>{realStartTime + " ~ " + realEndTime}</h5>{" "}
+                      <h5>{showTime}</h5>
                       {/* 날짜 */}
                     </StContentWrap>
                     <StContentWrap>
@@ -715,7 +719,7 @@ const ListWrap = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-  transition: height 400ms ease-in-out;
+  transition: height 4000ms ease-in-out;
   .innerDiv {
     position: absolute;
     width: 100%;
@@ -729,7 +733,6 @@ const ListWrap = styled.div`
   overflow-y: hidden;
   overflow-y: scroll;
   //? -----모바일에서처럼 스크롤바 디자인---------------
-
   ::-webkit-scrollbar {
     width: 15px;
   }
