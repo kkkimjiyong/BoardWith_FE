@@ -104,9 +104,7 @@
 <br>
 
 # 🕹 Front-End Tool
-  <img src='https://img.shields.io/badge/React-v17.0.2-61DAFB?logo=React'/>
-  <img src='https://img.shields.io/badge/ReactRouter-v5.2.1-CA4245?logo=React Router'/>
-  <img src='https://img.shields.io/badge/StyledComponents-v5.3.3-DB7093?logo=styled-components'/>
+  <img src='https://img.shields.io/badge/React-v17.0.2-61DAFB?logo=React'/><img src='https://img.shields.io/badge/ReactRouter-v5.2.1-CA4245?logo=React Router'/><img src='https://img.shields.io/badge/StyledComponents-v5.3.3-DB7093?logo=styled-components'/>
   <img src='https://img.shields.io/badge/Redux-v4.1.2-764ABC?logo=Redux'/>
   <img src='https://img.shields.io/badge/immer-v9.0.12-00E7C3?logo=immer'/>
   <img src='https://img.shields.io/badge/yarn-v1.22.15-blue?logo=yarn'/>
