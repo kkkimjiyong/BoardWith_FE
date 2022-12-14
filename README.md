@@ -104,8 +104,14 @@
 <br>
 
 # 🕹 Front-End Tool
-<img alt="React" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=black"/> <img alt="Redux" src ="https://img.shields.io/badge/Redux-764ABC.svg?&style=for-the-badge&logo=Redux&logoColor=black"/> <img alt="Axios" src ="https://img.shields.io/badge/Axios-5A29E4.svg?&style=for-the-badge&logo=Axios&logoColor=black"/> <img alt="styled Components" src ="https://img.shields.io/badge/styled Components-DB7093.svg?&style=for-the-badge&logo=styled Components&logoColor=black"/> <img alt="Vercel" src ="https://img.shields.io/badge/Vercel-000000.svg?&style=for-the-badge&logo=Vercel&logoColor=white"/> 
-
+  <img src='https://img.shields.io/badge/React-v17.0.2-61DAFB?logo=React'/>
+  <img src='https://img.shields.io/badge/ReactRouter-v5.2.1-CA4245?logo=React Router'/>
+  <img src='https://img.shields.io/badge/StyledComponents-v5.3.3-DB7093?logo=styled-components'/>
+  <img src='https://img.shields.io/badge/Redux-v4.1.2-764ABC?logo=Redux'/>
+  <img src='https://img.shields.io/badge/immer-v9.0.12-00E7C3?logo=immer'/>
+  <img src='https://img.shields.io/badge/yarn-v1.22.15-blue?logo=yarn'/>
+  <img src='https://img.shields.io/badge/prettier-v9.5.0-F7B93E?logo=prettier'/>
+  <img src='https://img.shields.io/badge/eslint-v7.11.0-4B32C3?logo=eslint'/>
 # 🕹 Back-End Tool
 
 <img alt="JavaScript" src ="https://img.shields.io/badge/JavaScriipt-F7DF1E.svg?&style=for-the-badge&logo=JavaScript&logoColor=black"/> <img alt="Pm2" src ="https://img.shields.io/badge/pm2-2B037A.svg?&style=for-the-badge&logo=pm2&logoColor=white"/> <img alt="Nginx" src ="https://img.shields.io/badge/nginx-009639.svg?&style=for-the-badge&logo=nginx&logoColor=white"/> <img alt="JSON Web Tokens" src ="https://img.shields.io/badge/JSON Web Tokens-000000.svg?&style=for-the-badge&logo=JSON Web Tokens&logoColor=white"/> <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-47A248.svg?&style=for-the-badge&logo=MongoDB&logoColor=white"/> <img alt="Node.js" src ="https://img.shields.io/badge/Node.js-339933.svg?&style=for-the-badge&logo=Node.js&logoColor=white"/>
