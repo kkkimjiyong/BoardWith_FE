@@ -6,7 +6,6 @@ import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller } from "react-hook-form";
-import AlertModal from "../AlertModal";
 import { useForm } from "react-hook-form";
 import Slider from "@mui/material/Slider";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";

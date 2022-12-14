@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Layout from "../../style/Layout";
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
@@ -16,8 +15,6 @@ import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postsApi } from "../../instance";
-import { postApi } from "../../instance";
-import { useParams } from "react-router-dom";
 
 const { kakao } = window;
 function Modify({ setModifyModalOpen, setItem, item }) {
