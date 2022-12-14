@@ -162,3 +162,19 @@
   <p><strong>문제상황</strong> : map함수를 돌린 뒤, 각각의 리턴값에서 거리를 다시 배열에 넣어주어야 하는데, 가장 마지막으로 계산된 거리만 배열에 들어가는 상황이 발생함.</p>
   <p><strong>의견 결정</strong> :  useState는 비동기적으로 작동하며, batch형태로 16ms마다 일괄처리하는 방식임을 알게되었다. 그리고 useState를 동기적으로 처리하기위해서 setState의 인자로 콜백함수를 넣어, 동기적으로 처리하여 정상으로 배열에 넣어줄 수 있게되었다.  </p>
 </details> 
+<details>
+  <br>
+  <summary>카카오맵 API 렌더링 이슈</summary>
+  <p><strong>도입</strong> : 파티모임의 장소를 지도로 보여주는 기능 </p>
+  <p><strong>문제상황</strong> : 카카오맵API를 사용하는 과정에서 useEffect내 함수를 작동시키려 했으나,
+기존 useEffect 내의 콜백함수는 모든 element가 반환된 후 작동하기 때문에, 참조할 수 없다는 오류가 발생함.</p>
+  <p><strong>의견 결정</strong> :  로딩을 통하여, 시간 차이를 두어 함수가 정상적으로 작동할 수 있게되었다.  </p>
+</details> 
+<details>
+  <br>
+  <summary></summary>
+  <p><strong>도입</strong> : 파티모임의 시간을 보여주는 기능 </p>
+  <p><strong>문제상황</strong> : 시간을 밀리초로 다루지 않고, 더 가독성이 좋은 방법을 사용하였으면 좋겠음</p>
+  <p><strong>의견 결정</strong> : 시간을 표현하는 방식이 여러가지인데  밀리초로 변경하지 않아도 시간의 선후 관계를 정할 수 있다는 것을 알게 되었고, 시간 객체를 시분 단위로 set해서 조절해서 원하는 시간을 표현함. </p>
+</details> 
+
