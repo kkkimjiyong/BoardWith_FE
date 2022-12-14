@@ -1,7 +1,8 @@
 # 🎮 보드 윗(Board With) 🎮
 
-
+<p align='center'>
 <img  width="80%" src="https://i.ibb.co/R0Tw1Fs/Kakao-Talk-20221208-232135692.png" alt="Kakao-Talk-20221208-232135692" border="0">
+</p>
 <br>
 
 # 🎁[보드 윗 노션 바로가기](https://brief-efraasia-82e.notion.site/board-with-c923e853540941589be0f4f4984022f4)
