@@ -94,6 +94,7 @@ function Modify({ setModifyModalOpen, setItem, item }) {
     defaultValues: {
       fullday: new Date(item.time[0]),
       partyMember: `${item.partyMember}`,
+      startTime: "00:00",
     },
   });
 
@@ -216,13 +217,15 @@ function Modify({ setModifyModalOpen, setItem, item }) {
                   defaultValue={`${new Date(item.time[1]).getHours()}:00`}
                   {...register("endTime")}
                 >
-                  {timeSelect.map((time) => {
-                    return (
-                      <option key={time.label} value={time.value}>
-                        {time.label}
-                      </option>
-                    );
-                  })}
+                  {timeSelect
+                    .slice(watch().startTime.split(":")[0], 24)
+                    .map((time) => {
+                      return (
+                        <option key={time.label} value={time.value}>
+                          {time.label}
+                        </option>
+                      );
+                    })}
                 </TimeSelect>
               </div>
             </FlexBox>

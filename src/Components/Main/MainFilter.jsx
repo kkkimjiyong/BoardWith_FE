@@ -114,6 +114,7 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
         setValue2([clamped - minDistance, clamped]);
       }
     } else {
+      setMember(newValue);
       setValue2(newValue);
       setFiltered({
         ...filtered,
@@ -131,7 +132,7 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
     setFilteredItems(false);
     setOpen(!open);
   };
-
+  const [member, setMember] = useState(value2);
   return (
     <BackGroudModal onClick={() => setOpen(!open)} open={open}>
       {" "}
@@ -189,7 +190,7 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
                 onChange={onTimeChange2}
                 defaultValue={timeSelect[23].label}
               >
-                {timeSelect.map((time) => {
+                {timeSelect2.map((time) => {
                   return (
                     <option key={time.label} value={time.value}>
                       {time.label}
