@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import Slider from "@mui/material/Slider";
 import { timeSelect } from "../../tools/select";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -9,6 +8,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import { postsApi } from "../../instance";
+import { seoulGu, endStatus } from "../../tools/select";
 
 const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
   //시작 날짜 받기
@@ -28,18 +28,15 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
       ...filtered,
     });
   };
-  let timeSelect2 = timeSelect.slice(0, 23);
 
   //시작 시간 받기
   const onTimeChange1 = (e) => {
     const { value } = e.target;
     filtered.time[0].setHours(value.split(":")[0]);
-    timeSelect2 = timeSelect.slice(value, 23);
     setFiltered({
       ...filtered,
     });
   };
-  console.log(timeSelect2);
   //종료 시간 받기
   const onTimeChange2 = (e) => {
     const { value } = e.target;
@@ -57,39 +54,23 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
       [name]: value,
     });
   };
-  const seoulGu = [
-    { value: "강남구", label: "강남구" },
-    { value: "강동구", label: "강동구" },
-    { value: "강북구", label: "강북구" },
-    { value: "강서구", label: "강서구" },
-    { value: "관악구", label: "관악구" },
-    { value: "광진구", label: "광진구" },
-    { value: "구로구", label: "구로구" },
-    { value: "금천구", label: "금천구" },
-    { value: "노원구", label: "노원구" },
-    { value: "도봉구", label: "도봉구" },
-    { value: "동대문구", label: "동대문구" },
-    { value: "동작구", label: "동작구" },
-    { value: "마포구", label: "마포구" },
-    { value: "서대문구", label: "서대문구" },
-    { value: "서초구", label: "서초구" },
-    { value: "성동구", label: "성동구" },
-    { value: "성북구", label: "성북구" },
-    { value: "송파구", label: "송파구" },
-    { value: "양천구", label: "양천구" },
-    { value: "영등포구", label: "영등포구" },
-    { value: "용산구", label: "용산구" },
-    { value: "은평구", label: "은평구" },
-    { value: "종로구", label: "종로구" },
-    { value: "중구", label: "중구" },
-    { value: "중랑구", label: "중랑구" },
-  ];
+
+  const time1 = new Date();
+  time1.setHours(0);
+  time1.setMinutes(0);
+  time1.setSeconds(0);
+
+  const time2 = new Date();
+  time2.setHours(23);
+  time2.setMinutes(0);
+  time2.setSeconds(0);
 
   const [filtered, setFiltered] = useState({
-    time: [new Date("1970-01-01 00:00:00"), new Date("9999-12-31 23:00:00")],
+    time: [time1, time2],
     date: new Date(),
     partyMember: [1, 10],
     map: "강남구",
+    memberStatus: 0,
   });
 
   //양방향 인원 체크
@@ -123,10 +104,20 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
       });
     }
   };
+
   const getFiltered = async () => {
     const response = await postsApi.filterPost(filtered);
-    console.log(response.data);
-    setItems(response.data.data);
+    if (response.data.data.length > 0) {
+      let statusFiltered = response.data.data.filter(
+        (el) => el.memberStatus == filtered.memberStatus
+      );
+      console.log("statusFiltered", statusFiltered);
+      setItems(statusFiltered);
+      console.log();
+    } else {
+      setItems([]);
+    }
+
     setFilteredItems(false);
     setOpen(!open);
   };
@@ -213,6 +204,23 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
                 max={10}
               />
             </InputBox>
+
+            <ContentLabel>마감여부</ContentLabel>
+
+            <LocationSelect
+              name="memberStatus"
+              size={1}
+              onChange={onChange}
+              defaultValue={endStatus[0].label}
+            >
+              {endStatus.map((status) => {
+                return (
+                  <option key={status.label} value={status.value}>
+                    {status.label}
+                  </option>
+                );
+              })}
+            </LocationSelect>
 
             <ContentButton onClick={getFiltered}>파티보기</ContentButton>
           </Contentbox>
@@ -306,7 +314,7 @@ const Wrap = styled.div`
   width: 100%;
   background-color: var(--gray);
   color: var(--white);
-  height: ${({ open }) => (open ? "700px" : "0")};
+  height: ${({ open }) => (open ? "800px" : "0")};
 
   /* height: ${({ open }) => (open ? "500px" : "80px")}; */
 
