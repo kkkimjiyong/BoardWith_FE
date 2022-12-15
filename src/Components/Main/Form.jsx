@@ -6,7 +6,6 @@ import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller } from "react-hook-form";
-import AlertModal from "../AlertModal";
 import { useForm } from "react-hook-form";
 import Slider from "@mui/material/Slider";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -81,12 +80,17 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
     control,
     register,
     setValue,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(formSchema),
-    defaultValues: { fullday: new Date(), partyMember: "10" },
+    defaultValues: {
+      fullday: new Date(),
+      partyMember: "10",
+      startTime: "00:00",
+    },
   });
 
   // console.log(location);
@@ -206,13 +210,15 @@ function Form({ setFormModalOpen, setItems, setAlert, setContent }) {
                     defaultValue={timeSelect[23].value}
                     {...register("endTime")}
                   >
-                    {timeSelect.map((time) => {
-                      return (
-                        <option key={time.label} value={time.value}>
-                          {time.label}
-                        </option>
-                      );
-                    })}
+                    {timeSelect
+                      .slice(watch().startTime.split(":")[0], 24)
+                      .map((time) => {
+                        return (
+                          <option key={time.label} value={time.value}>
+                            {time.label}
+                          </option>
+                        );
+                      })}
                   </TimeSelect>
                 </div>
               </FlexBox>

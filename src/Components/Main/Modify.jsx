@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Layout from "../../style/Layout";
 import { useRef } from "react";
 import ReactDaumPost from "react-daumpost-hook";
 import * as yup from "yup";
@@ -16,8 +15,6 @@ import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postsApi } from "../../instance";
-import { postApi } from "../../instance";
-import { useParams } from "react-router-dom";
 
 const { kakao } = window;
 function Modify({ setModifyModalOpen, setItem, item }) {
@@ -94,6 +91,7 @@ function Modify({ setModifyModalOpen, setItem, item }) {
     defaultValues: {
       fullday: new Date(item.time[0]),
       partyMember: `${item.partyMember}`,
+      startTime: "00:00",
     },
   });
 
@@ -124,147 +122,147 @@ function Modify({ setModifyModalOpen, setItem, item }) {
 
   return (
     <BackGroudModal>
-      <Layout>
-        <Wrap>
-          <div>
-            <Sth
-              onClick={() => {
-                setModifyModalOpen(false);
+      <Wrap>
+        <div>
+          <Sth
+            onClick={() => {
+              setModifyModalOpen(false);
+            }}
+          >
+            <FontAwesomeIcon
+              style={{
+                color: "white",
               }}
-            >
-              <FontAwesomeIcon
+              size="1x"
+              icon={faX}
+              cursor="pointer"
+            />
+          </Sth>{" "}
+          <FormHeader>파티 내용 수정</FormHeader>
+        </div>
+
+        <Formbox onSubmit={handleSubmit(onSubmit)}>
+          <Inputbox>
+            <FlexBox>
+              <LabelBox>파티명</LabelBox>
+              <InputBox defaultValue={item.title} {...register("title")} />
+            </FlexBox>
+            <FlexBox>
+              <LabelBox>내용</LabelBox>
+              <TextareaBox
                 style={{
-                  color: "white",
+                  height: "80px",
                 }}
-                size="1x"
-                icon={faX}
-                cursor="pointer"
+                maxLength={50}
+                defaultValue={item.content}
+                {...register("content")}
               />
-            </Sth>{" "}
-            <FormHeader>파티 내용 수정</FormHeader>
-          </div>
-
-          <Formbox onSubmit={handleSubmit(onSubmit)}>
-            <Inputbox>
-              <FlexBox>
-                <LabelBox>파티명</LabelBox>
-                <InputBox defaultValue={item.title} {...register("title")} />
-              </FlexBox>
-              <FlexBox>
-                <LabelBox>내용</LabelBox>
-                <TextareaBox
-                  style={{
-                    height: "80px",
-                  }}
-                  maxLength={50}
-                  defaultValue={item.content}
-                  {...register("content")}
-                />
-                {errors.content && (
-                  <small role="alert" style={{ color: "var(--primary)" }}>
-                    {errors.content.message}
-                  </small>
-                )}
-              </FlexBox>
-              <FlexBox>
-                <LabelBox>날짜</LabelBox>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Controller
-                    control={control}
-                    name="fullday"
-                    render={({ field: { onChange, value } }) => (
-                      <DatePicker
-                        defaultValue={`${new Date(item.time[0])}`}
-                        inputFormat={"yyyy-MM-dd"}
-                        mask={"____-__-__"}
-                        value={value}
-                        onChange={onChange}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            inputProps={{
-                              ...params.inputProps,
-                              placeholder: new Date(),
-                            }}
-                          />
-                        )}
-                      />
-                    )}
-                  />
-                </LocalizationProvider>
-              </FlexBox>{" "}
-              <FlexBox>
-                <LabelBox>시간</LabelBox>
-                <div>
-                  <TimeSelect
-                    name="startTime"
-                    size={1}
-                    defaultValue={`${new Date(item.time[0]).getHours()}:00`}
-                    {...register("startTime")}
-                  >
-                    {timeSelect.map((time) => {
-                      return (
-                        <option key={time.label} value={time.value}>
-                          {time.label}
-                        </option>
-                      );
-                    })}
-                  </TimeSelect>
-                  <TimeSelect
-                    name="endTime"
-                    size={1}
-                    // onChange={onChange}
-                    defaultValue={`${new Date(item.time[1]).getHours()}:00`}
-                    {...register("endTime")}
-                  >
-                    {timeSelect.map((time) => {
-                      return (
-                        <option key={time.label} value={time.value}>
-                          {time.label}
-                        </option>
-                      );
-                    })}
-                  </TimeSelect>
-                </div>
-              </FlexBox>
-              <FlexBox>
-                <LabelBox>인원</LabelBox>
-
+              {errors.content && (
+                <small role="alert" style={{ color: "var(--primary)" }}>
+                  {errors.content.message}
+                </small>
+              )}
+            </FlexBox>
+            <FlexBox>
+              <LabelBox>날짜</LabelBox>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <Controller
                   control={control}
-                  name="partyMember"
-                  render={({ field: { onChange } }) => (
-                    <MemberSlider
-                      defaultValue={`${item.partyMember}`}
-                      onChange={(e) => {
-                        onChange(e.target.value);
-                      }}
-                      valueLabelDisplay="on"
-                      // getAriaValueText={valuetext}
-                      disableSwap
-                      min={1}
-                      max={10}
-                      sx={{ color: "var(--gray)" }}
+                  name="fullday"
+                  render={({ field: { onChange, value } }) => (
+                    <DatePicker
+                      defaultValue={`${new Date(item.time[0])}`}
+                      inputFormat={"yyyy-MM-dd"}
+                      mask={"____-__-__"}
+                      value={value}
+                      onChange={onChange}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          inputProps={{
+                            ...params.inputProps,
+                            placeholder: new Date(),
+                          }}
+                        />
+                      )}
                     />
                   )}
                 />
-              </FlexBox>
-              <FlexBox>
-                <LabelBox>지도</LabelBox>
-                <InputBox
-                  onClick={postCode}
-                  defaultValue={item.cafe}
-                  {...register("cafe")}
-                />
-              </FlexBox>{" "}
-              <DaumPostBox ref={ref}></DaumPostBox>
-            </Inputbox>{" "}
-            <Buttonbox>
-              <Button>수정완료</Button>
-            </Buttonbox>
-          </Formbox>
-        </Wrap>
-      </Layout>
+              </LocalizationProvider>
+            </FlexBox>{" "}
+            <FlexBox>
+              <LabelBox>시간</LabelBox>
+              <div>
+                <TimeSelect
+                  name="startTime"
+                  size={1}
+                  defaultValue={`${new Date(item.time[0]).getHours()}:00`}
+                  {...register("startTime")}
+                >
+                  {timeSelect.map((time) => {
+                    return (
+                      <option key={time.label} value={time.value}>
+                        {time.label}
+                      </option>
+                    );
+                  })}
+                </TimeSelect>
+                <TimeSelect
+                  name="endTime"
+                  size={1}
+                  // onChange={onChange}
+                  defaultValue={`${new Date(item.time[1]).getHours()}:00`}
+                  {...register("endTime")}
+                >
+                  {timeSelect
+                    .slice(watch().startTime.split(":")[0], 24)
+                    .map((time) => {
+                      return (
+                        <option key={time.label} value={time.value}>
+                          {time.label}
+                        </option>
+                      );
+                    })}
+                </TimeSelect>
+              </div>
+            </FlexBox>
+            <FlexBox>
+              <LabelBox>인원</LabelBox>
+
+              <Controller
+                control={control}
+                name="partyMember"
+                render={({ field: { onChange } }) => (
+                  <MemberSlider
+                    defaultValue={`${item.partyMember}`}
+                    onChange={(e) => {
+                      onChange(e.target.value);
+                    }}
+                    valueLabelDisplay="on"
+                    // getAriaValueText={valuetext}
+                    disableSwap
+                    min={1}
+                    max={10}
+                    sx={{ color: "var(--gray)" }}
+                  />
+                )}
+              />
+            </FlexBox>
+            <FlexBox>
+              <LabelBox>지도</LabelBox>
+              <InputBox
+                onClick={postCode}
+                defaultValue={item.cafe}
+                {...register("cafe")}
+              />
+            </FlexBox>{" "}
+            <DaumPostBox ref={ref}></DaumPostBox>
+          </Inputbox>{" "}
+          <Buttonbox>
+            <Button>수정완료</Button>
+          </Buttonbox>
+        </Formbox>
+      </Wrap>
     </BackGroudModal>
   );
 }
@@ -321,11 +319,12 @@ const MemberSlider = styled(Slider)({
 });
 
 const Wrap = styled.div`
-  width: 90%;
-  height: 100vh;
+  position: relative;
+  width: 100%;
+  height: 100%;
   margin: 30px auto;
   background-color: #212121;
-  z-index: 999;
+  z-index: 100;
 `;
 
 const Formbox = styled.form`
@@ -418,24 +417,6 @@ const TimeSelect = styled.select`
   }
 `;
 
-const StContainers = styled.div`
-  position: fixed;
-  z-index: 20;
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
-  height: 100%;
-`;
-const StBackGroundColor = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 10;
-`;
-
 const BackGroudModal = styled.div`
   position: fixed;
   top: 0;
@@ -456,12 +437,12 @@ const BackGroudModal = styled.div`
 `;
 const Sth = styled.div`
   z-index: 50;
-  position: relative;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 4%;
-  left: -43%;
+  top: 2%;
+  left: 5%;
   color: white;
   font-size: 20px;
   margin-bottom: 10px;

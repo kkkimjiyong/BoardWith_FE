@@ -1,19 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import ReactDaumPost from "react-daumpost-hook";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { signUpApi } from "../../instance.js";
 import { useState } from "react";
 import axios from "axios";
 import useInput from "../../hooks/UseInput.js";
-import Layout from "../../style/Layout.js";
+import Layout from "../../style/Layout.jsx";
 import { useDispatch } from "react-redux";
 import { addUserData } from "../../redux/modules/CommentsSlice.js";
-import AlertModal from "../AlertModal.js";
+import AlertModal from "../AlertModal.jsx";
 
 const SignUp2 = () => {
   const initialState = { phoneNumber: "", verifyCode: "" };

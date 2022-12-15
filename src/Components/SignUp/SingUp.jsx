@@ -1,18 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import ReactDaumPost from "react-daumpost-hook";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { signUpApi, userApi } from "../../instance.js";
+import { signUpApi } from "../../instance.jsx";
 import { useState } from "react";
-import axios from "axios";
-import useInput from "../../hooks/UseInput.js";
 import { useDispatch } from "react-redux";
 import { addUserData } from "../../redux/modules/CommentsSlice.js";
-import AlertModal from "../AlertModal.js";
+import AlertModal from "../AlertModal.jsx";
 
 const SignUp = () => {
   const navigate = useNavigate();

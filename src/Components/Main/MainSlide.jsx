@@ -15,7 +15,6 @@ import Tutorial from "../../Components/Tutorial/Tutorial";
 import { AiOutlineClose } from "@react-icons/all-files/ai/AiOutlineClose";
 import AlertModal from "../../Components/AlertModal";
 import Loading from "../../style/Loading";
-import { load } from "react-cookies";
 
 const MainSlide = () => {
   const [targetMargin, setTargetMargin] = useState(0);

@@ -1,40 +1,15 @@
-# 🎮 보드 윗(Board With) 🎮
+## 🎮 보드 윗(Board With) 🎮
 
-<img width="80%" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FoqesB%2FbtrSxPkJ6r7%2FnjjJAIdsWGXJEo3sLxMRGK%2Fimg.png" >
+<p align='center'>
+<img  width="80%" src="https://i.ibb.co/R0Tw1Fs/Kakao-Talk-20221208-232135692.png" alt="Kakao-Talk-20221208-232135692" border="0">
+</p>
+<br>
+
+### 🎁[보드 윗 노션 바로가기](https://brief-efraasia-82e.notion.site/board-with-c923e853540941589be0f4f4984022f4)
 
 <br>
 
-# 🎁[보드 윗 노션 바로가기](https://brief-efraasia-82e.notion.site/board-with-c923e853540941589be0f4f4984022f4)
-
-<br>
-
-# 🕹 팀원 소개
-
-|**팀원**|**주특기**|**맡은 파트**|
-|:-----:|:-----:|:-----:|
-|김지용|`FE(VL)`|회원가입, 기본 및 소셜(카톡)로그인, 마이페이지, 아바타, 채팅방|
-|김수진|`FE`|메인, 필터, 게시글작성, 소셜(네이버)로그인, 검색페이지|
-|정원지|`FE`|상세페이지, 댓글, 블랙리스트, 소셜(구글)로그인, 랭킹페이지|
-|조민수|`BE(L)`|회원가입, 기본 및 소셜(카톡,구글)로그인, 마이페이지, 채팅방, 스웨거|
-|서수형|`BE`|게시글, 랭킹, 북마크, 페이지 무한스크롤, 참가자 목록 추가 및 제거 , 강퇴시스템, 스웨거|
-|백이현|`BE`|댓글, 게시글 검색 및 필터링, 소셜(네이버)로그인, 스웨거|
-|장수현|`DESIGN`|웹페이지 전체적인 디자인|
-
-<br>
-
-
-|**팀원**|**블로그**|**깃허브**|
-|:-------:|:---:|:---:|
-|김지용|[김지용의 블로그](https://haardy.tistory.com/)|[김지용의 깃허브](https://github.com/kkkimjiyong)|
-|김수진|[김수진의 블로그](https://resolute-wineberry-8e7.notion.site/99-d5e1109ce701429f9cc2c932a4b92285)|[김수진의 깃허브](https://github.com/kasucco)|
-|정원지|[정원지의 블로그](https://1zung.tistory.com/)|[정원지의 깃허브](https://github.com/jee09)|
-|조민수|[조민수의 블로그](https://iceflower.tistory.com/)|[조민수의 깃허브](https://github.com/talli0505)|
-|서수형|[서수형의 블로그](https://velog.io/@seosu2000)|[서수형의 깃허브](https://github.com/SoohyungSeo)|
-|백이현|[백이현의 블로그](https://mement-m0ri.tistory.com/)|[백이현의 깃허브](https://github.com/JadeBeck)|
-
-<br>
-
-# 🕹 프로젝트 소개
+### 🕹 프로젝트 소개
 
 평범한 일상 속에서 보드게임을 한다고 가정 해볼까요?
 
@@ -50,7 +25,7 @@
 
 <br>
 
-# 🕹 페이지 소개
+### 🕹 페이지 소개
 
 |`로그인 페이지`|`메인 페이지`|`상세 페이지`|`신청 페이지`|
 |:-----:|:-----:|:-----:|:-----:|
@@ -62,7 +37,7 @@
 
 <br>
 
-# 🕹 기능 소개
+### 🕹 기능 소개
 
 **회원가입**
 - 기본 회원 가입과 소셜을 통한 회원가입
@@ -86,7 +61,7 @@
 
 <br>
 
-# 🕹 깃허브
+### 🕹 깃허브
 
 ### 💻 Front-End
 
@@ -102,28 +77,21 @@
 
 <br>
 
-# 🕹 Front-End Tool
-<img alt="React" src ="https://img.shields.io/badge/React-61DAFB.svg?&style=for-the-badge&logo=React&logoColor=black"/> <img alt="Redux" src ="https://img.shields.io/badge/Redux-764ABC.svg?&style=for-the-badge&logo=Redux&logoColor=black"/> <img alt="Axios" src ="https://img.shields.io/badge/Axios-5A29E4.svg?&style=for-the-badge&logo=Axios&logoColor=black"/> <img alt="styled Components" src ="https://img.shields.io/badge/styled Components-DB7093.svg?&style=for-the-badge&logo=styled Components&logoColor=black"/> <img alt="Vercel" src ="https://img.shields.io/badge/Vercel-000000.svg?&style=for-the-badge&logo=Vercel&logoColor=white"/> 
-
-# 🕹 Back-End Tool
+### 🕹 Front-End Tool
+  <img src='https://img.shields.io/badge/React-v17.0.2-61DAFB?logo=React'/><img src='https://img.shields.io/badge/ReactRouter-v5.2.1-CA4245?logo=React Router'/><img src='https://img.shields.io/badge/StyledComponents-v5.3.3-DB7093?logo=styled-components'/>
+  <img src='https://img.shields.io/badge/Redux-v4.1.2-764ABC?logo=Redux'/>
+  <img src='https://img.shields.io/badge/immer-v9.0.12-00E7C3?logo=immer'/>
+  <img src='https://img.shields.io/badge/yarn-v1.22.15-blue?logo=yarn'/>
+  <img src='https://img.shields.io/badge/prettier-v9.5.0-F7B93E?logo=prettier'/>
+  <img src='https://img.shields.io/badge/eslint-v7.11.0-4B32C3?logo=eslint'/>
+### 🕹 Back-End Tool
 
 <img alt="JavaScript" src ="https://img.shields.io/badge/JavaScriipt-F7DF1E.svg?&style=for-the-badge&logo=JavaScript&logoColor=black"/> <img alt="Pm2" src ="https://img.shields.io/badge/pm2-2B037A.svg?&style=for-the-badge&logo=pm2&logoColor=white"/> <img alt="Nginx" src ="https://img.shields.io/badge/nginx-009639.svg?&style=for-the-badge&logo=nginx&logoColor=white"/> <img alt="JSON Web Tokens" src ="https://img.shields.io/badge/JSON Web Tokens-000000.svg?&style=for-the-badge&logo=JSON Web Tokens&logoColor=white"/> <img alt="MongoDB" src ="https://img.shields.io/badge/MongoDB-47A248.svg?&style=for-the-badge&logo=MongoDB&logoColor=white"/> <img alt="Node.js" src ="https://img.shields.io/badge/Node.js-339933.svg?&style=for-the-badge&logo=Node.js&logoColor=white"/>
 <br>
 <img alt="Socket.io" src ="https://img.shields.io/badge/Socket.io-010101.svg?&style=for-the-badge&logo=Socket.io&logoColor=white"/> <img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white"/> <img alt="Amazon EC2" src ="https://img.shields.io/badge/Amazon EC2-FF9900.svg?&style=for-the-badge&logo=Amazon EC2&logoColor=white"/> <img alt="social login KakaoTalk" src ="https://img.shields.io/badge/social login KakaoTalk-FFCD00.svg?&style=for-the-badge&logo=KakaoTalk&logoColor=black"/> <img alt="Express" src ="https://img.shields.io/badge/Express-000000.svg?&style=for-the-badge&logo=Express&logoColor=white"/>
 
-## 🕹 ERD
-<details>
-  <summary>ERD 사진</summary>
-  <img src="https://user-images.githubusercontent.com/87609692/205525590-c0404b20-0476-44af-a413-626bee28ac20.png"></img>
-</details>
 
-## 🕹 Swagger
-<details>
-  <summary>Swagger 사진</summary>
-  <img src="https://user-images.githubusercontent.com/87609692/205597720-e52a5fcb-51f1-4235-be2f-f27884619695.png"></img>
-</details>
-
-## 🕹 트러블 슈팅
+#### 🕹 트러블 슈팅
 <h3>BE</h3>
 <details>
   <summary>MySQL -> MongoDB</summary>
@@ -161,3 +129,44 @@
   <p><strong>문제상황</strong> : map함수를 돌린 뒤, 각각의 리턴값에서 거리를 다시 배열에 넣어주어야 하는데, 가장 마지막으로 계산된 거리만 배열에 들어가는 상황이 발생함.</p>
   <p><strong>의견 결정</strong> :  useState는 비동기적으로 작동하며, batch형태로 16ms마다 일괄처리하는 방식임을 알게되었다. 그리고 useState를 동기적으로 처리하기위해서 setState의 인자로 콜백함수를 넣어, 동기적으로 처리하여 정상으로 배열에 넣어줄 수 있게되었다.  </p>
 </details> 
+<details>
+  <br>
+  <summary>카카오맵 API 렌더링 이슈</summary>
+  <p><strong>도입</strong> : 파티모임의 장소를 지도로 보여주는 기능 </p>
+  <p><strong>문제상황</strong> : 카카오맵API를 사용하는 과정에서 useEffect내 함수를 작동시키려 했으나,
+기존 useEffect 내의 콜백함수는 모든 element가 반환된 후 작동하기 때문에, 참조할 수 없다는 오류가 발생함.</p>
+  <p><strong>의견 결정</strong> :  로딩을 통하여, 시간 차이를 두어 함수가 정상적으로 작동할 수 있게되었다.  </p>
+</details> 
+<details>
+  <br>
+  <summary>파티모임 시간 표시 방식</summary>
+  <p><strong>도입</strong> : 파티모임의 시간을 보여주는 기능 </p>
+  <p><strong>문제상황</strong> : 시간을 밀리초로 다루지 않고, 더 가독성이 좋은 방법을 사용하였으면 좋겠음</p>
+  <p><strong>의견 결정</strong> : 시간을 표현하는 방식이 여러가지인데  밀리초로 변경하지 않아도 시간의 선후 관계를 정할 수 있다는 것을 알게 되었고, 시간 객체를 시분 단위로 set해서 조절해서 원하는 시간을 표현함. </p>
+</details> 
+
+### 🕹 팀원 소개
+
+|**팀원**|**주특기**|**맡은 파트**|
+|:-----:|:-----:|:-----:|
+|김지용|`FE(VL)`|회원가입, 기본 및 소셜(카톡)로그인, 마이페이지, 아바타, 채팅방|
+|김수진|`FE`|메인, 필터, 게시글작성, 소셜(네이버)로그인, 검색페이지|
+|정원지|`FE`|상세페이지, 댓글, 블랙리스트, 소셜(구글)로그인, 랭킹페이지|
+|조민수|`BE(L)`|회원가입, 기본 및 소셜(카톡,구글)로그인, 마이페이지, 채팅방, 스웨거|
+|서수형|`BE`|게시글, 랭킹, 북마크, 페이지 무한스크롤, 참가자 목록 추가 및 제거 , 강퇴시스템, 스웨거|
+|백이현|`BE`|댓글, 게시글 검색 및 필터링, 소셜(네이버)로그인, 스웨거|
+|장수현|`DESIGN`|웹페이지 전체적인 디자인|
+
+<br>
+
+
+|**팀원**|**블로그**|**깃허브**|
+|:-------:|:---:|:---:|
+|김지용|[김지용의 블로그](https://haardy.tistory.com/)|[김지용의 깃허브](https://github.com/kkkimjiyong)|
+|김수진|[김수진의 블로그](https://resolute-wineberry-8e7.notion.site/99-d5e1109ce701429f9cc2c932a4b92285)|[김수진의 깃허브](https://github.com/kasucco)|
+|정원지|[정원지의 블로그](https://1zung.tistory.com/)|[정원지의 깃허브](https://github.com/jee09)|
+|조민수|[조민수의 블로그](https://iceflower.tistory.com/)|[조민수의 깃허브](https://github.com/talli0505)|
+|서수형|[서수형의 블로그](https://velog.io/@seosu2000)|[서수형의 깃허브](https://github.com/SoohyungSeo)|
+|백이현|[백이현의 블로그](https://mement-m0ri.tistory.com/)|[백이현의 깃허브](https://github.com/JadeBeck)|
+
+<br>
