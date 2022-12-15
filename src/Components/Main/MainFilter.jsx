@@ -30,13 +30,17 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
   };
 
   //시작 시간 받기
+  const [timesend, setTimesend] = useState();
+
   const onTimeChange1 = (e) => {
     const { value } = e.target;
     filtered.time[0].setHours(value.split(":")[0]);
+    setTimesend(Number(value.split(":")[0]));
     setFiltered({
       ...filtered,
     });
   };
+  console.log(timesend);
   //종료 시간 받기
   const onTimeChange2 = (e) => {
     const { value } = e.target;
@@ -179,7 +183,7 @@ const MainFilter = ({ setFilteredItems, setItems, open, setOpen }) => {
                 onChange={onTimeChange2}
                 defaultValue={timeSelect[23].label}
               >
-                {timeSelect2.map((time) => {
+                {timeSelect.slice(timesend, 24).map((time) => {
                   return (
                     <option key={time.label} value={time.value}>
                       {time.label}
