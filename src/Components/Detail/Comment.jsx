@@ -48,7 +48,7 @@ const Comments = ({
 
   //댓글 수정 핸들러--------------------------------------------------------------
   const onEditHandler = () => {
-    // console.log("comment", comment);
+    console.log("comment", comment);
     if (comment.comment === "") {
       setAlert(true);
       setContent("수정할 내용을 입력해주세요.");
@@ -265,10 +265,8 @@ const Comments = ({
                   value={Comments.comment}
                   edit={comment.comment}
                   onChange={(e) => {
-                    const { edit } = e.target;
                     setComment({
-                      ...comment,
-                      comment: edit,
+                      comment: e.target.value,
                     });
                   }}
                 ></StText>

@@ -15,9 +15,10 @@ import { timeSelect } from "../../tools/select";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { postsApi } from "../../instance";
+import AlertModal from "../AlertModal";
 
 const { kakao } = window;
-function Modify({ setModifyModalOpen, setItem, item }) {
+function Modify({ setModifyModalOpen, setItem, item, setAlert, setContent }) {
   const [location, Setlocation] = useState(item.location);
   //카카오 Map API
   var geocoder = new kakao.maps.services.Geocoder();
@@ -67,15 +68,13 @@ function Modify({ setModifyModalOpen, setItem, item }) {
       console.log(payload);
       const { data } = await postsApi.putPost(payload);
       console.log(data);
-      alert("파티모집글 수정이 완료되었습니다.");
+      setAlert(true);
+      setContent("파티모집글 수정이 완료되었습니다.");
       setItem(payload.postPayload.data);
       setModifyModalOpen(false);
       // setModalOpen(false);
     } catch (error) {}
   };
-
-  const timeStart = item.time[0];
-  const time1 = new Date(timeStart);
 
   const {
     control,
@@ -83,7 +82,6 @@ function Modify({ setModifyModalOpen, setItem, item }) {
     watch,
     setValue,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -118,7 +116,6 @@ function Modify({ setModifyModalOpen, setItem, item }) {
   };
 
   const postCode = ReactDaumPost(postConfig);
-  console.log(watch());
 
   return (
     <BackGroudModal>
