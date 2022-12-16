@@ -60,8 +60,8 @@ export const DetailModal = ({
   // 수정
 
   //요일시간 표기
-  const IsoStartDate = item?.time?.[0];
-  const IsoendDate = item?.time?.[1];
+  const IsoStartDate = detail?.data.time[0];
+  const IsoendDate = detail?.data.time[1];
   const startDate = new Date(IsoStartDate);
   const endDate = new Date(IsoendDate);
 
@@ -584,6 +584,8 @@ export const DetailModal = ({
                   </div>{" "}
                   {modifyModalOpen && (
                     <Modify
+                      setContent={setContent}
+                      setAlert={setAlert}
                       item={item}
                       detail={detail}
                       setModalOpen={setModalOpen}
@@ -719,7 +721,7 @@ const ListWrap = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
-  transition: height 4000ms ease-in-out;
+  transition: height 400ms ease-in-out;
   .innerDiv {
     position: absolute;
     width: 100%;
