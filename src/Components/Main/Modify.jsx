@@ -119,6 +119,7 @@ function Modify({ setModifyModalOpen, setItem, item, setAlert, setContent }) {
 
   return (
     <BackGroudModal>
+      {/* <Layout> */}
       <Wrap>
         <div>
           <Sth
@@ -211,15 +212,13 @@ function Modify({ setModifyModalOpen, setItem, item, setAlert, setContent }) {
                   defaultValue={`${new Date(item.time[1]).getHours()}:00`}
                   {...register("endTime")}
                 >
-                  {timeSelect
-                    .slice(watch().startTime.split(":")[0], 24)
-                    .map((time) => {
-                      return (
-                        <option key={time.label} value={time.value}>
-                          {time.label}
-                        </option>
-                      );
-                    })}
+                  {timeSelect.map((time) => {
+                    return (
+                      <option key={time.label} value={time.value}>
+                        {time.label}
+                      </option>
+                    );
+                  })}
                 </TimeSelect>
               </div>
             </FlexBox>
@@ -260,6 +259,7 @@ function Modify({ setModifyModalOpen, setItem, item, setAlert, setContent }) {
           </Buttonbox>
         </Formbox>
       </Wrap>
+      {/* </Layout> */}
     </BackGroudModal>
   );
 }
@@ -316,9 +316,8 @@ const MemberSlider = styled(Slider)({
 });
 
 const Wrap = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 100vh;
   margin: 30px auto;
   background-color: #212121;
   z-index: 100;

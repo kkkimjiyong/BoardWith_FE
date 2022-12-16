@@ -21,11 +21,7 @@ const Login = () => {
 
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
   const GOOGLE_LOGIN_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
-  const NAVER_LOGIN_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
-    process.env.REACT_APP_NAVER_CLIENT_ID
-  }&redirect_uri=${
-    process.env.REACT_APP_NAVER_CALLBACK_URL
-  }&state=${Math.random().toString(36).substr(3, 14)}`;
+  const NAVER_LOGIN_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_NAVER_CALLBACK_URL}&state=hoho`;
 
   const postLogin = async (payload) => {
     try {
@@ -159,7 +155,7 @@ const LoginBtn = styled.button`
   box-shadow: 0px 3px 10px 0px black;
 `;
 
-const NaverLogin = styled.div`
+const NaverLogin = styled.a`
   height: 40px;
   border-radius: 10px;
   /* background-color: #fee500; */

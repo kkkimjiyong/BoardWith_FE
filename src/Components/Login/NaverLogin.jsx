@@ -30,7 +30,7 @@ const NaverLogin = ({ setGetToken, setUserInfo }) => {
 
   let params = new URL(window.location.href).searchParams;
   let code = params.get("code");
-
+  console.log(code);
   const isNaver = async () => {
     try {
       const { data } = await axios.post(
@@ -38,6 +38,10 @@ const NaverLogin = ({ setGetToken, setUserInfo }) => {
         { code }
       );
       if (data.accessToken) {
+        sessionStorage.setItem("accessToken", data.accessToken, { path: "/" });
+        sessionStorage.setItem("refreshToken", data.refresh_token, {
+          path: "/",
+        });
         alert("로그인 성공!");
         sessionStorage.setItem("accessToken", data.accessToken, { path: "/" });
         sessionStorage.setItem("refreshToken", data.refresh_token, {
@@ -45,6 +49,7 @@ const NaverLogin = ({ setGetToken, setUserInfo }) => {
         });
         navigate("/main");
       }
+
       setIsLoading(false);
       setUserId(data.userId);
     } catch (error) {
@@ -423,6 +428,7 @@ const AlertError = styled.div`
   font-size: 14px;
   color: red;
 `;
+
 // const { naver } = window;
 
 // const initializeNaverLogin = () => {

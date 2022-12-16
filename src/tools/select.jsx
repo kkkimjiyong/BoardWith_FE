@@ -52,3 +52,10 @@ export const timeSelect = [
   { value: "22:00", label: "22:00" },
   { value: "23:00", label: "23:00" },
 ];
+
+export const endStatus = [
+  { value: 0, label: "여유" },
+  { value: 1, label: "보통" },
+  { value: 2, label: "마감임박" },
+  { value: 3, label: "마감" },
+];

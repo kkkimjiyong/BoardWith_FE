@@ -110,8 +110,9 @@ const Item = ({
         onClick={() => setModalOpen(item?._id)}
       >
         <ItemWrapBodySpaceBetween>
-          <ItemProfile onClick={() => navigate(`/userpage/${item.nickName}`)}>
+          <ItemProfile>
             <AvatarBox
+              onClick={() => navigate(`/userpage/${item.nickName}`)}
               userSelect={item?.userAvatar}
               scale={0.1}
               backScale={0.8}
